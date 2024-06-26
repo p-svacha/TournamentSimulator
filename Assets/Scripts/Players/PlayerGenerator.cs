@@ -12,6 +12,24 @@ public static class PlayerGenerator
     private static Dictionary<string, List<string>> MaleForenames;
     private static Dictionary<string, List<string>> Surnames;
 
+    // Initial values
+    private static int MIN_INITIAL_SKILL_SCORE = 0;
+    private static int MAX_INITIAL_SKILL_SCORE = 100;
+
+    private static float MIN_INITIAL_INCONSISTENCY = 5f;
+    private static float MAX_INITIAL_INCONSISTENCY = 15f;
+
+    private static float MIN_INITIAL_TIEBREAKER_SCORE = 0f;
+    private static float MAX_INITIAL_TIEBREAKER_SCORE = 100;
+
+    private static float MIN_INITIAL_MISTAKE_CHANCE = 0.02f;
+    private static float MAX_INITIAL_MISTAKE_CHANCE = 0.08f;
+
+    // End of season adjustment values
+    private static int SKILL_ADJUSTMENT_RANGE = 5;
+    private static float INCONSISTENCY_ADJUSTMENT_RANGE = 1f;
+    private static float MISTAKE_CHANCE_ADJUSTMENT_RANGE = 0.005f;
+
     #region Init
 
     public static void InitGenerator(List<Country> countries)
@@ -61,13 +79,18 @@ public static class PlayerGenerator
         string lastname = GetRandomLastname(country);
 
         Dictionary<SkillId, int> skills = new Dictionary<SkillId, int>();
-        foreach (SkillDef skillDef in TournamentSimulator.SkillDefs) skills.Add(skillDef.Id, UnityEngine.Random.Range(0, 101));
+        foreach (SkillDef skillDef in TournamentSimulator.SkillDefs) skills.Add(skillDef.Id, GetRandomSkillScore());
 
-        Player player = new Player(sim, firstname, lastname, country, sex, rating, skills);
+        float inconsistency = GetRandomInconsistency();
+        float tiebreakerScore = GetRandomTiebreakerScore();
+        float mistakeChance = GetRandomMistakeChance();
+
+        Player player = new Player(sim, firstname, lastname, country, sex, rating, skills, inconsistency, tiebreakerScore, mistakeChance);
         return player;
     }
 
-    #region Random Getters
+    #region Initial Random Values
+
     public static string GetRandomFirstname(Country country, string sex)
     {
         string region = country.Name.ToLower().Replace(" ", "-").Replace(",", "");
@@ -84,6 +107,11 @@ public static class PlayerGenerator
         List<string> surnameCandidates = Surnames[region];
         string surname = surnameCandidates[Random.Range(0, surnameCandidates.Count)];
         return surname;
+    }
+    public static string GetRandomSex()
+    {
+        if (Random.value < 0.5f) return "m";
+        else return "w";
     }
 
     public static Country GetRandomCountry(List<Country> countries)
@@ -116,11 +144,37 @@ public static class PlayerGenerator
         throw new System.Exception();
     }
 
-    public static string GetRandomSex()
+    private static int GetRandomSkillScore()
     {
-        if (Random.value < 0.5f) return "m";
-        else return "w";
+        return Random.Range(MIN_INITIAL_SKILL_SCORE, MAX_INITIAL_SKILL_SCORE + 1);
     }
+    
+    public static float GetRandomInconsistency()
+    {
+        return Random.Range(MIN_INITIAL_INCONSISTENCY, MAX_INITIAL_INCONSISTENCY);
+    }
+    public static float GetRandomTiebreakerScore()
+    {
+        return Random.Range(MIN_INITIAL_TIEBREAKER_SCORE, MAX_INITIAL_TIEBREAKER_SCORE);
+    }
+    public static float GetRandomMistakeChance()
+    {
+        return Random.Range(MIN_INITIAL_MISTAKE_CHANCE, MAX_INITIAL_MISTAKE_CHANCE);
+    }
+
+    public static int GetRandomSkillAdjustment()
+    {
+        return Random.Range(-SKILL_ADJUSTMENT_RANGE, SKILL_ADJUSTMENT_RANGE + 1);
+    }
+    public static float GetRandomInconsistencyAdjustment()
+    {
+        return Random.Range(-INCONSISTENCY_ADJUSTMENT_RANGE, INCONSISTENCY_ADJUSTMENT_RANGE);
+    }
+    public static float GetRandomMistakeChanceAdjustment()
+    {
+        return Random.Range(-MISTAKE_CHANCE_ADJUSTMENT_RANGE, MISTAKE_CHANCE_ADJUSTMENT_RANGE);
+    }
+
 
     #endregion
 }

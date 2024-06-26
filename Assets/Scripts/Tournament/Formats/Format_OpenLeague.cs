@@ -41,7 +41,7 @@ public class Format_OpenLeague : Tournament
             PlayersPerPhase = new int[] { 6 };
             MatchesPerPhase = new int[] { 1 };
             Match onlyMatch = new Match(Simulator, "Final", this, numPlayers: Players.Count, PointDistributions[Players.Count]);
-            foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p);
+            foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p, seed: 0);
             Matches.Add(onlyMatch);
         }
 
@@ -65,7 +65,7 @@ public class Format_OpenLeague : Tournament
             for (int i = 0; i < 2; i++)
             {
                 Match semi = new Match(Simulator, "Semifinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
-                foreach (Player p in groups[i]) semi.AddPlayerToMatch(p);
+                foreach (Player p in groups[i]) semi.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(semi);
             }
             // Final
@@ -97,7 +97,7 @@ public class Format_OpenLeague : Tournament
             for (int i = 0; i < 4; i++)
             {
                 Match quarter = new Match(Simulator, "Quarterfinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
-                foreach (Player p in groups[i]) quarter.AddPlayerToMatch(p);
+                foreach (Player p in groups[i]) quarter.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(quarter);
             }
             // Semis
@@ -139,7 +139,7 @@ public class Format_OpenLeague : Tournament
             for (int i = 0; i < 4; i++)
             {
                 Match groupMatch = new Match(Simulator, "Group " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
-                foreach (Player p in groups[i]) groupMatch.AddPlayerToMatch(p);
+                foreach (Player p in groups[i]) groupMatch.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(groupMatch);
             }
             // Quarters

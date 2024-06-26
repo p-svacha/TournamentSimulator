@@ -14,7 +14,7 @@ public class UI_SkillRow : MonoBehaviour
     public void Init(Player p, SkillDef def)
     {
         LabelText.text = def.ThreeLetterDisplay;
-        ValueText.text = p.Skills[def.Id].ToString();
+        ValueText.text = p.GetSkillBaseValue(def).ToString();
         Background.color = TournamentSimulator.SkillDefs.IndexOf(def) % 2 == 0 ? ColorManager.Singleton.TableListDarkColor : ColorManager.Singleton.TableListLightColor;
     }
 }

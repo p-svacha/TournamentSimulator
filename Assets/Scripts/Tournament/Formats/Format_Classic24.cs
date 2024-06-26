@@ -30,7 +30,7 @@ public class Format_Classic24 : Tournament
             {
                 Player p = unassignedPlayers[Random.Range(0, unassignedPlayers.Count)];
                 unassignedPlayers.Remove(p);
-                groupMatch.AddPlayerToMatch(p);
+                groupMatch.AddPlayerToMatch(p, seed: 0);
             }
 
             Matches.Add(groupMatch);

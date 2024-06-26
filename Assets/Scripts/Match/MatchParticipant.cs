@@ -5,23 +5,17 @@ using UnityEngine;
 public class MatchParticipant
 {
     public Player Player { get; private set; }
+    public int Seed { get; private set; }
     public int TotalScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
     public int LeaguePointsBeforeMatch { get; private set; }
     public List<string> Modifiers { get; private set; }
 
-    public MatchParticipant(Player player)
+    public MatchParticipant(Player player, int seed)
     {
         Player = player;
-    }
-    public MatchParticipant(Player player, int totalScore, int eloBeforeMatch, int eloAfterMatch, int leaguePointsBeforeMatch)
-    {
-        Player = player;
-        TotalScore = totalScore;
-        EloBeforeMatch = eloBeforeMatch;
-        EloAfterMatch = eloAfterMatch;
-        LeaguePointsBeforeMatch = leaguePointsBeforeMatch;
+        Seed = seed;
     }
 
     public void IncreaseTotalScore(int totalScore)
@@ -45,6 +39,7 @@ public class MatchParticipant
     {
         MatchParticipantData data = new MatchParticipantData();
         data.PlayerId = Player.Id;
+        data.Seed = Seed;
         data.TotalScore = TotalScore;
         data.EloBeforeMatch = EloBeforeMatch;
         data.EloAfterMatch = EloAfterMatch;
@@ -56,6 +51,7 @@ public class MatchParticipant
     public MatchParticipant(MatchParticipantData data)
     {
         Player = Database.Players[data.PlayerId];
+        Seed = data.Seed;
         TotalScore = data.TotalScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;

@@ -26,7 +26,7 @@ public class League
         foreach (Player p in players) Standings.Add(p, 0);
     }
 
-    public List<Player> Ranking { get { return Standings.OrderByDescending(x => x.Value).Select(x => x.Key).ToList(); } }
+    public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.TiebreakerScore).Select(x => x.Key).ToList();
     public int GetRankOf(Player p) => Ranking.IndexOf(p) + 1;
 
     #region Save / Load

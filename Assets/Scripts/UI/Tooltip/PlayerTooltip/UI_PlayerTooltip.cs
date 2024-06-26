@@ -9,7 +9,7 @@ public class UI_PlayerTooltip : UI_Tooltip
 {
     public static UI_PlayerTooltip Singleton;
 
-    [Header("Elements")]
+    [Header("Header")]
     public Image FlagIcon;
     public TextMeshProUGUI FirstNameText;
     public TextMeshProUGUI LastNameText;
@@ -17,6 +17,12 @@ public class UI_PlayerTooltip : UI_Tooltip
 
     public GameObject SkillContainer;
 
+    [Header("Attributes")]
+    public TextMeshProUGUI InconsistencyText;
+    public TextMeshProUGUI TiebreakerScoreText;
+    public TextMeshProUGUI MistakeChanceText;
+
+    [Header("Stats")]
     public TextMeshProUGUI AgeText;
     public TextMeshProUGUI EloText;
     public TextMeshProUGUI LeagueRankText;
@@ -58,6 +64,11 @@ public class UI_PlayerTooltip : UI_Tooltip
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);
             skillRow.Init(p, skillDef);
         }
+
+        // Attributes
+        InconsistencyText.text = p.Inconsistency.ToString("0.0");
+        TiebreakerScoreText.text = p.TiebreakerScore.ToString("0.0");
+        MistakeChanceText.text = p.MistakeChance.ToString("0.0%");
 
         // Stats
         AgeText.text = p.Age.ToString();

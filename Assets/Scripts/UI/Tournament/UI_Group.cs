@@ -25,8 +25,7 @@ public class UI_Group : MonoBehaviour
 
         TitleText.text = match.Name;
 
-        List<MatchParticipant> participantRanking = match.Participants.OrderByDescending(x => x.TotalScore).ToList();
-        foreach(MatchParticipant p in participantRanking)
+        foreach(MatchParticipant p in match.Ranking)
         {
             UI_GroupPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
             groupPlayer.Init(match, p);

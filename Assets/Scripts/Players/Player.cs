@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Player
+public class Player : IPlayer
 {
     public TournamentSimulator Sim;
 
@@ -14,7 +14,10 @@ public class Player
     public string Sex { get; private set; }
     public int Elo { get; private set; }
     public LeagueType LeagueType { get; private set; }
-    public Dictionary<SkillId, int> Skills { get; private set; }
+    private Dictionary<SkillId, int> Skills { get; set; }
+    public float Inconsistency { get; private set; }
+    public float TiebreakerScore { get; private set; }
+    public float MistakeChance { get; private set; }
 
     public League League => Sim.GetCurrentLeague(LeagueType);
     public int CurrentLeaguePoints => League.Standings[this];
@@ -25,8 +28,10 @@ public class Player
     public int Age => 20 + (Sim.Season - Database.Leagues.Values.Where(x => x.Players.Contains(this)).Min(x => x.Season));
     public int WorldRank => Database.Players.Values.OrderByDescending(x => x.Elo).ToList().IndexOf(this) + 1;
 
+    public static string MISTAKE_MODIFIER = "Mistake";
+
     // New player
-    public Player(TournamentSimulator sim, string firstName, string lastName, Country country, string sex, int elo, Dictionary<SkillId, int> skills)
+    public Player(TournamentSimulator sim, string firstName, string lastName, Country country, string sex, int elo, Dictionary<SkillId, int> skills, float inconsistecy, float tiebreakerScore, float mistakeChance)
     {
         Id = Database.GetNewPlayerId();
 
@@ -37,8 +42,47 @@ public class Player
         Country = country;
         Elo = elo;
         Skills = skills;
+        Inconsistency = inconsistecy;
+        TiebreakerScore = tiebreakerScore;
+        MistakeChance = mistakeChance;
 
         LeagueType = LeagueType.None;
+    }
+
+    public int GetSkillBaseValue(SkillDef skillDef) => Skills[skillDef.Id];
+    public PlayerMatchRound GetMatchRoundResult(SkillDef skillDef)
+    {
+        List<string> modifiers = new List<string>();
+
+        // Score
+        int score = Skills[skillDef.Id];
+        if (Random.value < MistakeChance) // Mistake
+        {
+            score = 0;
+            modifiers.Add(MISTAKE_MODIFIER);
+        }
+        else // Inconsistency
+        {
+            score += Mathf.RoundToInt(HelperFunctions.NextGaussian(0f, Inconsistency));
+            if (score < 0) score = 0;
+        }
+        return new PlayerMatchRound(this, score, modifiers);
+    }
+
+    public void AdjustSkill(SkillDef skillDef, int adjustmentValue)
+    {
+        Skills[skillDef.Id] += adjustmentValue;
+        if (Skills[skillDef.Id] < 0) Skills[skillDef.Id] = 0;
+    }
+    public void AdjustInconsistency(float adjustmentValue)
+    {
+        Inconsistency += adjustmentValue;
+        Inconsistency = Mathf.Clamp(Inconsistency, 0f, 20f);
+    }
+    public void AdjustMistakeChance(float adjustmentValue)
+    {
+        MistakeChance += adjustmentValue;
+        MistakeChance += Mathf.Clamp01(MistakeChance);
     }
 
     public void SetElo(int value)
@@ -67,6 +111,9 @@ public class Player
         data.Elo = Elo;
         data.LeagueType = (int)LeagueType;
         data.Skills = Skills.Select(x => new PlayerSkillData() { SkillId = (int)x.Key, Value = x.Value }).ToList();
+        data.Inconsistency = Inconsistency;
+        data.TiebreakerScore = TiebreakerScore;
+        data.MistakeChance = MistakeChance;
         return data;
     }
 
@@ -82,6 +129,9 @@ public class Player
         Elo = data.Elo;
         LeagueType = (LeagueType)data.LeagueType;
         Skills = data.Skills.ToDictionary(x => (SkillId)x.SkillId, x => x.Value);
+        Inconsistency = data.Inconsistency;
+        TiebreakerScore = data.TiebreakerScore;
+        MistakeChance = data.MistakeChance;
     }
 
     #endregion

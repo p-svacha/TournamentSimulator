@@ -9,12 +9,16 @@ public class PlayerMatchRound
     public int PointsGained { get; private set; }
     public List<string> Modifiers { get; private set; }
 
-    public PlayerMatchRound(Player player, int score, int pointsGained, List<string> modifiers)
+    public PlayerMatchRound(Player player, int score, List<string> modifiers)
     {
         Player = player;
         Score = score;
-        PointsGained = pointsGained;
         Modifiers = modifiers;
+    }
+
+    public void SetPointsGained(int points)
+    {
+        PointsGained = points;
     }
 
     #region Save / Load

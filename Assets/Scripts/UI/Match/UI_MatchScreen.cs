@@ -30,8 +30,7 @@ public class UI_MatchScreen : UI_Screen
     private float TimeElapsed;
     private float StepTime;
 
-    private Dictionary<Player, int> RoundScores;
-    private Dictionary<Player, int> RoundPoints;
+    private Dictionary<Player, PlayerMatchRound> RoundResults;
     private List<Player> AttributeRanking;
 
     public void DisplayMatch(Match m)
@@ -53,11 +52,11 @@ public class UI_MatchScreen : UI_Screen
         for (int i = 1; i < PlayerContainer.transform.childCount; i++) GameObject.Destroy(PlayerContainer.transform.GetChild(i).gameObject);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (KeyValuePair<Player, int> kvp in m.GetResult())
+        foreach (MatchParticipant p in m.Ranking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(kvp.Key, kvp.Value);
-            PlayerRows.Add(kvp.Key, row);
+            row.Init(p.Player, p.TotalScore);
+            PlayerRows.Add(p.Player, row);
         }
     }
 
@@ -93,7 +92,7 @@ public class UI_MatchScreen : UI_Screen
 
             if(SimPlayer == Match.NumPlayers)
             {
-                DistributePoints();
+                EndRound();
                 SimPlayer++;
             }
             else if(SimPlayer == Match.NumPlayers + 1)
@@ -108,43 +107,33 @@ public class UI_MatchScreen : UI_Screen
             else
             {
                 Player p = AttributeRanking[SimPlayer];
-                PlayerRows[p].ScoreText.text = RoundScores[p].ToString();
-                PlayerRows[p].PlusPointsText.text = "+ " + RoundPoints[p];
-
+                PlayerRows[p].DisplayResult(RoundResults[p]);
                 SimPlayer++;
             }
         }
     }
 
-    private void DistributePoints()
+    private void EndRound()
     {
-        // Clear rows
+        // Clear row texts
         foreach (MatchParticipant p in Match.Participants)
         {
-            PlayerRows[p.Player].ScoreText.text = "";
-            PlayerRows[p.Player].PlusPointsText.text = "";
+            PlayerRows[p.Player].HideResult();
         }
 
-        SaveMatchRound();
-    }
-
-    private void SaveMatchRound()
-    {
-        List<PlayerMatchRound> roundResults = new List<PlayerMatchRound>();
-
-        if (RoundScores != null)
+        // Distribute Points
+        foreach (MatchParticipant participant in Match.Participants)
         {
-            foreach (MatchParticipant participant in Match.Participants)
-            {
-                roundResults.Add(new PlayerMatchRound(participant.Player, RoundScores[participant.Player], RoundPoints[participant.Player], null));
-                participant.IncreaseTotalScore(RoundPoints[participant.Player]);
-                PlayerRows[participant.Player].PointsText.text = participant.TotalScore.ToString();
-            }
-
-            List<Player> playerRanking = Match.Participants.OrderByDescending(x => x.TotalScore).Select(x => x.Player).ToList();
-            for (int i = 0; i < playerRanking.Count; i++) PlayerRows[playerRanking[i]].transform.SetSiblingIndex(i + 1);
+            participant.IncreaseTotalScore(RoundResults[participant.Player].PointsGained);
+            PlayerRows[participant.Player].PointsText.text = participant.TotalScore.ToString();
         }
-        Match.Rounds.Add(new MatchRound(CurrentSkill.Id, roundResults));
+
+        // Resort rows according to new ranking
+        List<Player> playerRanking = Match.PlayerRanking;
+        for (int i = 0; i < playerRanking.Count; i++) PlayerRows[playerRanking[i]].transform.SetSiblingIndex(i + 1);
+
+        // Save match round
+        Match.Rounds.Add(new MatchRound(CurrentSkill.Id, RoundResults.Values.ToList()));
     }
 
     private void GoToNextSkill()
@@ -157,52 +146,27 @@ public class UI_MatchScreen : UI_Screen
         SimPlayer = 0;
 
         // Calculate score
-        RoundScores = new Dictionary<Player, int>();
-        RoundPoints = new Dictionary<Player, int>();
+        RoundResults = new Dictionary<Player, PlayerMatchRound>();
         foreach (MatchParticipant p in Match.Participants) 
         {
-            float baseScore = p.Player.Skills[CurrentSkill.Id];
-            int adjustedScore = (int)(RandomGaussian(baseScore - TournamentSimulator.PlayerInconsistency, baseScore + TournamentSimulator.PlayerInconsistency));
-            if (adjustedScore < 0) adjustedScore = 0;
-            RoundScores.Add(p.Player, adjustedScore);
+            PlayerMatchRound playerResult = p.Player.GetMatchRoundResult(CurrentSkill);
+            RoundResults.Add(p.Player, playerResult);
         }
 
         // Save all values for the round
-        AttributeRanking = RoundScores.OrderBy(x => x.Value).Select(x => x.Key).ToList();
+        AttributeRanking = RoundResults.OrderBy(x => x.Value.Score).Select(x => x.Key).ToList();
         int lastScore = -1;
         int lastPoints = -1;
-        for (int i = 0; i < AttributeRanking.Count; i++)
+        for (int rank = 0; rank < AttributeRanking.Count; rank++)
         {
-            Player player = AttributeRanking[i];
-            int score = RoundScores[player];
-            int points = Match.PointDistribution[Match.PointDistribution.Count - i - 1];
+            Player player = AttributeRanking[rank];
+            int score = RoundResults[player].Score;
+            int points = Match.PointDistribution[Match.PointDistribution.Count - rank - 1];
             if (score == 0) points = 0;
             else if (score == lastScore) points = lastPoints;
-            RoundPoints.Add(player, points);
+            RoundResults[player].SetPointsGained(points);
             lastScore = score;
             lastPoints = points;
         }
-    }
-
-    public static float RandomGaussian(float minValue = 0.0f, float maxValue = 1.0f)
-    {
-        float u, v, S;
-
-        do
-        {
-            u = 2.0f * UnityEngine.Random.value - 1.0f;
-            v = 2.0f * UnityEngine.Random.value - 1.0f;
-            S = u * u + v * v;
-        }
-        while (S >= 1.0f);
-
-        // Standard Normal Distribution
-        float std = u * Mathf.Sqrt(-2.0f * Mathf.Log(S) / S);
-
-        // Normal Distribution centered between the min and max value
-        // and clamped following the "three-sigma rule"
-        float mean = (minValue + maxValue) / 2.0f;
-        float sigma = (maxValue - mean) / 3.0f;
-        return Mathf.Clamp(std * sigma + mean, minValue, maxValue);
     }
 }

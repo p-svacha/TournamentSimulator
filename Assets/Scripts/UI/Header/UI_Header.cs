@@ -74,7 +74,7 @@ public class UI_Header : MonoBehaviour
 
     private void ShuffleSkills()
     {
-        BaseUI.Simulator.ShuffleSkills();
+        BaseUI.Simulator.ShuffleSkillsAndAttributes();
         BaseUI.Simulator.Save();
         CloseSubmenu();
     }

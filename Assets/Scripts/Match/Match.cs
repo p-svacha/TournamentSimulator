@@ -40,12 +40,12 @@ public class Match
         Rounds = new List<MatchRound>();
     }
 
-    public void AddPlayerToMatch(Player p)
+    public void AddPlayerToMatch(Player p, int seed)
     {
         if (IsDone) throw new System.Exception("Cannot add a player to match that is already done.");
         if (Participants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + Participants.Count + "/" + NumPlayers + " players)");
 
-        Participants.Add(new MatchParticipant(p));
+        Participants.Add(new MatchParticipant(p, seed));
     }
 
     public void SetTargetMatches(List<int> targetMatchIndices)
@@ -96,10 +96,11 @@ public class Match
 
         for (int i = 0; i < NumAdvancements; i++)
         {
-            Player advancingPlayer = orderedPlayers[i];
-            Match targetMatch = Tournament.Matches[TargetMatchIndices[i]];
+            int rank = i;
+            Player advancingPlayer = orderedPlayers[rank];
+            Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
             Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
-            targetMatch.AddPlayerToMatch(advancingPlayer);
+            targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
         }
 
         if (NumAdvancements == 0) Tournament.SetDone();
@@ -111,9 +112,9 @@ public class Match
 
     private void GetNewRatings(List<Player> ranking, Dictionary<Player, int> newRatings)
     {
-        for(int i = 0; i < ranking.Count; i++)
+        for (int i = 0; i < ranking.Count; i++)
         {
-            for(int j = i + 1; j < ranking.Count; j++)
+            for (int j = i + 1; j < ranking.Count; j++)
             {
                 GetAdjustedNewRatings(newRatings, ranking[i], ranking[j]);
             }
@@ -130,17 +131,17 @@ public class Match
     }
 
     /// <summary>
-    /// Returns the results of the match as a player list. So element 0 will be the player that won, etc. etc.
+    /// Returns an a list of all match participants ordered by match result.
     /// </summary>
-    public List<Player> PlayerRanking { get { return GetResult().Select(x => x.Key).ToList(); } }
-
-    /// <summary>
-    /// Returns an ordered dictionary with the score of the match for each player.
-    /// </summary>
-    public Dictionary<Player, int> GetResult()
+    public List<MatchParticipant> Ranking 
     {
-        return Participants.OrderByDescending(x => x.TotalScore).ToDictionary(x => x.Player, x => x.TotalScore);
+        get
+        {
+            if (IsDone) return Participants.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
+        }
     }
+    public List<Player> PlayerRanking => Ranking.Select(x => x.Player).ToList();
 
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
 

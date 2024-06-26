@@ -21,4 +21,17 @@ public class UI_MatchPlayer : MonoBehaviour
 
         GetComponent<PlayerTooltipTarget>().Player = p;
     }
+
+    public void HideResult()
+    {
+        ScoreText.text = "";
+        PlusPointsText.text = "";
+    }
+
+    public void DisplayResult(PlayerMatchRound round)
+    {
+        ScoreText.text = round.Score.ToString();
+        ScoreText.color = round.Modifiers.Contains(Player.MISTAKE_MODIFIER) ? Color.red : Color.white;
+        PlusPointsText.text = round.PointsGained.ToString();
+    }
 }

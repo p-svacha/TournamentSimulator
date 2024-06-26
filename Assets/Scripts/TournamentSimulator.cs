@@ -6,8 +6,6 @@ using UnityEngine;
 
 public class TournamentSimulator : MonoBehaviour
 {
-    public static int PlayerInconsistency = 10; // standard deviation when calculating a player score for an attribute in a match
-
     public const int DaysPerQuarter = 15;
     public int Season;
     public int Quarter;
@@ -68,6 +66,7 @@ public class TournamentSimulator : MonoBehaviour
         newPlayer.SetLeague((LeagueType)league);
 
         Database.Players.Add(newPlayer.Id, newPlayer);
+        Debug.Log(newPlayer.ToString() + " has been generated.");
     }
 
     public void UpdateUI()
@@ -155,10 +154,12 @@ public class TournamentSimulator : MonoBehaviour
 
     public void EndSeason()
     {
-        // Revive 2 inactive players and put them into open league
-        for (int i = 0; i < 2; i++) ReviveRandomPlayer();
+        // Skill and attribute shuffle
+        Debug.Log("Shuffling skills and attributes of all players.");
+        ShuffleSkillsAndAttributes();
 
         // Relegations
+        Debug.Log("Performing relegations.");
         List<Player> grandLegueRanking = CurrentGrandLeague.Ranking;
         for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
 
@@ -168,36 +169,43 @@ public class TournamentSimulator : MonoBehaviour
 
         List<Player> openLegueRanking = CurrentOpenLeague.Ranking;
         for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
-        for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++) openLegueRanking[i].SetLeague(LeagueType.None);
+        List<Player> eliminatedPlayers = new List<Player>();
+        for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++)
+        {
+            eliminatedPlayers.Add(openLegueRanking[i]);
+            openLegueRanking[i].SetLeague(LeagueType.None);
+        }
 
-        // Attribute skill shuffle
-        ShuffleSkills();
+        // Revive 2 inactive players and put them into open league (only ones that haven't just been eliminated)
+        Debug.Log("Reviving random inactive players.");
+        for (int i = 0; i < 2; i++) ReviveRandomPlayer(eliminatedPlayers);
 
         // Add 6 completely new players to the open league
+        Debug.Log("Generating new players.");
         for (int i = 0; i < 7; i++) AddRandomPlayer();
 
         // Save
         Save();
     }
 
-    public void ShuffleSkills()
+    public void ShuffleSkillsAndAttributes()
     {
         foreach(Player p in Database.Players.Values)
         {
-            foreach(SkillDef skillDef in TournamentSimulator.SkillDefs)
-            {
-                int skillChange = UnityEngine.Random.Range(0, 11) - 5;
-                p.Skills[skillDef.Id] += skillChange;
-                if (p.Skills[skillDef.Id] < 0) p.Skills[skillDef.Id] = 0;
-            }
+            foreach(SkillDef skillDef in SkillDefs)
+                p.AdjustSkill(skillDef, PlayerGenerator.GetRandomSkillAdjustment());
+
+            p.AdjustInconsistency(PlayerGenerator.GetRandomInconsistencyAdjustment());
+            p.AdjustMistakeChance(PlayerGenerator.GetRandomMistakeChanceAdjustment());
         }
     }
 
-    public void ReviveRandomPlayer()
+    public void ReviveRandomPlayer(List<Player> excludedPlayers)
     {
-        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == LeagueType.OpenLeague).ToList();
+        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == LeagueType.OpenLeague && !excludedPlayers.Contains(x)).ToList();
         Player playerToRevive = candidates[UnityEngine.Random.Range(0, candidates.Count)];
         playerToRevive.SetLeague(LeagueType.OpenLeague);
+        Debug.Log(playerToRevive.ToString() + " has been revived.");
     }
 
     #region Getters
@@ -292,7 +300,7 @@ public class TournamentSimulator : MonoBehaviour
         JsonUtilities.SaveData<SimulationData>(ToData(), "simulation_data");
 
         // Save a backup
-        int rng = (int)(UnityEngine.Random.value * 10);
+        int rng = (int)(UnityEngine.Random.value * 15);
         string backupName = "simulation_data_backup_" + rng;
         JsonUtilities.SaveData<SimulationData>(ToData(), backupName);
     }

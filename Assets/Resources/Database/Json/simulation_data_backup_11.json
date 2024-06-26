@@ -1,7 +1,7 @@
 {
-  "CurrentSeason": 2,
-  "CurrentQuarter": 4,
-  "CurrentDay": 14,
+  "CurrentSeason": 3,
+  "CurrentQuarter": 1,
+  "CurrentDay": 1,
   "Players": [
     {
       "Id": 0,
@@ -10,56 +10,56 @@
       "CountryId": 8,
       "Sex": "w",
       "Elo": 4848,
-      "LeagueType": 0,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 11
+          "Value": 16
         },
         {
           "SkillId": 1,
-          "Value": 14
+          "Value": 16
         },
         {
           "SkillId": 2,
-          "Value": 39
-        },
-        {
-          "SkillId": 3,
-          "Value": 36
-        },
-        {
-          "SkillId": 4,
-          "Value": 51
-        },
-        {
-          "SkillId": 5,
-          "Value": 95
-        },
-        {
-          "SkillId": 6,
-          "Value": 14
-        },
-        {
-          "SkillId": 7,
-          "Value": 48
-        },
-        {
-          "SkillId": 8,
-          "Value": 82
-        },
-        {
-          "SkillId": 9,
           "Value": 44
         },
         {
-          "SkillId": 10,
+          "SkillId": 3,
           "Value": 37
+        },
+        {
+          "SkillId": 4,
+          "Value": 47
+        },
+        {
+          "SkillId": 5,
+          "Value": 90
+        },
+        {
+          "SkillId": 6,
+          "Value": 13
+        },
+        {
+          "SkillId": 7,
+          "Value": 44
+        },
+        {
+          "SkillId": 8,
+          "Value": 78
+        },
+        {
+          "SkillId": 9,
+          "Value": 41
+        },
+        {
+          "SkillId": 10,
+          "Value": 36
         }
       ],
-      "Inconsistency": 14.2484856,
+      "Inconsistency": 14.1254091,
       "TiebreakerScore": 24.9341125,
-      "MistakeChance": 0.07461395
+      "MistakeChance": 0.141306654
     },
     {
       "Id": 1,
@@ -72,35 +72,35 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 19
+          "Value": 16
         },
         {
           "SkillId": 1,
-          "Value": 87
+          "Value": 89
         },
         {
           "SkillId": 2,
-          "Value": 43
+          "Value": 48
         },
         {
           "SkillId": 3,
-          "Value": 59
+          "Value": 61
         },
         {
           "SkillId": 4,
-          "Value": 79
+          "Value": 75
         },
         {
           "SkillId": 5,
-          "Value": 63
+          "Value": 60
         },
         {
           "SkillId": 6,
-          "Value": 101
+          "Value": 106
         },
         {
           "SkillId": 7,
-          "Value": 84
+          "Value": 83
         },
         {
           "SkillId": 8,
@@ -108,16 +108,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 43
+          "Value": 45
         },
         {
           "SkillId": 10,
           "Value": 50
         }
       ],
-      "Inconsistency": 6.88929558,
+      "Inconsistency": 6.28161049,
       "TiebreakerScore": 6.110692,
-      "MistakeChance": 0.03835488
+      "MistakeChance": 0.08415083
     },
     {
       "Id": 2,
@@ -130,52 +130,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 73
+          "Value": 70
         },
         {
           "SkillId": 1,
-          "Value": 83
+          "Value": 86
         },
         {
           "SkillId": 2,
-          "Value": 60
-        },
-        {
-          "SkillId": 3,
-          "Value": 28
-        },
-        {
-          "SkillId": 4,
-          "Value": 59
-        },
-        {
-          "SkillId": 5,
-          "Value": 19
-        },
-        {
-          "SkillId": 6,
           "Value": 62
         },
         {
+          "SkillId": 3,
+          "Value": 30
+        },
+        {
+          "SkillId": 4,
+          "Value": 58
+        },
+        {
+          "SkillId": 5,
+          "Value": 20
+        },
+        {
+          "SkillId": 6,
+          "Value": 60
+        },
+        {
           "SkillId": 7,
-          "Value": 71
+          "Value": 66
         },
         {
           "SkillId": 8,
-          "Value": 81
+          "Value": 84
         },
         {
           "SkillId": 9,
-          "Value": 79
+          "Value": 77
         },
         {
           "SkillId": 10,
-          "Value": 87
+          "Value": 91
         }
       ],
-      "Inconsistency": 12.0105,
+      "Inconsistency": 12.2374535,
       "TiebreakerScore": 88.78835,
-      "MistakeChance": 0.04962586
+      "MistakeChance": 0.09732942
     },
     {
       "Id": 3,
@@ -188,35 +188,35 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 92
+          "Value": 91
         },
         {
           "SkillId": 1,
-          "Value": 61
+          "Value": 64
         },
         {
           "SkillId": 2,
-          "Value": 19
+          "Value": 18
         },
         {
           "SkillId": 3,
-          "Value": 12
+          "Value": 7
         },
         {
           "SkillId": 4,
-          "Value": 27
+          "Value": 32
         },
         {
           "SkillId": 5,
-          "Value": 39
+          "Value": 34
         },
         {
           "SkillId": 6,
-          "Value": 40
+          "Value": 45
         },
         {
           "SkillId": 7,
-          "Value": 9
+          "Value": 13
         },
         {
           "SkillId": 8,
@@ -224,16 +224,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 57
+          "Value": 59
         },
         {
           "SkillId": 10,
-          "Value": 26
+          "Value": 28
         }
       ],
-      "Inconsistency": 13.2240744,
+      "Inconsistency": 13.7410574,
       "TiebreakerScore": 10.8358746,
-      "MistakeChance": 0.0307454951
+      "MistakeChance": 0.0664794445
     },
     {
       "Id": 4,
@@ -246,11 +246,11 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 79
+          "Value": 84
         },
         {
           "SkillId": 1,
-          "Value": 31
+          "Value": 36
         },
         {
           "SkillId": 2,
@@ -258,11 +258,11 @@
         },
         {
           "SkillId": 3,
-          "Value": 90
+          "Value": 88
         },
         {
           "SkillId": 4,
-          "Value": 2
+          "Value": 0
         },
         {
           "SkillId": 5,
@@ -270,28 +270,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 79
+          "Value": 80
         },
         {
           "SkillId": 7,
-          "Value": 92
+          "Value": 93
         },
         {
           "SkillId": 8,
-          "Value": 41
+          "Value": 37
         },
         {
           "SkillId": 9,
-          "Value": 52
+          "Value": 48
         },
         {
           "SkillId": 10,
-          "Value": 20
+          "Value": 24
         }
       ],
-      "Inconsistency": 10.0130806,
+      "Inconsistency": 9.973792,
       "TiebreakerScore": 96.13012,
-      "MistakeChance": 0.0262
+      "MistakeChance": 0.05185284
     },
     {
       "Id": 5,
@@ -304,52 +304,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 69
+          "Value": 74
         },
         {
           "SkillId": 1,
-          "Value": 64
+          "Value": 62
         },
         {
           "SkillId": 2,
-          "Value": 102
+          "Value": 98
         },
         {
           "SkillId": 3,
-          "Value": 76
+          "Value": 78
         },
         {
           "SkillId": 4,
-          "Value": 13
+          "Value": 12
         },
         {
           "SkillId": 5,
-          "Value": 75
+          "Value": 80
         },
         {
           "SkillId": 6,
-          "Value": 71
+          "Value": 68
         },
         {
           "SkillId": 7,
-          "Value": 83
+          "Value": 80
         },
         {
           "SkillId": 8,
-          "Value": 43
+          "Value": 42
         },
         {
           "SkillId": 9,
-          "Value": 7
+          "Value": 2
         },
         {
           "SkillId": 10,
-          "Value": 97
+          "Value": 98
         }
       ],
-      "Inconsistency": 14.0983925,
+      "Inconsistency": 14.023139,
       "TiebreakerScore": 34.5421257,
-      "MistakeChance": 0.06913075
+      "MistakeChance": 0.13825497
     },
     {
       "Id": 6,
@@ -362,52 +362,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 13
+          "Value": 14
         },
         {
           "SkillId": 1,
-          "Value": 74
+          "Value": 76
         },
         {
           "SkillId": 2,
-          "Value": 77
+          "Value": 82
         },
         {
           "SkillId": 3,
-          "Value": 1
+          "Value": 0
         },
         {
           "SkillId": 4,
-          "Value": 39
+          "Value": 36
         },
         {
           "SkillId": 5,
-          "Value": 72
+          "Value": 67
         },
         {
           "SkillId": 6,
-          "Value": 90
+          "Value": 91
         },
         {
           "SkillId": 7,
-          "Value": 92
+          "Value": 88
         },
         {
           "SkillId": 8,
-          "Value": 93
+          "Value": 89
         },
         {
           "SkillId": 9,
-          "Value": 66
+          "Value": 61
         },
         {
           "SkillId": 10,
-          "Value": 63
+          "Value": 61
         }
       ],
-      "Inconsistency": 13.2893181,
+      "Inconsistency": 12.6803112,
       "TiebreakerScore": 33.85635,
-      "MistakeChance": 0.037315622
+      "MistakeChance": 0.07579418
     },
     {
       "Id": 7,
@@ -420,52 +420,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 27
+          "Value": 23
         },
         {
           "SkillId": 1,
-          "Value": 83
+          "Value": 82
         },
         {
           "SkillId": 2,
-          "Value": 2
+          "Value": 0
         },
         {
           "SkillId": 3,
-          "Value": 31
+          "Value": 27
         },
         {
           "SkillId": 4,
-          "Value": 80
+          "Value": 78
         },
         {
           "SkillId": 5,
-          "Value": 52
+          "Value": 47
         },
         {
           "SkillId": 6,
-          "Value": 77
+          "Value": 76
         },
         {
           "SkillId": 7,
-          "Value": 88
+          "Value": 91
         },
         {
           "SkillId": 8,
-          "Value": 50
+          "Value": 53
         },
         {
           "SkillId": 9,
-          "Value": 79
+          "Value": 78
         },
         {
           "SkillId": 10,
-          "Value": 9
+          "Value": 13
         }
       ],
-      "Inconsistency": 12.5906372,
+      "Inconsistency": 13.280468,
       "TiebreakerScore": 53.0558777,
-      "MistakeChance": 0.05764223
+      "MistakeChance": 0.112818643
     },
     {
       "Id": 8,
@@ -474,43 +474,43 @@
       "CountryId": 62,
       "Sex": "w",
       "Elo": 4833,
-      "LeagueType": 0,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 32
+          "Value": 37
         },
         {
           "SkillId": 1,
-          "Value": 22
+          "Value": 26
         },
         {
           "SkillId": 2,
-          "Value": 29
+          "Value": 31
         },
         {
           "SkillId": 3,
-          "Value": 64
+          "Value": 61
         },
         {
           "SkillId": 4,
-          "Value": 34
+          "Value": 36
         },
         {
           "SkillId": 5,
-          "Value": 92
+          "Value": 90
         },
         {
           "SkillId": 6,
-          "Value": 27
+          "Value": 25
         },
         {
           "SkillId": 7,
-          "Value": 0
+          "Value": 4
         },
         {
           "SkillId": 8,
-          "Value": 46
+          "Value": 50
         },
         {
           "SkillId": 9,
@@ -518,12 +518,12 @@
         },
         {
           "SkillId": 10,
-          "Value": 97
+          "Value": 92
         }
       ],
-      "Inconsistency": 6.33185673,
+      "Inconsistency": 5.65091228,
       "TiebreakerScore": 34.3223648,
-      "MistakeChance": 0.0442906171
+      "MistakeChance": 0.07940498
     },
     {
       "Id": 9,
@@ -536,52 +536,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 85
+          "Value": 84
         },
         {
           "SkillId": 1,
-          "Value": 12
+          "Value": 9
         },
         {
           "SkillId": 2,
-          "Value": 48
+          "Value": 43
         },
         {
           "SkillId": 3,
-          "Value": 41
+          "Value": 45
         },
         {
           "SkillId": 4,
-          "Value": 29
+          "Value": 31
         },
         {
           "SkillId": 5,
-          "Value": 99
+          "Value": 104
         },
         {
           "SkillId": 6,
-          "Value": 89
+          "Value": 87
         },
         {
           "SkillId": 7,
-          "Value": 20
+          "Value": 17
         },
         {
           "SkillId": 8,
-          "Value": 48
+          "Value": 49
         },
         {
           "SkillId": 9,
-          "Value": 33
+          "Value": 29
         },
         {
           "SkillId": 10,
           "Value": 4
         }
       ],
-      "Inconsistency": 5.80201435,
+      "Inconsistency": 5.63703251,
       "TiebreakerScore": 15.9579515,
-      "MistakeChance": 0.07075319
+      "MistakeChance": 0.146205023
     },
     {
       "Id": 10,
@@ -594,52 +594,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 13
+          "Value": 14
         },
         {
           "SkillId": 1,
-          "Value": 22
+          "Value": 21
         },
         {
           "SkillId": 2,
-          "Value": 35
-        },
-        {
-          "SkillId": 3,
-          "Value": 16
-        },
-        {
-          "SkillId": 4,
-          "Value": 60
-        },
-        {
-          "SkillId": 5,
           "Value": 39
         },
         {
+          "SkillId": 3,
+          "Value": 11
+        },
+        {
+          "SkillId": 4,
+          "Value": 58
+        },
+        {
+          "SkillId": 5,
+          "Value": 44
+        },
+        {
           "SkillId": 6,
-          "Value": 32
+          "Value": 29
         },
         {
           "SkillId": 7,
-          "Value": 4
+          "Value": 2
         },
         {
           "SkillId": 8,
-          "Value": 68
+          "Value": 69
         },
         {
           "SkillId": 9,
-          "Value": 33
+          "Value": 30
         },
         {
           "SkillId": 10,
-          "Value": 74
+          "Value": 78
         }
       ],
-      "Inconsistency": 7.922326,
+      "Inconsistency": 8.800224,
       "TiebreakerScore": 39.6844559,
-      "MistakeChance": 0.07088864
+      "MistakeChance": 0.1504198
     },
     {
       "Id": 11,
@@ -652,11 +652,11 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 97
+          "Value": 99
         },
         {
           "SkillId": 1,
-          "Value": 44
+          "Value": 48
         },
         {
           "SkillId": 2,
@@ -664,11 +664,11 @@
         },
         {
           "SkillId": 3,
-          "Value": 88
+          "Value": 86
         },
         {
           "SkillId": 4,
-          "Value": 61
+          "Value": 65
         },
         {
           "SkillId": 5,
@@ -676,28 +676,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 88
+          "Value": 87
         },
         {
           "SkillId": 7,
-          "Value": 94
+          "Value": 96
         },
         {
           "SkillId": 8,
-          "Value": 13
+          "Value": 15
         },
         {
           "SkillId": 9,
-          "Value": 90
+          "Value": 92
         },
         {
           "SkillId": 10,
-          "Value": 90
+          "Value": 85
         }
       ],
-      "Inconsistency": 14.2616072,
+      "Inconsistency": 14.2722807,
       "TiebreakerScore": 17.5077438,
-      "MistakeChance": 0.0200912878
+      "MistakeChance": 0.0448066369
     },
     {
       "Id": 12,
@@ -706,56 +706,56 @@
       "CountryId": 2,
       "Sex": "m",
       "Elo": 4751,
-      "LeagueType": 1,
+      "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 14
+          "Value": 11
         },
         {
           "SkillId": 1,
-          "Value": 88
+          "Value": 89
         },
         {
           "SkillId": 2,
-          "Value": 32
+          "Value": 33
         },
         {
           "SkillId": 3,
-          "Value": 37
+          "Value": 41
         },
         {
           "SkillId": 4,
-          "Value": 63
+          "Value": 59
         },
         {
           "SkillId": 5,
-          "Value": 3
+          "Value": 6
         },
         {
           "SkillId": 6,
-          "Value": 48
+          "Value": 47
         },
         {
           "SkillId": 7,
-          "Value": 17
+          "Value": 15
         },
         {
           "SkillId": 8,
-          "Value": 49
+          "Value": 50
         },
         {
           "SkillId": 9,
-          "Value": 15
+          "Value": 20
         },
         {
           "SkillId": 10,
           "Value": 32
         }
       ],
-      "Inconsistency": 9.525262,
+      "Inconsistency": 8.948318,
       "TiebreakerScore": 12.9690409,
-      "MistakeChance": 0.0200795289
+      "MistakeChance": 0.0329505429
     },
     {
       "Id": 13,
@@ -764,11 +764,11 @@
       "CountryId": 4,
       "Sex": "w",
       "Elo": 4781,
-      "LeagueType": 0,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 65
+          "Value": 61
         },
         {
           "SkillId": 1,
@@ -776,11 +776,11 @@
         },
         {
           "SkillId": 2,
-          "Value": 66
+          "Value": 70
         },
         {
           "SkillId": 3,
-          "Value": 68
+          "Value": 64
         },
         {
           "SkillId": 4,
@@ -788,7 +788,7 @@
         },
         {
           "SkillId": 5,
-          "Value": 56
+          "Value": 55
         },
         {
           "SkillId": 6,
@@ -796,24 +796,24 @@
         },
         {
           "SkillId": 7,
-          "Value": 89
+          "Value": 93
         },
         {
           "SkillId": 8,
-          "Value": 14
+          "Value": 15
         },
         {
           "SkillId": 9,
-          "Value": 77
+          "Value": 81
         },
         {
           "SkillId": 10,
-          "Value": 19
+          "Value": 14
         }
       ],
-      "Inconsistency": 5.61513233,
+      "Inconsistency": 4.67158031,
       "TiebreakerScore": 37.8782463,
-      "MistakeChance": 0.0760745257
+      "MistakeChance": 0.144300476
     },
     {
       "Id": 14,
@@ -822,56 +822,56 @@
       "CountryId": 61,
       "Sex": "m",
       "Elo": 4847,
-      "LeagueType": 1,
+      "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 12
+          "Value": 16
         },
         {
           "SkillId": 1,
-          "Value": 10
+          "Value": 15
         },
         {
           "SkillId": 2,
-          "Value": 22
+          "Value": 21
         },
         {
           "SkillId": 3,
-          "Value": 92
+          "Value": 94
         },
         {
           "SkillId": 4,
-          "Value": 49
+          "Value": 48
         },
         {
           "SkillId": 5,
-          "Value": 8
+          "Value": 6
         },
         {
           "SkillId": 6,
-          "Value": 85
+          "Value": 89
         },
         {
           "SkillId": 7,
-          "Value": 30
+          "Value": 28
         },
         {
           "SkillId": 8,
-          "Value": 68
+          "Value": 64
         },
         {
           "SkillId": 9,
-          "Value": 17
+          "Value": 18
         },
         {
           "SkillId": 10,
-          "Value": 41
+          "Value": 38
         }
       ],
-      "Inconsistency": 13.9172926,
+      "Inconsistency": 14.8450851,
       "TiebreakerScore": 75.6557846,
-      "MistakeChance": 0.0461328924
+      "MistakeChance": 0.08941394
     },
     {
       "Id": 15,
@@ -880,56 +880,56 @@
       "CountryId": 81,
       "Sex": "m",
       "Elo": 4907,
-      "LeagueType": 0,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 15
+          "Value": 18
         },
         {
           "SkillId": 1,
-          "Value": 61
+          "Value": 65
         },
         {
           "SkillId": 2,
-          "Value": 25
+          "Value": 28
         },
         {
           "SkillId": 3,
-          "Value": 13
+          "Value": 18
         },
         {
           "SkillId": 4,
-          "Value": 49
+          "Value": 51
         },
         {
           "SkillId": 5,
-          "Value": 32
+          "Value": 27
         },
         {
           "SkillId": 6,
-          "Value": 39
+          "Value": 34
         },
         {
           "SkillId": 7,
-          "Value": 35
+          "Value": 37
         },
         {
           "SkillId": 8,
-          "Value": 77
+          "Value": 74
         },
         {
           "SkillId": 9,
-          "Value": 89
+          "Value": 85
         },
         {
           "SkillId": 10,
-          "Value": 87
+          "Value": 83
         }
       ],
-      "Inconsistency": 12.3251848,
+      "Inconsistency": 12.2330132,
       "TiebreakerScore": 75.61722,
-      "MistakeChance": 0.038209267
+      "MistakeChance": 0.0853581
     },
     {
       "Id": 16,
@@ -942,23 +942,23 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 10
+          "Value": 14
         },
         {
           "SkillId": 1,
-          "Value": 5
+          "Value": 1
         },
         {
           "SkillId": 2,
-          "Value": 98
+          "Value": 99
         },
         {
           "SkillId": 3,
-          "Value": 28
+          "Value": 26
         },
         {
           "SkillId": 4,
-          "Value": 7
+          "Value": 3
         },
         {
           "SkillId": 5,
@@ -970,24 +970,24 @@
         },
         {
           "SkillId": 7,
-          "Value": 22
+          "Value": 17
         },
         {
           "SkillId": 8,
-          "Value": 70
+          "Value": 66
         },
         {
           "SkillId": 9,
-          "Value": 71
+          "Value": 66
         },
         {
           "SkillId": 10,
-          "Value": 73
+          "Value": 68
         }
       ],
-      "Inconsistency": 5.070381,
+      "Inconsistency": 4.91467142,
       "TiebreakerScore": 19.71041,
-      "MistakeChance": 0.07396791
+      "MistakeChance": 0.145099744
     },
     {
       "Id": 17,
@@ -1000,52 +1000,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 86
+          "Value": 83
         },
         {
           "SkillId": 1,
-          "Value": 60
+          "Value": 62
         },
         {
           "SkillId": 2,
-          "Value": 52
+          "Value": 47
         },
         {
           "SkillId": 3,
-          "Value": 81
+          "Value": 85
         },
         {
           "SkillId": 4,
-          "Value": 65
+          "Value": 61
         },
         {
           "SkillId": 5,
-          "Value": 79
+          "Value": 81
         },
         {
           "SkillId": 6,
-          "Value": 63
+          "Value": 66
         },
         {
           "SkillId": 7,
-          "Value": 97
+          "Value": 101
         },
         {
           "SkillId": 8,
-          "Value": 35
+          "Value": 38
         },
         {
           "SkillId": 9,
-          "Value": 5
+          "Value": 1
         },
         {
           "SkillId": 10,
-          "Value": 57
+          "Value": 59
         }
       ],
-      "Inconsistency": 13.3279963,
+      "Inconsistency": 12.5551844,
       "TiebreakerScore": 4.51146364,
-      "MistakeChance": 0.0200568829
+      "MistakeChance": 0.0327498168
     },
     {
       "Id": 18,
@@ -1058,52 +1058,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 57
+          "Value": 52
         },
         {
           "SkillId": 1,
-          "Value": 30
+          "Value": 35
         },
         {
           "SkillId": 2,
-          "Value": 29
+          "Value": 34
         },
         {
           "SkillId": 3,
-          "Value": 60
+          "Value": 56
         },
         {
           "SkillId": 4,
-          "Value": 85
+          "Value": 84
         },
         {
           "SkillId": 5,
-          "Value": 2
+          "Value": 1
         },
         {
           "SkillId": 6,
-          "Value": 79
+          "Value": 76
         },
         {
           "SkillId": 7,
-          "Value": 20
+          "Value": 25
         },
         {
           "SkillId": 8,
-          "Value": 73
+          "Value": 77
         },
         {
           "SkillId": 9,
-          "Value": 12
+          "Value": 9
         },
         {
           "SkillId": 10,
-          "Value": 35
+          "Value": 32
         }
       ],
-      "Inconsistency": 9.706625,
+      "Inconsistency": 8.997067,
       "TiebreakerScore": 83.5766754,
-      "MistakeChance": 0.0240060184
+      "MistakeChance": 0.0541062877
     },
     {
       "Id": 19,
@@ -1116,52 +1116,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 44
+          "Value": 40
         },
         {
           "SkillId": 1,
-          "Value": 56
+          "Value": 59
         },
         {
           "SkillId": 2,
-          "Value": 66
-        },
-        {
-          "SkillId": 3,
-          "Value": 48
-        },
-        {
-          "SkillId": 4,
-          "Value": 83
-        },
-        {
-          "SkillId": 5,
-          "Value": 17
-        },
-        {
-          "SkillId": 6,
           "Value": 67
         },
         {
+          "SkillId": 3,
+          "Value": 50
+        },
+        {
+          "SkillId": 4,
+          "Value": 78
+        },
+        {
+          "SkillId": 5,
+          "Value": 14
+        },
+        {
+          "SkillId": 6,
+          "Value": 66
+        },
+        {
           "SkillId": 7,
-          "Value": 58
+          "Value": 53
         },
         {
           "SkillId": 8,
-          "Value": 23
+          "Value": 26
         },
         {
           "SkillId": 9,
-          "Value": 29
+          "Value": 34
         },
         {
           "SkillId": 10,
-          "Value": 18
+          "Value": 23
         }
       ],
-      "Inconsistency": 10.19234,
+      "Inconsistency": 10.1875868,
       "TiebreakerScore": 20.5499649,
-      "MistakeChance": 0.07305677
+      "MistakeChance": 0.145337045
     },
     {
       "Id": 20,
@@ -1170,27 +1170,27 @@
       "CountryId": 235,
       "Sex": "m",
       "Elo": 4801,
-      "LeagueType": 2,
+      "LeagueType": -1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 4
+          "Value": 0
         },
         {
           "SkillId": 1,
-          "Value": 96
+          "Value": 97
         },
         {
           "SkillId": 2,
-          "Value": 84
+          "Value": 79
         },
         {
           "SkillId": 3,
-          "Value": 21
+          "Value": 23
         },
         {
           "SkillId": 4,
-          "Value": 5
+          "Value": 9
         },
         {
           "SkillId": 5,
@@ -1198,7 +1198,7 @@
         },
         {
           "SkillId": 6,
-          "Value": 1
+          "Value": 0
         },
         {
           "SkillId": 7,
@@ -1206,20 +1206,20 @@
         },
         {
           "SkillId": 8,
-          "Value": 11
+          "Value": 13
         },
         {
           "SkillId": 9,
-          "Value": 29
+          "Value": 30
         },
         {
           "SkillId": 10,
-          "Value": 68
+          "Value": 69
         }
       ],
-      "Inconsistency": 9.053328,
+      "Inconsistency": 8.243061,
       "TiebreakerScore": 39.7747574,
-      "MistakeChance": 0.06840011
+      "MistakeChance": 0.1430654
     },
     {
       "Id": 21,
@@ -1228,7 +1228,7 @@
       "CountryId": 8,
       "Sex": "m",
       "Elo": 5222,
-      "LeagueType": 1,
+      "LeagueType": 0,
       "Skills": [
         {
           "SkillId": 0,
@@ -1236,48 +1236,48 @@
         },
         {
           "SkillId": 1,
-          "Value": 85
+          "Value": 80
         },
         {
           "SkillId": 2,
-          "Value": 33
+          "Value": 31
         },
         {
           "SkillId": 3,
-          "Value": 11
+          "Value": 10
         },
         {
           "SkillId": 4,
-          "Value": 36
+          "Value": 40
         },
         {
           "SkillId": 5,
-          "Value": 46
+          "Value": 43
         },
         {
           "SkillId": 6,
-          "Value": 26
+          "Value": 31
         },
         {
           "SkillId": 7,
-          "Value": 69
+          "Value": 74
         },
         {
           "SkillId": 8,
-          "Value": 70
+          "Value": 66
         },
         {
           "SkillId": 9,
-          "Value": 94
+          "Value": 99
         },
         {
           "SkillId": 10,
-          "Value": 88
+          "Value": 91
         }
       ],
-      "Inconsistency": 9.852899,
+      "Inconsistency": 10.3442087,
       "TiebreakerScore": 31.8659134,
-      "MistakeChance": 0.0213724673
+      "MistakeChance": 0.0354207456
     },
     {
       "Id": 22,
@@ -1286,35 +1286,35 @@
       "CountryId": 139,
       "Sex": "m",
       "Elo": 4739,
-      "LeagueType": 1,
+      "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 61
+          "Value": 62
         },
         {
           "SkillId": 1,
-          "Value": 31
+          "Value": 34
         },
         {
           "SkillId": 2,
-          "Value": 103
+          "Value": 106
         },
         {
           "SkillId": 3,
-          "Value": 78
+          "Value": 76
         },
         {
           "SkillId": 4,
-          "Value": 7
+          "Value": 5
         },
         {
           "SkillId": 5,
-          "Value": 28
+          "Value": 27
         },
         {
           "SkillId": 6,
-          "Value": 12
+          "Value": 17
         },
         {
           "SkillId": 7,
@@ -1322,20 +1322,20 @@
         },
         {
           "SkillId": 8,
-          "Value": 14
+          "Value": 15
         },
         {
           "SkillId": 9,
-          "Value": 8
+          "Value": 4
         },
         {
           "SkillId": 10,
-          "Value": 19
+          "Value": 21
         }
       ],
-      "Inconsistency": 9.76682949,
+      "Inconsistency": 10.3708544,
       "TiebreakerScore": 63.7532,
-      "MistakeChance": 0.0303855333
+      "MistakeChance": 0.06378257
     },
     {
       "Id": 23,
@@ -1344,31 +1344,31 @@
       "CountryId": 17,
       "Sex": "m",
       "Elo": 4923,
-      "LeagueType": 2,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 46
+          "Value": 47
         },
         {
           "SkillId": 1,
-          "Value": 38
+          "Value": 42
         },
         {
           "SkillId": 2,
-          "Value": 66
+          "Value": 68
         },
         {
           "SkillId": 3,
-          "Value": 61
+          "Value": 59
         },
         {
           "SkillId": 4,
-          "Value": 77
+          "Value": 73
         },
         {
           "SkillId": 5,
-          "Value": 68
+          "Value": 65
         },
         {
           "SkillId": 6,
@@ -1376,24 +1376,24 @@
         },
         {
           "SkillId": 7,
-          "Value": 19
+          "Value": 20
         },
         {
           "SkillId": 8,
-          "Value": 57
+          "Value": 54
         },
         {
           "SkillId": 9,
-          "Value": 29
+          "Value": 25
         },
         {
           "SkillId": 10,
-          "Value": 75
+          "Value": 77
         }
       ],
-      "Inconsistency": 12.1319952,
+      "Inconsistency": 11.2289886,
       "TiebreakerScore": 96.0262756,
-      "MistakeChance": 0.0372504555
+      "MistakeChance": 0.0726809949
     },
     {
       "Id": 24,
@@ -1402,56 +1402,56 @@
       "CountryId": 46,
       "Sex": "w",
       "Elo": 4855,
-      "LeagueType": 0,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 75
+          "Value": 80
         },
         {
           "SkillId": 1,
-          "Value": 51
+          "Value": 46
         },
         {
           "SkillId": 2,
-          "Value": 85
+          "Value": 87
         },
         {
           "SkillId": 3,
-          "Value": 75
+          "Value": 72
         },
         {
           "SkillId": 4,
-          "Value": 30
+          "Value": 26
         },
         {
           "SkillId": 5,
-          "Value": 24
-        },
-        {
-          "SkillId": 6,
-          "Value": 8
-        },
-        {
-          "SkillId": 7,
           "Value": 25
         },
         {
+          "SkillId": 6,
+          "Value": 9
+        },
+        {
+          "SkillId": 7,
+          "Value": 23
+        },
+        {
           "SkillId": 8,
-          "Value": 3
+          "Value": 0
         },
         {
           "SkillId": 9,
-          "Value": 58
+          "Value": 53
         },
         {
           "SkillId": 10,
-          "Value": 66
+          "Value": 62
         }
       ],
-      "Inconsistency": 10.8796549,
+      "Inconsistency": 10.9920073,
       "TiebreakerScore": 61.2385941,
-      "MistakeChance": 0.07772587
+      "MistakeChance": 0.14717707
     },
     {
       "Id": 25,
@@ -1464,52 +1464,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 38
+          "Value": 33
         },
         {
           "SkillId": 1,
-          "Value": 14
+          "Value": 13
         },
         {
           "SkillId": 2,
-          "Value": 77
+          "Value": 73
         },
         {
           "SkillId": 3,
-          "Value": 78
+          "Value": 82
         },
         {
           "SkillId": 4,
-          "Value": 14
+          "Value": 13
         },
         {
           "SkillId": 5,
-          "Value": 31
+          "Value": 28
         },
         {
           "SkillId": 6,
-          "Value": 69
+          "Value": 71
         },
         {
           "SkillId": 7,
-          "Value": 69
+          "Value": 72
         },
         {
           "SkillId": 8,
-          "Value": 62
+          "Value": 65
         },
         {
           "SkillId": 9,
-          "Value": 93
+          "Value": 90
         },
         {
           "SkillId": 10,
-          "Value": 53
+          "Value": 49
         }
       ],
-      "Inconsistency": 7.253146,
+      "Inconsistency": 6.263976,
       "TiebreakerScore": 66.9933548,
-      "MistakeChance": 0.04631969
+      "MistakeChance": 0.101734534
     },
     {
       "Id": 26,
@@ -1522,52 +1522,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 93
+          "Value": 95
         },
         {
           "SkillId": 1,
-          "Value": 46
+          "Value": 49
         },
         {
           "SkillId": 2,
-          "Value": 35
+          "Value": 40
         },
         {
           "SkillId": 3,
-          "Value": 72
+          "Value": 69
         },
         {
           "SkillId": 4,
-          "Value": 55
+          "Value": 50
         },
         {
           "SkillId": 5,
-          "Value": 66
+          "Value": 71
         },
         {
           "SkillId": 6,
-          "Value": 93
+          "Value": 90
         },
         {
           "SkillId": 7,
-          "Value": 83
+          "Value": 78
         },
         {
           "SkillId": 8,
-          "Value": 29
+          "Value": 33
         },
         {
           "SkillId": 9,
-          "Value": 23
+          "Value": 19
         },
         {
           "SkillId": 10,
-          "Value": 37
+          "Value": 32
         }
       ],
-      "Inconsistency": 13.7408886,
+      "Inconsistency": 13.7087212,
       "TiebreakerScore": 53.03847,
-      "MistakeChance": 0.052107
+      "MistakeChance": 0.0990989
     },
     {
       "Id": 27,
@@ -1584,48 +1584,48 @@
         },
         {
           "SkillId": 1,
-          "Value": 80
+          "Value": 85
         },
         {
           "SkillId": 2,
-          "Value": 97
+          "Value": 93
         },
         {
           "SkillId": 3,
-          "Value": 75
+          "Value": 79
         },
         {
           "SkillId": 4,
-          "Value": 81
+          "Value": 78
         },
         {
           "SkillId": 5,
-          "Value": 5
+          "Value": 3
         },
         {
           "SkillId": 6,
-          "Value": 27
+          "Value": 31
         },
         {
           "SkillId": 7,
-          "Value": 56
+          "Value": 55
         },
         {
           "SkillId": 8,
-          "Value": 43
+          "Value": 45
         },
         {
           "SkillId": 9,
-          "Value": 6
+          "Value": 1
         },
         {
           "SkillId": 10,
-          "Value": 63
+          "Value": 65
         }
       ],
-      "Inconsistency": 10.3275843,
+      "Inconsistency": 9.620418,
       "TiebreakerScore": 12.95476,
-      "MistakeChance": 0.0259137265
+      "MistakeChance": 0.04855591
     },
     {
       "Id": 28,
@@ -1634,19 +1634,19 @@
       "CountryId": 57,
       "Sex": "w",
       "Elo": 4710,
-      "LeagueType": 1,
+      "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 45
+          "Value": 40
         },
         {
           "SkillId": 1,
-          "Value": 4
+          "Value": 5
         },
         {
           "SkillId": 2,
-          "Value": 5
+          "Value": 0
         },
         {
           "SkillId": 3,
@@ -1654,36 +1654,36 @@
         },
         {
           "SkillId": 4,
-          "Value": 14
+          "Value": 10
         },
         {
           "SkillId": 5,
-          "Value": 70
+          "Value": 73
         },
         {
           "SkillId": 6,
-          "Value": 31
+          "Value": 30
         },
         {
           "SkillId": 7,
-          "Value": 48
+          "Value": 45
         },
         {
           "SkillId": 8,
-          "Value": 7
+          "Value": 9
         },
         {
           "SkillId": 9,
-          "Value": 0
+          "Value": 2
         },
         {
           "SkillId": 10,
-          "Value": 57
+          "Value": 56
         }
       ],
-      "Inconsistency": 6.469569,
+      "Inconsistency": 7.00872326,
       "TiebreakerScore": 94.02235,
-      "MistakeChance": 0.06983448
+      "MistakeChance": 0.14726606
     },
     {
       "Id": 29,
@@ -1692,11 +1692,11 @@
       "CountryId": 58,
       "Sex": "w",
       "Elo": 5197,
-      "LeagueType": 1,
+      "LeagueType": 0,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 78
+          "Value": 76
         },
         {
           "SkillId": 1,
@@ -1704,19 +1704,19 @@
         },
         {
           "SkillId": 2,
-          "Value": 62
+          "Value": 65
         },
         {
           "SkillId": 3,
-          "Value": 29
+          "Value": 33
         },
         {
           "SkillId": 4,
-          "Value": 89
+          "Value": 90
         },
         {
           "SkillId": 5,
-          "Value": 42
+          "Value": 37
         },
         {
           "SkillId": 6,
@@ -1724,11 +1724,11 @@
         },
         {
           "SkillId": 7,
-          "Value": 79
+          "Value": 81
         },
         {
           "SkillId": 8,
-          "Value": 16
+          "Value": 21
         },
         {
           "SkillId": 9,
@@ -1736,12 +1736,12 @@
         },
         {
           "SkillId": 10,
-          "Value": 62
+          "Value": 63
         }
       ],
-      "Inconsistency": 5.25558949,
+      "Inconsistency": 5.80755234,
       "TiebreakerScore": 49.61949,
-      "MistakeChance": 0.0399400443
+      "MistakeChance": 0.0712575838
     },
     {
       "Id": 30,
@@ -1750,39 +1750,39 @@
       "CountryId": 115,
       "Sex": "w",
       "Elo": 4826,
-      "LeagueType": 2,
+      "LeagueType": -1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 0
+          "Value": 4
         },
         {
           "SkillId": 1,
-          "Value": 18
+          "Value": 20
         },
         {
           "SkillId": 2,
-          "Value": 49
+          "Value": 51
         },
         {
           "SkillId": 3,
-          "Value": 32
+          "Value": 35
         },
         {
           "SkillId": 4,
-          "Value": 87
+          "Value": 83
         },
         {
           "SkillId": 5,
-          "Value": 75
+          "Value": 79
         },
         {
           "SkillId": 6,
-          "Value": 91
+          "Value": 95
         },
         {
           "SkillId": 7,
-          "Value": 6
+          "Value": 1
         },
         {
           "SkillId": 8,
@@ -1790,16 +1790,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 42
+          "Value": 40
         },
         {
           "SkillId": 10,
-          "Value": 67
+          "Value": 68
         }
       ],
-      "Inconsistency": 12.1971073,
+      "Inconsistency": 13.0617437,
       "TiebreakerScore": 35.4275627,
-      "MistakeChance": 0.0677687153
+      "MistakeChance": 0.134345219
     },
     {
       "Id": 31,
@@ -1812,19 +1812,19 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 75
+          "Value": 72
         },
         {
           "SkillId": 1,
-          "Value": 67
+          "Value": 69
         },
         {
           "SkillId": 2,
-          "Value": 80
+          "Value": 81
         },
         {
           "SkillId": 3,
-          "Value": 45
+          "Value": 41
         },
         {
           "SkillId": 4,
@@ -1832,32 +1832,32 @@
         },
         {
           "SkillId": 5,
-          "Value": 72
+          "Value": 70
         },
         {
           "SkillId": 6,
-          "Value": 3
+          "Value": 7
         },
         {
           "SkillId": 7,
-          "Value": 5
+          "Value": 7
         },
         {
           "SkillId": 8,
-          "Value": 98
+          "Value": 96
         },
         {
           "SkillId": 9,
-          "Value": 102
+          "Value": 106
         },
         {
           "SkillId": 10,
-          "Value": 96
+          "Value": 94
         }
       ],
-      "Inconsistency": 12.6168938,
+      "Inconsistency": 13.5240707,
       "TiebreakerScore": 10.5974913,
-      "MistakeChance": 0.0762872547
+      "MistakeChance": 0.143074676
     },
     {
       "Id": 32,
@@ -1874,48 +1874,48 @@
         },
         {
           "SkillId": 1,
-          "Value": 43
+          "Value": 44
         },
         {
           "SkillId": 2,
-          "Value": 52
+          "Value": 49
         },
         {
           "SkillId": 3,
-          "Value": 14
+          "Value": 19
         },
         {
           "SkillId": 4,
-          "Value": 72
+          "Value": 74
         },
         {
           "SkillId": 5,
-          "Value": 59
+          "Value": 63
         },
         {
           "SkillId": 6,
-          "Value": 42
+          "Value": 46
         },
         {
           "SkillId": 7,
-          "Value": 38
+          "Value": 42
         },
         {
           "SkillId": 8,
-          "Value": 79
+          "Value": 75
         },
         {
           "SkillId": 9,
-          "Value": 72
+          "Value": 75
         },
         {
           "SkillId": 10,
           "Value": 12
         }
       ],
-      "Inconsistency": 13.3510237,
+      "Inconsistency": 12.99517,
       "TiebreakerScore": 1.00665092,
-      "MistakeChance": 0.060761895
+      "MistakeChance": 0.125206783
     },
     {
       "Id": 33,
@@ -1924,15 +1924,15 @@
       "CountryId": 11,
       "Sex": "m",
       "Elo": 4822,
-      "LeagueType": 1,
+      "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 25
+          "Value": 26
         },
         {
           "SkillId": 1,
-          "Value": 94
+          "Value": 96
         },
         {
           "SkillId": 2,
@@ -1940,19 +1940,19 @@
         },
         {
           "SkillId": 3,
-          "Value": 44
+          "Value": 45
         },
         {
           "SkillId": 4,
-          "Value": 4
+          "Value": 5
         },
         {
           "SkillId": 5,
-          "Value": 39
+          "Value": 41
         },
         {
           "SkillId": 6,
-          "Value": 9
+          "Value": 13
         },
         {
           "SkillId": 7,
@@ -1960,20 +1960,20 @@
         },
         {
           "SkillId": 8,
-          "Value": 46
+          "Value": 41
         },
         {
           "SkillId": 9,
-          "Value": 76
+          "Value": 75
         },
         {
           "SkillId": 10,
-          "Value": 72
+          "Value": 73
         }
       ],
-      "Inconsistency": 12.582202,
+      "Inconsistency": 13.3034573,
       "TiebreakerScore": 77.87321,
-      "MistakeChance": 0.05671233
+      "MistakeChance": 0.108090132
     },
     {
       "Id": 34,
@@ -1986,7 +1986,7 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 43
+          "Value": 45
         },
         {
           "SkillId": 1,
@@ -1994,15 +1994,15 @@
         },
         {
           "SkillId": 2,
-          "Value": 50
+          "Value": 55
         },
         {
           "SkillId": 3,
-          "Value": 35
+          "Value": 37
         },
         {
           "SkillId": 4,
-          "Value": 88
+          "Value": 92
         },
         {
           "SkillId": 5,
@@ -2010,28 +2010,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 64
-        },
-        {
-          "SkillId": 7,
           "Value": 67
         },
         {
+          "SkillId": 7,
+          "Value": 62
+        },
+        {
           "SkillId": 8,
-          "Value": 3
+          "Value": 2
         },
         {
           "SkillId": 9,
-          "Value": 74
+          "Value": 73
         },
         {
           "SkillId": 10,
-          "Value": 96
+          "Value": 93
         }
       ],
-      "Inconsistency": 8.918378,
+      "Inconsistency": 8.404739,
       "TiebreakerScore": 83.5436249,
-      "MistakeChance": 0.06930378
+      "MistakeChance": 0.135019377
     },
     {
       "Id": 35,
@@ -2044,7 +2044,7 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 19
+          "Value": 23
         },
         {
           "SkillId": 1,
@@ -2052,44 +2052,44 @@
         },
         {
           "SkillId": 2,
-          "Value": 11
+          "Value": 15
         },
         {
           "SkillId": 3,
-          "Value": 13
+          "Value": 11
         },
         {
           "SkillId": 4,
-          "Value": 17
+          "Value": 16
         },
         {
           "SkillId": 5,
-          "Value": 73
+          "Value": 70
         },
         {
           "SkillId": 6,
-          "Value": 20
+          "Value": 16
         },
         {
           "SkillId": 7,
-          "Value": 98
+          "Value": 100
         },
         {
           "SkillId": 8,
-          "Value": 33
+          "Value": 35
         },
         {
           "SkillId": 9,
-          "Value": 84
+          "Value": 87
         },
         {
           "SkillId": 10,
-          "Value": 53
+          "Value": 51
         }
       ],
-      "Inconsistency": 8.723985,
+      "Inconsistency": 7.95679569,
       "TiebreakerScore": 53.44182,
-      "MistakeChance": 0.0366987772
+      "MistakeChance": 0.08264544
     },
     {
       "Id": 36,
@@ -2102,23 +2102,23 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 31
+          "Value": 35
         },
         {
           "SkillId": 1,
-          "Value": 90
+          "Value": 95
         },
         {
           "SkillId": 2,
-          "Value": 97
+          "Value": 96
         },
         {
           "SkillId": 3,
-          "Value": 66
+          "Value": 68
         },
         {
           "SkillId": 4,
-          "Value": 23
+          "Value": 21
         },
         {
           "SkillId": 5,
@@ -2126,15 +2126,15 @@
         },
         {
           "SkillId": 6,
-          "Value": 75
+          "Value": 70
         },
         {
           "SkillId": 7,
-          "Value": 75
+          "Value": 77
         },
         {
           "SkillId": 8,
-          "Value": 4
+          "Value": 5
         },
         {
           "SkillId": 9,
@@ -2142,12 +2142,12 @@
         },
         {
           "SkillId": 10,
-          "Value": 61
+          "Value": 57
         }
       ],
-      "Inconsistency": 12.2768593,
+      "Inconsistency": 12.0310764,
       "TiebreakerScore": 89.76109,
-      "MistakeChance": 0.06731497
+      "MistakeChance": 0.1383663
     },
     {
       "Id": 37,
@@ -2160,52 +2160,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 64
+          "Value": 60
         },
         {
           "SkillId": 1,
-          "Value": 57
+          "Value": 54
         },
         {
           "SkillId": 2,
-          "Value": 93
+          "Value": 89
         },
         {
           "SkillId": 3,
-          "Value": 45
+          "Value": 43
         },
         {
           "SkillId": 4,
-          "Value": 84
+          "Value": 86
         },
         {
           "SkillId": 5,
-          "Value": 34
+          "Value": 30
         },
         {
           "SkillId": 6,
-          "Value": 38
+          "Value": 37
         },
         {
           "SkillId": 7,
-          "Value": 45
-        },
-        {
-          "SkillId": 8,
-          "Value": 62
-        },
-        {
-          "SkillId": 9,
           "Value": 44
         },
         {
+          "SkillId": 8,
+          "Value": 59
+        },
+        {
+          "SkillId": 9,
+          "Value": 48
+        },
+        {
           "SkillId": 10,
-          "Value": 19
+          "Value": 18
         }
       ],
-      "Inconsistency": 7.120973,
+      "Inconsistency": 6.90536356,
       "TiebreakerScore": 64.898,
-      "MistakeChance": 0.0337964073
+      "MistakeChance": 0.0681126937
     },
     {
       "Id": 38,
@@ -2214,39 +2214,39 @@
       "CountryId": 28,
       "Sex": "m",
       "Elo": 5165,
-      "LeagueType": 1,
+      "LeagueType": 0,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 62
+          "Value": 65
         },
         {
           "SkillId": 1,
-          "Value": 28
+          "Value": 25
         },
         {
           "SkillId": 2,
-          "Value": 29
+          "Value": 27
         },
         {
           "SkillId": 3,
-          "Value": 84
+          "Value": 80
         },
         {
           "SkillId": 4,
-          "Value": 4
+          "Value": 6
         },
         {
           "SkillId": 5,
-          "Value": 99
+          "Value": 95
         },
         {
           "SkillId": 6,
-          "Value": 94
+          "Value": 89
         },
         {
           "SkillId": 7,
-          "Value": 83
+          "Value": 84
         },
         {
           "SkillId": 8,
@@ -2254,16 +2254,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 8
+          "Value": 9
         },
         {
           "SkillId": 10,
-          "Value": 84
+          "Value": 86
         }
       ],
-      "Inconsistency": 9.708697,
+      "Inconsistency": 9.297607,
       "TiebreakerScore": 10.052228,
-      "MistakeChance": 0.04633763
+      "MistakeChance": 0.10226094
     },
     {
       "Id": 39,
@@ -2280,48 +2280,48 @@
         },
         {
           "SkillId": 1,
-          "Value": 12
+          "Value": 7
         },
         {
           "SkillId": 2,
-          "Value": 95
+          "Value": 100
         },
         {
           "SkillId": 3,
-          "Value": 73
+          "Value": 75
         },
         {
           "SkillId": 4,
-          "Value": 53
-        },
-        {
-          "SkillId": 5,
           "Value": 50
         },
         {
+          "SkillId": 5,
+          "Value": 51
+        },
+        {
           "SkillId": 6,
-          "Value": 42
+          "Value": 38
         },
         {
           "SkillId": 7,
-          "Value": 45
+          "Value": 49
         },
         {
           "SkillId": 8,
-          "Value": 32
+          "Value": 37
         },
         {
           "SkillId": 9,
-          "Value": 47
+          "Value": 44
         },
         {
           "SkillId": 10,
-          "Value": 43
+          "Value": 42
         }
       ],
-      "Inconsistency": 11.39482,
+      "Inconsistency": 10.9374208,
       "TiebreakerScore": 7.531142,
-      "MistakeChance": 0.04734794
+      "MistakeChance": 0.09195094
     },
     {
       "Id": 40,
@@ -2334,15 +2334,15 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 8
+          "Value": 11
         },
         {
           "SkillId": 1,
-          "Value": 35
+          "Value": 36
         },
         {
           "SkillId": 2,
-          "Value": 60
+          "Value": 62
         },
         {
           "SkillId": 3,
@@ -2350,36 +2350,36 @@
         },
         {
           "SkillId": 4,
-          "Value": 6
+          "Value": 4
         },
         {
           "SkillId": 5,
-          "Value": 87
+          "Value": 84
         },
         {
           "SkillId": 6,
-          "Value": 76
+          "Value": 73
         },
         {
           "SkillId": 7,
-          "Value": 9
+          "Value": 7
         },
         {
           "SkillId": 8,
-          "Value": 44
+          "Value": 39
         },
         {
           "SkillId": 9,
-          "Value": 13
+          "Value": 9
         },
         {
           "SkillId": 10,
           "Value": 74
         }
       ],
-      "Inconsistency": 12.7266178,
+      "Inconsistency": 13.3602514,
       "TiebreakerScore": 43.2691765,
-      "MistakeChance": 0.07821207
+      "MistakeChance": 0.15232636
     },
     {
       "Id": 41,
@@ -2392,7 +2392,7 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 96
+          "Value": 99
         },
         {
           "SkillId": 1,
@@ -2400,7 +2400,7 @@
         },
         {
           "SkillId": 2,
-          "Value": 81
+          "Value": 86
         },
         {
           "SkillId": 3,
@@ -2408,7 +2408,7 @@
         },
         {
           "SkillId": 4,
-          "Value": 43
+          "Value": 39
         },
         {
           "SkillId": 5,
@@ -2416,28 +2416,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 5
+          "Value": 9
         },
         {
           "SkillId": 7,
-          "Value": 74
+          "Value": 76
         },
         {
           "SkillId": 8,
-          "Value": 58
+          "Value": 55
         },
         {
           "SkillId": 9,
-          "Value": 81
+          "Value": 76
         },
         {
           "SkillId": 10,
-          "Value": 32
+          "Value": 35
         }
       ],
-      "Inconsistency": 13.2045813,
+      "Inconsistency": 12.9592724,
       "TiebreakerScore": 93.10345,
-      "MistakeChance": 0.068742
+      "MistakeChance": 0.133258164
     },
     {
       "Id": 42,
@@ -2450,15 +2450,15 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 86
+          "Value": 84
         },
         {
           "SkillId": 1,
-          "Value": 12
+          "Value": 17
         },
         {
           "SkillId": 2,
-          "Value": 75
+          "Value": 72
         },
         {
           "SkillId": 3,
@@ -2466,15 +2466,15 @@
         },
         {
           "SkillId": 4,
-          "Value": 34
+          "Value": 31
         },
         {
           "SkillId": 5,
-          "Value": 9
+          "Value": 6
         },
         {
           "SkillId": 6,
-          "Value": 83
+          "Value": 80
         },
         {
           "SkillId": 7,
@@ -2482,20 +2482,20 @@
         },
         {
           "SkillId": 8,
-          "Value": 92
+          "Value": 97
         },
         {
           "SkillId": 9,
-          "Value": 20
+          "Value": 21
         },
         {
           "SkillId": 10,
-          "Value": 86
+          "Value": 85
         }
       ],
-      "Inconsistency": 11.6515951,
+      "Inconsistency": 12.5350847,
       "TiebreakerScore": 14.3366451,
-      "MistakeChance": 0.04530356
+      "MistakeChance": 0.08787329
     },
     {
       "Id": 43,
@@ -2504,39 +2504,39 @@
       "CountryId": 9,
       "Sex": "m",
       "Elo": 4913,
-      "LeagueType": 2,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 49
+          "Value": 52
         },
         {
           "SkillId": 1,
-          "Value": 90
+          "Value": 95
         },
         {
           "SkillId": 2,
-          "Value": 59
+          "Value": 58
         },
         {
           "SkillId": 3,
-          "Value": 80
+          "Value": 77
         },
         {
           "SkillId": 4,
-          "Value": 63
+          "Value": 61
         },
         {
           "SkillId": 5,
-          "Value": 4
+          "Value": 8
         },
         {
           "SkillId": 6,
-          "Value": 59
+          "Value": 62
         },
         {
           "SkillId": 7,
-          "Value": 37
+          "Value": 36
         },
         {
           "SkillId": 8,
@@ -2544,16 +2544,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 6
+          "Value": 2
         },
         {
           "SkillId": 10,
-          "Value": 17
+          "Value": 22
         }
       ],
-      "Inconsistency": 5.948701,
+      "Inconsistency": 5.113237,
       "TiebreakerScore": 76.45103,
-      "MistakeChance": 0.0394461975
+      "MistakeChance": 0.08469198
     },
     {
       "Id": 44,
@@ -2566,52 +2566,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 23
+          "Value": 21
         },
         {
           "SkillId": 1,
-          "Value": 47
+          "Value": 52
         },
         {
           "SkillId": 2,
-          "Value": 95
+          "Value": 98
         },
         {
           "SkillId": 3,
-          "Value": 33
+          "Value": 37
         },
         {
           "SkillId": 4,
-          "Value": 26
+          "Value": 22
         },
         {
           "SkillId": 5,
-          "Value": 74
+          "Value": 70
         },
         {
           "SkillId": 6,
-          "Value": 56
+          "Value": 51
         },
         {
           "SkillId": 7,
-          "Value": 63
+          "Value": 64
         },
         {
           "SkillId": 8,
-          "Value": 33
+          "Value": 36
         },
         {
           "SkillId": 9,
-          "Value": 11
+          "Value": 10
         },
         {
           "SkillId": 10,
-          "Value": 51
+          "Value": 50
         }
       ],
-      "Inconsistency": 12.193224,
+      "Inconsistency": 11.9249992,
       "TiebreakerScore": 25.1100121,
-      "MistakeChance": 0.02355256
+      "MistakeChance": 0.0425667539
     },
     {
       "Id": 45,
@@ -2624,52 +2624,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 86
+          "Value": 81
         },
         {
           "SkillId": 1,
-          "Value": 4
+          "Value": 3
         },
         {
           "SkillId": 2,
-          "Value": 26
+          "Value": 28
         },
         {
           "SkillId": 3,
-          "Value": 71
+          "Value": 72
         },
         {
           "SkillId": 4,
-          "Value": 16
+          "Value": 13
         },
         {
           "SkillId": 5,
-          "Value": 96
+          "Value": 98
         },
         {
           "SkillId": 6,
-          "Value": 4
+          "Value": 5
         },
         {
           "SkillId": 7,
-          "Value": 67
+          "Value": 69
         },
         {
           "SkillId": 8,
-          "Value": 70
+          "Value": 71
         },
         {
           "SkillId": 9,
-          "Value": 96
+          "Value": 95
         },
         {
           "SkillId": 10,
-          "Value": 3
+          "Value": 8
         }
       ],
-      "Inconsistency": 5.281439,
+      "Inconsistency": 5.610387,
       "TiebreakerScore": 42.8514175,
-      "MistakeChance": 0.07887451
+      "MistakeChance": 0.160632491
     },
     {
       "Id": 46,
@@ -2682,11 +2682,11 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 91
+          "Value": 92
         },
         {
           "SkillId": 1,
-          "Value": 97
+          "Value": 99
         },
         {
           "SkillId": 2,
@@ -2694,40 +2694,40 @@
         },
         {
           "SkillId": 3,
-          "Value": 4
+          "Value": 7
         },
         {
           "SkillId": 4,
-          "Value": 24
+          "Value": 22
         },
         {
           "SkillId": 5,
-          "Value": 2
+          "Value": 0
         },
         {
           "SkillId": 6,
-          "Value": 93
+          "Value": 88
         },
         {
           "SkillId": 7,
-          "Value": 22
+          "Value": 24
         },
         {
           "SkillId": 8,
-          "Value": 91
+          "Value": 93
         },
         {
           "SkillId": 9,
-          "Value": 42
+          "Value": 41
         },
         {
           "SkillId": 10,
-          "Value": 22
+          "Value": 27
         }
       ],
-      "Inconsistency": 8.810564,
+      "Inconsistency": 8.082117,
       "TiebreakerScore": 79.19473,
-      "MistakeChance": 0.0563387722
+      "MistakeChance": 0.107501365
     },
     {
       "Id": 47,
@@ -2744,19 +2744,19 @@
         },
         {
           "SkillId": 1,
-          "Value": 6
+          "Value": 2
         },
         {
           "SkillId": 2,
-          "Value": 58
+          "Value": 54
         },
         {
           "SkillId": 3,
-          "Value": 0
+          "Value": 5
         },
         {
           "SkillId": 4,
-          "Value": 67
+          "Value": 63
         },
         {
           "SkillId": 5,
@@ -2764,28 +2764,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 72
+          "Value": 75
         },
         {
           "SkillId": 7,
-          "Value": 55
+          "Value": 57
         },
         {
           "SkillId": 8,
-          "Value": 74
+          "Value": 71
         },
         {
           "SkillId": 9,
-          "Value": 90
+          "Value": 85
         },
         {
           "SkillId": 10,
-          "Value": 52
+          "Value": 54
         }
       ],
-      "Inconsistency": 9.497551,
+      "Inconsistency": 10.0462189,
       "TiebreakerScore": 94.06359,
-      "MistakeChance": 0.0202840976
+      "MistakeChance": 0.0471747
     },
     {
       "Id": 48,
@@ -2798,7 +2798,7 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 18
+          "Value": 21
         },
         {
           "SkillId": 1,
@@ -2806,11 +2806,11 @@
         },
         {
           "SkillId": 2,
-          "Value": 15
+          "Value": 10
         },
         {
           "SkillId": 3,
-          "Value": 88
+          "Value": 91
         },
         {
           "SkillId": 4,
@@ -2818,32 +2818,32 @@
         },
         {
           "SkillId": 5,
-          "Value": 49
+          "Value": 52
         },
         {
           "SkillId": 6,
-          "Value": 36
+          "Value": 38
         },
         {
           "SkillId": 7,
-          "Value": 15
+          "Value": 12
         },
         {
           "SkillId": 8,
-          "Value": 53
+          "Value": 58
         },
         {
           "SkillId": 9,
-          "Value": 85
+          "Value": 87
         },
         {
           "SkillId": 10,
-          "Value": 42
+          "Value": 39
         }
       ],
-      "Inconsistency": 7.42028475,
+      "Inconsistency": 7.78604746,
       "TiebreakerScore": 41.64663,
-      "MistakeChance": 0.03896465
+      "MistakeChance": 0.0759479553
     },
     {
       "Id": 49,
@@ -2856,23 +2856,23 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 88
+          "Value": 93
         },
         {
           "SkillId": 1,
-          "Value": 8
+          "Value": 7
         },
         {
           "SkillId": 2,
-          "Value": 92
+          "Value": 90
         },
         {
           "SkillId": 3,
-          "Value": 18
+          "Value": 16
         },
         {
           "SkillId": 4,
-          "Value": 103
+          "Value": 105
         },
         {
           "SkillId": 5,
@@ -2880,28 +2880,28 @@
         },
         {
           "SkillId": 6,
-          "Value": 93
+          "Value": 92
         },
         {
           "SkillId": 7,
-          "Value": 90
+          "Value": 94
         },
         {
           "SkillId": 8,
-          "Value": 67
+          "Value": 65
         },
         {
           "SkillId": 9,
-          "Value": 89
+          "Value": 90
         },
         {
           "SkillId": 10,
-          "Value": 7
+          "Value": 12
         }
       ],
-      "Inconsistency": 6.00798941,
+      "Inconsistency": 5.97596264,
       "TiebreakerScore": 42.99962,
-      "MistakeChance": 0.0521814041
+      "MistakeChance": 0.09655565
     },
     {
       "Id": 50,
@@ -2914,15 +2914,15 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 91
+          "Value": 87
         },
         {
           "SkillId": 1,
-          "Value": 69
+          "Value": 66
         },
         {
           "SkillId": 2,
-          "Value": 60
+          "Value": 58
         },
         {
           "SkillId": 3,
@@ -2930,36 +2930,36 @@
         },
         {
           "SkillId": 4,
-          "Value": 93
+          "Value": 95
         },
         {
           "SkillId": 5,
-          "Value": 68
+          "Value": 64
         },
         {
           "SkillId": 6,
-          "Value": 53
+          "Value": 54
         },
         {
           "SkillId": 7,
-          "Value": 46
+          "Value": 47
         },
         {
           "SkillId": 8,
-          "Value": 59
+          "Value": 58
         },
         {
           "SkillId": 9,
-          "Value": 11
+          "Value": 7
         },
         {
           "SkillId": 10,
-          "Value": 82
+          "Value": 85
         }
       ],
-      "Inconsistency": 11.1783295,
+      "Inconsistency": 11.8822937,
       "TiebreakerScore": 30.4910355,
-      "MistakeChance": 0.0497937873
+      "MistakeChance": 0.1051825
     },
     {
       "Id": 51,
@@ -2972,52 +2972,52 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 82
+          "Value": 86
         },
         {
           "SkillId": 1,
-          "Value": 90
+          "Value": 94
         },
         {
           "SkillId": 2,
-          "Value": 30
+          "Value": 33
         },
         {
           "SkillId": 3,
-          "Value": 74
+          "Value": 72
         },
         {
           "SkillId": 4,
-          "Value": 102
+          "Value": 99
         },
         {
           "SkillId": 5,
-          "Value": 50
+          "Value": 45
         },
         {
           "SkillId": 6,
-          "Value": 7
+          "Value": 8
         },
         {
           "SkillId": 7,
-          "Value": 97
+          "Value": 100
         },
         {
           "SkillId": 8,
-          "Value": 1
+          "Value": 5
         },
         {
           "SkillId": 9,
-          "Value": 69
+          "Value": 71
         },
         {
           "SkillId": 10,
-          "Value": 34
+          "Value": 36
         }
       ],
-      "Inconsistency": 6.553974,
+      "Inconsistency": 7.01016665,
       "TiebreakerScore": 87.64466,
-      "MistakeChance": 0.0780472755
+      "MistakeChance": 0.15250288
     },
     {
       "Id": 52,
@@ -3026,39 +3026,39 @@
       "CountryId": 27,
       "Sex": "w",
       "Elo": 4800,
-      "LeagueType": 2,
+      "LeagueType": -1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 52
+          "Value": 56
         },
         {
           "SkillId": 1,
-          "Value": 46
+          "Value": 48
         },
         {
           "SkillId": 2,
-          "Value": 22
+          "Value": 24
         },
         {
           "SkillId": 3,
-          "Value": 85
+          "Value": 87
         },
         {
           "SkillId": 4,
-          "Value": 44
+          "Value": 42
         },
         {
           "SkillId": 5,
-          "Value": 65
+          "Value": 66
         },
         {
           "SkillId": 6,
-          "Value": 52
+          "Value": 48
         },
         {
           "SkillId": 7,
-          "Value": 42
+          "Value": 41
         },
         {
           "SkillId": 8,
@@ -3066,16 +3066,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 23
+          "Value": 21
         },
         {
           "SkillId": 10,
-          "Value": 17
+          "Value": 15
         }
       ],
-      "Inconsistency": 6.44909239,
+      "Inconsistency": 6.923021,
       "TiebreakerScore": 47.8657074,
-      "MistakeChance": 0.0431097075
+      "MistakeChance": 0.0948888958
     },
     {
       "Id": 53,
@@ -3084,7 +3084,7 @@
       "CountryId": 0,
       "Sex": "w",
       "Elo": 5226,
-      "LeagueType": 1,
+      "LeagueType": 0,
       "Skills": [
         {
           "SkillId": 0,
@@ -3092,11 +3092,11 @@
         },
         {
           "SkillId": 1,
-          "Value": 94
+          "Value": 96
         },
         {
           "SkillId": 2,
-          "Value": 70
+          "Value": 74
         },
         {
           "SkillId": 3,
@@ -3104,36 +3104,36 @@
         },
         {
           "SkillId": 4,
-          "Value": 86
+          "Value": 83
         },
         {
           "SkillId": 5,
-          "Value": 64
+          "Value": 63
         },
         {
           "SkillId": 6,
-          "Value": 85
+          "Value": 82
         },
         {
           "SkillId": 7,
-          "Value": 48
+          "Value": 51
         },
         {
           "SkillId": 8,
-          "Value": 11
+          "Value": 6
         },
         {
           "SkillId": 9,
-          "Value": 11
+          "Value": 16
         },
         {
           "SkillId": 10,
-          "Value": 88
+          "Value": 90
         }
       ],
-      "Inconsistency": 8.142713,
+      "Inconsistency": 8.319213,
       "TiebreakerScore": 87.77771,
-      "MistakeChance": 0.03641747
+      "MistakeChance": 0.06458528
     },
     {
       "Id": 54,
@@ -3150,31 +3150,31 @@
         },
         {
           "SkillId": 1,
-          "Value": 54
+          "Value": 49
         },
         {
           "SkillId": 2,
-          "Value": 52
+          "Value": 48
         },
         {
           "SkillId": 3,
-          "Value": 81
+          "Value": 83
         },
         {
           "SkillId": 4,
-          "Value": 85
+          "Value": 86
         },
         {
           "SkillId": 5,
-          "Value": 87
+          "Value": 88
         },
         {
           "SkillId": 6,
-          "Value": 72
+          "Value": 67
         },
         {
           "SkillId": 7,
-          "Value": 87
+          "Value": 86
         },
         {
           "SkillId": 8,
@@ -3182,16 +3182,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 54
+          "Value": 51
         },
         {
           "SkillId": 10,
-          "Value": 76
+          "Value": 72
         }
       ],
-      "Inconsistency": 12.01572,
+      "Inconsistency": 12.1184263,
       "TiebreakerScore": 6.456566,
-      "MistakeChance": 0.07076974
+      "MistakeChance": 0.140949816
     },
     {
       "Id": 55,
@@ -3204,19 +3204,19 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 42
+          "Value": 40
         },
         {
           "SkillId": 1,
-          "Value": 36
+          "Value": 38
         },
         {
           "SkillId": 2,
-          "Value": 92
+          "Value": 94
         },
         {
           "SkillId": 3,
-          "Value": 12
+          "Value": 14
         },
         {
           "SkillId": 4,
@@ -3224,32 +3224,32 @@
         },
         {
           "SkillId": 5,
-          "Value": 22
+          "Value": 21
         },
         {
           "SkillId": 6,
-          "Value": 93
+          "Value": 96
         },
         {
           "SkillId": 7,
-          "Value": 42
+          "Value": 39
         },
         {
           "SkillId": 8,
-          "Value": 23
+          "Value": 25
         },
         {
           "SkillId": 9,
-          "Value": 72
+          "Value": 73
         },
         {
           "SkillId": 10,
-          "Value": 88
+          "Value": 93
         }
       ],
-      "Inconsistency": 13.4993458,
+      "Inconsistency": 13.8644085,
       "TiebreakerScore": 42.0573769,
-      "MistakeChance": 0.07114868
+      "MistakeChance": 0.1424313
     },
     {
       "Id": 56,
@@ -3262,35 +3262,35 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 6
+          "Value": 10
         },
         {
           "SkillId": 1,
-          "Value": 19
+          "Value": 21
         },
         {
           "SkillId": 2,
-          "Value": 87
+          "Value": 86
         },
         {
           "SkillId": 3,
-          "Value": 2
+          "Value": 7
         },
         {
           "SkillId": 4,
-          "Value": 93
+          "Value": 98
         },
         {
           "SkillId": 5,
-          "Value": 14
+          "Value": 10
         },
         {
           "SkillId": 6,
-          "Value": 84
+          "Value": 85
         },
         {
           "SkillId": 7,
-          "Value": 68
+          "Value": 71
         },
         {
           "SkillId": 8,
@@ -3298,16 +3298,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 41
+          "Value": 43
         },
         {
           "SkillId": 10,
-          "Value": 46
+          "Value": 48
         }
       ],
-      "Inconsistency": 11.8046684,
+      "Inconsistency": 11.4756432,
       "TiebreakerScore": 67.823616,
-      "MistakeChance": 0.0584075525
+      "MistakeChance": 0.122253038
     },
     {
       "Id": 57,
@@ -3316,39 +3316,39 @@
       "CountryId": 139,
       "Sex": "m",
       "Elo": 5307,
-      "LeagueType": 1,
+      "LeagueType": 0,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 73
+          "Value": 72
         },
         {
           "SkillId": 1,
-          "Value": 76
+          "Value": 78
         },
         {
           "SkillId": 2,
-          "Value": 88
+          "Value": 93
         },
         {
           "SkillId": 3,
-          "Value": 88
+          "Value": 89
         },
         {
           "SkillId": 4,
-          "Value": 94
+          "Value": 96
         },
         {
           "SkillId": 5,
-          "Value": 22
+          "Value": 24
         },
         {
           "SkillId": 6,
-          "Value": 6
+          "Value": 10
         },
         {
           "SkillId": 7,
-          "Value": 62
+          "Value": 59
         },
         {
           "SkillId": 8,
@@ -3356,16 +3356,16 @@
         },
         {
           "SkillId": 9,
-          "Value": 66
+          "Value": 69
         },
         {
           "SkillId": 10,
-          "Value": 36
+          "Value": 32
         }
       ],
-      "Inconsistency": 10.040925,
+      "Inconsistency": 9.588643,
       "TiebreakerScore": 42.431694,
-      "MistakeChance": 0.04638977
+      "MistakeChance": 0.100176021
     },
     {
       "Id": 58,
@@ -3378,7 +3378,7 @@
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 25
+          "Value": 22
         },
         {
           "SkillId": 1,
@@ -3386,44 +3386,44 @@
         },
         {
           "SkillId": 2,
-          "Value": 60
+          "Value": 63
         },
         {
           "SkillId": 3,
-          "Value": 68
+          "Value": 70
         },
         {
           "SkillId": 4,
-          "Value": 11
+          "Value": 16
         },
         {
           "SkillId": 5,
-          "Value": 53
+          "Value": 57
         },
         {
           "SkillId": 6,
-          "Value": 58
+          "Value": 57
         },
         {
           "SkillId": 7,
-          "Value": 76
+          "Value": 80
         },
         {
           "SkillId": 8,
-          "Value": 9
+          "Value": 11
         },
         {
           "SkillId": 9,
-          "Value": 2
+          "Value": 0
         },
         {
           "SkillId": 10,
-          "Value": 42
+          "Value": 41
         }
       ],
-      "Inconsistency": 13.6466208,
+      "Inconsistency": 13.01352,
       "TiebreakerScore": 97.2846146,
-      "MistakeChance": 0.07426014
+      "MistakeChance": 0.155266121
     },
     {
       "Id": 59,
@@ -3432,11 +3432,11 @@
       "CountryId": 15,
       "Sex": "w",
       "Elo": 5034,
-      "LeagueType": 2,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 61
+          "Value": 64
         },
         {
           "SkillId": 1,
@@ -3444,19 +3444,19 @@
         },
         {
           "SkillId": 2,
-          "Value": 36
+          "Value": 41
         },
         {
           "SkillId": 3,
-          "Value": 10
+          "Value": 12
         },
         {
           "SkillId": 4,
-          "Value": 87
+          "Value": 89
         },
         {
           "SkillId": 5,
-          "Value": 86
+          "Value": 88
         },
         {
           "SkillId": 6,
@@ -3464,24 +3464,24 @@
         },
         {
           "SkillId": 7,
-          "Value": 75
+          "Value": 76
         },
         {
           "SkillId": 8,
-          "Value": 3
+          "Value": 0
         },
         {
           "SkillId": 9,
-          "Value": 71
+          "Value": 69
         },
         {
           "SkillId": 10,
-          "Value": 35
+          "Value": 38
         }
       ],
-      "Inconsistency": 9.641663,
+      "Inconsistency": 10.3451967,
       "TiebreakerScore": 77.46544,
-      "MistakeChance": 0.0210018866
+      "MistakeChance": 0.039758876
     },
     {
       "Id": 60,
@@ -3490,56 +3490,56 @@
       "CountryId": 127,
       "Sex": "m",
       "Elo": 4885,
-      "LeagueType": 2,
+      "LeagueType": -1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 21
+          "Value": 25
         },
         {
           "SkillId": 1,
-          "Value": 36
+          "Value": 37
         },
         {
           "SkillId": 2,
-          "Value": 33
+          "Value": 29
         },
         {
           "SkillId": 3,
-          "Value": 15
+          "Value": 17
         },
         {
           "SkillId": 4,
-          "Value": 15
+          "Value": 16
         },
         {
           "SkillId": 5,
-          "Value": 11
+          "Value": 13
         },
         {
           "SkillId": 6,
-          "Value": 100
+          "Value": 99
         },
         {
           "SkillId": 7,
-          "Value": 7
+          "Value": 5
         },
         {
           "SkillId": 8,
-          "Value": 32
+          "Value": 36
         },
         {
           "SkillId": 9,
-          "Value": 40
+          "Value": 35
         },
         {
           "SkillId": 10,
-          "Value": 72
+          "Value": 74
         }
       ],
-      "Inconsistency": 6.57761574,
+      "Inconsistency": 6.84296227,
       "TiebreakerScore": 70.19855,
-      "MistakeChance": 0.03563037
+      "MistakeChance": 0.0804373547
     },
     {
       "Id": 61,
@@ -3548,7 +3548,7 @@
       "CountryId": 27,
       "Sex": "w",
       "Elo": 5200,
-      "LeagueType": 2,
+      "LeagueType": 1,
       "Skills": [
         {
           "SkillId": 0,
@@ -3556,48 +3556,48 @@
         },
         {
           "SkillId": 1,
-          "Value": 77
+          "Value": 80
         },
         {
           "SkillId": 2,
-          "Value": 97
+          "Value": 101
         },
         {
           "SkillId": 3,
-          "Value": 46
+          "Value": 42
         },
         {
           "SkillId": 4,
-          "Value": 96
+          "Value": 100
         },
         {
           "SkillId": 5,
-          "Value": 25
+          "Value": 28
         },
         {
           "SkillId": 6,
-          "Value": 32
+          "Value": 29
         },
         {
           "SkillId": 7,
-          "Value": 56
+          "Value": 51
         },
         {
           "SkillId": 8,
-          "Value": 99
+          "Value": 94
         },
         {
           "SkillId": 9,
-          "Value": 87
+          "Value": 91
         },
         {
           "SkillId": 10,
-          "Value": 19
+          "Value": 22
         }
       ],
-      "Inconsistency": 9.620455,
+      "Inconsistency": 9.847676,
       "TiebreakerScore": 98.27223,
-      "MistakeChance": 0.07660212
+      "MistakeChance": 0.14803496
     },
     {
       "Id": 62,
@@ -3606,19 +3606,19 @@
       "CountryId": 61,
       "Sex": "m",
       "Elo": 4900,
-      "LeagueType": 2,
+      "LeagueType": -1,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 32
+          "Value": 29
         },
         {
           "SkillId": 1,
-          "Value": 45
+          "Value": 47
         },
         {
           "SkillId": 2,
-          "Value": 23
+          "Value": 24
         },
         {
           "SkillId": 3,
@@ -3626,15 +3626,15 @@
         },
         {
           "SkillId": 4,
-          "Value": 40
+          "Value": 45
         },
         {
           "SkillId": 5,
-          "Value": 12
+          "Value": 10
         },
         {
           "SkillId": 6,
-          "Value": 77
+          "Value": 74
         },
         {
           "SkillId": 7,
@@ -3642,20 +3642,20 @@
         },
         {
           "SkillId": 8,
-          "Value": 28
+          "Value": 23
         },
         {
           "SkillId": 9,
-          "Value": 86
+          "Value": 87
         },
         {
           "SkillId": 10,
-          "Value": 9
+          "Value": 4
         }
       ],
-      "Inconsistency": 14.0447741,
+      "Inconsistency": 14.46448,
       "TiebreakerScore": 62.9742966,
-      "MistakeChance": 0.04287549
+      "MistakeChance": 0.07818643
     },
     {
       "Id": 63,
@@ -3664,43 +3664,217 @@
       "CountryId": 30,
       "Sex": "m",
       "Elo": 5094,
+      "LeagueType": 1,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 99
+        },
+        {
+          "SkillId": 1,
+          "Value": 49
+        },
+        {
+          "SkillId": 2,
+          "Value": 4
+        },
+        {
+          "SkillId": 3,
+          "Value": 81
+        },
+        {
+          "SkillId": 4,
+          "Value": 9
+        },
+        {
+          "SkillId": 5,
+          "Value": 21
+        },
+        {
+          "SkillId": 6,
+          "Value": 4
+        },
+        {
+          "SkillId": 7,
+          "Value": 60
+        },
+        {
+          "SkillId": 8,
+          "Value": 64
+        },
+        {
+          "SkillId": 9,
+          "Value": 87
+        },
+        {
+          "SkillId": 10,
+          "Value": 64
+        }
+      ],
+      "Inconsistency": 9.067519,
+      "TiebreakerScore": 30.3247623,
+      "MistakeChance": 0.111727647
+    },
+    {
+      "Id": 64,
+      "FirstName": "Zeina",
+      "LastName": "Abdelaziz",
+      "CountryId": 14,
+      "Sex": "w",
+      "Elo": 5000,
       "LeagueType": 2,
       "Skills": [
         {
           "SkillId": 0,
-          "Value": 94
+          "Value": 55
         },
         {
           "SkillId": 1,
-          "Value": 54
+          "Value": 80
         },
         {
           "SkillId": 2,
-          "Value": 6
+          "Value": 21
         },
         {
           "SkillId": 3,
-          "Value": 78
+          "Value": 28
         },
         {
           "SkillId": 4,
-          "Value": 7
+          "Value": 96
         },
         {
           "SkillId": 5,
-          "Value": 20
+          "Value": 27
         },
         {
           "SkillId": 6,
-          "Value": 5
+          "Value": 50
         },
         {
           "SkillId": 7,
-          "Value": 56
+          "Value": 30
         },
         {
           "SkillId": 8,
-          "Value": 67
+          "Value": 99
+        },
+        {
+          "SkillId": 9,
+          "Value": 37
+        },
+        {
+          "SkillId": 10,
+          "Value": 78
+        }
+      ],
+      "Inconsistency": 6.49893761,
+      "TiebreakerScore": 24.1519337,
+      "MistakeChance": 0.06818863
+    },
+    {
+      "Id": 65,
+      "FirstName": "Shakila",
+      "LastName": "Jadej",
+      "CountryId": 1,
+      "Sex": "w",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 22
+        },
+        {
+          "SkillId": 1,
+          "Value": 72
+        },
+        {
+          "SkillId": 2,
+          "Value": 36
+        },
+        {
+          "SkillId": 3,
+          "Value": 52
+        },
+        {
+          "SkillId": 4,
+          "Value": 76
+        },
+        {
+          "SkillId": 5,
+          "Value": 49
+        },
+        {
+          "SkillId": 6,
+          "Value": 10
+        },
+        {
+          "SkillId": 7,
+          "Value": 50
+        },
+        {
+          "SkillId": 8,
+          "Value": 52
+        },
+        {
+          "SkillId": 9,
+          "Value": 22
+        },
+        {
+          "SkillId": 10,
+          "Value": 30
+        }
+      ],
+      "Inconsistency": 6.85337067,
+      "TiebreakerScore": 59.0488853,
+      "MistakeChance": 0.0576475263
+    },
+    {
+      "Id": 66,
+      "FirstName": "Haifa",
+      "LastName": "Shahzad",
+      "CountryId": 45,
+      "Sex": "w",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 2
+        },
+        {
+          "SkillId": 1,
+          "Value": 20
+        },
+        {
+          "SkillId": 2,
+          "Value": 90
+        },
+        {
+          "SkillId": 3,
+          "Value": 46
+        },
+        {
+          "SkillId": 4,
+          "Value": 63
+        },
+        {
+          "SkillId": 5,
+          "Value": 38
+        },
+        {
+          "SkillId": 6,
+          "Value": 21
+        },
+        {
+          "SkillId": 7,
+          "Value": 98
+        },
+        {
+          "SkillId": 8,
+          "Value": 51
         },
         {
           "SkillId": 9,
@@ -3708,12 +3882,244 @@
         },
         {
           "SkillId": 10,
-          "Value": 69
+          "Value": 10
         }
       ],
-      "Inconsistency": 9.419353,
-      "TiebreakerScore": 30.3247623,
-      "MistakeChance": 0.0570767038
+      "Inconsistency": 6.544323,
+      "TiebreakerScore": 7.83998966,
+      "MistakeChance": 0.0331674628
+    },
+    {
+      "Id": 67,
+      "FirstName": "Rana",
+      "LastName": "Al-Ghamdi",
+      "CountryId": 45,
+      "Sex": "w",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 27
+        },
+        {
+          "SkillId": 1,
+          "Value": 51
+        },
+        {
+          "SkillId": 2,
+          "Value": 31
+        },
+        {
+          "SkillId": 3,
+          "Value": 0
+        },
+        {
+          "SkillId": 4,
+          "Value": 88
+        },
+        {
+          "SkillId": 5,
+          "Value": 0
+        },
+        {
+          "SkillId": 6,
+          "Value": 16
+        },
+        {
+          "SkillId": 7,
+          "Value": 49
+        },
+        {
+          "SkillId": 8,
+          "Value": 93
+        },
+        {
+          "SkillId": 9,
+          "Value": 71
+        },
+        {
+          "SkillId": 10,
+          "Value": 42
+        }
+      ],
+      "Inconsistency": 8.04628,
+      "TiebreakerScore": 64.27587,
+      "MistakeChance": 0.0751294
+    },
+    {
+      "Id": 68,
+      "FirstName": "Mulyadi",
+      "LastName": "Rohanah",
+      "CountryId": 3,
+      "Sex": "m",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 93
+        },
+        {
+          "SkillId": 1,
+          "Value": 46
+        },
+        {
+          "SkillId": 2,
+          "Value": 11
+        },
+        {
+          "SkillId": 3,
+          "Value": 76
+        },
+        {
+          "SkillId": 4,
+          "Value": 71
+        },
+        {
+          "SkillId": 5,
+          "Value": 91
+        },
+        {
+          "SkillId": 6,
+          "Value": 35
+        },
+        {
+          "SkillId": 7,
+          "Value": 38
+        },
+        {
+          "SkillId": 8,
+          "Value": 98
+        },
+        {
+          "SkillId": 9,
+          "Value": 82
+        },
+        {
+          "SkillId": 10,
+          "Value": 89
+        }
+      ],
+      "Inconsistency": 6.506192,
+      "TiebreakerScore": 43.57167,
+      "MistakeChance": 0.04912518
+    },
+    {
+      "Id": 69,
+      "FirstName": "Prosper",
+      "LastName": "Belemgnegre",
+      "CountryId": 64,
+      "Sex": "m",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 92
+        },
+        {
+          "SkillId": 1,
+          "Value": 76
+        },
+        {
+          "SkillId": 2,
+          "Value": 19
+        },
+        {
+          "SkillId": 3,
+          "Value": 55
+        },
+        {
+          "SkillId": 4,
+          "Value": 51
+        },
+        {
+          "SkillId": 5,
+          "Value": 41
+        },
+        {
+          "SkillId": 6,
+          "Value": 21
+        },
+        {
+          "SkillId": 7,
+          "Value": 21
+        },
+        {
+          "SkillId": 8,
+          "Value": 99
+        },
+        {
+          "SkillId": 9,
+          "Value": 52
+        },
+        {
+          "SkillId": 10,
+          "Value": 30
+        }
+      ],
+      "Inconsistency": 13.7158642,
+      "TiebreakerScore": 16.2690754,
+      "MistakeChance": 0.0785785839
+    },
+    {
+      "Id": 70,
+      "FirstName": "Yoshiko",
+      "LastName": "Oguma",
+      "CountryId": 9,
+      "Sex": "w",
+      "Elo": 5000,
+      "LeagueType": 2,
+      "Skills": [
+        {
+          "SkillId": 0,
+          "Value": 25
+        },
+        {
+          "SkillId": 1,
+          "Value": 61
+        },
+        {
+          "SkillId": 2,
+          "Value": 92
+        },
+        {
+          "SkillId": 3,
+          "Value": 58
+        },
+        {
+          "SkillId": 4,
+          "Value": 2
+        },
+        {
+          "SkillId": 5,
+          "Value": 14
+        },
+        {
+          "SkillId": 6,
+          "Value": 8
+        },
+        {
+          "SkillId": 7,
+          "Value": 26
+        },
+        {
+          "SkillId": 8,
+          "Value": 67
+        },
+        {
+          "SkillId": 9,
+          "Value": 34
+        },
+        {
+          "SkillId": 10,
+          "Value": 64
+        }
+      ],
+      "Inconsistency": 11.0040674,
+      "TiebreakerScore": 20.7636719,
+      "MistakeChance": 0.0495093726
     }
   ],
   "Leagues": [

@@ -46,10 +46,9 @@ public class UI_Header : MonoBehaviour
     private void InitSettingsSubmenu()
     {
         SettingsButton.onClick.AddListener(() => ToggleSubmenu(SettingsSubmenu));
-        //AddSubmenuOption(SettingsSubmenu, "Add Random Player", () => OpenPopupThroughSubmenu(PopupType.AddPlayer));
-        //AddSubmenuOption(SettingsSubmenu, "Shuffle Skills", ShuffleSkills);
-        //AddSubmenuOption(SettingsSubmenu, "Schedule Tournament", () => OpenPopupThroughSubmenu(PopupType.ScheduleTournament));
-        //AddSubmenuOption(SettingsSubmenu, "Add League", () => BaseUI.Simulator.AddSeasonLeagues());
+        AddSubmenuOption(SettingsSubmenu, "Add Random Player", () => OpenPopupThroughSubmenu(PopupType.AddPlayer));
+        AddSubmenuOption(SettingsSubmenu, "Shuffle Skills", ShuffleSkills);
+        AddSubmenuOption(SettingsSubmenu, "Schedule Tournament", () => OpenPopupThroughSubmenu(PopupType.ScheduleTournament));
         SettingsSubmenu.SetActive(false);
     }
 

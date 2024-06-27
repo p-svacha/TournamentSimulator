@@ -6,11 +6,8 @@ using UnityEngine;
 public class Format_GrandLeague : Format_Classic24
 {
     public Format_GrandLeague(TournamentData data) : base(data) { }
-    public Format_GrandLeague(LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(type, season, quarter, day, players, allLeagues) { }
-
-    public override void Initialize()
+    public Format_GrandLeague(int season, int quarter, int day, League league) : base(TournamentType.GrandLeague, season, quarter, day, league)
     {
-        base.Initialize();
         Name = "Grand League";
     }
 }

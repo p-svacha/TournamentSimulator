@@ -28,9 +28,18 @@ public static class Database
     public static Dictionary<int, Tournament> Tournaments;
     public static Dictionary<int, Match> Matches;
 
+    public const int DAYS_PER_QUARTER = 15;
+    public const int QUARTERS_PER_SEASON = 4;
+
     public static int Season;
     public static int Quarter;
     public static int Day;
+
+    public static int ToAbsoluteDay(int season, int quarter, int day) => ((season - 1) * QUARTERS_PER_SEASON * DAYS_PER_QUARTER) + ((quarter - 1) * DAYS_PER_QUARTER) + (day - 1);
+    public static int CurrentDayAbsolute => ToAbsoluteDay(Season, Quarter, Day);
+    public static int ToRelativeSeason(int absoluteDay) => (absoluteDay / (QUARTERS_PER_SEASON * DAYS_PER_QUARTER)) + 1;
+    public static int ToRelativeQuarter(int absoluteDay) => ((absoluteDay % (QUARTERS_PER_SEASON * DAYS_PER_QUARTER)) / DAYS_PER_QUARTER) + 1;
+    public static int ToRelativeDay(int absoluteDay) => (absoluteDay % (DAYS_PER_QUARTER)) + 1;
 
     #region Init
 
@@ -151,12 +160,15 @@ public static class Database
         return "???";
     }
 
-    public static League GetLeague(LeagueType type, int season) => Leagues.Values.FirstOrDefault(x => x.LeagueType == type && x.Season == season);
-    public static League GetCurrentLeague(LeagueType type) => GetLeague(type, Season);
-    public static League CurrentGrandLeague => GetLeague(LeagueType.GrandLeague, Season);
-    public static League CurrentChallengeLeague => GetLeague(LeagueType.ChallengeLeague, Season);
-    public static League CurrentOpenLeague => GetLeague(LeagueType.OpenLeague, Season);
+    public static League GetLeague(TournamentType type, int season) => Leagues.Values.FirstOrDefault(x => x.LeagueType == type && x.Season == season);
+    public static League GetCurrentLeague(TournamentType type) => GetLeague(type, Season);
+    public static League CurrentGrandLeague => GetLeague(TournamentType.GrandLeague, Season);
+    public static League CurrentChallengeLeague => GetLeague(TournamentType.ChallengeLeague, Season);
+    public static League CurrentOpenLeague => GetLeague(TournamentType.OpenLeague, Season);
 
+    public static List<Tournament> GetTournaments(int season) => Tournaments.Values.Where(x => x.Season == season).ToList();
+
+    public static List<Player> WorldRanking => Players.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.TiebreakerScore).ToList();
     /// <summary>
     /// Returns an ordered dictionary representing the country leaderboard of a given country based on elo rating.
     /// </summary>
@@ -195,7 +207,7 @@ public static class Database
             medalScore.Add(p, 0);
         }
 
-        foreach (League l in Leagues.Values.Where(x => x.Season < Season && x.LeagueType == LeagueType.GrandLeague))
+        foreach (League l in Leagues.Values.Where(x => x.Season < Season && x.LeagueType == TournamentType.GrandLeague))
         {
             List<Player> ranking = l.Ranking;
             goldMedals[ranking[0]]++;

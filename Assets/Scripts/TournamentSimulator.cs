@@ -6,7 +6,6 @@ using UnityEngine;
 
 public class TournamentSimulator : MonoBehaviour
 {
-    public const int DaysPerQuarter = 15;
     public const int DEFAULT_RATING = 5000;
 
     [HideInInspector]
@@ -33,6 +32,15 @@ public class TournamentSimulator : MonoBehaviour
         Database.LoadData();
         PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
 
+        /* Test Relative <-> Absolute Dates
+        int absoluteDay = Database.CurrentDayAbsolute;
+        Debug.Log("absDay: " + absoluteDay);
+        int season = Database.ToRelativeSeason(absoluteDay);
+        int qu = Database.ToRelativeQuarter(absoluteDay);
+        int da = Database.ToRelativeDay(absoluteDay);
+        Debug.Log(season + "|" + qu + "|" + da);
+        */
+
         UI = GetComponent<UI_Base>();
         UI.Init(this);
         UpdateUI();
@@ -47,7 +55,7 @@ public class TournamentSimulator : MonoBehaviour
 
         int league = (Database.Players.Count / 24);
         if (league > 2) league = 2;
-        newPlayer.SetLeague((LeagueType)league);
+        newPlayer.SetLeague((TournamentType)league);
 
         Database.Players.Add(newPlayer.Id, newPlayer);
         Debug.Log(newPlayer.ToString() + " has been generated.");
@@ -70,7 +78,7 @@ public class TournamentSimulator : MonoBehaviour
             StartSeason();
         }
 
-        else if (Database.Quarter == 4 && Database.Day == 15)
+        else if (Database.Quarter == Database.QUARTERS_PER_SEASON && Database.Day == Database.DAYS_PER_QUARTER)
         {
             Database.Season++;
             Database.Quarter = 1;
@@ -78,7 +86,7 @@ public class TournamentSimulator : MonoBehaviour
             EndSeason();
             StartSeason();
         }
-        else if (Database.Day == 15)
+        else if (Database.Day == Database.DAYS_PER_QUARTER)
         {
             Database.Quarter++;
             Database.Day = 1;
@@ -90,7 +98,7 @@ public class TournamentSimulator : MonoBehaviour
     }
     public bool CanGoToNextDay()
     {
-        return Database.Tournaments.Values.Where(x => x.League.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
+        return Database.Matches.Values.Where(x => x.Tournament.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
     }
 
     private void StartSeason()
@@ -101,9 +109,9 @@ public class TournamentSimulator : MonoBehaviour
         List<Player> openLeaguePlayers = new List<Player>();
         foreach (Player p in Database.Players.Values)
         {
-            if (p.LeagueType == LeagueType.GrandLeague) grandLeaguePlayers.Add(p);
-            else if (p.LeagueType == LeagueType.ChallengeLeague) challengeLeaguePlayers.Add(p);
-            else if (p.LeagueType == LeagueType.OpenLeague) openLeaguePlayers.Add(p);
+            if (p.LeagueType == TournamentType.GrandLeague) grandLeaguePlayers.Add(p);
+            else if (p.LeagueType == TournamentType.ChallengeLeague) challengeLeaguePlayers.Add(p);
+            else if (p.LeagueType == TournamentType.OpenLeague) openLeaguePlayers.Add(p);
         }
         AddNewLeague("Grand League", Database.Season, 0, grandLeaguePlayers);
         AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers);
@@ -113,7 +121,7 @@ public class TournamentSimulator : MonoBehaviour
 
         // Create seasonal tournaments from schedule
         List<Tuple<int, int, int>> schedule = Database.ReadSchedule();
-        foreach(Tuple<int, int, int> entry in schedule) ScheduleTournament((LeagueType)entry.Item3, entry.Item1, entry.Item2);
+        foreach(Tuple<int, int, int> entry in schedule) ScheduleTournament((TournamentType)entry.Item3, entry.Item1, entry.Item2);
 
         Save();
     }
@@ -124,9 +132,9 @@ public class TournamentSimulator : MonoBehaviour
         Database.Leagues.Add(newLeague.Id, newLeague);
     }
 
-    public void ScheduleTournament(LeagueType type, int quarter, int day)
+    public void ScheduleTournament(TournamentType type, int quarter, int day)
     {
-        Tournament newTournament = Tournament.CreateTournament(type, Database.Season, quarter, day, Database.Players.Values.Where(x => x.LeagueType == type).ToList(), Database.Leagues.Values.ToList());
+        Tournament newTournament = Tournament.CreateTournament(type, Database.Season, quarter, day);
         Database.Tournaments.Add(newTournament.Id, newTournament);
         foreach (Match m in newTournament.Matches) Database.Matches.Add(m.Id, m);
     }
@@ -140,19 +148,19 @@ public class TournamentSimulator : MonoBehaviour
         // Relegations
         Debug.Log("Performing relegations.");
         List<Player> grandLegueRanking = Database.CurrentGrandLeague.Ranking;
-        for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
+        for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
 
         List<Player> challengeLegueRanking = Database.CurrentChallengeLeague.Ranking;
-        for(int i = 0; i < 5; i++) challengeLegueRanking[i].SetLeague(LeagueType.GrandLeague);
-        for (int i = 19; i < challengeLegueRanking.Count; i++) challengeLegueRanking[i].SetLeague(LeagueType.OpenLeague);
+        for(int i = 0; i < 5; i++) challengeLegueRanking[i].SetLeague(TournamentType.GrandLeague);
+        for (int i = 19; i < challengeLegueRanking.Count; i++) challengeLegueRanking[i].SetLeague(TournamentType.OpenLeague);
 
         List<Player> openLegueRanking = Database.CurrentOpenLeague.Ranking;
-        for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
+        for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
         List<Player> eliminatedPlayers = new List<Player>();
         for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++)
         {
             eliminatedPlayers.Add(openLegueRanking[i]);
-            openLegueRanking[i].SetLeague(LeagueType.None);
+            openLegueRanking[i].SetLeague(TournamentType.None);
         }
 
         // Revive 2 inactive players and put them into open league (only ones that haven't just been eliminated)
@@ -181,9 +189,9 @@ public class TournamentSimulator : MonoBehaviour
 
     public void ReviveRandomPlayer(List<Player> excludedPlayers)
     {
-        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == LeagueType.None && !excludedPlayers.Contains(x)).ToList();
+        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == TournamentType.None && !excludedPlayers.Contains(x)).ToList();
         Player playerToRevive = candidates[UnityEngine.Random.Range(0, candidates.Count)];
-        playerToRevive.SetLeague(LeagueType.OpenLeague);
+        playerToRevive.SetLeague(TournamentType.OpenLeague);
         Debug.Log(playerToRevive.ToString() + " has been revived.");
     }
 

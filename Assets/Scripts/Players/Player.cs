@@ -11,7 +11,7 @@ public class Player : IPlayer
     public Country Country { get; private set; }
     public string Sex { get; private set; }
     public int Elo { get; private set; }
-    public LeagueType LeagueType { get; private set; }
+    public TournamentType LeagueType { get; private set; }
     private Dictionary<SkillId, int> Skills { get; set; }
     public float Inconsistency { get; private set; }
     public float TiebreakerScore { get; private set; }
@@ -43,7 +43,7 @@ public class Player : IPlayer
         TiebreakerScore = tiebreakerScore;
         MistakeChance = mistakeChance;
 
-        LeagueType = LeagueType.None;
+        LeagueType = TournamentType.None;
     }
 
     public int GetSkillBaseValue(SkillDef skillDef) => Skills[skillDef.Id];
@@ -86,7 +86,7 @@ public class Player : IPlayer
     {
         Elo = value;
     }
-    public void SetLeague(LeagueType league)
+    public void SetLeague(TournamentType league)
     {
         LeagueType = league;
         Debug.Log("League of " + Name + " has been changed to " + league.ToString());
@@ -123,7 +123,7 @@ public class Player : IPlayer
         Country = Database.Countries[data.CountryId];
         Sex = data.Sex;
         Elo = data.Elo;
-        LeagueType = (LeagueType)data.LeagueType;
+        LeagueType = (TournamentType)data.LeagueType;
         Skills = data.Skills.ToDictionary(x => (SkillId)x.SkillId, x => x.Value);
         Inconsistency = data.Inconsistency;
         TiebreakerScore = data.TiebreakerScore;

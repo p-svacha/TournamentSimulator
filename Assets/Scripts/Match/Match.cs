@@ -9,6 +9,10 @@ public class Match
     public int Id { get; private set; }
     public string Name { get; private set; }
     public Tournament Tournament { get; private set; }
+    public int Quarter { get; private set; }
+    public int Day { get; private set; }
+    public int AbsoluteDay => Database.ToAbsoluteDay(Tournament.Season, Quarter, Day);
+
 
     // Rules
     public int NumPlayers { get; private set; } // How many players there are in the match
@@ -25,11 +29,13 @@ public class Match
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    public Match(string name, Tournament tournament, int numPlayers, List<int> pointDistribution)
+    public Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution)
     {
         Id = Database.GetNewMatchId();
         Name = name;
         Tournament = tournament;
+        Quarter = quarter;
+        Day = day;
         NumPlayers = numPlayers;
         PointDistribution = pointDistribution;
 
@@ -45,6 +51,9 @@ public class Match
         Participants.Add(new MatchParticipant(p, seed));
     }
 
+    /// <summary>
+    /// Sets the matches the top x players in this match advance to, with x being the length of the list and the integers in the list corresponding to the match index within the tournament.
+    /// </summary>
     public void SetTargetMatches(List<int> targetMatchIndices)
     {
         TargetMatchIndices = targetMatchIndices;
@@ -55,9 +64,9 @@ public class Match
         if (IsDone) return false;
         if (IsRunning) return false;
         if (NumPlayers != Participants.Count) return false;
-        if (Tournament.League.Season != Database.Season) return false;
-        if (Tournament.Quarter != Database.Quarter) return false;
-        if (Tournament.Day != Database.Day) return false;
+        if (Tournament.Season != Database.Season) return false;
+        if (Quarter != Database.Quarter) return false;
+        if (Day != Database.Day) return false;
         return true;
     }
 
@@ -108,7 +117,7 @@ public class Match
             targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
         }
 
-        if (NumAdvancements == 0) Tournament.SetDone();
+        if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
     }
 
     #endregion
@@ -143,7 +152,8 @@ public class Match
         get
         {
             if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
+            else if(Tournament.League != null) return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
     }
     public List<Player> PlayerRanking => Ranking.Select(x => x.Player).ToList();
@@ -160,6 +170,8 @@ public class Match
         data.Id = Id;
         data.Name = Name;
         data.TournamentId = Tournament.Id;
+        data.Quarter = Quarter;
+        data.Day = Day;
         data.IsDone = IsDone;
         data.NumPlayers = NumPlayers;
         data.TargetMatchIndices = TargetMatchIndices;
@@ -174,6 +186,8 @@ public class Match
         Id = data.Id;
         Name = data.Name;
         Tournament = Database.Tournaments[data.TournamentId];
+        Quarter = data.Quarter;
+        Day = data.Day;
         NumPlayers = data.NumPlayers;
         TargetMatchIndices = data.TargetMatchIndices;
         PointDistribution = data.PointDistribution;

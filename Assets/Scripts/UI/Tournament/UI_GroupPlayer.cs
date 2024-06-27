@@ -54,7 +54,7 @@ public class UI_GroupPlayer : MonoBehaviour
         {
             EloText.text = p.Player.Elo.ToString();
             EloChangeIcon.enabled = false;
-            EloChangeText.text = p.Player.CurrentLeaguePoints.ToString();
+            EloChangeText.text = match.Tournament.League != null ? p.Player.CurrentLeaguePoints.ToString() : "";
             PointsText.text = "";
             Background.color = ColorManager.Singleton.DefaultColor;
         }

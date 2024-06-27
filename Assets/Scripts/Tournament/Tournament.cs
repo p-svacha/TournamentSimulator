@@ -7,10 +7,9 @@ public abstract class Tournament
 {
     public int Id { get; private set; }
     public string Name { get; protected set; }
-    public int LeagueId { get; protected set; }
+    public TournamentType Format { get; private set; }
     public League League { get; protected set; }
-    public int Quarter { get; protected set; }
-    public int Day { get; protected set; }
+    public int Season { get; protected set; }
     public bool IsDone { get; protected set; }
     public List<Player> Players { get; protected set; }
     public List<Match> Matches { get; protected set; }
@@ -19,23 +18,18 @@ public abstract class Tournament
     protected int[] MatchesPerPhase;
 
     // New tournament
-    public Tournament(LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
+    public Tournament(TournamentType format, int season, League league = null)
     {
         Id = Database.GetNewTournamentId();
 
-        Quarter = quarter;
-        Day = day;
+        Format = format;
+        Season = season;
         IsDone = false;
-
-        Players = players;
-
-        League = allLeagues.First(x => x.LeagueType == format && x.Season == season);
-        LeagueId = League.Id;
-
-        Initialize();
+        League = league;
     }
 
     public abstract void Initialize();
+    public abstract string GetMatchDayTitle(int index);
 
     public virtual List<UI_Group> DisplayTournament(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
     {
@@ -75,22 +69,32 @@ public abstract class Tournament
         return matches;
     }
 
-    public static Tournament CreateTournament(LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
+    public static Tournament CreateTournament(TournamentType format, int season, int quarter, int day)
     {
-        if(format == LeagueType.GrandLeague) return new Format_GrandLeague(format, season, quarter, day, players, allLeagues);
-        if(format == LeagueType.ChallengeLeague) return new Format_ChallengeLeague(format, season, quarter, day, players, allLeagues);
-        if(format == LeagueType.OpenLeague) return new Format_OpenLeague(format, season, quarter, day, players, allLeagues);
+        if (format == TournamentType.GrandLeague) return new Format_GrandLeague(season, quarter, day, Database.CurrentGrandLeague);
+        if (format == TournamentType.ChallengeLeague) return new Format_ChallengeLeague(season, quarter, day, Database.CurrentChallengeLeague);
+        if (format == TournamentType.OpenLeague) return new Format_OpenLeague(season, quarter, day, Database.CurrentOpenLeague);
+        if (format == TournamentType.SeasonCup) return new Format_SeasonCup(season);
         throw new System.Exception("Format not handled");
     }
 
     public void SetDone()
     {
         IsDone = true;
-        DistributeLeaguePoints();
+        OnTournamentDone();
     }
 
-    protected abstract void DistributeLeaguePoints();
+    protected virtual void OnTournamentDone() { }
+
     public override string ToString() => Name;
+    public List<Match> GetMatchesOf(int season, int quarter, int day) => Matches.Where(x => Season == season && x.Quarter == quarter && x.Day == day).ToList();
+    public List<Match> GetTodaysMatches() => GetMatchesOf(Database.Season, Database.Quarter, Database.Day);
+    public bool HasOpenMatchesToday() => GetTodaysMatches().Any(x => !x.IsDone);
+
+    /// <summary>
+    /// Returns a list of all days (as absolute days) that have at least 1 match of this tournament.
+    /// </summary>
+    public List<int> GetMatchDays() => Matches.Select(x => x.AbsoluteDay).Distinct().ToList();
 
     #region Save / Load
 
@@ -99,9 +103,9 @@ public abstract class Tournament
         TournamentData data = new TournamentData();
         data.Id = Id;
         data.Name = Name;
+        data.Format = (int)Format;
         data.LeagueId = League.Id;
-        data.Quarter = Quarter;
-        data.Day = Day;
+        data.Season = Season;
         data.IsDone = IsDone;
         data.Players = Players.Select(x => x.Id).ToList();
         return data;
@@ -109,19 +113,20 @@ public abstract class Tournament
 
     public static Tournament LoadTournament(TournamentData data)
     {
-        LeagueType type = Database.Leagues[data.LeagueId].LeagueType;
-        if (type == LeagueType.GrandLeague) return new Format_GrandLeague(data);
-        if (type == LeagueType.ChallengeLeague) return new Format_ChallengeLeague(data);
-        if (type == LeagueType.OpenLeague) return new Format_OpenLeague(data);
+        TournamentType format = (TournamentType)data.Format;
+        if (format == TournamentType.GrandLeague) return new Format_GrandLeague(data);
+        if (format == TournamentType.ChallengeLeague) return new Format_ChallengeLeague(data);
+        if (format == TournamentType.OpenLeague) return new Format_OpenLeague(data);
+        if (format == TournamentType.SeasonCup) return new Format_SeasonCup(data);
         throw new System.Exception("Format not handled");
     }
     public Tournament(TournamentData data)
     {
         Id = data.Id;
         Name = data.Name;
+        Format = (TournamentType)data.Format;
         League = Database.Leagues[data.LeagueId];
-        Quarter = data.Quarter;
-        Day = data.Day;
+        Season = data.Season;
         IsDone = data.IsDone;
         Players = data.Players.Select(x => Database.Players[x]).ToList();
 

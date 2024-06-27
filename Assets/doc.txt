@@ -1,0 +1,21 @@
+open cup: (new tournament format)
+
+64 participants
+1v1 mode
+single elim
+5 rounds (ro32 - ro16 - ro8 - quarters - semis - p3m/final)
+every round is played on a different date
+	> rework so that play dates are per match instead of per tournament
+	> show tournaments in schedule when there is a match of the tournament on that day
+
+ro32:	spring15
+ro16:	summer1
+ro8:	summer12
+Quart:	autumn5
+Semi:	Autumn12
+final:	Winter12
+
+awards (leagues and tournaments can hand out awards)
+player events
+player traits
+

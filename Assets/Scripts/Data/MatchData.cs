@@ -9,6 +9,8 @@ public class MatchData
     public int Id { get; set; }
     public string Name { get; set; }
     public int TournamentId { get; set; }
+    public int Quarter { get; set; }
+    public int Day { get; set; }
     public bool IsDone { get; set; }
     public int NumPlayers { get; set; }
     public List<int> TargetMatchIndices { get; set; }

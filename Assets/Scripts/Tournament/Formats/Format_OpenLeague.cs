@@ -23,8 +23,17 @@ public class Format_OpenLeague : Tournament
         { 12, new List<int>() { 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1} },
     };
 
+    public int Quarter { get; private set; }
+    public int Day { get; private set; }
+
     public Format_OpenLeague(TournamentData data) : base(data) { }
-    public Format_OpenLeague(LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(type, season, quarter, day, players, allLeagues) { }
+    public Format_OpenLeague(int season, int quarter, int day, League league) : base(TournamentType.OpenLeague, season, league)
+    {
+        Quarter = quarter;
+        Day = day;
+
+        Initialize();
+    }
 
     public override void Initialize()
     {
@@ -40,7 +49,7 @@ public class Format_OpenLeague : Tournament
         {
             PlayersPerPhase = new int[] { 6 };
             MatchesPerPhase = new int[] { 1 };
-            Match onlyMatch = new Match("Final", this, numPlayers: Players.Count, PointDistributions[Players.Count]);
+            Match onlyMatch = new Match("Final", this, Quarter, Day, numPlayers: Players.Count, PointDistributions[Players.Count]);
             foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p, seed: 0);
             Matches.Add(onlyMatch);
         }
@@ -64,12 +73,12 @@ public class Format_OpenLeague : Tournament
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Match semi = new Match("Semifinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match semi = new Match("Semifinal " + (i + 1), this, Quarter, Day, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) semi.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(semi);
             }
             // Final
-            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 2, 2 });
@@ -96,17 +105,17 @@ public class Format_OpenLeague : Tournament
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Match quarter = new Match("Quarterfinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match quarter = new Match("Quarterfinal " + (i + 1), this, Quarter, Day, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) quarter.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(quarter);
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new Match("Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Semifinal " + (i + 1), this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5 });
@@ -138,22 +147,22 @@ public class Format_OpenLeague : Tournament
             // Group stage
             for (int i = 0; i < 4; i++)
             {
-                Match groupMatch = new Match("Group " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match groupMatch = new Match("Group " + (i + 1), this, Quarter, Day, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) groupMatch.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(groupMatch);
             }
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Matches.Add(new Match("Quarterfinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Quarterfinal " + (i + 1), this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new Match("Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Semifinal " + (i + 1), this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, Quarter, Day, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5, 6, 7 });
@@ -203,7 +212,7 @@ public class Format_OpenLeague : Tournament
         return base.DisplayTournament(baseUI, Container, groupPrefab);
     }
 
-    protected override void DistributeLeaguePoints()
+    protected override void OnTournamentDone()
     {
         if (Players.Count == 0) return;
         if (Players.Count < 6)
@@ -252,5 +261,11 @@ public class Format_OpenLeague : Tournament
             League.Standings[Matches[10].PlayerRanking[1]] += 5;
             League.Standings[Matches[10].PlayerRanking[0]] += 6;
         }
+    }
+
+    public override string GetMatchDayTitle(int index)
+    {
+        int stepIndex = Database.Tournaments.Values.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
+        return "Step " + stepIndex;
     }
 }

@@ -8,7 +8,7 @@ public class League
     public int Id { get; private set; }
     public string Name { get; private set; }
     public int Season { get; private set; }
-    public LeagueType LeagueType { get; private set; }
+    public TournamentType LeagueType { get; private set; }
     public Dictionary<Player, int> Standings { get; private set; }
     
 
@@ -21,7 +21,7 @@ public class League
         Id = Database.GetNewLeagueId();
         Name = name;
         Season = season;
-        LeagueType = (LeagueType)formatId;
+        LeagueType = (TournamentType)formatId;
         Standings = new Dictionary<Player, int>();
         foreach (Player p in players) Standings.Add(p, 0);
     }
@@ -47,7 +47,7 @@ public class League
         Id = data.Id;
         Name = data.Name;
         Season = data.Season;
-        LeagueType = (LeagueType)data.LeagueType;
+        LeagueType = (TournamentType)data.LeagueType;
         Standings = data.Participants.ToDictionary(x => Database.Players[x.PlayerId], x => x.LeaguePoints);
     }
 

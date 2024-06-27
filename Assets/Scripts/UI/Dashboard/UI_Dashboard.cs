@@ -69,7 +69,7 @@ public class UI_Dashboard : UI_Screen
         foreach (Transform t in RatingList.ListContainer.transform) Destroy(t.gameObject);
 
         int counter = 1;
-        foreach (Player p in Database.Players.Values.OrderByDescending(x => x.Elo))
+        foreach (Player p in Database.WorldRanking)
         {
             UI_PlayerListElement elem = Instantiate(ListElement, RatingList.ListContainer.transform);
             elem.Init(counter++, p, p.Elo.ToString(), ColorManager.Singleton.DefaultColor, showLeagueIcon: true);
@@ -94,11 +94,11 @@ public class UI_Dashboard : UI_Screen
 
     private void UpdateSchedule()
     {
-        Schedule.UpdateList(BaseUI, Database.Tournaments.Where(x => x.Value.League.Season == SelectedSeason).Select(x => x.Value).ToList());
+        Schedule.UpdateList(BaseUI, SelectedSeason);
     }
     private void UpdateGrandLeagueList()
     {
-        League l = Database.GetLeague(LeagueType.GrandLeague, SelectedSeason);
+        League l = Database.GetLeague(TournamentType.GrandLeague, SelectedSeason);
         foreach (Transform t in GrandLeagueList.ListContainer.transform) Destroy(t.gameObject);
         int counter = 1;
         foreach (Player p in l.Ranking)
@@ -111,7 +111,7 @@ public class UI_Dashboard : UI_Screen
     }
     private void UpdateChallengeLeagueList()
     {
-        League l = Database.GetLeague(LeagueType.ChallengeLeague, SelectedSeason);
+        League l = Database.GetLeague(TournamentType.ChallengeLeague, SelectedSeason);
         foreach (Transform t in ChallengeLeagueList.ListContainer.transform) Destroy(t.gameObject);
         int counter = 1;
         foreach (Player p in l.Ranking)
@@ -125,7 +125,7 @@ public class UI_Dashboard : UI_Screen
     }
     private void UpdateOpenLeagueList()
     {
-        League l = Database.GetLeague(LeagueType.OpenLeague, SelectedSeason);
+        League l = Database.GetLeague(TournamentType.OpenLeague, SelectedSeason);
         foreach (Transform t in OpenLeagueList.ListContainer.transform) Destroy(t.gameObject);
         int counter = 1;
         foreach (Player p in l.Ranking)

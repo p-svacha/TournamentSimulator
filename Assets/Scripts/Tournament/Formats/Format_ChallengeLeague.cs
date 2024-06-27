@@ -6,11 +6,8 @@ using UnityEngine;
 public class Format_ChallengeLeague : Format_Classic24
 {
     public Format_ChallengeLeague(TournamentData data) : base(data) { }
-    public Format_ChallengeLeague(LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(type, season, quarter, day, players, allLeagues) { }
-
-    public override void Initialize()
+    public Format_ChallengeLeague(int season, int quarter, int day, League league) : base(TournamentType.ChallengeLeague, season, quarter, day, league)
     {
-        base.Initialize();
         Name = "Challenge League";
     }
 }

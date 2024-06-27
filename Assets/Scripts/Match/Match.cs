@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class Match
 {
-    private TournamentSimulator Simulator;
-
-
     // General
     public int Id { get; private set; }
     public string Name { get; private set; }
@@ -21,15 +18,15 @@ public class Match
 
     // State
     public bool IsDone { get; private set; }
+    public bool IsRunning { get; private set; }
     public List<MatchParticipant> Participants { get; private set; }
     public List<MatchRound> Rounds { get; private set; }
 
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    public Match(TournamentSimulator sim, string name, Tournament tournament, int numPlayers, List<int> pointDistribution)
+    public Match(string name, Tournament tournament, int numPlayers, List<int> pointDistribution)
     {
-        Simulator = sim;
         Id = Database.GetNewMatchId();
         Name = name;
         Tournament = tournament;
@@ -56,11 +53,18 @@ public class Match
     public bool CanSimulate()
     {
         if (IsDone) return false;
+        if (IsRunning) return false;
         if (NumPlayers != Participants.Count) return false;
-        if (Tournament.League.Season != Simulator.Season) return false;
-        if (Tournament.Quarter != Simulator.Quarter) return false;
-        if (Tournament.Day != Simulator.Day) return false;
+        if (Tournament.League.Season != Database.Season) return false;
+        if (Tournament.Quarter != Database.Quarter) return false;
+        if (Tournament.Day != Database.Day) return false;
         return true;
+    }
+
+    public void StartMatch()
+    {
+        foreach (MatchParticipant participant in Participants) participant.SetPreMatchStats();
+        IsRunning = true;
     }
 
     #endregion
@@ -80,6 +84,7 @@ public class Match
         if (Rounds.Count == 0) throw new System.Exception("Can't end a match without any rounds.");
 
         IsDone = true;
+        IsRunning = false;
         List<Player> orderedPlayers = PlayerRanking;
 
         Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
@@ -137,7 +142,7 @@ public class Match
     {
         get
         {
-            if (IsDone) return Participants.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
         }
     }
@@ -164,9 +169,8 @@ public class Match
         return data;
     }
 
-    public Match(TournamentSimulator sim, MatchData data)
+    public Match(MatchData data)
     {
-        Simulator = sim;
         Id = data.Id;
         Name = data.Name;
         Tournament = Database.Tournaments[data.TournamentId];

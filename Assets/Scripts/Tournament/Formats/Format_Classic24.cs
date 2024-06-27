@@ -8,7 +8,7 @@ public class Format_Classic24 : Tournament
     protected List<int> PointDistribution_KO = new List<int>() { 10, 6, 4, 3 };
 
     public Format_Classic24(TournamentData data) : base(data) { }
-    public Format_Classic24(TournamentSimulator sim, LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(sim, type, season, quarter, day, players, allLeagues) { }
+    public Format_Classic24(LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(type, season, quarter, day, players, allLeagues) { }
 
     public override void Initialize()
     {
@@ -23,7 +23,7 @@ public class Format_Classic24 : Tournament
         // Group stage
         for (int i = 0; i < 4; i++)
         {
-            Match groupMatch = new Match(Simulator, "Group " + (i + 1), this, numPlayers: 6, PointDistribution_Group);
+            Match groupMatch = new Match("Group " + (i + 1), this, numPlayers: 6, PointDistribution_Group);
 
             // Add initial players
             for (int j = 0; j < 6; j++)
@@ -38,15 +38,15 @@ public class Format_Classic24 : Tournament
         // Quarters
         for (int i = 0; i < 4; i++)
         {
-            Matches.Add(new Match(Simulator, "Quarterfinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Quarterfinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
         }
         // Semis
         for (int i = 0; i < 2; i++)
         {
-            Matches.Add(new Match(Simulator, "Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
         }
         // Final
-        Matches.Add(new Match(Simulator, "Final", this, numPlayers: 4, PointDistribution_KO));
+        Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
 
         // Link matches
         Matches[0].SetTargetMatches(new List<int>() { 4, 5, 6, 7 });

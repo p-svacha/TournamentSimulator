@@ -7,18 +7,10 @@ using UnityEngine;
 public class TournamentSimulator : MonoBehaviour
 {
     public const int DaysPerQuarter = 15;
-    public int Season;
-    public int Quarter;
-    public int Day;
-
     public const int DEFAULT_RATING = 5000;
 
     [HideInInspector]
     public UI_Base UI;
-
-    public League CurrentGrandLeague;
-    public League CurrentChallengeLeague;
-    public League CurrentOpenLeague;
 
     public static List<SkillDef> SkillDefs = new List<SkillDef>()
     {
@@ -38,19 +30,11 @@ public class TournamentSimulator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UI = GetComponent<UI_Base>();
-        UI.Init(this);
-
-        SimulationData data = Database.LoadData(this);
-        LoadState(data);
+        Database.LoadData();
         PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
 
-        Debug.Log("Loaded simulation state at " + GetQuarterName(Quarter) + " " + Day + ", Season " + Season);
-
-        CurrentGrandLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.GrandLeague && x.Season == Season);
-        CurrentChallengeLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.ChallengeLeague && x.Season == Season);
-        CurrentOpenLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.OpenLeague && x.Season == Season);
-
+        UI = GetComponent<UI_Base>();
+        UI.Init(this);
         UpdateUI();
     }
 
@@ -59,7 +43,7 @@ public class TournamentSimulator : MonoBehaviour
     /// </summary>
     public void AddRandomPlayer(string region = "", string continent = "", int rating = DEFAULT_RATING)
     {
-        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(this, region, continent, rating);
+        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent, rating);
 
         int league = (Database.Players.Count / 24);
         if (league > 2) league = 2;
@@ -71,45 +55,42 @@ public class TournamentSimulator : MonoBehaviour
 
     public void UpdateUI()
     {
-        UI.UpdateTime(Season, Quarter, Day);
-        UI.UpdatePlayers(Database.Players.Values.ToList());
-        UI.UpdateTournaments(Database.Tournaments.Where(x => x.Value.League.Season == Season).Select(x => x.Value).ToList());
-        UI.UpdateMedals(GetMedals());
+        UI.UpdateTime();
+        UI.DashboardScreen.Refresh();
     }
-
 
 
     public void GoToNextDay()
     {
-        if(Season == 0 && Quarter == 0 && Day == 0)
+        if(Database.Season == 0 && Database.Quarter == 0 && Database.Day == 0)
         {
-            Season = 1;
-            Quarter = 1;
-            Day = 1;
+            Database.Season = 1;
+            Database.Quarter = 1;
+            Database.Day = 1;
             StartSeason();
         }
 
-        else if (Quarter == 4 && Day == 15)
+        else if (Database.Quarter == 4 && Database.Day == 15)
         {
-            Season++;
-            Quarter = 1;
-            Day = 1;
+            Database.Season++;
+            Database.Quarter = 1;
+            Database.Day = 1;
             EndSeason();
             StartSeason();
         }
-        else if (Day == 15)
+        else if (Database.Day == 15)
         {
-            Quarter++;
-            Day = 1;
+            Database.Quarter++;
+            Database.Day = 1;
         }
-        else Day++;
+        else Database.Day++;
 
         Save();
         UpdateUI();
     }
     public bool CanGoToNextDay()
     {
-        return Database.Tournaments.Values.Where(x => x.League.Season == Season && x.Quarter == Quarter && x.Day == Day && !x.IsDone).Count() == 0;
+        return Database.Tournaments.Values.Where(x => x.League.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
     }
 
     private void StartSeason()
@@ -124,13 +105,11 @@ public class TournamentSimulator : MonoBehaviour
             else if (p.LeagueType == LeagueType.ChallengeLeague) challengeLeaguePlayers.Add(p);
             else if (p.LeagueType == LeagueType.OpenLeague) openLeaguePlayers.Add(p);
         }
-        AddNewLeague("Grand League", Season, 0, grandLeaguePlayers);
-        AddNewLeague("Challenger League", Season, 1, challengeLeaguePlayers);
-        AddNewLeague("Open League", Season, 2, openLeaguePlayers);
+        AddNewLeague("Grand League", Database.Season, 0, grandLeaguePlayers);
+        AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers);
+        AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers);
 
-        CurrentGrandLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.GrandLeague && x.Season == Season);
-        CurrentChallengeLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.ChallengeLeague && x.Season == Season);
-        CurrentOpenLeague = Database.Leagues.Values.FirstOrDefault(x => x.LeagueType == LeagueType.OpenLeague && x.Season == Season);
+
 
         // Create seasonal tournaments from schedule
         List<Tuple<int, int, int>> schedule = Database.ReadSchedule();
@@ -147,7 +126,7 @@ public class TournamentSimulator : MonoBehaviour
 
     public void ScheduleTournament(LeagueType type, int quarter, int day)
     {
-        Tournament newTournament = Tournament.CreateTournament(this, type, Season, quarter, day, Database.Players.Values.Where(x => x.LeagueType == type).ToList(), Database.Leagues.Values.ToList());
+        Tournament newTournament = Tournament.CreateTournament(type, Database.Season, quarter, day, Database.Players.Values.Where(x => x.LeagueType == type).ToList(), Database.Leagues.Values.ToList());
         Database.Tournaments.Add(newTournament.Id, newTournament);
         foreach (Match m in newTournament.Matches) Database.Matches.Add(m.Id, m);
     }
@@ -160,14 +139,14 @@ public class TournamentSimulator : MonoBehaviour
 
         // Relegations
         Debug.Log("Performing relegations.");
-        List<Player> grandLegueRanking = CurrentGrandLeague.Ranking;
+        List<Player> grandLegueRanking = Database.CurrentGrandLeague.Ranking;
         for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
 
-        List<Player> challengeLegueRanking = CurrentChallengeLeague.Ranking;
+        List<Player> challengeLegueRanking = Database.CurrentChallengeLeague.Ranking;
         for(int i = 0; i < 5; i++) challengeLegueRanking[i].SetLeague(LeagueType.GrandLeague);
         for (int i = 19; i < challengeLegueRanking.Count; i++) challengeLegueRanking[i].SetLeague(LeagueType.OpenLeague);
 
-        List<Player> openLegueRanking = CurrentOpenLeague.Ranking;
+        List<Player> openLegueRanking = Database.CurrentOpenLeague.Ranking;
         for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(LeagueType.ChallengeLeague);
         List<Player> eliminatedPlayers = new List<Player>();
         for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++)
@@ -202,92 +181,11 @@ public class TournamentSimulator : MonoBehaviour
 
     public void ReviveRandomPlayer(List<Player> excludedPlayers)
     {
-        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == LeagueType.OpenLeague && !excludedPlayers.Contains(x)).ToList();
+        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == LeagueType.None && !excludedPlayers.Contains(x)).ToList();
         Player playerToRevive = candidates[UnityEngine.Random.Range(0, candidates.Count)];
         playerToRevive.SetLeague(LeagueType.OpenLeague);
         Debug.Log(playerToRevive.ToString() + " has been revived.");
     }
-
-    #region Getters
-
-    public static string GetQuarterName(int quarter)
-    {
-        if (quarter == 1) return "Spring";
-        if (quarter == 2) return "Summer";
-        if (quarter == 3) return "Autumn";
-        if (quarter == 4) return "Winter";
-        return "???";
-    }
-    public League GetCurrentLeague(LeagueType leagueType)
-    {
-        if (leagueType == LeagueType.GrandLeague) return CurrentGrandLeague;
-        if (leagueType == LeagueType.ChallengeLeague) return CurrentChallengeLeague;
-        if (leagueType == LeagueType.OpenLeague) return CurrentOpenLeague;
-        return null;
-    }
-    private List<System.Tuple<Player, int, int, int>> GetMedals()
-    {
-        List<System.Tuple<Player, int, int, int>> medals = new List<Tuple<Player, int, int, int>>();
-        Dictionary<Player, int> goldMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> silverMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> bronzeMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> medalScore = new Dictionary<Player, int>();
-
-        foreach (Player p in Database.Players.Values)
-        {
-            goldMedals.Add(p, 0);
-            silverMedals.Add(p, 0);
-            bronzeMedals.Add(p, 0);
-            medalScore.Add(p, 0);
-        }
-
-        foreach (League l in Database.Leagues.Values.Where(x => x.Season < Season && x.LeagueType == LeagueType.GrandLeague))
-        {
-            List<Player> ranking = l.Ranking;
-            goldMedals[ranking[0]]++;
-            medalScore[ranking[0]] += 3;
-            silverMedals[ranking[1]]++;
-            medalScore[ranking[1]] += 2;
-            bronzeMedals[ranking[2]]++;
-            medalScore[ranking[2]] += 1;
-        }
-
-        medalScore = medalScore.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-        foreach (KeyValuePair<Player, int> kvp in medalScore)
-        {
-            if (kvp.Value > 0)
-            {
-                Player p = kvp.Key;
-                medals.Add(new Tuple<Player, int, int, int>(p, goldMedals[p], silverMedals[p], bronzeMedals[p]));
-            }
-        }
-
-        return medals;
-    }
-
-    /// <summary>
-    /// Returns an ordered dictionary representing the country leaderboard of a given country based on elo rating.
-    /// </summary>
-    public static Dictionary<Player, int> GetCountryRanking(string country)
-    {
-        return Database.Players.Values.Where(x => x.Country.Name == country).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
-    }
-    /// <summary>
-    /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
-    /// </summary>
-    public static Dictionary<Player, int> GetRegionRanking(string region)
-    {
-        return Database.Players.Values.Where(x => x.Country.Region == region).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
-    }
-    /// <summary>
-    /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
-    /// </summary>
-    public static Dictionary<Player, int> GetContinentRanking(string continent)
-    {
-        return Database.Players.Values.Where(x => x.Country.Continent == continent).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
-    }
-
-    #endregion
 
 
     #region Save / Load
@@ -308,25 +206,14 @@ public class TournamentSimulator : MonoBehaviour
     public SimulationData ToData()
     {
         SimulationData data = new SimulationData();
-        data.CurrentSeason = Season;
-        data.CurrentQuarter = Quarter;
-        data.CurrentDay = Day;
+        data.CurrentSeason = Database.Season;
+        data.CurrentQuarter = Database.Quarter;
+        data.CurrentDay = Database.Day;
         data.Players = Database.Players.Select(x => x.Value.ToData()).ToList();
         data.Leagues = Database.Leagues.Select(x => x.Value.ToData()).ToList();
         data.Tournaments = Database.Tournaments.Select(x => x.Value.ToData()).ToList();
         data.Matches = Database.Matches.Select(x => x.Value.ToData()).ToList();
         return data;
-    }
-
-    public void LoadState(SimulationData data)
-    {
-        Season = data.CurrentSeason;
-        Quarter = data.CurrentQuarter;
-        Day = data.CurrentDay;
-        Database.Players = data.Players.Select(x => new Player(this, x)).ToDictionary(x => x.Id, x => x);
-        Database.Leagues = data.Leagues.Select(x => new League(x)).ToDictionary(x => x.Id, x => x);
-        Database.Tournaments = data.Tournaments.Select(x => Tournament.LoadTournament(x)).ToDictionary(x => x.Id, x => x);
-        Database.Matches = data.Matches.Select(x => new Match(this, x)).ToDictionary(x => x.Id, x => x);
     }
 
     #endregion

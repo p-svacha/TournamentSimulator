@@ -67,7 +67,7 @@ public static class PlayerGenerator
 
     #endregion
 
-    public static Player GenerateRandomPlayer(TournamentSimulator sim, string region, string continent, int rating)
+    public static Player GenerateRandomPlayer(string region, string continent, int rating)
     {
         Country country;
         if (region != "") country = GetRandomCountryFromRegion(Database.Countries.Values.ToList(), region);
@@ -85,7 +85,7 @@ public static class PlayerGenerator
         float tiebreakerScore = GetRandomTiebreakerScore();
         float mistakeChance = GetRandomMistakeChance();
 
-        Player player = new Player(sim, firstname, lastname, country, sex, rating, skills, inconsistency, tiebreakerScore, mistakeChance);
+        Player player = new Player(firstname, lastname, country, sex, rating, skills, inconsistency, tiebreakerScore, mistakeChance);
         return player;
     }
 

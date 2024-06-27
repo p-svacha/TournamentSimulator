@@ -24,7 +24,7 @@ public class Format_OpenLeague : Tournament
     };
 
     public Format_OpenLeague(TournamentData data) : base(data) { }
-    public Format_OpenLeague(TournamentSimulator sim, LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(sim, type, season, quarter, day, players, allLeagues) { }
+    public Format_OpenLeague(LeagueType type, int season, int quarter, int day, List<Player> players, List<League> allLeagues) : base(type, season, quarter, day, players, allLeagues) { }
 
     public override void Initialize()
     {
@@ -40,7 +40,7 @@ public class Format_OpenLeague : Tournament
         {
             PlayersPerPhase = new int[] { 6 };
             MatchesPerPhase = new int[] { 1 };
-            Match onlyMatch = new Match(Simulator, "Final", this, numPlayers: Players.Count, PointDistributions[Players.Count]);
+            Match onlyMatch = new Match("Final", this, numPlayers: Players.Count, PointDistributions[Players.Count]);
             foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p, seed: 0);
             Matches.Add(onlyMatch);
         }
@@ -64,12 +64,12 @@ public class Format_OpenLeague : Tournament
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Match semi = new Match(Simulator, "Semifinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match semi = new Match("Semifinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) semi.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(semi);
             }
             // Final
-            Matches.Add(new Match(Simulator, "Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 2, 2 });
@@ -96,17 +96,17 @@ public class Format_OpenLeague : Tournament
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Match quarter = new Match(Simulator, "Quarterfinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match quarter = new Match("Quarterfinal " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) quarter.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(quarter);
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new Match(Simulator, "Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new Match(Simulator, "Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5 });
@@ -138,22 +138,22 @@ public class Format_OpenLeague : Tournament
             // Group stage
             for (int i = 0; i < 4; i++)
             {
-                Match groupMatch = new Match(Simulator, "Group " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match groupMatch = new Match("Group " + (i + 1), this, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) groupMatch.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(groupMatch);
             }
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Matches.Add(new Match(Simulator, "Quarterfinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Quarterfinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new Match(Simulator, "Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new Match("Semifinal " + (i + 1), this, numPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new Match(Simulator, "Final", this, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new Match("Final", this, numPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5, 6, 7 });

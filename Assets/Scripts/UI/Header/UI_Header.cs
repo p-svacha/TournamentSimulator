@@ -39,7 +39,7 @@ public class UI_Header : MonoBehaviour
 
     public void UpdateTime(int season, int quarter, int day)
     {
-        TimeText.text = TournamentSimulator.GetQuarterName(quarter) + " " + day + ", Season " + season;
+        TimeText.text = Database.GetQuarterName(quarter) + " " + day + ", Season " + season;
         NextDayButton.gameObject.SetActive(BaseUI.Simulator.CanGoToNextDay());
     }
 

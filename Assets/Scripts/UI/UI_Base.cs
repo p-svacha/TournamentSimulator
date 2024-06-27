@@ -35,28 +35,9 @@ public class UI_Base : MonoBehaviour
         ActiveScreen = DashboardScreen;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateTime()
     {
-        
-    }
-
-    public void UpdateTime(int season, int quarter, int day)
-    {
-        Header.UpdateTime(season, quarter, day);
-    }
-
-    public void UpdatePlayers(List<Player> players)
-    {
-        if(DashboardScreen.gameObject.activeSelf) DashboardScreen.UpdateRatingList(players);
-        if(DashboardScreen.gameObject.activeSelf && Simulator.CurrentGrandLeague != null) DashboardScreen.UpdateGrandLeagueList(Simulator.CurrentGrandLeague);
-        if(DashboardScreen.gameObject.activeSelf && Simulator.CurrentChallengeLeague != null) DashboardScreen.UpdateChallengeLeagueList(Simulator.CurrentChallengeLeague);
-        if(DashboardScreen.gameObject.activeSelf && Simulator.CurrentOpenLeague != null) DashboardScreen.UpdateOpenLeagueList(Simulator.CurrentOpenLeague);
-    }
-
-    public void UpdateTournaments(List<Tournament> tournaments)
-    {
-        if (DashboardScreen.gameObject.activeSelf) DashboardScreen.UpdateSchedule(tournaments);
+        Header.UpdateTime(Database.Season, Database.Quarter, Database.Day);
     }
 
     public void DisplayTournament(Tournament t)
@@ -82,10 +63,5 @@ public class UI_Base : MonoBehaviour
         ActiveScreen.gameObject.SetActive(false);
         ActiveScreen = screen;
         ActiveScreen.gameObject.SetActive(true);
-    }
-
-    public void UpdateMedals(List<System.Tuple<Player, int, int, int>> medals)
-    {
-        DashboardScreen.UpdateMedalList(medals);
     }
 }

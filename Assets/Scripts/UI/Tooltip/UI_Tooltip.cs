@@ -16,8 +16,8 @@ public class UI_Tooltip : MonoBehaviour
         Vector3 position = Input.mousePosition + new Vector3(MouseOffset, MouseOffset, 0);
         Width = GetComponent<RectTransform>().rect.width;
         Height = GetComponent<RectTransform>().rect.height;
-        if (position.x + Width > Screen.width) position.x = Screen.width - Width - ScreenEdgeOffset;
-        if (position.y - Height < 0) position.y = Height + ScreenEdgeOffset;
+        if (position.x + Width > Screen.width - ScreenEdgeOffset) position.x = Screen.width - Width - ScreenEdgeOffset;
+        if (position.y - Height < ScreenEdgeOffset) position.y = Height + ScreenEdgeOffset;
         transform.position = position;
     }
 

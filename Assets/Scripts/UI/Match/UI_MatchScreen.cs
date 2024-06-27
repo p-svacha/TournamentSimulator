@@ -71,8 +71,7 @@ public class UI_MatchScreen : UI_Screen
         SimPlayer = Match.NumPlayers + 1;
         TimeElapsed = 0;
 
-        // Set elo before match
-        foreach (MatchParticipant p in Match.Participants) p.SetPreMatchStats();
+        Match.StartMatch();
     }
 
     private void EndSimulation()

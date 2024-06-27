@@ -32,6 +32,6 @@ public class UI_MatchPlayer : MonoBehaviour
     {
         ScoreText.text = round.Score.ToString();
         ScoreText.color = round.Modifiers.Contains(Player.MISTAKE_MODIFIER) ? Color.red : Color.white;
-        PlusPointsText.text = round.PointsGained.ToString();
+        PlusPointsText.text = "+" + round.PointsGained.ToString();
     }
 }

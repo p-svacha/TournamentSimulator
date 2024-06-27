@@ -1,7 +1,7 @@
 {
   "CurrentSeason": 3,
   "CurrentQuarter": 2,
-  "CurrentDay": 6,
+  "CurrentDay": 2,
   "Players": [
     {
       "Id": 0,
@@ -705,7 +705,7 @@
       "LastName": "English",
       "CountryId": 2,
       "Sex": "m",
-      "Elo": 4763,
+      "Elo": 4766,
       "LeagueType": 2,
       "Skills": [
         {
@@ -821,7 +821,7 @@
       "LastName": "Lemus",
       "CountryId": 61,
       "Sex": "m",
-      "Elo": 4811,
+      "Elo": 4828,
       "LeagueType": 2,
       "Skills": [
         {
@@ -1111,7 +1111,7 @@
       "LastName": "Hamamoto",
       "CountryId": 9,
       "Sex": "m",
-      "Elo": 4816,
+      "Elo": 4847,
       "LeagueType": 2,
       "Skills": [
         {
@@ -1285,7 +1285,7 @@
       "LastName": "Forde",
       "CountryId": 139,
       "Sex": "m",
-      "Elo": 4771,
+      "Elo": 4724,
       "LeagueType": 2,
       "Skills": [
         {
@@ -1633,7 +1633,7 @@
       "LastName": "Chin",
       "CountryId": 57,
       "Sex": "w",
-      "Elo": 4692,
+      "Elo": 4702,
       "LeagueType": 2,
       "Skills": [
         {
@@ -1923,7 +1923,7 @@
       "LastName": "Hermoso",
       "CountryId": 11,
       "Sex": "m",
-      "Elo": 4813,
+      "Elo": 4826,
       "LeagueType": 2,
       "Skills": [
         {
@@ -2677,7 +2677,7 @@
       "LastName": "Zotova",
       "CountryId": 8,
       "Sex": "w",
-      "Elo": 4927,
+      "Elo": 4930,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3199,7 +3199,7 @@
       "LastName": "Nabiyeva",
       "CountryId": 36,
       "Sex": "m",
-      "Elo": 4956,
+      "Elo": 4965,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3373,7 +3373,7 @@
       "LastName": "Bosa",
       "CountryId": 171,
       "Sex": "w",
-      "Elo": 4905,
+      "Elo": 4915,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3721,7 +3721,7 @@
       "LastName": "McCann",
       "CountryId": 22,
       "Sex": "w",
-      "Elo": 4939,
+      "Elo": 4951,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3779,7 +3779,7 @@
       "LastName": "Damen",
       "CountryId": 60,
       "Sex": "w",
-      "Elo": 4931,
+      "Elo": 4944,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3837,7 +3837,7 @@
       "LastName": "Lazzari",
       "CountryId": 21,
       "Sex": "w",
-      "Elo": 5076,
+      "Elo": 5046,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3895,7 +3895,7 @@
       "LastName": "Tongbang",
       "CountryId": 47,
       "Sex": "w",
-      "Elo": 5086,
+      "Elo": 5107,
       "LeagueType": 2,
       "Skills": [
         {
@@ -3953,7 +3953,7 @@
       "LastName": "Urbaneja",
       "CountryId": 43,
       "Sex": "m",
-      "Elo": 4992,
+      "Elo": 5010,
       "LeagueType": 2,
       "Skills": [
         {
@@ -4011,7 +4011,7 @@
       "LastName": "Lee",
       "CountryId": 101,
       "Sex": "w",
-      "Elo": 5124,
+      "Elo": 5069,
       "LeagueType": 2,
       "Skills": [
         {
@@ -4069,7 +4069,7 @@
       "LastName": "Skuratovich",
       "CountryId": 89,
       "Sex": "m",
-      "Elo": 5000,
+      "Elo": 4972,
       "LeagueType": 2,
       "Skills": [
         {
@@ -4871,7 +4871,7 @@
         },
         {
           "PlayerId": 22,
-          "LeaguePoints": 1
+          "LeaguePoints": 0
         },
         {
           "PlayerId": 28,
@@ -4883,11 +4883,11 @@
         },
         {
           "PlayerId": 46,
-          "LeaguePoints": 3
+          "LeaguePoints": 1
         },
         {
           "PlayerId": 55,
-          "LeaguePoints": 4
+          "LeaguePoints": 3
         },
         {
           "PlayerId": 58,
@@ -4899,11 +4899,11 @@
         },
         {
           "PlayerId": 65,
-          "LeaguePoints": 2
+          "LeaguePoints": 1
         },
         {
           "PlayerId": 66,
-          "LeaguePoints": 11
+          "LeaguePoints": 7
         },
         {
           "PlayerId": 67,
@@ -4911,15 +4911,15 @@
         },
         {
           "PlayerId": 68,
-          "LeaguePoints": 4
+          "LeaguePoints": 3
         },
         {
           "PlayerId": 69,
-          "LeaguePoints": 12
+          "LeaguePoints": 7
         },
         {
           "PlayerId": 70,
-          "LeaguePoints": 4
+          "LeaguePoints": 1
         }
       ]
     }
@@ -5941,7 +5941,7 @@
       "LeagueId": 8,
       "Quarter": 2,
       "Day": 2,
-      "IsDone": true,
+      "IsDone": false,
       "Players": [
         12,
         14,
@@ -79849,7 +79849,7 @@
       "Id": 306,
       "Name": "Quarterfinal 1",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         4,
@@ -79865,373 +79865,47 @@
         {
           "PlayerId": 22,
           "Seed": 0,
-          "TotalScore": 70,
-          "EloBeforeMatch": 4724,
-          "EloAfterMatch": 4764,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
           "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 55,
           "Seed": 0,
-          "TotalScore": 65,
-          "EloBeforeMatch": 4965,
-          "EloAfterMatch": 4959,
-          "LeaguePointsBeforeMatch": 3,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 19,
           "Seed": 0,
-          "TotalScore": 50,
-          "EloBeforeMatch": 4847,
-          "EloAfterMatch": 4816,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 12,
           "Seed": 0,
-          "TotalScore": 59,
-          "EloBeforeMatch": 4766,
-          "EloAfterMatch": 4763,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         }
       ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 59,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 45,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 40,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 12,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 24,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 19,
-              "Score": 54,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 85,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 103,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 92,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 66,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 33,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 80,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 19,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 45,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 33,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 8,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 11,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 87,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 58,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 26,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 24,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 16,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 12,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 9,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 103,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 12,
-              "Score": 40,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 45,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 39,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 12,
-              "Score": 17,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 9,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 25,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 32,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 48,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 5,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 71,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 24,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 19,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 14,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 55,
-              "Score": 79,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 19,
-              "Score": 22,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 12,
-              "Score": 38,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Rounds": []
     },
     {
       "Id": 307,
       "Name": "Quarterfinal 2",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         5,
@@ -80247,367 +79921,47 @@
         {
           "PlayerId": 46,
           "Seed": 0,
-          "TotalScore": 61,
-          "EloBeforeMatch": 4930,
-          "EloAfterMatch": 4937,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 28,
           "Seed": 0,
-          "TotalScore": 48,
-          "EloBeforeMatch": 4702,
-          "EloAfterMatch": 4692,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
           "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 69,
           "Seed": 0,
-          "TotalScore": 83,
-          "EloBeforeMatch": 5069,
-          "EloAfterMatch": 5082,
-          "LeaguePointsBeforeMatch": 7,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 58,
           "Seed": 0,
-          "TotalScore": 55,
-          "EloBeforeMatch": 4915,
-          "EloAfterMatch": 4905,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
           "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         }
       ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 89,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 41,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 100,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 20,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 88,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 10,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 42,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 37,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 10,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 60,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 58,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 5,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 52,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 88,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 59,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 18,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 12,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 63,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 13,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 69,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 66,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 55,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 93,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 25,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 16,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 58,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 23,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 44,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 76,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 67,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 93,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 10,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 34,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 11,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 36,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 2,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 98,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 3,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 46,
-              "Score": 22,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 28,
-              "Score": 56,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 23,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 58,
-              "Score": 34,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Rounds": []
     },
     {
       "Id": 308,
       "Name": "Quarterfinal 3",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         4,
@@ -80623,373 +79977,47 @@
         {
           "PlayerId": 68,
           "Seed": 0,
-          "TotalScore": 74,
-          "EloBeforeMatch": 5010,
-          "EloAfterMatch": 5031,
-          "LeaguePointsBeforeMatch": 3,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 14,
           "Seed": 0,
-          "TotalScore": 54,
-          "EloBeforeMatch": 4828,
-          "EloAfterMatch": 4811,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
           "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 64,
           "Seed": 0,
-          "TotalScore": 54,
-          "EloBeforeMatch": 4951,
-          "EloAfterMatch": 4939,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
           "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 65,
           "Seed": 0,
-          "TotalScore": 58,
-          "EloBeforeMatch": 4944,
-          "EloAfterMatch": 4952,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         }
       ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 77,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 9,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 30,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 20,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 64,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 9,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 55,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 10,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 59,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 20,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 73,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 42,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 10,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 94,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 24,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 1,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 14,
-              "Score": 45,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 83,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 47,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 37,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 6,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 21,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 98,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 71,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 77,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 65,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 92,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 32,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 56,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 3,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 96,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 69,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 65,
-              "Score": 33,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 34,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 15,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 1,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 101,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 68,
-              "Score": 40,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 14,
-              "Score": 38,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 64,
-              "Score": 21,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 61,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Rounds": []
     },
     {
       "Id": 309,
       "Name": "Quarterfinal 4",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         5,
@@ -81005,369 +80033,47 @@
         {
           "PlayerId": 33,
           "Seed": 0,
-          "TotalScore": 48,
-          "EloBeforeMatch": 4826,
-          "EloAfterMatch": 4813,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 67,
           "Seed": 0,
-          "TotalScore": 62,
-          "EloBeforeMatch": 5107,
-          "EloAfterMatch": 5086,
-          "LeaguePointsBeforeMatch": 10,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 66,
           "Seed": 0,
-          "TotalScore": 71,
-          "EloBeforeMatch": 5046,
-          "EloAfterMatch": 5068,
-          "LeaguePointsBeforeMatch": 7,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         },
         {
           "PlayerId": 70,
           "Seed": 0,
-          "TotalScore": 66,
-          "EloBeforeMatch": 4972,
-          "EloAfterMatch": 4984,
-          "LeaguePointsBeforeMatch": 1,
+          "TotalScore": 0,
+          "EloBeforeMatch": 0,
+          "EloAfterMatch": 0,
+          "LeaguePointsBeforeMatch": 0,
           "Modifiers": null
         }
       ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 18,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 54,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 23,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 66,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 90,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 70,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 45,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 44,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 5,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 10,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 81,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 50,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 47,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 59,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 85,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 29,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 91,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 37,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 41,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 38,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 83,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 3,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 63,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 17,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 66,
-              "Score": 32,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 62,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 24,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 92,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 51,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 20,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 47,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 31,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 53,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 10,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 82,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 54,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 65,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 90,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 33,
-              "Score": 82,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 67,
-              "Score": 25,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 92,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 84,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Rounds": []
     },
     {
       "Id": 310,
       "Name": "Semifinal 1",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         6,
@@ -81379,381 +80085,14 @@
         4,
         3
       ],
-      "Participants": [
-        {
-          "PlayerId": 22,
-          "Seed": 0,
-          "TotalScore": 58,
-          "EloBeforeMatch": 4764,
-          "EloAfterMatch": 4771,
-          "LeaguePointsBeforeMatch": 0,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 46,
-          "Seed": 1,
-          "TotalScore": 59,
-          "EloBeforeMatch": 4937,
-          "EloAfterMatch": 4946,
-          "LeaguePointsBeforeMatch": 1,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 68,
-          "Seed": 0,
-          "TotalScore": 48,
-          "EloBeforeMatch": 5031,
-          "EloAfterMatch": 4992,
-          "LeaguePointsBeforeMatch": 3,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 70,
-          "Seed": 1,
-          "TotalScore": 68,
-          "EloBeforeMatch": 4984,
-          "EloAfterMatch": 5007,
-          "LeaguePointsBeforeMatch": 1,
-          "Modifiers": null
-        }
-      ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 60,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 88,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 70,
-              "Score": 71,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 28,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 93,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 60,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 47,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 107,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 34,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 55,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 53,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 86,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 68,
-              "Score": 10,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 35,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 4,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 18,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 40,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 48,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 25,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 70,
-              "Score": 63,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 15,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 93,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 69,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 65,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 47,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 17,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 70,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 5,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 91,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 94,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 16,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 7,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 43,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 34,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 86,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 22,
-              "Score": 16,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 22,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 68,
-              "Score": 40,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 70,
-              "Score": 87,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Participants": [],
+      "Rounds": []
     },
     {
       "Id": 311,
       "Name": "Semifinal 2",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": [
         6,
@@ -81765,373 +80104,14 @@
         4,
         3
       ],
-      "Participants": [
-        {
-          "PlayerId": 55,
-          "Seed": 1,
-          "TotalScore": 60,
-          "EloBeforeMatch": 4959,
-          "EloAfterMatch": 4956,
-          "LeaguePointsBeforeMatch": 3,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 69,
-          "Seed": 0,
-          "TotalScore": 77,
-          "EloBeforeMatch": 5082,
-          "EloAfterMatch": 5103,
-          "LeaguePointsBeforeMatch": 7,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 65,
-          "Seed": 1,
-          "TotalScore": 48,
-          "EloBeforeMatch": 4952,
-          "EloAfterMatch": 4931,
-          "LeaguePointsBeforeMatch": 1,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 66,
-          "Seed": 0,
-          "TotalScore": 62,
-          "EloBeforeMatch": 5068,
-          "EloAfterMatch": 5071,
-          "LeaguePointsBeforeMatch": 7,
-          "Modifiers": null
-        }
-      ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 43,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 93,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 21,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 22,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 27,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 17,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 13,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 45,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 86,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 61,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 40,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 21,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 92,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 2,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 86,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 13,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 72,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 50,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 39,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 22,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 58,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 100,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 1,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 95,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 18,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 29,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 51,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 79,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 5,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 54,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 21,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 32,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 39,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 51,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 74,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 100,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 98,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 60,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 55,
-              "Score": 89,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 16,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 65,
-              "Score": 59,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 95,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Participants": [],
+      "Rounds": []
     },
     {
       "Id": 312,
       "Name": "Final",
       "TournamentId": 34,
-      "IsDone": true,
+      "IsDone": false,
       "NumPlayers": 4,
       "TargetMatchIndices": null,
       "PointDistribution": [
@@ -82140,367 +80120,8 @@
         4,
         3
       ],
-      "Participants": [
-        {
-          "PlayerId": 70,
-          "Seed": 0,
-          "TotalScore": 61,
-          "EloBeforeMatch": 5007,
-          "EloAfterMatch": 5000,
-          "LeaguePointsBeforeMatch": 1,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 46,
-          "Seed": 1,
-          "TotalScore": 55,
-          "EloBeforeMatch": 4946,
-          "EloAfterMatch": 4927,
-          "LeaguePointsBeforeMatch": 1,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 69,
-          "Seed": 0,
-          "TotalScore": 71,
-          "EloBeforeMatch": 5103,
-          "EloAfterMatch": 5124,
-          "LeaguePointsBeforeMatch": 7,
-          "Modifiers": null
-        },
-        {
-          "PlayerId": 66,
-          "Seed": 1,
-          "TotalScore": 63,
-          "EloBeforeMatch": 5071,
-          "EloAfterMatch": 5076,
-          "LeaguePointsBeforeMatch": 7,
-          "Modifiers": null
-        }
-      ],
-      "Rounds": [
-        {
-          "SkillId": 0,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 65,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 90,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 98,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 23,
-              "PointsGained": 3,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 1,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 39,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 87,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 8,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 45,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 2,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 53,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 33,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 54,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 84,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 3,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 36,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 2,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 90,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 87,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 4,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 46,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 14,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 64,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 36,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 5,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 65,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 0,
-              "PointsGained": 0,
-              "Modifiers": [
-                "Mistake"
-              ]
-            },
-            {
-              "PlayerId": 69,
-              "Score": 62,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 5,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 6,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 61,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 95,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 27,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 34,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 7,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 20,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 19,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 73,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 53,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 8,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 14,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 89,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 27,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 55,
-              "PointsGained": 6,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 9,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 94,
-              "PointsGained": 10,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 34,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 93,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 61,
-              "PointsGained": 4,
-              "Modifiers": []
-            }
-          ]
-        },
-        {
-          "SkillId": 10,
-          "PlayerResults": [
-            {
-              "PlayerId": 70,
-              "Score": 86,
-              "PointsGained": 6,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 46,
-              "Score": 25,
-              "PointsGained": 4,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 69,
-              "Score": 19,
-              "PointsGained": 3,
-              "Modifiers": []
-            },
-            {
-              "PlayerId": 66,
-              "Score": 94,
-              "PointsGained": 10,
-              "Modifiers": []
-            }
-          ]
-        }
-      ]
+      "Participants": [],
+      "Rounds": []
     },
     {
       "Id": 313,

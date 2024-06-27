@@ -5,7 +5,8 @@ using UnityEngine;
 public interface IPlayer
 {
     /// <summary>
-    /// Attribute that defines the standard deviation when calculating the score for a skill.
+    /// Attribute that defines the limits the range of the gaussian normal distribution when calculating the score for a skill.
+    /// <br/>All calculated skill scores will be within the inconsistency range of the skill base value.
     /// </summary>
     public float Inconsistency { get; }
 

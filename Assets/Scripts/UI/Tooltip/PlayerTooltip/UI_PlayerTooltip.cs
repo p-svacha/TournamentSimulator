@@ -76,20 +76,20 @@ public class UI_PlayerTooltip : UI_Tooltip
         LeagueRankText.text = p.League == null ? "-" : p.CurrentLeaguePoints + " (#" + p.LeagueRank + ")";
 
         CountryLabelText.text = p.Country.Name;
-        Dictionary<Player, int> countryRanking = TournamentSimulator.GetCountryRanking(p.Country.Name);
+        Dictionary<Player, int> countryRanking = Database.GetCountryRanking(p.Country.Name);
         CountryRankText.text = (countryRanking.Keys.ToList().IndexOf(p) + 1) + " / " + countryRanking.Count;
 
         RegionLabelText.text = p.Country.Region;
-        Dictionary<Player, int> regionRanking = TournamentSimulator.GetRegionRanking(p.Country.Region);
+        Dictionary<Player, int> regionRanking = Database.GetRegionRanking(p.Country.Region);
         RegionRankText.text = (regionRanking.Keys.ToList().IndexOf(p) + 1) + " / " + regionRanking.Count;
 
         ContinentLabelText.text = p.Country.Continent;
-        Dictionary<Player, int> continentRanking = TournamentSimulator.GetContinentRanking(p.Country.Continent);
+        Dictionary<Player, int> continentRanking = Database.GetContinentRanking(p.Country.Continent);
         ContinentRankText.text = (continentRanking.Keys.ToList().IndexOf(p) + 1) + " / " + continentRanking.Count;
 
         // History
         HelperFunctions.DestroyAllChildredImmediately(HistoryContainer, skipElements: 1);
-        foreach(League league in Database.Leagues.Values.Where(x => x.Season < p.Sim.Season && x.Players.Contains(p)))
+        foreach(League league in Database.Leagues.Values.Where(x => x.Season < Database.Season && x.Players.Contains(p)))
         {
             UI_HistoryRow historyRow = Instantiate(HistoryRowPrefab, HistoryContainer.transform);
             historyRow.Init(p, league);

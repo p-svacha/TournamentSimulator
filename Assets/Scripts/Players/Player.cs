@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Player : IPlayer
 {
-    public TournamentSimulator Sim;
-
     public int Id { get; private set; }
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
@@ -19,23 +17,22 @@ public class Player : IPlayer
     public float TiebreakerScore { get; private set; }
     public float MistakeChance { get; private set; }
 
-    public League League => Sim.GetCurrentLeague(LeagueType);
+    public League League => Database.GetCurrentLeague(LeagueType);
     public int CurrentLeaguePoints => League.Standings[this];
     public int LeagueRank => League.GetRankOf(this);
     public Sprite LeagueIcon => League == null ? ColorManager.Singleton.NoLeagueIcon : League.Icon;
     public Color LeagueColor => League == null ? ColorManager.Singleton.NoLeagueColor : League.Color;
     public Sprite FlagSprite => Resources.Load<Sprite>("Icons/Flags/" + Country.Name.Replace(" ", "-").ToLower());
-    public int Age => 20 + (Sim.Season - Database.Leagues.Values.Where(x => x.Players.Contains(this)).Min(x => x.Season));
+    public int Age => 20 + (Database.Season - Database.Leagues.Values.Where(x => x.Players.Contains(this)).Min(x => x.Season));
     public int WorldRank => Database.Players.Values.OrderByDescending(x => x.Elo).ToList().IndexOf(this) + 1;
 
     public static string MISTAKE_MODIFIER = "Mistake";
 
     // New player
-    public Player(TournamentSimulator sim, string firstName, string lastName, Country country, string sex, int elo, Dictionary<SkillId, int> skills, float inconsistecy, float tiebreakerScore, float mistakeChance)
+    public Player(string firstName, string lastName, Country country, string sex, int elo, Dictionary<SkillId, int> skills, float inconsistecy, float tiebreakerScore, float mistakeChance)
     {
         Id = Database.GetNewPlayerId();
 
-        Sim = sim;
         FirstName = firstName;
         LastName = lastName;
         Sex = sex;
@@ -55,7 +52,7 @@ public class Player : IPlayer
         List<string> modifiers = new List<string>();
 
         // Score
-        int score = Skills[skillDef.Id];
+        int score;
         if (Random.value < MistakeChance) // Mistake
         {
             score = 0;
@@ -63,12 +60,12 @@ public class Player : IPlayer
         }
         else // Inconsistency
         {
-            score += Mathf.RoundToInt(HelperFunctions.NextGaussian(0f, Inconsistency));
+            score = Mathf.RoundToInt(HelperFunctions.RandomGaussian(minValue: Skills[skillDef.Id] - Inconsistency, maxValue: Skills[skillDef.Id] + Inconsistency));
             if (score < 0) score = 0;
         }
         return new PlayerMatchRound(this, score, modifiers);
     }
-
+    
     public void AdjustSkill(SkillDef skillDef, int adjustmentValue)
     {
         Skills[skillDef.Id] += adjustmentValue;
@@ -82,7 +79,7 @@ public class Player : IPlayer
     public void AdjustMistakeChance(float adjustmentValue)
     {
         MistakeChance += adjustmentValue;
-        MistakeChance += Mathf.Clamp01(MistakeChance);
+        MistakeChance = Mathf.Clamp01(MistakeChance);
     }
 
     public void SetElo(int value)
@@ -91,7 +88,8 @@ public class Player : IPlayer
     }
     public void SetLeague(LeagueType league)
     {
-        LeagueType = (LeagueType)league;
+        LeagueType = league;
+        Debug.Log("League of " + Name + " has been changed to " + league.ToString());
     }
 
 
@@ -117,10 +115,8 @@ public class Player : IPlayer
         return data;
     }
 
-    public Player(TournamentSimulator sim, PlayerData data)
+    public Player(PlayerData data)
     {
-        Sim = sim;
-
         Id = data.Id;
         FirstName = data.FirstName;
         LastName = data.LastName;

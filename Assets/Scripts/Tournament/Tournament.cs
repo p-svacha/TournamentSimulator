@@ -5,8 +5,6 @@ using UnityEngine;
 
 public abstract class Tournament
 {
-    protected TournamentSimulator Simulator;
-
     public int Id { get; private set; }
     public string Name { get; protected set; }
     public int LeagueId { get; protected set; }
@@ -21,9 +19,8 @@ public abstract class Tournament
     protected int[] MatchesPerPhase;
 
     // New tournament
-    public Tournament(TournamentSimulator sim, LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
+    public Tournament(LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
     {
-        Simulator = sim;
         Id = Database.GetNewTournamentId();
 
         Quarter = quarter;
@@ -78,11 +75,11 @@ public abstract class Tournament
         return matches;
     }
 
-    public static Tournament CreateTournament(TournamentSimulator sim, LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
+    public static Tournament CreateTournament(LeagueType format, int season, int quarter, int day, List<Player> players, List<League> allLeagues)
     {
-        if(format == LeagueType.GrandLeague) return new Format_GrandLeague(sim, format, season, quarter, day, players, allLeagues);
-        if(format == LeagueType.ChallengeLeague) return new Format_ChallengeLeague(sim, format, season, quarter, day, players, allLeagues);
-        if(format == LeagueType.OpenLeague) return new Format_OpenLeague(sim, format, season, quarter, day, players, allLeagues);
+        if(format == LeagueType.GrandLeague) return new Format_GrandLeague(format, season, quarter, day, players, allLeagues);
+        if(format == LeagueType.ChallengeLeague) return new Format_ChallengeLeague(format, season, quarter, day, players, allLeagues);
+        if(format == LeagueType.OpenLeague) return new Format_OpenLeague(format, season, quarter, day, players, allLeagues);
         throw new System.Exception("Format not handled");
     }
 

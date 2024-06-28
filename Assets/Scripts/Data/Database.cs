@@ -39,6 +39,7 @@ public static class Database
     public static int ToRelativeSeason(int absoluteDay) => (absoluteDay / (QUARTERS_PER_SEASON * DAYS_PER_QUARTER)) + 1;
     public static int ToRelativeQuarter(int absoluteDay) => ((absoluteDay % (QUARTERS_PER_SEASON * DAYS_PER_QUARTER)) / DAYS_PER_QUARTER) + 1;
     public static int ToRelativeDay(int absoluteDay) => (absoluteDay % (DAYS_PER_QUARTER)) + 1;
+    public static string GetDateString(int season, int quarter, int day) => GetQuarterName(quarter) + " " + day + ", Season " + season;
 
     #region Init
 

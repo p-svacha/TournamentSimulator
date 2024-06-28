@@ -25,7 +25,7 @@ public class MatchParticipant
     public void SetPreMatchStats()
     {
         EloBeforeMatch = Player.Elo;
-        LeaguePointsBeforeMatch = Player.CurrentLeaguePoints;
+        LeaguePointsBeforeMatch = Player.League == null ? -1 : Player.CurrentLeaguePoints;
     }
     public void SetEloAfterMatch(int eloAfterMatch)
     {

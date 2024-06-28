@@ -8,6 +8,9 @@ public class UI_MatchOverviewScreen : UI_Screen
 {
     [Header("Elements")]
     public TextMeshProUGUI TitleText;
+    public TextMeshProUGUI TournamentText;
+    public TextMeshProUGUI DateText;
+
     public Button BackButton;
     public Button SimulateButton;
     public Button SimulateFastButton;
@@ -25,10 +28,16 @@ public class UI_MatchOverviewScreen : UI_Screen
 
     public void DisplayMatch(Match m)
     {
+        // Reset button listeners
+        BackButton.onClick.RemoveAllListeners();
+        SimulateButton.onClick.RemoveAllListeners();
+        SimulateFastButton.onClick.RemoveAllListeners();
+
         // Header
         TitleText.text = m.Name;
+        TournamentText.text = m.Tournament.Name;
+        DateText.text = m.DateString;
 
-        BackButton.onClick.RemoveAllListeners();
         BackButton.onClick.AddListener(() => BaseUI.DisplayTournament(m.Tournament));
 
         if (m.CanSimulate())

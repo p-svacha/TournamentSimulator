@@ -19,7 +19,11 @@ public class UI_ScheduleElement : MonoBehaviour
         int day = Database.ToRelativeDay(absoluteDay);
 
         if (t.IsDone || Database.Quarter > quarter || (Database.Quarter == quarter && Database.Day > day)) Background.color = ColorManager.Singleton.AdvanceColor; // Green
-        else if (t.HasOpenMatchesToday()) Background.color = ColorManager.Singleton.OngoingColor;
+        else if (quarter == Database.Quarter && day == Database.Day)
+        {
+            if (t.HasOpenMatchesToday()) Background.color = ColorManager.Singleton.OngoingColor;
+            else Background.color = ColorManager.Singleton.AdvanceColor;
+        }
         else Background.color = ColorManager.Singleton.DefaultColor;
         
         DateText.text = Database.GetQuarterName(quarter) + " " + day;

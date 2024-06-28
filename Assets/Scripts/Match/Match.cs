@@ -12,6 +12,8 @@ public class Match
     public int Quarter { get; private set; }
     public int Day { get; private set; }
     public int AbsoluteDay => Database.ToAbsoluteDay(Tournament.Season, Quarter, Day);
+    public int Season => Tournament.Season;
+    public string DateString => Database.GetDateString(Season, Quarter, Day);
 
 
     // Rules

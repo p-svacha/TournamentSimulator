@@ -97,7 +97,7 @@ public class Format_Classic24 : Tournament
     {
         PlayersPerPhase = new int[] { 6, 4, 4, 4 };
         MatchesPerPhase = new int[] { 4, 4, 2, 1 };
-        return base.DisplayTournament(baseUI, Container, groupPrefab);
+        return DisplayTournamentAsLayers(baseUI, Container, groupPrefab);
     }
 
     public override string GetMatchDayTitle(int index)

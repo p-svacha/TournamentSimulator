@@ -29,6 +29,7 @@ public class Format_OpenLeague : Tournament
     public Format_OpenLeague(TournamentData data) : base(data) { }
     public Format_OpenLeague(int season, int quarter, int day, League league) : base(TournamentType.OpenLeague, season, league)
     {
+        Players = Database.Players.Values.Where(x => x.LeagueType == TournamentType.OpenLeague).ToList();
         Quarter = quarter;
         Day = day;
 
@@ -209,7 +210,7 @@ public class Format_OpenLeague : Tournament
             MatchesPerPhase = new int[] { 4, 4, 2, 1 };
         }
 
-        return base.DisplayTournament(baseUI, Container, groupPrefab);
+        return DisplayTournamentAsLayers(baseUI, Container, groupPrefab);
     }
 
     protected override void OnTournamentDone()

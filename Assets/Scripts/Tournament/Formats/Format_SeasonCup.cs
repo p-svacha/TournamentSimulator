@@ -116,7 +116,7 @@ public class Format_SeasonCup : Tournament
     {
         PlayersPerPhase = new int[] { 2, 2, 2, 2, 2, 2 };
         MatchesPerPhase = new int[] { 32, 16, 8, 4, 2, 2 };
-        return base.DisplayTournament(baseUI, Container, groupPrefab);
+        return DisplayTournamentAsTree(baseUI, Container, groupPrefab);
     }
 
     public override string GetMatchDayTitle(int index)

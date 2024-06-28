@@ -23,7 +23,7 @@ public class UI_Tournament : UI_Screen
 
     public void DisplayTournament(Tournament t)
     {
-        for (int i = 1; i < Container.transform.childCount; i++) GameObject.Destroy(Container.transform.GetChild(i).gameObject);
+        HelperFunctions.DestroyAllChildredImmediately(Container);
         Matches = t.DisplayTournament(BaseUI, Container, GroupPrefab);
     }
 }

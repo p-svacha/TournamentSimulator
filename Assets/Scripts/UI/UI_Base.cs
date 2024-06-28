@@ -12,7 +12,8 @@ public class UI_Base : MonoBehaviour
     [Header("Screens")]
     public UI_Dashboard DashboardScreen;
     public UI_Tournament TournamentScreen;
-    public UI_MatchScreen MatchScreen;
+    public UI_MatchSimulationScreen MatchSimulationScreen;
+    public UI_MatchOverviewScreen MatchOverviewScreen;
 
     private UI_Screen ActiveScreen;
 
@@ -28,7 +29,8 @@ public class UI_Base : MonoBehaviour
         Header.Init(this);
         DashboardScreen.Init(this);
         TournamentScreen.Init(this);
-        MatchScreen.Init(this);
+        MatchSimulationScreen.Init(this);
+        MatchOverviewScreen.Init(this);
 
         Popup.gameObject.SetActive(false);
 
@@ -52,10 +54,16 @@ public class UI_Base : MonoBehaviour
         Simulator.UpdateUI();
     }
 
-    public void DisplayMatchScreen(Match m)
+    public void DisplayMatchOverviewScreen(Match m)
     {
-        DisplayScreen(MatchScreen);
-        MatchScreen.DisplayMatch(m);
+        DisplayScreen(MatchOverviewScreen);
+        MatchOverviewScreen.DisplayMatch(m);
+    }
+
+    public void StartMatchSimulation(Match m, float stepTime)
+    {
+        DisplayScreen(MatchSimulationScreen);
+        MatchSimulationScreen.DisplayAndSimulateMatch(m, stepTime);
     }
 
     private void DisplayScreen(UI_Screen screen)

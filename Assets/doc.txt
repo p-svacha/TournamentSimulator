@@ -1,8 +1,10 @@
-create season schedule in tournamentsimulator and delete schedule.txt
-	add season cup
-create compact version of match in tournament view with just playbutton,flag-lastname-result
-	use it in tree view
-	play button is whole container
+------------------------------- Before season 5 ------------------------------------------
+add world cup
+	1v1 TEAM tournament
+	all countries with 2+ people participate (2 best per team)
+	random seeding
+		add bye system for first round so some teams get a freilos if number is uneven
+-------------------------------------------------------------------------------------------
 
 
 awards (leagues and tournaments can hand out awards)

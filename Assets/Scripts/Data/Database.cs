@@ -14,7 +14,6 @@ public static class Database
 {
     private static string BasePath = "Assets/Resources/Database/";
     private static string CountryDbPath = BasePath + "Countries.txt";
-    private static string ScheduleDbPath = BasePath + "Schedule.txt";
 
     private static int NextPlayerId;
     private static int NextMatchId;
@@ -99,30 +98,6 @@ public static class Database
         Debug.Log("Read " + countries.Count + " countries from database");
         return countries;
     }
-
-    public static List<Tuple<int, int, int>> ReadSchedule()
-    {
-        List<Tuple<int, int, int>> schedule = new List<Tuple<int, int, int>>();
-        int counter = 0;
-        string line;
-
-        System.IO.StreamReader file = new System.IO.StreamReader(ScheduleDbPath);
-        while ((line = file.ReadLine()) != null)
-        {
-            if (counter > 0)
-            {
-                string[] fields = line.Split(';');
-                int fieldIndex = 0;
-                int quarter = int.Parse(fields[fieldIndex++]);
-                int day = int.Parse(fields[fieldIndex++]);
-                int format = int.Parse(fields[fieldIndex++]);
-                schedule.Add(new Tuple<int, int, int>(quarter, day, format));
-            }
-            counter++;
-        }
-        return schedule;
-    }
-
 
     #endregion
 

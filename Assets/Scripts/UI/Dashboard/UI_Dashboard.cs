@@ -25,7 +25,7 @@ public class UI_Dashboard : UI_Screen
     public UI_PlayerMedalListElement MedalListElement;
 
     // State
-    private int SelectedSeason;
+    public int SelectedSeason { get; set; }
 
     public override void Init(UI_Base baseUI)
     {

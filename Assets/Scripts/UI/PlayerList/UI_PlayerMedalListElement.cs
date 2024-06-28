@@ -25,5 +25,7 @@ public class UI_PlayerMedalListElement : MonoBehaviour
         GoldText.text = gold.ToString();
         SilverText.text = silver.ToString();
         BronzeText.text = bronze.ToString();
+
+        GetComponent<PlayerTooltipTarget>().Player = p;
     }
 }

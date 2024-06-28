@@ -93,11 +93,11 @@ public class Format_Classic24 : Tournament
         League.Standings[Matches[10].PlayerRanking[0]] += 6;
     }
 
-    public override List<UI_Group> DisplayTournament(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
+    public override List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container)
     {
-        PlayersPerPhase = new int[] { 6, 4, 4, 4 };
-        MatchesPerPhase = new int[] { 4, 4, 2, 1 };
-        return DisplayTournamentAsLayers(baseUI, Container, groupPrefab);
+        int[] playersPerPhase = new int[] { 6, 4, 4, 4 };
+        int[] matchesPerPhase = new int[] { 4, 4, 2, 1 };
+        return DisplayTournamentAsLayers(baseUI, Container, playersPerPhase, matchesPerPhase);
     }
 
     public override string GetMatchDayTitle(int index)

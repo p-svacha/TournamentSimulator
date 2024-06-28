@@ -5,14 +5,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_MatchScreen : UI_Screen
+public class UI_MatchSimulationScreen : UI_Screen
 {
     private Match Match;
 
     [Header("Elements")]
-    public Button BackButton;
-    public Button SimulateButton;
-    public Button SimulateFastButton;
     public Text TitleText;
     public Text ProgressText;
     public Text AttributeText;
@@ -33,21 +30,13 @@ public class UI_MatchScreen : UI_Screen
     private Dictionary<Player, PlayerMatchRound> RoundResults;
     private List<Player> AttributeRanking;
 
-    public void DisplayMatch(Match m)
+    public void DisplayAndSimulateMatch(Match m, float stepTime)
     {
         Match = m;
 
         TitleText.text = m.Name;
         ProgressText.text = "";
         AttributeText.text = "";
-
-        BackButton.onClick.RemoveAllListeners();
-        BackButton.onClick.AddListener(() => BaseUI.DisplayTournament(m.Tournament));
-
-        SimulateButton.gameObject.SetActive(true);
-        SimulateButton.onClick.AddListener(() => StartSimulation(1.5f));
-        SimulateFastButton.gameObject.SetActive(true);
-        SimulateFastButton.onClick.AddListener(() => StartSimulation(0.01f));
 
         for (int i = 1; i < PlayerContainer.transform.childCount; i++) GameObject.Destroy(PlayerContainer.transform.GetChild(i).gameObject);
 
@@ -58,14 +47,13 @@ public class UI_MatchScreen : UI_Screen
             row.Init(p.Player, p.TotalScore);
             PlayerRows.Add(p.Player, row);
         }
+
+        StartSimulation(stepTime);
     }
 
     private void StartSimulation(float stepTime)
     {
         StepTime = stepTime;
-        SimulateButton.gameObject.SetActive(false);
-        SimulateFastButton.gameObject.SetActive(false);
-        BackButton.gameObject.SetActive(false);
         IsSimulating = true;
         CurrentSkillIndex = -1;
         SimPlayer = Match.NumPlayers + 1;
@@ -77,9 +65,9 @@ public class UI_MatchScreen : UI_Screen
     private void EndSimulation()
     {
         IsSimulating = false;
-        BackButton.gameObject.SetActive(true);
         Match.SetDone();
         BaseUI.Simulator.Save();
+        BaseUI.DisplayMatchOverviewScreen(Match);
     }
 
     void Update()

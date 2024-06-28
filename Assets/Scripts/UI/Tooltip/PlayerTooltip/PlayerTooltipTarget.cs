@@ -34,6 +34,7 @@ public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointer
 
     private void ShowTooltip()
     {
+        if (Player == null) return;
         UI_PlayerTooltip.Singleton.Init(Player);
     }
 

@@ -48,8 +48,6 @@ public class Format_OpenLeague : Tournament
         if (Players.Count == 0) IsDone = true;
         else if(Players.Count < 6) // Only 1 match for 1-5 players
         {
-            PlayersPerPhase = new int[] { 6 };
-            MatchesPerPhase = new int[] { 1 };
             Match onlyMatch = new Match("Final", this, Quarter, Day, numPlayers: Players.Count, PointDistributions[Players.Count]);
             foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p, seed: 0);
             Matches.Add(onlyMatch);
@@ -57,8 +55,6 @@ public class Format_OpenLeague : Tournament
 
         else if(Players.Count < 12) // Semifinals + Final with 6-11 players
         {
-            PlayersPerPhase = new int[] { 6, 4 };
-            MatchesPerPhase = new int[] { 2, 1 };
             List<List<Player>> groups = new List<List<Player>>();
             int numGroups = 2;
             for (int i = 0; i < numGroups; i++) groups.Add(new List<Player>());
@@ -88,8 +84,6 @@ public class Format_OpenLeague : Tournament
 
         else if(Players.Count < 24) // Quarters + Semifinals + Final with 12-23 players
         {
-            PlayersPerPhase = new int[] { 6, 4, 4 };
-            MatchesPerPhase = new int[] { 4, 2, 1 };
             List<List<Player>> groups = new List<List<Player>>();
             int numGroups = 4;
             for (int i = 0; i < numGroups; i++) groups.Add(new List<Player>());
@@ -131,8 +125,6 @@ public class Format_OpenLeague : Tournament
         else // Groups + Quarters + Semifinals + Final with 24+ players
         {
             int maxGroupSize = Players.Count / 4;
-            PlayersPerPhase = new int[] { maxGroupSize, 6, 4, 4 };
-            MatchesPerPhase = new int[] { 4, 4, 2, 1 };
             List<List<Player>> groups = new List<List<Player>>();
             int numGroups = 4;
             for (int i = 0; i < numGroups; i++) groups.Add(new List<Player>());
@@ -181,36 +173,39 @@ public class Format_OpenLeague : Tournament
         }
     }
 
-    public override List<UI_Group> DisplayTournament(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
+    public override List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container)
     {
+        int[] playersPerPhase;
+        int[] matchesPerPhase;
+
         if(Players.Count == 0)
         {
-            PlayersPerPhase = new int[] { };
-            MatchesPerPhase = new int[] { };
+            playersPerPhase = new int[] { };
+            matchesPerPhase = new int[] { };
         }
         else if(Players.Count < 6)
         {
-            PlayersPerPhase = new int[] { 6 };
-            MatchesPerPhase = new int[] { 1 };
+            playersPerPhase = new int[] { 6 };
+            matchesPerPhase = new int[] { 1 };
         }
         else if(Players.Count < 12)
         {
-            PlayersPerPhase = new int[] { 6, 4 };
-            MatchesPerPhase = new int[] { 2, 1 };
+            playersPerPhase = new int[] { 6, 4 };
+            matchesPerPhase = new int[] { 2, 1 };
         }
         else if(Players.Count < 24)
         {
-            PlayersPerPhase = new int[] { 6, 4, 4 };
-            MatchesPerPhase = new int[] { 4, 2, 1 };
+            playersPerPhase = new int[] { 6, 4, 4 };
+            matchesPerPhase = new int[] { 4, 2, 1 };
         }
         else
         {
             int maxGroupSize = Players.Count / 4;
-            PlayersPerPhase = new int[] { maxGroupSize, 6, 4, 4 };
-            MatchesPerPhase = new int[] { 4, 4, 2, 1 };
+            playersPerPhase = new int[] { maxGroupSize, 6, 4, 4 };
+            matchesPerPhase = new int[] { 4, 4, 2, 1 };
         }
 
-        return DisplayTournamentAsLayers(baseUI, Container, groupPrefab);
+        return DisplayTournamentAsLayers(baseUI, Container, playersPerPhase, matchesPerPhase);
     }
 
     protected override void OnTournamentDone()

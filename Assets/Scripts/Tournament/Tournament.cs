@@ -15,9 +15,6 @@ public abstract class Tournament
     public List<Player> Players { get; protected set; }
     public List<Match> Matches { get; protected set; }
 
-    protected int[] PlayersPerPhase;
-    protected int[] MatchesPerPhase;
-
     // New tournament
     public Tournament(TournamentType format, int season, League league = null)
     {
@@ -32,7 +29,7 @@ public abstract class Tournament
     public abstract void Initialize();
     public abstract string GetMatchDayTitle(int index);
 
-    public static Tournament CreateTournament(TournamentType format, int season, int quarter, int day)
+    public static Tournament CreateTournament(TournamentType format, int season, int quarter = 0, int day = 0)
     {
         if (format == TournamentType.GrandLeague) return new Format_GrandLeague(season, quarter, day, Database.CurrentGrandLeague);
         if (format == TournamentType.ChallengeLeague) return new Format_ChallengeLeague(season, quarter, day, Database.CurrentChallengeLeague);
@@ -61,68 +58,76 @@ public abstract class Tournament
 
     #region Display
 
-    public abstract List<UI_Group> DisplayTournament(UI_Base baseUI, GameObject Container, UI_Group groupPrefab);
-    protected List<UI_Group> DisplayTournamentAsLayers(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
+    public abstract List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container);
+
+    /// <summary>
+    /// Displays the tournament as layers whereas each phase is represented as one row with the final phase on top.
+    /// </summary>
+    protected List<UI_TMatch> DisplayTournamentAsLayers(UI_Base baseUI, GameObject Container, int[] playersPerPhase, int[] matchesPerPhase)
     {
-        List<UI_Group> matches = new List<UI_Group>();
+        List<UI_TMatch> matches = new List<UI_TMatch>();
+        int numPhases = playersPerPhase.Length;
+
         int matchCounter = 0;
 
         HelperFunctions.SetRectTransformMargins(Container.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f); // Reset container size
 
         float totalWidth = Container.GetComponent<RectTransform>().rect.width;
         float totalHeight = Container.GetComponent<RectTransform>().rect.height;
-        float groupWidth = 300;
+        Debug.Log("Tournament screen is " + totalWidth + "x" + totalHeight);
+        float matchWidth = 300; // width of TMatch
 
-        float[] groupHeights = new float[PlayersPerPhase.Length];
-        for (int i = 0; i < PlayersPerPhase.Length; i++) groupHeights[i] = 35 + (PlayersPerPhase[i] * 35);
-        float totalGroupHeight = groupHeights.Sum(x => x);
-        float totalYMargin = totalHeight - totalGroupHeight;
-        float yMargin = totalYMargin / (MatchesPerPhase.Length + 1);
-        float currentGroupHeight = yMargin + groupHeights[0];
+        float[] matchHeights = new float[playersPerPhase.Length];
+        for (int i = 0; i < playersPerPhase.Length; i++) matchHeights[i] = 35 + (playersPerPhase[i] * 35);
 
-        for (int m = 0; m < MatchesPerPhase.Length; m++)
+        float totalGroupHeight = matchHeights.Sum(x => x);
+        float totalYSpacing = totalHeight - totalGroupHeight;
+        float ySpacingStep = totalYSpacing / (matchesPerPhase.Length + 1);
+        float currentMatchY = ySpacingStep;
+
+        for (int i = 0; i < numPhases; i++)
         {
-            int numMatches = MatchesPerPhase[m];
+            int numMatches = matchesPerPhase[i];
 
-            float yPos = currentGroupHeight;
-            if (m < MatchesPerPhase.Length - 1) currentGroupHeight += groupHeights[m + 1] + yMargin;
+            float yPos = currentMatchY;
+            currentMatchY += matchHeights[i] + ySpacingStep;
 
-            float groupTotalMargin = totalWidth - (numMatches * groupWidth);
+            float groupTotalMargin = totalWidth - (numMatches * matchWidth);
             float groupMargin = groupTotalMargin / (numMatches + 1);
 
-            for (int i = 0; i < numMatches; i++)
+            for (int m = 0; m < numMatches; m++)
             {
-                UI_Group group = GameObject.Instantiate(groupPrefab, Container.transform);
+                UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchPrefab;
+                UI_TMatch group = GameObject.Instantiate(matchPrefab, Container.transform);
                 RectTransform rect = group.GetComponent<RectTransform>();
-                rect.position = new Vector2(groupMargin + (i * (groupWidth + groupMargin)), yPos);
+                rect.anchoredPosition = new Vector2(groupMargin + (m * (matchWidth + groupMargin)), yPos);
                 group.Init(baseUI, Matches[matchCounter++]);
                 matches.Add(group);
             }
         }
         return matches;
     }
-    protected List<UI_Group> DisplayTournamentAsTree(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
+
+    /// <summary>
+    /// Displays the tournament as a tableau where the first phase is split on both edges left and right going inwards with the final phase is in the center.
+    /// </summary>
+    protected List<UI_TMatch> DisplayTournamentAsTableau(UI_Base baseUI, GameObject Container, int[] playersPerPhase, int[] matchesPerPhase)
     {
-        List<UI_Group> matches = new List<UI_Group>();
+        List<UI_TMatch> matches = new List<UI_TMatch>();
 
         // Calculate amount of columns
-        int numColumns = 1;
-        int matchTmp = Players.Count;
-        while(matchTmp > 2)
-        {
-            numColumns += 2;
-            matchTmp /= 2;
-        }
+        int numPhases = playersPerPhase.Length;
+        int numColumns = (numPhases * 2) - 1;
 
         // Calculate amount of rows on the outside columns
-        int maxNumRows = Players.Count / 4;
+        int maxNumRows = matchesPerPhase.Max() / 2;
 
         // Calculate total display size of tournament
-        float outerColumnRowSpacing = 20; // vertical space between matches on the outest-most rows (1st round)
-        float innerColumnRowSpacing = 40; // vertical space between matches on the inner rows (2nd+ rounds)
-        float columnSpacing = 20;
-        float matchWidth = 300;
-        float matchHeight = 40 + 30 * 2; // 2 = amount of players per match
+        float outerColumnRowSpacing = 10; // vertical space between matches on the outest-most rows (1st round)
+        //float innerColumnRowSpacing = 20; // vertical space between matches on the inner rows (2nd+ rounds)
+        float columnSpacing = 50;
+        float matchWidth = 190; // width of compact TMatch + 10 padding
+        float matchHeight = 5 + 35 * playersPerPhase.Max();
 
         float totalMatchWidth = numColumns * matchWidth;
         float totalWidth = totalMatchWidth + (numColumns + 1) * columnSpacing;
@@ -134,23 +139,18 @@ public abstract class Tournament
 
         // Calculate amount of rows and vertical spacing in each column
         int[] numRows = new int[numColumns];
-        float[] firstRowYPosition = new float[numColumns];
+        float[] rowSpacing = new float[numColumns];
         for (int col = 0; col < numColumns; col++)
         {
             // Amount of rows in column
             int distanceFromFinal = Mathf.Abs((numColumns / 2) - col);
-            numRows[col] = (int)(Mathf.Pow(2, distanceFromFinal) / 2);
-            if (distanceFromFinal == 0) numRows[col] = 2; // Final phase has 2 rows because of match for place 3
+            numRows[col] = matchesPerPhase[(numPhases - 1) - distanceFromFinal] / 2; // all phases are split in 2 on left and right side
+            if (distanceFromFinal == 0) numRows[col] = matchesPerPhase[numPhases - 1]; // final phase in center
 
             // Vertical spacing between matches
-            if (col == 0 || col == numColumns - 1) firstRowYPosition[col] = outerColumnRowSpacing;
-            else
-            {
-                float totalMatchHeight = numRows[col] * matchHeight;
-                float totalMatchInnerSpacingHeight = (numRows[col] - 1) * innerColumnRowSpacing;
-                float totalOuterSpacingHeight = totalHeight - totalMatchHeight - totalMatchInnerSpacingHeight;
-                firstRowYPosition[col] = totalOuterSpacingHeight / 2f;
-            }
+            float totalMatchHeight = numRows[col] * matchHeight;
+            float totalSpacingHeight = totalHeight - totalMatchHeight;
+            rowSpacing[col] = totalSpacingHeight / (numRows[col] + 1);
             //Debug.Log("row spacing for column " + col + " is " + firstRowYPosition[col]);
         }
 
@@ -220,15 +220,15 @@ public abstract class Tournament
                 int matchIndex = matchMap[col][row];
 
                 // Calculate final match position
-                float xPos = ((col + 2) * columnSpacing) + (col * matchWidth); // idk why it's col+2 instead of col+1 but it works
+                float xPos = ((col + 1) * columnSpacing) + (col * matchWidth);
 
-                float rowSpacing = (col == 0 || col == numColumns - 1) ? outerColumnRowSpacing : innerColumnRowSpacing;
-                float yPos = firstRowYPosition[col] + (row * matchHeight) + (row * rowSpacing);
+                //float rowSpacing = (col == 0 || col == numColumns - 1) ? outerColumnRowSpacing : innerColumnRowSpacing;
+                float yPos = (row * matchHeight) + ((row + 1) * rowSpacing[col]);
 
-                UI_Group group = GameObject.Instantiate(groupPrefab, Container.transform);
+                UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchCompactPrefab;
+                UI_TMatch group = GameObject.Instantiate(matchPrefab, Container.transform);
                 RectTransform rect = group.GetComponent<RectTransform>();
-                rect.pivot = new Vector2(0, 0);
-                rect.position = new Vector2(xPos, yPos);
+                rect.anchoredPosition = new Vector2(xPos, yPos);
                 group.Init(baseUI, Matches[matchIndex]);
 
                 matches.Add(group);
@@ -247,7 +247,7 @@ public abstract class Tournament
         data.Id = Id;
         data.Name = Name;
         data.Format = (int)Format;
-        data.LeagueId = League.Id;
+        data.LeagueId = League == null ? -1 : League.Id;
         data.Season = Season;
         data.IsDone = IsDone;
         data.Players = Players.Select(x => x.Id).ToList();
@@ -268,7 +268,7 @@ public abstract class Tournament
         Id = data.Id;
         Name = data.Name;
         Format = (TournamentType)data.Format;
-        League = Database.Leagues[data.LeagueId];
+        League = data.LeagueId == -1 ? null : Database.Leagues[data.LeagueId];
         Season = data.Season;
         IsDone = data.IsDone;
         Players = data.Players.Select(x => Database.Players[x]).ToList();

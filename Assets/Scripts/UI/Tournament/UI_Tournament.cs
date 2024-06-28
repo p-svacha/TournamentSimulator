@@ -9,10 +9,7 @@ public class UI_Tournament : UI_Screen
     public GameObject Container;
     public Button BackButton;
 
-    [Header("Prefabs")]
-    public UI_Group GroupPrefab;
-
-    private List<UI_Group> Matches;
+    private List<UI_TMatch> Matches;
 
     public override void Init(UI_Base baseUI)
     {
@@ -24,6 +21,6 @@ public class UI_Tournament : UI_Screen
     public void DisplayTournament(Tournament t)
     {
         HelperFunctions.DestroyAllChildredImmediately(Container);
-        Matches = t.DisplayTournament(BaseUI, Container, GroupPrefab);
+        Matches = t.DisplayTournament(BaseUI, Container);
     }
 }

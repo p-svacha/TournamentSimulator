@@ -626,7 +626,7 @@ GameObject:
   - component: {fileID: 1532127121303272560}
   - component: {fileID: -6084635829815656775}
   m_Layer: 5
-  m_Name: GroupPlayer
+  m_Name: TMatchPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

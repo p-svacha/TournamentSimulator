@@ -46,21 +46,6 @@ public class TournamentSimulator : MonoBehaviour
         UpdateUI();
     }
 
-    /// <summary>
-    /// Generates a new random player with default rating and adds them to the lowest league with space.
-    /// </summary>
-    public void AddRandomPlayer(string region = "", string continent = "", int rating = DEFAULT_RATING)
-    {
-        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent, rating);
-
-        int league = (Database.Players.Count / 24);
-        if (league > 2) league = 2;
-        newPlayer.SetLeague((TournamentType)league);
-
-        Database.Players.Add(newPlayer.Id, newPlayer);
-        Debug.Log(newPlayer.ToString() + " has been generated.");
-    }
-
     public void UpdateUI()
     {
         UI.UpdateTime();
@@ -101,6 +86,8 @@ public class TournamentSimulator : MonoBehaviour
         return Database.Matches.Values.Where(x => x.Tournament.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
     }
 
+    #region Season Transition
+
     private void StartSeason()
     {
         // Create seasonal leagues
@@ -117,11 +104,30 @@ public class TournamentSimulator : MonoBehaviour
         AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers);
         AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers);
 
+        // Create league tournaments
+        ScheduleTournament(TournamentType.GrandLeague, 1, 10);
+        ScheduleTournament(TournamentType.GrandLeague, 2, 10);
+        ScheduleTournament(TournamentType.GrandLeague, 3, 10);
+        ScheduleTournament(TournamentType.GrandLeague, 3, 14);
+        ScheduleTournament(TournamentType.GrandLeague, 4, 10);
 
+        ScheduleTournament(TournamentType.ChallengeLeague, 1, 6);
+        ScheduleTournament(TournamentType.ChallengeLeague, 2, 6);
+        ScheduleTournament(TournamentType.ChallengeLeague, 2, 14);
+        ScheduleTournament(TournamentType.ChallengeLeague, 3, 6);
+        ScheduleTournament(TournamentType.ChallengeLeague, 4, 6);
 
-        // Create seasonal tournaments from schedule
-        List<Tuple<int, int, int>> schedule = Database.ReadSchedule();
-        foreach(Tuple<int, int, int> entry in schedule) ScheduleTournament((TournamentType)entry.Item3, entry.Item1, entry.Item2);
+        ScheduleTournament(TournamentType.OpenLeague, 1, 2);
+        ScheduleTournament(TournamentType.OpenLeague, 1, 14);
+        ScheduleTournament(TournamentType.OpenLeague, 2, 2);
+        ScheduleTournament(TournamentType.OpenLeague, 3, 2);
+        ScheduleTournament(TournamentType.OpenLeague, 4, 2);
+
+        // Season Cup
+        ScheduleTournament(TournamentType.SeasonCup);
+
+        // Switch season view
+        UI.DashboardScreen.SelectedSeason = Database.Season;
 
         Save();
     }
@@ -132,7 +138,7 @@ public class TournamentSimulator : MonoBehaviour
         Database.Leagues.Add(newLeague.Id, newLeague);
     }
 
-    public void ScheduleTournament(TournamentType type, int quarter, int day)
+    public void ScheduleTournament(TournamentType type, int quarter = 0, int day = 0)
     {
         Tournament newTournament = Tournament.CreateTournament(type, Database.Season, quarter, day);
         Database.Tournaments.Add(newTournament.Id, newTournament);
@@ -147,14 +153,14 @@ public class TournamentSimulator : MonoBehaviour
 
         // Relegations
         Debug.Log("Performing relegations.");
-        List<Player> grandLegueRanking = Database.CurrentGrandLeague.Ranking;
+        List<Player> grandLegueRanking = Database.GetLeague(TournamentType.GrandLeague, Database.Season - 1).Ranking;
         for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
 
-        List<Player> challengeLegueRanking = Database.CurrentChallengeLeague.Ranking;
+        List<Player> challengeLegueRanking = Database.GetLeague(TournamentType.ChallengeLeague, Database.Season - 1).Ranking;
         for(int i = 0; i < 5; i++) challengeLegueRanking[i].SetLeague(TournamentType.GrandLeague);
         for (int i = 19; i < challengeLegueRanking.Count; i++) challengeLegueRanking[i].SetLeague(TournamentType.OpenLeague);
 
-        List<Player> openLegueRanking = Database.CurrentOpenLeague.Ranking;
+        List<Player> openLegueRanking = Database.GetLeague(TournamentType.OpenLeague, Database.Season - 1).Ranking;
         for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
         List<Player> eliminatedPlayers = new List<Player>();
         for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++)
@@ -194,6 +200,23 @@ public class TournamentSimulator : MonoBehaviour
         playerToRevive.SetLeague(TournamentType.OpenLeague);
         Debug.Log(playerToRevive.ToString() + " has been revived.");
     }
+
+    /// <summary>
+    /// Generates a new random player with default rating and adds them to the lowest league with space.
+    /// </summary>
+    public void AddRandomPlayer(string region = "", string continent = "", int rating = DEFAULT_RATING)
+    {
+        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent, rating);
+
+        int league = (Database.Players.Count / 24);
+        if (league > 2) league = 2;
+        newPlayer.SetLeague((TournamentType)league);
+
+        Database.Players.Add(newPlayer.Id, newPlayer);
+        Debug.Log(newPlayer.ToString() + " has been generated.");
+    }
+
+    #endregion
 
 
     #region Save / Load

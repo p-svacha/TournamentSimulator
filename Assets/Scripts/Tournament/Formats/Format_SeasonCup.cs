@@ -112,11 +112,11 @@ public class Format_SeasonCup : Tournament
         Matches.Add(new Match("Final", this, FINALS_QUARTER, FINALS_DAY, numPlayers: 2, PointDistribution));
     }
 
-    public override List<UI_Group> DisplayTournament(UI_Base baseUI, GameObject Container, UI_Group groupPrefab)
+    public override List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container)
     {
-        PlayersPerPhase = new int[] { 2, 2, 2, 2, 2, 2 };
-        MatchesPerPhase = new int[] { 32, 16, 8, 4, 2, 2 };
-        return DisplayTournamentAsTree(baseUI, Container, groupPrefab);
+        int[] playersPerPhase = new int[] { 2, 2, 2, 2, 2, 2 };
+        int[] matchesPerPhase = new int[] { 32, 16, 8, 4, 2, 2 };
+        return DisplayTournamentAsTableau(baseUI, Container, playersPerPhase, matchesPerPhase);
     }
 
     public override string GetMatchDayTitle(int index)

@@ -16,12 +16,14 @@ public static class Database
     private static string CountryDbPath = BasePath + "Countries.txt";
 
     private static int NextPlayerId;
+    private static int NextTeamId;
     private static int NextMatchId;
     private static int NextTournamentId;
     private static int NextLeagueId;
 
     public static Dictionary<int, Country> Countries;
     public static Dictionary<int, Player> Players;
+    public static Dictionary<int, Team> Teams;
 
     public static Dictionary<int, League> Leagues;
     public static Dictionary<int, Tournament> Tournaments;
@@ -53,14 +55,16 @@ public static class Database
         Quarter = data.CurrentQuarter;
         Day = data.CurrentDay;
         Players = data.Players.Select(x => new Player(x)).ToDictionary(x => x.Id, x => x);
+        Teams = data.Teams == null ? new Dictionary<int, Team>() : data.Teams.Select(x => new Team(x)).ToDictionary(x => x.Id, x => x);
         Leagues = data.Leagues.Select(x => new League(x)).ToDictionary(x => x.Id, x => x);
         Tournaments = data.Tournaments.Select(x => Tournament.LoadTournament(x)).ToDictionary(x => x.Id, x => x);
         Matches = data.Matches.Select(x => new Match(x)).ToDictionary(x => x.Id, x => x);
 
-        NextPlayerId = data.Players.Max(x => x.Id) + 1;
-        NextLeagueId = data.Leagues.Max(x => x.Id) + 1;
-        NextTournamentId = data.Tournaments.Max(x => x.Id) + 1;
-        NextMatchId = data.Matches.Max(x => x.Id) + 1;
+        NextPlayerId = Players.Count == 0 ? 1 :         Players.Values.Max(x => x.Id) + 1;
+        NextTeamId = Teams.Count == 0 ? 1 :             Teams.Values.Max(x => x.Id) + 1;
+        NextLeagueId = Leagues.Count == 0 ? 1 :         Leagues.Values.Max(x => x.Id) + 1;
+        NextTournamentId = Tournaments.Count == 0 ? 1 : Tournaments.Values.Max(x => x.Id) + 1;
+        NextMatchId = Matches.Count == 0 ? 1 :          Matches.Values.Max(x => x.Id) + 1;
 
         Debug.Log("Loaded simulation state at " + GetQuarterName(Quarter) + " " + Day + ", Season " + Season);
     }
@@ -104,22 +108,11 @@ public static class Database
 
     #region Id
 
-    public static int GetNewPlayerId()
-    {
-        return NextPlayerId++;
-    }
-    public static int GetNewMatchId()
-    {
-        return NextMatchId++;
-    }
-    public static int GetNewTournamentId()
-    {
-        return NextTournamentId++;
-    }
-    public static int GetNewLeagueId()
-    {
-        return NextLeagueId++;
-    }
+    public static int GetNewPlayerId() => NextPlayerId++;
+    public static int GetNewTeamId() => NextTeamId++;
+    public static int GetNewMatchId() => NextMatchId++;
+    public static int GetNewTournamentId() => NextTournamentId++;
+    public static int GetNewLeagueId() => NextLeagueId++;
 
     #endregion
 
@@ -136,6 +129,8 @@ public static class Database
         return "???";
     }
 
+    public static Country GetCountry(string name) => Database.Countries.Values.First(x => x.Name == name);
+
     public static League GetLeague(TournamentType type, int season) => Leagues.Values.FirstOrDefault(x => x.LeagueType == type && x.Season == season);
     public static League GetCurrentLeague(TournamentType type) => GetLeague(type, Season);
     public static League CurrentGrandLeague => GetLeague(TournamentType.GrandLeague, Season);
@@ -143,6 +138,8 @@ public static class Database
     public static League CurrentOpenLeague => GetLeague(TournamentType.OpenLeague, Season);
 
     public static List<Tournament> GetTournaments(int season) => Tournaments.Values.Where(x => x.Season == season).ToList();
+
+    public static Team GetNationalTeam(Country c) => Teams.Values.FirstOrDefault(x => x.Country == c);
 
     public static List<Player> WorldRanking => Players.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.TiebreakerScore).ToList();
     /// <summary>
@@ -205,6 +202,24 @@ public static class Database
         }
 
         return medals;
+    }
+
+    public static Dictionary<Country, List<Player>> GetPlayersByCountry() => Players.Values.GroupBy(x => x.Country).OrderByDescending(x => x.Count()).ToDictionary(x => x.Key, x => x.ToList());
+
+    #endregion
+
+    #region Debug / Log
+
+    public static void ListCountriesByPlayerAmount()
+    {
+        string s = "Countries by amount of players:";
+        int rank = 1;
+        foreach(var x in GetPlayersByCountry())
+        {
+            s += "\n" + rank + ". " +  x.Key.Name + ": " + x.Value.Count;
+            rank++;
+        }
+        Debug.Log(s);
     }
 
     #endregion

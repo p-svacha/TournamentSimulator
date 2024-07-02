@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_Header : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class UI_Header : MonoBehaviour
     public UI_Base BaseUI;
 
     [Header("Elements")]
-    public Text TimeText;
+    public TextMeshProUGUI TimeText;
     public Button NextDayButton;
     public Button SettingsButton;
     public GameObject SettingsSubmenu;
@@ -22,19 +23,12 @@ public class UI_Header : MonoBehaviour
     [Header("State")]
     public GameObject ActiveSubmenu;
 
-    // Start is called before the first frame update
     public void Init(UI_Base baseUI)
     {
         BaseUI = baseUI;
         InitSettingsSubmenu();
         NextDayButton.onClick.AddListener(() => baseUI.Simulator.GoToNextDay());
         SaveButton.onClick.AddListener(() => BaseUI.Simulator.Save());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void UpdateTime(int season, int quarter, int day)

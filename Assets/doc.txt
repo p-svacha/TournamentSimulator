@@ -1,7 +1,7 @@
 ------------------------------- Before season 5 ------------------------------------------
 add world cup
 	1v1 TEAM tournament
-	all countries with 2+ people participate (2 best per team)
+	all countries with 3+ people participate (3 best per team that play are decided at start of each match)
 	random seeding
 		add bye system for first round so some teams get a freilos if number is uneven
 -------------------------------------------------------------------------------------------

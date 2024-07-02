@@ -12,7 +12,8 @@ public class UI_Base : MonoBehaviour
     [Header("Screens")]
     public UI_Dashboard DashboardScreen;
     public UI_Tournament TournamentScreen;
-    public UI_MatchSimulationScreen MatchSimulationScreen;
+    public UI_MatchSimulationScreen MatchSimulationScreen_FreeForAll;
+    public UI_1v1TeamMatchSimulationScreen MatchSimulationScreen_1v1TeamMatch;
     public UI_MatchOverviewScreen MatchOverviewScreen;
 
     private UI_Screen ActiveScreen;
@@ -29,7 +30,8 @@ public class UI_Base : MonoBehaviour
         Header.Init(this);
         DashboardScreen.Init(this);
         TournamentScreen.Init(this);
-        MatchSimulationScreen.Init(this);
+        MatchSimulationScreen_FreeForAll.Init(this);
+        MatchSimulationScreen_1v1TeamMatch.Init(this);
         MatchOverviewScreen.Init(this);
 
         Popup.gameObject.SetActive(false);
@@ -62,12 +64,26 @@ public class UI_Base : MonoBehaviour
 
     public void StartMatchSimulation(Match m, float stepTime)
     {
-        DisplayScreen(MatchSimulationScreen);
-        MatchSimulationScreen.DisplayAndSimulateMatch(m, stepTime);
+        if (m.Type == MatchType.FreeForAll)
+        {
+            DisplayScreen(MatchSimulationScreen_FreeForAll);
+            MatchSimulationScreen_FreeForAll.DisplayAndSimulateMatch(m, stepTime);
+        }
+        else if(m.Type == MatchType.TeamMatch_1v1)
+        {
+            DisplayScreen(MatchSimulationScreen_1v1TeamMatch);
+            MatchSimulationScreen_1v1TeamMatch.DisplayAndSimulateMatch((TeamMatch)m, stepTime);
+        }
     }
+
+
 
     private void DisplayScreen(UI_Screen screen)
     {
+        // Hide tooltip
+        UI_PlayerTooltip.Singleton.Hide();
+
+        // Switch screen
         ActiveScreen.gameObject.SetActive(false);
         ActiveScreen = screen;
         ActiveScreen.gameObject.SetActive(true);

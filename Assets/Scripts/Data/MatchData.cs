@@ -8,6 +8,7 @@ public class MatchData
 {
     public int Id { get; set; }
     public string Name { get; set; }
+    public int Type { get; set; }
     public int TournamentId { get; set; }
     public int Quarter { get; set; }
     public int Day { get; set; }

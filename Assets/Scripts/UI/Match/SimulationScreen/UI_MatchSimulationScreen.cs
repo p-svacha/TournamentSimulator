@@ -27,8 +27,7 @@ public class UI_MatchSimulationScreen : UI_Screen
     private float TimeElapsed;
     private float StepTime;
 
-    private Dictionary<Player, PlayerMatchRound> RoundResults;
-    private List<Player> AttributeRanking;
+    private MatchRound CurrentMatchRound;
 
     public void DisplayAndSimulateMatch(Match m, float stepTime)
     {
@@ -84,43 +83,43 @@ public class UI_MatchSimulationScreen : UI_Screen
             }
             else if(SimPlayer == Match.NumPlayers + 1)
             {
-                if(CurrentSkillIndex == -1) GoToNextSkill();
-                else if (CurrentSkillIndex == TournamentSimulator.SkillDefs.Count - 1) EndSimulation();
-                else
-                {
-                    GoToNextSkill();
-                }
+                if (CurrentSkillIndex == TournamentSimulator.SkillDefs.Count - 1) EndSimulation();
+                else GoToNextSkill();
             }
             else
             {
-                Player p = AttributeRanking[SimPlayer];
-                PlayerRows[p].DisplayResult(RoundResults[p]);
-                SimPlayer++;
+                DisplayNextPlayerResult();
             }
         }
     }
 
+    private void DisplayNextPlayerResult()
+    {
+        Player p = CurrentMatchRound.PlayerRanking[CurrentMatchRound.PlayerRanking.Count - SimPlayer - 1];
+        PlayerRows[p].DisplayResult(CurrentMatchRound.GetPlayerResult(p));
+        SimPlayer++;
+    }
+
     private void EndRound()
     {
+        // Save match round
+        Match.ApplyMatchRound(CurrentMatchRound);
+
         // Clear row texts
         foreach (MatchParticipant p in Match.Participants)
         {
             PlayerRows[p.Player].HideResult();
         }
 
-        // Distribute Points
+        // Update total scores
         foreach (MatchParticipant participant in Match.Participants)
         {
-            participant.IncreaseTotalScore(RoundResults[participant.Player].PointsGained);
             PlayerRows[participant.Player].PointsText.text = participant.TotalScore.ToString();
         }
 
         // Resort rows according to new ranking
         List<Player> playerRanking = Match.PlayerRanking;
         for (int i = 0; i < playerRanking.Count; i++) PlayerRows[playerRanking[i]].transform.SetSiblingIndex(i + 1);
-
-        // Save match round
-        Match.Rounds.Add(new MatchRound(CurrentSkill.Id, RoundResults.Values.ToList()));
     }
 
     private void GoToNextSkill()
@@ -132,28 +131,7 @@ public class UI_MatchSimulationScreen : UI_Screen
         AttributeText.text = TournamentSimulator.SkillDefs[CurrentSkillIndex].DisplayName;
         SimPlayer = 0;
 
-        // Calculate score
-        RoundResults = new Dictionary<Player, PlayerMatchRound>();
-        foreach (MatchParticipant p in Match.Participants) 
-        {
-            PlayerMatchRound playerResult = p.Player.GetMatchRoundResult(CurrentSkill);
-            RoundResults.Add(p.Player, playerResult);
-        }
-
-        // Save all values for the round
-        AttributeRanking = RoundResults.OrderBy(x => x.Value.Score).Select(x => x.Key).ToList();
-        int lastScore = -1;
-        int lastPoints = -1;
-        for (int rank = 0; rank < AttributeRanking.Count; rank++)
-        {
-            Player player = AttributeRanking[rank];
-            int score = RoundResults[player].Score;
-            int points = Match.PointDistribution[Match.PointDistribution.Count - rank - 1];
-            if (score == 0) points = 0;
-            else if (score == lastScore) points = lastPoints;
-            RoundResults[player].SetPointsGained(points);
-            lastScore = score;
-            lastPoints = points;
-        }
+        // Execute match round
+        CurrentMatchRound = Match.CalculateRoundResult(CurrentSkill);
     }
 }

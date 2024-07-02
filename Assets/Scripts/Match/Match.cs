@@ -8,6 +8,7 @@ public class Match
     // General
     public int Id { get; private set; }
     public string Name { get; private set; }
+    public MatchType Type { get; protected set; }
     public Tournament Tournament { get; private set; }
     public int Quarter { get; private set; }
     public int Day { get; private set; }
@@ -20,11 +21,11 @@ public class Match
     public int NumPlayers { get; private set; } // How many players there are in the match
     public List<int> TargetMatchIndices { get; private set; } // Indices of matches within tournament that players in this match are advancing to
     public int NumAdvancements => TargetMatchIndices == null ? 0 : TargetMatchIndices.Count;
-    public List<int> PointDistribution { get; private set; }
+    public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks
 
     // State
-    public bool IsDone { get; private set; }
-    public bool IsRunning { get; private set; }
+    public bool IsDone { get; protected set; }
+    public bool IsRunning { get; protected set; }
     public List<MatchParticipant> Participants { get; private set; }
     public List<MatchRound> Rounds { get; private set; }
 
@@ -35,6 +36,7 @@ public class Match
     {
         Id = Database.GetNewMatchId();
         Name = name;
+        Type = MatchType.FreeForAll;
         Tournament = tournament;
         Quarter = quarter;
         Day = day;
@@ -45,12 +47,13 @@ public class Match
         Rounds = new List<MatchRound>();
     }
 
-    public void AddPlayerToMatch(Player p, int seed)
+    public void AddPlayerToMatch(Player p, int seed, Team team = null)
     {
         if (IsDone) throw new System.Exception("Cannot add a player to match that is already done.");
         if (Participants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + Participants.Count + "/" + NumPlayers + " players)");
+        if (Participants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
 
-        Participants.Add(new MatchParticipant(p, seed));
+        Participants.Add(new MatchParticipant(p, seed, team));
     }
 
     /// <summary>
@@ -61,19 +64,21 @@ public class Match
         TargetMatchIndices = targetMatchIndices;
     }
 
-    public bool CanSimulate()
+    public virtual bool CanStartMatch()
     {
-        if (IsDone) return false;
-        if (IsRunning) return false;
-        if (NumPlayers != Participants.Count) return false;
-        if (Tournament.Season != Database.Season) return false;
-        if (Quarter != Database.Quarter) return false;
-        if (Day != Database.Day) return false;
+        if (IsDone) return false; // match already done
+        if (IsRunning) return false; // match already running
+        if (NumPlayers != Participants.Count) return false; // match not full
+        if (!IsMatchToday()) return false; // match not today
         return true;
     }
 
-    public void StartMatch()
+    public bool IsMatchToday() => Database.Season == Season && Database.Quarter == Quarter && Database.Day == Day;
+
+    public virtual void StartMatch()
     {
+        if (!CanStartMatch()) throw new System.Exception("Can't start a match that doesn't fulfill all starting requirements.");
+
         foreach (MatchParticipant participant in Participants) participant.SetPreMatchStats();
         IsRunning = true;
     }
@@ -82,25 +87,82 @@ public class Match
 
     #region During Match
 
-    public void AddMatchRound(MatchRound round)
+    /// <summary>
+    /// Executes all the logic behind a round in the match for a certain skill and returns the complete results.
+    /// </summary>
+    public MatchRound CalculateRoundResult(SkillDef skill)
     {
+        // Calculate skill score for each participant
+        Dictionary<Player, PlayerMatchRound> roundResults = new Dictionary<Player, PlayerMatchRound>();
+
+        foreach (MatchParticipant p in Participants)
+        {
+            PlayerMatchRound playerResult = p.Player.GetMatchRoundResult(skill);
+            roundResults.Add(p.Player, playerResult);
+        }
+
+        // Save all values for the round
+        List<Player> attributeRanking = roundResults.OrderBy(x => x.Value.Score).Select(x => x.Key).ToList();
+        int lastScore = -1;
+        int lastPoints = -1;
+        for (int rank = 0; rank < attributeRanking.Count; rank++)
+        {
+            Player player = attributeRanking[rank];
+            int score = roundResults[player].Score;
+            int points = PointDistribution[PointDistribution.Count - rank - 1];
+            if (score == 0) points = 0;
+            else if (score == lastScore) points = lastPoints;
+            roundResults[player].SetPointsGained(points);
+            lastScore = score;
+            lastPoints = points;
+        }
+
+        return new MatchRound(this, skill.Id, roundResults.Values.ToList());
+    }
+
+    /// <summary>
+    /// Adds a match round to the match, saving it as a part of it and increasing the participants total scores according to it.
+    /// </summary>
+    public virtual void ApplyMatchRound(MatchRound round)
+    {
+        // Distribute Points
+        foreach (MatchParticipant participant in Participants)
+            participant.IncreaseTotalScore(round.GetPlayerResult(participant.Player).PointsGained);
+
+        // Save
         Rounds.Add(round);
     }
 
     /// <summary>
     /// Ends the match, calculates the new elo ratings for all players and moves advancing players to the next matches.
     /// </summary>
-    public void SetDone()
+    public virtual void SetDone()
     {
+        // Set match as done
         if (Rounds.Count == 0) throw new System.Exception("Can't end a match without any rounds.");
-
         IsDone = true;
         IsRunning = false;
-        List<Player> orderedPlayers = PlayerRanking;
 
-        Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
-        foreach (Player p in Participants.Select(x => x.Player)) newEloRatings.Add(p, p.Elo);
-        GetNewRatings(orderedPlayers, newEloRatings);
+        // Adjust player elos
+        AdjustPlayerElos();
+
+        // Set player advancements
+        for (int i = 0; i < NumAdvancements; i++)
+        {
+            int rank = i;
+            Player advancingPlayer = PlayerRanking[rank];
+            Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
+            Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
+            targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
+        }
+
+        // Check if tournament is done
+        if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
+    }
+
+    protected void AdjustPlayerElos()
+    {
+        Dictionary<Player, int> newEloRatings = GetNewPlayerEloRatings();
         foreach (KeyValuePair<Player, int> kvp in newEloRatings)
         {
             Player p = kvp.Key;
@@ -109,32 +171,28 @@ public class Match
             Participants.First(x => x.Player == p).SetEloAfterMatch(newElo);
             p.SetElo(newElo);
         }
-
-        for (int i = 0; i < NumAdvancements; i++)
-        {
-            int rank = i;
-            Player advancingPlayer = orderedPlayers[rank];
-            Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
-            Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
-            targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
-        }
-
-        if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
     }
 
     #endregion
 
     #region After Match
 
-    private void GetNewRatings(List<Player> ranking, Dictionary<Player, int> newRatings)
+    private Dictionary<Player, int> GetNewPlayerEloRatings()
     {
+        List<Player> ranking = PlayerRanking;
+
+        Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
+        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo);
+
         for (int i = 0; i < ranking.Count; i++)
         {
             for (int j = i + 1; j < ranking.Count; j++)
             {
-                GetAdjustedNewRatings(newRatings, ranking[i], ranking[j]);
+                GetAdjustedNewRatings(newEloRatings, ranking[i], ranking[j]);
             }
         }
+
+        return newEloRatings;
     }
 
     private void GetAdjustedNewRatings(Dictionary<Player, int> newRatings, Player winner, Player loser)
@@ -149,7 +207,7 @@ public class Match
     /// <summary>
     /// Returns an a list of all match participants ordered by match result.
     /// </summary>
-    public List<MatchParticipant> Ranking 
+    public virtual List<MatchParticipant> Ranking 
     {
         get
         {
@@ -159,10 +217,12 @@ public class Match
         }
     }
     public List<Player> PlayerRanking => Ranking.Select(x => x.Player).ToList();
-
+    
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
 
     #endregion
+
+    public Team GetTeamOf(Player p) => Participants.First(x => x.Player == p).Team;
 
     #region Save / Load
 
@@ -171,6 +231,7 @@ public class Match
         MatchData data = new MatchData();
         data.Id = Id;
         data.Name = Name;
+        data.Type = (int)Type;
         data.TournamentId = Tournament.Id;
         data.Quarter = Quarter;
         data.Day = Day;
@@ -187,6 +248,7 @@ public class Match
     {
         Id = data.Id;
         Name = data.Name;
+        Type = (MatchType)data.Type;
         Tournament = Database.Tournaments[data.TournamentId];
         Quarter = data.Quarter;
         Day = data.Day;
@@ -195,7 +257,7 @@ public class Match
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
         Participants = data.Participants.Select(x => new MatchParticipant(x)).ToList();
-        Rounds = data.Rounds.Select(x => new MatchRound(x)).ToList();
+        Rounds = data.Rounds.Select(x => new MatchRound(this, x)).ToList();
 
         // Parent ref
         Tournament.Matches.Add(this);

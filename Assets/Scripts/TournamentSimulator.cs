@@ -26,11 +26,16 @@ public class TournamentSimulator : MonoBehaviour
         new SkillDef(SkillId.Strength, "Strength", "STR"),
     };
 
+    #region Init
+
     // Start is called before the first frame update
     void Start()
     {
         Database.LoadData();
         PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
+
+        Database.ListCountriesByPlayerAmount();
+        AddMissingCountryTeams();
 
         /* Test Relative <-> Absolute Dates
         int absoluteDay = Database.CurrentDayAbsolute;
@@ -44,7 +49,29 @@ public class TournamentSimulator : MonoBehaviour
         UI = GetComponent<UI_Base>();
         UI.Init(this);
         UpdateUI();
+
+        //StartTestMatch();
+        StartTestTeamMatch();
     }
+
+    private void AddMissingCountryTeams()
+    {
+        foreach(Country c in Database.Countries.Values)
+        {
+            if (Database.Teams.Values.Where(x => x.Country == c).Count() > 0) continue; // Country team already exists
+            if (Database.Players.Values.Where(x => x.Country == c).Count() == 0) continue; // No player with that country exists yet
+
+            CreateNationalTeam(c);
+        }
+    }
+
+    private void CreateNationalTeam(Country c)
+    {
+        Team newCountryTeam = new Team(c);
+        Database.Teams.Add(newCountryTeam.Id, newCountryTeam);
+    }
+
+    #endregion
 
     public void UpdateUI()
     {
@@ -213,11 +240,37 @@ public class TournamentSimulator : MonoBehaviour
         newPlayer.SetLeague((TournamentType)league);
 
         Database.Players.Add(newPlayer.Id, newPlayer);
+
+        // Add to country team
+        Team nationalTeam = Database.GetNationalTeam(newPlayer.Country);
+        if (nationalTeam == null) CreateNationalTeam(newPlayer.Country);
+        else nationalTeam.AddPlayer(newPlayer);
+
         Debug.Log(newPlayer.ToString() + " has been generated.");
     }
 
     #endregion
 
+    #region Test
+
+    private void StartTestMatch()
+    {
+        Match testMatch = new Match("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numPlayers: 3, new List<int>() { 5, 3, 1 });
+        testMatch.AddPlayerToMatch(Database.Players[0], 0);
+        testMatch.AddPlayerToMatch(Database.Players[1], 0);
+        testMatch.AddPlayerToMatch(Database.Players[2], 0);
+        UI.StartMatchSimulation(testMatch, 1.5f);
+    }
+
+    private void StartTestTeamMatch()
+    {
+        TeamMatch testMatch = new TeamMatch("Test Match", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
+        testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Pakistan")), 0);
+        testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Guatemala")), 0);
+        UI.StartMatchSimulation(testMatch, 1.5f);
+    }
+
+    #endregion
 
     #region Save / Load
 
@@ -241,6 +294,7 @@ public class TournamentSimulator : MonoBehaviour
         data.CurrentQuarter = Database.Quarter;
         data.CurrentDay = Database.Day;
         data.Players = Database.Players.Select(x => x.Value.ToData()).ToList();
+        data.Teams = Database.Teams.Select(x => x.Value.ToData()).ToList();
         data.Leagues = Database.Leagues.Select(x => x.Value.ToData()).ToList();
         data.Tournaments = Database.Tournaments.Select(x => x.Value.ToData()).ToList();
         data.Matches = Database.Matches.Select(x => x.Value.ToData()).ToList();

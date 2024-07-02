@@ -40,7 +40,7 @@ public class UI_MatchOverviewScreen : UI_Screen
 
         BackButton.onClick.AddListener(() => BaseUI.DisplayTournament(m.Tournament));
 
-        if (m.CanSimulate())
+        if (m.CanStartMatch())
         {
             SimulateButton.gameObject.SetActive(true);
             SimulateButton.onClick.AddListener(() => BaseUI.StartMatchSimulation(m, stepTime: 1.5f));

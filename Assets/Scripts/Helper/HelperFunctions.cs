@@ -205,5 +205,52 @@ public static class HelperFunctions
         return t * t * (3f - 2f * t);
     }
 
+    public static ColorData Color2Data(Color c)
+    {
+        ColorData data = new ColorData();
+        data.R = c.r;
+        data.G = c.g;
+        data.B = c.b;
+        return data;
+    }
+
+    public static Color Data2Color(ColorData data)
+    {
+        return new Color(data.R, data.G, data.B);
+    }
+
+    public static Color[] GetMostCommonColors(Sprite sprite)
+    {
+        // Ensure we have a sprite
+        if (sprite == null)
+        {
+            Debug.LogError("No sprite assigned.");
+            return new Color[0];
+        }
+
+        // Get the texture and pixel data
+        Texture2D texture = sprite.texture;
+        Color[] pixels = texture.GetPixels();
+
+        // Dictionary to count occurrences of each color
+        Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
+
+        // Count each color
+        foreach (Color pixel in pixels)
+        {
+            if (pixel.a < 0.2f) continue; // ignore transparent pixels
+
+            if (colorCounts.ContainsKey(pixel))
+                colorCounts[pixel]++;
+            else
+                colorCounts[pixel] = 1;
+        }
+
+        // Sort the colors by their count in descending order and take the top 2
+        var sortedColors = colorCounts.OrderByDescending(c => c.Value).Select(c => c.Key).ToArray();
+
+        return sortedColors;
+    }
+
     #endregion
 }

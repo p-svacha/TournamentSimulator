@@ -6,16 +6,18 @@ public class MatchParticipant
 {
     public Player Player { get; private set; }
     public int Seed { get; private set; }
+    public Team Team { get; private set; }
     public int TotalScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
     public int LeaguePointsBeforeMatch { get; private set; }
     public List<string> Modifiers { get; private set; }
 
-    public MatchParticipant(Player player, int seed)
+    public MatchParticipant(Player player, int seed, Team team)
     {
         Player = player;
         Seed = seed;
+        Team = team;
     }
 
     public void IncreaseTotalScore(int totalScore)
@@ -40,6 +42,7 @@ public class MatchParticipant
         MatchParticipantData data = new MatchParticipantData();
         data.PlayerId = Player.Id;
         data.Seed = Seed;
+        data.Team = Team == null ? - 1 : Team.Id;
         data.TotalScore = TotalScore;
         data.EloBeforeMatch = EloBeforeMatch;
         data.EloAfterMatch = EloAfterMatch;
@@ -52,6 +55,7 @@ public class MatchParticipant
     {
         Player = Database.Players[data.PlayerId];
         Seed = data.Seed;
+        Team = data.Team == -1 ? null : Database.Teams[data.Team];
         TotalScore = data.TotalScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;

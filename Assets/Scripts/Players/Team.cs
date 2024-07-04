@@ -15,6 +15,7 @@ public class Team
     public bool IsCountryTeam => Country != null;
 
     public int Elo { get; protected set; }
+    public int AveragePlayerElo => (int)Players.Average(x => x.Elo);
 
     // New country team
     public Team(Country c)

@@ -9,11 +9,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
     private TeamMatch Match;
 
     [Header("Elements")]
-    public Image Team1Flag;
-    public TextMeshProUGUI Team1NameText;
-    public Image Team2Flag;
-    public TextMeshProUGUI Team2NameText;
-    public TextMeshProUGUI ScoreText;
+    public UI_1v1MatchHeader MatchHeader;
 
     public TextMeshProUGUI ProgressTitleText;
     public TextMeshProUGUI AttributeTitleText;
@@ -56,11 +52,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         AttributeTitleText.text = "";
 
         // Teams
-        Team1Flag.sprite = Match.TeamParticipants[0].Team.Image;
-        Team1NameText.text = Match.TeamParticipants[0].Team.Name;
-        Team2Flag.sprite = Match.TeamParticipants[1].Team.Image;
-        Team2NameText.text = Match.TeamParticipants[1].Team.Name;
-        ScoreText.text = Match.TeamParticipants[0].TotalScore + " : " + Match.TeamParticipants[1].TotalScore;
+        MatchHeader.DisplayMatch(Match.TeamParticipants[0], Match.TeamParticipants[1]);
 
         // Players
         HelperFunctions.DestroyAllChildredImmediately(PlayerContainer, skipElements: 1);
@@ -139,7 +131,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         }
 
         // Update team scores
-        ScoreText.text = Match.TeamParticipants[0].TotalScore + " : " + Match.TeamParticipants[1].TotalScore;
+        MatchHeader.DisplayMatch(Match.TeamParticipants[0], Match.TeamParticipants[1]);
     }
 
     private void GoToNextSkill()

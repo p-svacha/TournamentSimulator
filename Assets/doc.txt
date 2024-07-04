@@ -1,9 +1,16 @@
 ------------------------------- Before season 5 ------------------------------------------
-add world cup
-	1v1 TEAM tournament
-	all countries with 3+ people participate (3 best per team that play are decided at start of each match)
-	random seeding
-		add bye system for first round so some teams get a freilos if number is uneven
+world cup
+	> new system: groups into ko
+	> groups need to be a completely new datastructure with own advancement rules
+	> groups are round robin
+	> allow draws in groups, not in ko (a draw is simply when both teams have the same amount of points)
+		> if draw is not allowed, take TeamMatch.GetTotalTeamScore() as tiebreaker
+		> add some kind of visual cue that shows if a draw is a draw or someone got the tiebreaker like (2 : 2*) *= won tiebreaker by total team score
+	> take 16 best teams by averegae player elo and randomly seed them
+	> new overview page for that tournament
+	> mode is team 1v1
+	> each year different amount of players
+	> first world cup is 2 players per team, then 3, then 2 or 4 (depending if enough teams with 4)
 -------------------------------------------------------------------------------------------
 
 

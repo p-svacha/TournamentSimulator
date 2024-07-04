@@ -30,4 +30,30 @@ public class MatchParticipant_Team
     {
         EloAfterMatch = eloAfterMatch;
     }
+
+    #region Save / Load
+
+    public TeamMatchParticipantData ToData()
+    {
+        TeamMatchParticipantData data = new TeamMatchParticipantData();
+        data.TeamId = Team.Id;
+        data.Seed = Seed;
+        data.TotalScore = TotalScore;
+        data.EloBeforeMatch = EloBeforeMatch;
+        data.EloAfterMatch = EloAfterMatch;
+        data.Modifiers = Modifiers;
+        return data;
+    }
+
+    public MatchParticipant_Team(TeamMatchParticipantData data)
+    {
+        Team = Database.Teams[data.TeamId];
+        Seed = data.Seed;
+        TotalScore = data.TotalScore;
+        EloBeforeMatch = data.EloBeforeMatch;
+        EloAfterMatch = data.EloAfterMatch;
+        Modifiers = data.Modifiers;
+    }
+
+    #endregion
 }

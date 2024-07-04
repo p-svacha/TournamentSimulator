@@ -51,7 +51,7 @@ public class TournamentSimulator : MonoBehaviour
         UpdateUI();
 
         //StartTestMatch();
-        StartTestTeamMatch();
+        //StartTestTeamMatch();
     }
 
     private void AddMissingCountryTeams()
@@ -267,7 +267,8 @@ public class TournamentSimulator : MonoBehaviour
         TeamMatch testMatch = new TeamMatch("Test Match", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Pakistan")), 0);
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Guatemala")), 0);
-        UI.StartMatchSimulation(testMatch, 1.5f);
+        //Database.Matches.Add(testMatch.Id, testMatch); // only uncomment if you want to save the match
+        UI.StartMatchSimulation(testMatch, 0.05f);
     }
 
     #endregion

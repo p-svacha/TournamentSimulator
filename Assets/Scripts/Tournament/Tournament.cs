@@ -263,7 +263,7 @@ public abstract class Tournament
         if (format == TournamentType.SeasonCup) return new Format_SeasonCup(data);
         throw new System.Exception("Format not handled");
     }
-    public Tournament(TournamentData data)
+    protected Tournament(TournamentData data)
     {
         Id = data.Id;
         Name = data.Name;

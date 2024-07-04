@@ -58,7 +58,7 @@ public static class Database
         Teams = data.Teams == null ? new Dictionary<int, Team>() : data.Teams.Select(x => new Team(x)).ToDictionary(x => x.Id, x => x);
         Leagues = data.Leagues.Select(x => new League(x)).ToDictionary(x => x.Id, x => x);
         Tournaments = data.Tournaments.Select(x => Tournament.LoadTournament(x)).ToDictionary(x => x.Id, x => x);
-        Matches = data.Matches.Select(x => new Match(x)).ToDictionary(x => x.Id, x => x);
+        Matches = data.Matches.Select(x => Match.LoadMatch(x)).ToDictionary(x => x.Id, x => x);
 
         NextPlayerId = Players.Count == 0 ? 1 :         Players.Values.Max(x => x.Id) + 1;
         NextTeamId = Teams.Count == 0 ? 1 :             Teams.Values.Max(x => x.Id) + 1;

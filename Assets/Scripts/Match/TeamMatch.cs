@@ -171,7 +171,7 @@ public class TeamMatch : Match
     {
         get
         {
-            if (IsDone || IsRunning) return Participants.OrderByDescending(x => TeamParticipants.First(tp => tp.Team == x.Team).TotalScore).ThenByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return Participants.OrderByDescending(x => TeamParticipants.First(tp => tp.Team == x.Team).TotalScore).ThenByDescending(x => GetTotalTeamScore(x.Team)).ThenByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return Participants.OrderBy(x => TeamParticipants.First(tp => tp.Team == x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
     }
@@ -190,6 +190,36 @@ public class TeamMatch : Match
         {
             return TeamParticipants.OrderBy(x => x.Seed).ToDictionary(x => x.Team, x => 0);
         }
+    }
+
+    /// <summary>
+    /// Returns the accumulated amount of SCORE a team has gathered throughout the match. Team score is the combined number of POINTS players have made.
+    /// </summary>
+    public int GetTotalTeamScore(Team team) => Rounds.Sum(x => x.GetTeamScores()[team]);
+
+    #endregion
+
+    #region Save / Load
+
+    public override MatchData ToData()
+    {
+        MatchData data = base.ToData();
+        data.NumTeams = NumTeams;
+        data.NumPlayersPerTeam = NumPlayersPerTeam;
+        data.TeamPointDistribution = TeamPointDistribution;
+        data.TeamParticipants = TeamParticipants.Select(x => x.ToData()).ToList();
+        return data;
+    }
+
+    public TeamMatch(MatchData data) : base(data)
+    {
+        NumTeams = data.NumTeams;
+        NumPlayersPerTeam = data.NumPlayersPerTeam;
+        TeamPointDistribution = data.TeamPointDistribution;
+        TeamParticipants = data.TeamParticipants.Select(x => new MatchParticipant_Team(x)).ToList();
+
+        // Parent ref
+        Tournament.Matches.Add(this);
     }
 
     #endregion

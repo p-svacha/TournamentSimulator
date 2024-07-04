@@ -19,4 +19,10 @@ public class MatchData
 
     public List<MatchParticipantData> Participants { get; set; }
     public List<MatchRoundData> Rounds { get; set; }
+
+    // Only used for team matches
+    public int NumTeams { get; set; }
+    public int NumPlayersPerTeam { get; set; }
+    public List<int> TeamPointDistribution { get; set; }
+    public List<TeamMatchParticipantData> TeamParticipants { get; set; }
 }

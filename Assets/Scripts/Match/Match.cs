@@ -226,7 +226,7 @@ public class Match
 
     #region Save / Load
 
-    public MatchData ToData()
+    public virtual MatchData ToData()
     {
         MatchData data = new MatchData();
         data.Id = Id;
@@ -244,7 +244,14 @@ public class Match
         return data;
     }
 
-    public Match(MatchData data)
+    public static Match LoadMatch(MatchData data)
+    {
+        MatchType type = (MatchType)data.Type;
+        if (type == MatchType.FreeForAll) return new Match(data);
+        if (type == MatchType.TeamMatch_1v1) return new TeamMatch(data);
+        throw new System.Exception("Format not handled");
+    }
+    protected Match(MatchData data)
     {
         Id = data.Id;
         Name = data.Name;

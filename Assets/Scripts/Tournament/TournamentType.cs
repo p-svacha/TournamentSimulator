@@ -8,5 +8,6 @@ public enum TournamentType
     GrandLeague = 0,
     ChallengeLeague = 1,
     OpenLeague = 2,
-    SeasonCup = 3
+    SeasonCup = 3,
+    WorldCup = 4
 }

@@ -136,13 +136,13 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(TournamentType.GrandLeague, 2, 10);
         ScheduleTournament(TournamentType.GrandLeague, 3, 10);
         ScheduleTournament(TournamentType.GrandLeague, 3, 14);
-        ScheduleTournament(TournamentType.GrandLeague, 4, 10);
+        ScheduleTournament(TournamentType.GrandLeague, 4, 4);
 
         ScheduleTournament(TournamentType.ChallengeLeague, 1, 6);
         ScheduleTournament(TournamentType.ChallengeLeague, 2, 6);
         ScheduleTournament(TournamentType.ChallengeLeague, 2, 14);
         ScheduleTournament(TournamentType.ChallengeLeague, 3, 6);
-        ScheduleTournament(TournamentType.ChallengeLeague, 4, 6);
+        ScheduleTournament(TournamentType.ChallengeLeague, 4, 3);
 
         ScheduleTournament(TournamentType.OpenLeague, 1, 2);
         ScheduleTournament(TournamentType.OpenLeague, 1, 14);
@@ -165,9 +165,18 @@ public class TournamentSimulator : MonoBehaviour
         Database.Leagues.Add(newLeague.Id, newLeague);
     }
 
-    public void ScheduleTournament(TournamentType type, int quarter = 0, int day = 0)
+    public void ScheduleTournament(TournamentType type, int quarter = 0, int day = 0, int numPlayersPerTeam = 0)
     {
-        Tournament newTournament = Tournament.CreateTournament(type, Database.Season, quarter, day);
+        int season = Database.Season;
+
+        Tournament newTournament;
+        if (type == TournamentType.GrandLeague) newTournament = new Format_GrandLeague(season, quarter, day, Database.CurrentGrandLeague);
+        else if (type == TournamentType.ChallengeLeague) newTournament = new Format_ChallengeLeague(season, quarter, day, Database.CurrentChallengeLeague);
+        else if (type == TournamentType.OpenLeague) newTournament = new Format_OpenLeague(season, quarter, day, Database.CurrentOpenLeague);
+        else if (type == TournamentType.SeasonCup) newTournament = new Format_SeasonCup(season);
+        else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(season, numPlayersPerTeam);
+        else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
+
         Database.Tournaments.Add(newTournament.Id, newTournament);
         foreach (Match m in newTournament.Matches) Database.Matches.Add(m.Id, m);
     }

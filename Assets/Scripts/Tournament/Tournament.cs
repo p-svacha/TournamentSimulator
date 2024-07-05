@@ -13,7 +13,13 @@ public abstract class Tournament
     public int Season { get; protected set; }
     public bool IsDone { get; protected set; }
     public List<Player> Players { get; protected set; }
+    public List<TournamentGroup> Groups { get; protected set; }
     public List<Match> Matches { get; protected set; }
+
+    // Attributes for team tournaments
+    public int NumPlayersPerTeam { get; protected set; }
+    public List<Team> Teams { get; protected set; }
+    public bool IsTeamTournament => NumPlayersPerTeam > 0;
 
     // New tournament
     public Tournament(TournamentType format, int season, League league = null)
@@ -24,19 +30,17 @@ public abstract class Tournament
         Season = season;
         IsDone = false;
         League = league;
+
+        Players = new List<Player>();
+        Teams = new List<Team>();
     }
 
     public abstract void Initialize();
-    public abstract string GetMatchDayTitle(int index);
 
-    public static Tournament CreateTournament(TournamentType format, int season, int quarter = 0, int day = 0)
-    {
-        if (format == TournamentType.GrandLeague) return new Format_GrandLeague(season, quarter, day, Database.CurrentGrandLeague);
-        if (format == TournamentType.ChallengeLeague) return new Format_ChallengeLeague(season, quarter, day, Database.CurrentChallengeLeague);
-        if (format == TournamentType.OpenLeague) return new Format_OpenLeague(season, quarter, day, Database.CurrentOpenLeague);
-        if (format == TournamentType.SeasonCup) return new Format_SeasonCup(season);
-        throw new System.Exception("Format not handled");
-    }
+    /// <summary>
+    /// Returns the label of the n'th day that the tournament takes place.
+    /// </summary>
+    public abstract string GetMatchDayTitle(int index);
 
     public void SetDone()
     {
@@ -55,6 +59,16 @@ public abstract class Tournament
     /// Returns a list of all days (as absolute days) that have at least 1 match of this tournament.
     /// </summary>
     public List<int> GetMatchDays() => Matches.Select(x => x.AbsoluteDay).Distinct().ToList();
+
+    /// <summary>
+    /// Returns a list like { 4, 3, 2, 1 } based on the given amount (here: n = 4).
+    /// </summary>
+    public static List<int> GetBasicPointDistribution(int n)
+    {
+        List<int> playerPointDistribution = new List<int>();
+        for (int i = 0; i < n; i++) playerPointDistribution.Add((n) - i);
+        return playerPointDistribution;
+    }
 
     #region Display
 
@@ -251,6 +265,9 @@ public abstract class Tournament
         data.Season = Season;
         data.IsDone = IsDone;
         data.Players = Players.Select(x => x.Id).ToList();
+        data.Groups = Groups.Select(x => x.ToData()).ToList();
+        data.Teams = Teams.Select(x => x.Id).ToList();
+        data.NumPlayersPerTeam = NumPlayersPerTeam;
         return data;
     }
 
@@ -272,6 +289,10 @@ public abstract class Tournament
         Season = data.Season;
         IsDone = data.IsDone;
         Players = data.Players.Select(x => Database.Players[x]).ToList();
+        Groups = data.Groups.Select(x => new TournamentGroup(this, x)).ToList();
+
+        Teams = data.Teams.Select(x => Database.Teams[x]).ToList();
+        NumPlayersPerTeam = data.NumPlayersPerTeam;
 
         Matches = new List<Match>();
     }

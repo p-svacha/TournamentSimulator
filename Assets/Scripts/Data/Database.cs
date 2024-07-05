@@ -140,6 +140,7 @@ public static class Database
     public static List<Tournament> GetTournaments(int season) => Tournaments.Values.Where(x => x.Season == season).ToList();
 
     public static Team GetNationalTeam(Country c) => Teams.Values.FirstOrDefault(x => x.Country == c);
+    public static List<Team> GetNationalTeams(int minPlayers = 9999999) => Teams.Values.Where(x => x.IsCountryTeam && x.Players.Count >= minPlayers).ToList();
 
     public static List<Player> WorldRanking => Players.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.TiebreakerScore).ToList();
     /// <summary>

@@ -35,7 +35,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         NameText.text = isCompact ? p.Player.LastName : p.Player.Name;
         if(match.IsDone)
         {
-            PointsText.text = p.TotalScore.ToString();
+            PointsText.text = p.TotalPoints.ToString();
 
             int rank = match.PlayerRanking.IndexOf(p.Player);
             if(match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;

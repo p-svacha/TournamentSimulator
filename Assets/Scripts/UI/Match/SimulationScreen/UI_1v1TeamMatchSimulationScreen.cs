@@ -9,7 +9,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
     private TeamMatch Match;
 
     [Header("Elements")]
-    public UI_1v1MatchHeader MatchHeader;
+    public UI_1v1ResultDisplay MatchHeader;
 
     public TextMeshProUGUI ProgressTitleText;
     public TextMeshProUGUI AttributeTitleText;
@@ -61,7 +61,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         foreach (MatchParticipant p in Match.Ranking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(p.Player, p.TotalScore, isTeamMatch: true);
+            row.Init(p.Player, p.TotalPoints, isTeamMatch: true);
             row.Background.color = new Color(p.Team.Color1.r, p.Team.Color1.g, p.Team.Color1.b, 0.2f);
             PlayerRows.Add(p.Player, row);
         }
@@ -127,7 +127,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         // Update total scores
         foreach (MatchParticipant participant in Match.Participants)
         {
-            PlayerRows[participant.Player].PlusPointsText.text = participant.TotalScore.ToString();
+            PlayerRows[participant.Player].PlusPointsText.text = participant.TotalPoints.ToString();
         }
 
         // Update team scores

@@ -24,7 +24,9 @@ public class Format_Classic24 : Tournament
     public override void Initialize()
     {
         if (Players.Count != 24) throw new System.Exception("Classic24 tournament must have exactly 24 players and not " + Players.Count);
+        if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");
 
+        Groups = new List<TournamentGroup>();
         Matches = new List<Match>();
 
         // Group stage

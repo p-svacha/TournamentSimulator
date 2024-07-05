@@ -43,7 +43,7 @@ public class UI_MatchSimulationScreen : UI_Screen
         foreach (MatchParticipant p in m.Ranking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(p.Player, p.TotalScore);
+            row.Init(p.Player, p.TotalPoints);
             PlayerRows.Add(p.Player, row);
         }
 
@@ -114,7 +114,7 @@ public class UI_MatchSimulationScreen : UI_Screen
         // Update total scores
         foreach (MatchParticipant participant in Match.Participants)
         {
-            PlayerRows[participant.Player].PointsText.text = participant.TotalScore.ToString();
+            PlayerRows[participant.Player].PointsText.text = participant.TotalPoints.ToString();
         }
 
         // Resort rows according to new ranking

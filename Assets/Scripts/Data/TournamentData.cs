@@ -13,4 +13,7 @@ public class TournamentData
     public int Season { get; set; }
     public bool IsDone { get; set; }
     public List<int> Players { get; set; }
+    public List<TournamentGroupData> Groups { get; set; }
+    public List<int> Teams { get; set; }
+    public int NumPlayersPerTeam { get; set; }
 }

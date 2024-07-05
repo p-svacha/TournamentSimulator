@@ -39,10 +39,12 @@ public class Format_OpenLeague : Tournament
     public override void Initialize()
     {
         if (Players.Count > 48) throw new System.Exception("Open League does not support more than 48 players");
+        if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");
         Name = "Open League";
 
         List<Player> unassignedPlayers = new List<Player>();
         unassignedPlayers.AddRange(Players);
+        Groups = new List<TournamentGroup>();
         Matches = new List<Match>();
 
         if (Players.Count == 0) IsDone = true;

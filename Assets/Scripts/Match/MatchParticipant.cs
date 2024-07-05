@@ -7,7 +7,7 @@ public class MatchParticipant
     public Player Player { get; private set; }
     public int Seed { get; private set; }
     public Team Team { get; private set; }
-    public int TotalScore { get; private set; }
+    public int TotalPoints { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
     public int LeaguePointsBeforeMatch { get; private set; }
@@ -20,9 +20,9 @@ public class MatchParticipant
         Team = team;
     }
 
-    public void IncreaseTotalScore(int totalScore)
+    public void IncreaseTotalPoints(int points)
     {
-        TotalScore += totalScore;
+        TotalPoints += points;
     }
     public void SetPreMatchStats()
     {
@@ -43,7 +43,7 @@ public class MatchParticipant
         data.PlayerId = Player.Id;
         data.Seed = Seed;
         data.Team = Team == null ? - 1 : Team.Id;
-        data.TotalScore = TotalScore;
+        data.TotalScore = TotalPoints;
         data.EloBeforeMatch = EloBeforeMatch;
         data.EloAfterMatch = EloAfterMatch;
         data.LeaguePointsBeforeMatch = LeaguePointsBeforeMatch;
@@ -56,7 +56,7 @@ public class MatchParticipant
         Player = Database.Players[data.PlayerId];
         Seed = data.Seed;
         Team = data.Team == -1 ? null : Database.Teams[data.Team];
-        TotalScore = data.TotalScore;
+        TotalPoints = data.TotalScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;
         LeaguePointsBeforeMatch = data.LeaguePointsBeforeMatch;

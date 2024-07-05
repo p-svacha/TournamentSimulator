@@ -10,6 +10,7 @@ public class Match
     public string Name { get; private set; }
     public MatchType Type { get; protected set; }
     public Tournament Tournament { get; private set; }
+    public TournamentGroup Group { get; private set; }
     public int Quarter { get; private set; }
     public int Day { get; private set; }
     public int AbsoluteDay => Database.ToAbsoluteDay(Tournament.Season, Quarter, Day);
@@ -27,12 +28,13 @@ public class Match
     public bool IsDone { get; protected set; }
     public bool IsRunning { get; protected set; }
     public List<MatchParticipant> Participants { get; private set; }
+    public MatchParticipant GetParticipant(Player p) => Participants.First(x => x.Player == p);
     public List<MatchRound> Rounds { get; private set; }
 
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    public Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution)
+    public Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
     {
         Id = Database.GetNewMatchId();
         Name = name;
@@ -47,7 +49,7 @@ public class Match
         Rounds = new List<MatchRound>();
     }
 
-    public void AddPlayerToMatch(Player p, int seed, Team team = null)
+    public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
     {
         if (IsDone) throw new System.Exception("Cannot add a player to match that is already done.");
         if (Participants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + Participants.Count + "/" + NumPlayers + " players)");
@@ -127,7 +129,7 @@ public class Match
     {
         // Distribute Points
         foreach (MatchParticipant participant in Participants)
-            participant.IncreaseTotalScore(round.GetPlayerResult(participant.Player).PointsGained);
+            participant.IncreaseTotalPoints(round.GetPlayerResult(participant.Player).PointsGained);
 
         // Save
         Rounds.Add(round);
@@ -156,6 +158,9 @@ public class Match
             targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
         }
 
+        // Check if group is done
+        if (Group != null && Group.IsDone) Group.SetDone();
+
         // Check if tournament is done
         if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
     }
@@ -168,7 +173,7 @@ public class Match
             Player p = kvp.Key;
             int newElo = kvp.Value;
 
-            Participants.First(x => x.Player == p).SetEloAfterMatch(newElo);
+            GetParticipant(p).SetEloAfterMatch(newElo);
             p.SetElo(newElo);
         }
     }
@@ -211,7 +216,7 @@ public class Match
     {
         get
         {
-            if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else if(Tournament.League != null) return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
@@ -222,7 +227,7 @@ public class Match
 
     #endregion
 
-    public Team GetTeamOf(Player p) => Participants.First(x => x.Player == p).Team;
+    public Team GetTeamOf(Player p) => GetParticipant(p).Team;
 
     #region Save / Load
 
@@ -233,6 +238,7 @@ public class Match
         data.Name = Name;
         data.Type = (int)Type;
         data.TournamentId = Tournament.Id;
+        data.GroupIndex = Group == null ? -1 : Tournament.Groups.IndexOf(Group);
         data.Quarter = Quarter;
         data.Day = Day;
         data.IsDone = IsDone;
@@ -257,6 +263,7 @@ public class Match
         Name = data.Name;
         Type = (MatchType)data.Type;
         Tournament = Database.Tournaments[data.TournamentId];
+        Group = data.GroupIndex == -1 ? null : Tournament.Groups[data.GroupIndex];
         Quarter = data.Quarter;
         Day = data.Day;
         NumPlayers = data.NumPlayers;
@@ -268,6 +275,7 @@ public class Match
 
         // Parent ref
         Tournament.Matches.Add(this);
+        if (Group != null) Group.Matches.Add(this);
     }
 
     #endregion

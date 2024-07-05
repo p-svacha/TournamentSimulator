@@ -6,7 +6,7 @@ public class UI_1v1TeamMatchOverviewScreen : UI_Screen
 {
     [Header("Elements")]
     public UI_MatchOverviewHeader OverviewHeader;
-    public UI_1v1MatchHeader Result1v1Header;
+    public UI_1v1ResultDisplay Result1v1Header;
     public UI_MatchOverviewPlayerResults PlayerResultList;
 
     public override void Init(UI_Base baseUI)
@@ -17,7 +17,7 @@ public class UI_1v1TeamMatchOverviewScreen : UI_Screen
     public void DisplayMatch(TeamMatch m)
     {
         OverviewHeader.DisplayMatch(BaseUI, m);
-        Result1v1Header.DisplayMatch(m.TeamParticipants[0], m.TeamParticipants[1]);
+        Result1v1Header.DisplayMatch(m);
         PlayerResultList.DisplayMatch(m);
     }
 }

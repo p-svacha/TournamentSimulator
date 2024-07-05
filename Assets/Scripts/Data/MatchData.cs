@@ -10,6 +10,7 @@ public class MatchData
     public string Name { get; set; }
     public int Type { get; set; }
     public int TournamentId { get; set; }
+    public int GroupIndex { get; set; } // index refers to position in group list of tournament
     public int Quarter { get; set; }
     public int Day { get; set; }
     public bool IsDone { get; set; }

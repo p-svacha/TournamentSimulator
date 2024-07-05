@@ -10,11 +10,14 @@ public class TeamMatch : Match
     public List<int> TeamPointDistribution { get; private set; } // How the round points are distributed among the teams based on team rank
     public List<MatchParticipant_Team> TeamParticipants { get; private set; }
 
+
+    public MatchParticipant_Team GetParticipant(Team t) => TeamParticipants.First(x => x.Team == t);
+
     #region Before match
 
     // Create a new match with all attributes that are known from the start
-    public TeamMatch(string name, Tournament tournament, int quarter, int day, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution)
-        : base(name, tournament, quarter, day, numTeams * numPlayersPerTeam, playerPointDistribution)
+    public TeamMatch(string name, Tournament tournament, int quarter, int day, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null)
+        : base(name, tournament, quarter, day, numTeams * numPlayersPerTeam, playerPointDistribution, group)
     {
         Type = MatchType.TeamMatch_1v1;
         NumTeams = numTeams;
@@ -23,7 +26,7 @@ public class TeamMatch : Match
         TeamParticipants = new List<MatchParticipant_Team>();
     }
 
-    public void AddTeamToMatch(Team t, int seed)
+    public void AddTeamToMatch(Team t, int seed = 0)
     {
         if (IsDone) throw new System.Exception("Cannot add a team to match that is already done.");
         if (TeamParticipants.Count >= NumTeams) throw new System.Exception("Can't add a team to a match that is already full. (match has " + TeamParticipants.Count + "/" + NumTeams + " teams)");
@@ -82,7 +85,7 @@ public class TeamMatch : Match
             int pointsGained = TeamPointDistribution[TeamPointDistribution.Count - rank - 1];
             if (score == 0) pointsGained = 0;
             else if (score == lastScore) pointsGained = lastPoints;
-            TeamParticipants.First(x => x.Team == team).IncreaseTotalScore(pointsGained);
+            GetParticipant(team).IncreaseTotalPoints(pointsGained);
             lastScore = score;
             lastPoints = pointsGained;
         }
@@ -106,7 +109,7 @@ public class TeamMatch : Match
             Team t = kvp.Key;
             int newElo = kvp.Value;
 
-            TeamParticipants.First(x => x.Team == t).SetEloAfterMatch(newElo);
+            GetParticipant(t).SetEloAfterMatch(newElo);
             t.SetElo(newElo);
         }
 
@@ -171,8 +174,8 @@ public class TeamMatch : Match
     {
         get
         {
-            if (IsDone || IsRunning) return Participants.OrderByDescending(x => TeamParticipants.First(tp => tp.Team == x.Team).TotalScore).ThenByDescending(x => GetTotalTeamScore(x.Team)).ThenByDescending(x => x.TotalScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return Participants.OrderBy(x => TeamParticipants.First(tp => tp.Team == x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return Participants.OrderByDescending(x => GetParticipant(x.Team).TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ThenByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return Participants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
     }
 
@@ -183,7 +186,7 @@ public class TeamMatch : Match
     {
         if (IsDone)
         {
-            return TeamParticipants.OrderByDescending(x => x.TotalScore).ToDictionary(x => x.Team, x => x.TotalScore);
+            return TeamParticipants.OrderByDescending(x => x.TotalPoints).ToDictionary(x => x.Team, x => x.TotalPoints);
         }
 
         else
@@ -196,6 +199,16 @@ public class TeamMatch : Match
     /// Returns the accumulated amount of SCORE a team has gathered throughout the match. Team score is the combined number of POINTS players have made.
     /// </summary>
     public int GetTotalTeamScore(Team team) => Rounds.Sum(x => x.GetTeamScores()[team]);
+
+    /// <summary>
+    /// Returns the opponent team in a 1v1 match.
+    /// </summary>
+    public MatchParticipant_Team GetOpponent(Team team)
+    {
+        if (TeamParticipants.Count != 2) throw new System.Exception("Can only get opponent in a 1v1 match");
+
+        return TeamParticipants.First(x => x != GetParticipant(team));
+    }
 
     #endregion
 

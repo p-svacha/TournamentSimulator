@@ -253,4 +253,24 @@ public static class HelperFunctions
     }
 
     #endregion
+
+    #region Misc
+
+    public static string GetIndexLetter(int i)
+    {
+        return i switch
+        {
+            0 => "A",
+            1 => "B",
+            2 => "C",
+            3 => "D",
+            4 => "E",
+            5 => "F",
+            6 => "G",
+            7 => "H",
+            _ => "XYZ"
+        };
+    }
+
+    #endregion
 }

@@ -21,7 +21,7 @@ public class Format_SeasonCup : Tournament
     private static int SEMIS_DAY = 12;
 
     private static int FINALS_QUARTER = 4;
-    private static int FINALS_DAY = 12;
+    private static int FINALS_DAY = 5;
 
     protected List<int> PointDistribution = new List<int>() { 1, 0 };
 
@@ -36,8 +36,10 @@ public class Format_SeasonCup : Tournament
 
     public override void Initialize()
     {
-        if (Players.Count != 64) throw new System.Exception("Classic24 tournament must have exactly 24 players and not " + Players.Count);
+        if (Players.Count != 64) throw new System.Exception("Season cup must have exactly 64 players and not " + Players.Count);
+        if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");
 
+        Groups = new List<TournamentGroup>();
         Matches = new List<Match>();
 
         // RO64 (random seeding to fill initial slots)

@@ -12,4 +12,5 @@ public class ResourceManager : MonoBehaviour
 
     public UI_TMatch TournamentMatchPrefab;
     public UI_TMatch TournamentMatchCompactPrefab;
+    public UI_TGroup TournamentGroupPrefab;
 }

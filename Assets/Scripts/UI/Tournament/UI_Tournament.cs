@@ -9,8 +9,6 @@ public class UI_Tournament : UI_Screen
     public GameObject Container;
     public Button BackButton;
 
-    private List<UI_TMatch> Matches;
-
     public override void Init(UI_Base baseUI)
     {
         base.Init(baseUI);
@@ -21,6 +19,6 @@ public class UI_Tournament : UI_Screen
     public void DisplayTournament(Tournament t)
     {
         HelperFunctions.DestroyAllChildredImmediately(Container);
-        Matches = t.DisplayTournament(BaseUI, Container);
+        t.DisplayTournament(BaseUI, Container);
     }
 }

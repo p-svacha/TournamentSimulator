@@ -12,6 +12,7 @@ public class TeamMatch : Match
 
 
     public MatchParticipant_Team GetParticipant(Team t) => TeamParticipants.First(x => x.Team == t);
+    public bool IncludesTeam(Team t) => TeamParticipants.Any(x => x.Team == t);
 
     #region Before match
 
@@ -120,7 +121,7 @@ public class TeamMatch : Match
         for (int i = 0; i < NumAdvancements; i++)
         {
             int rank = i;
-            Team advancingTeam = GetTeamRanking().Keys.ToList()[rank];
+            Team advancingTeam = TeamRanking[rank].Team;
             TeamMatch targetMatch = (TeamMatch)Tournament.Matches[TargetMatchIndices[rank]];
             Debug.Log(advancingTeam.Name + " is advancing to " + targetMatch.ToString());
             targetMatch.AddTeamToMatch(advancingTeam, seed: rank);
@@ -133,17 +134,17 @@ public class TeamMatch : Match
 
     private Dictionary<Team, int> GetNewTeamEloRatings()
     {
-        Dictionary<Team, int> teamRanking = GetTeamRanking();
+        List<MatchParticipant_Team> teamRanking = TeamRanking;
 
         Dictionary<Team, int> newRatings = new Dictionary<Team, int>();
-        foreach (Team team in teamRanking.Keys) newRatings.Add(team, team.Elo);
+        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo);
 
         for (int i = 0; i < teamRanking.Count; i++)
         {
             for (int j = i + 1; j < teamRanking.Count; j++)
             {
-                bool isDraw = (teamRanking.Values.ToList()[i] == teamRanking.Values.ToList()[j]);
-                AdjustTeamRatings(newRatings, teamRanking.Keys.ToList()[i], teamRanking.Keys.ToList()[j], isDraw);
+                bool isDraw = (teamRanking[i].TotalPoints == teamRanking[j].TotalPoints);
+                AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team, isDraw);
             }
         }
 
@@ -182,16 +183,19 @@ public class TeamMatch : Match
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.
     /// </summary>
-    public Dictionary<Team, int> GetTeamRanking()
+    public List<MatchParticipant_Team> TeamRanking
     {
-        if (IsDone)
+        get
         {
-            return TeamParticipants.OrderByDescending(x => x.TotalPoints).ToDictionary(x => x.Team, x => x.TotalPoints);
-        }
+            if (IsDone)
+            {
+                return TeamParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ToList();
+            }
 
-        else
-        {
-            return TeamParticipants.OrderBy(x => x.Seed).ToDictionary(x => x.Team, x => 0);
+            else
+            {
+                return TeamParticipants.OrderBy(x => x.Seed).ToList();
+            }
         }
     }
 

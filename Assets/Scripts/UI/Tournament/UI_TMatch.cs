@@ -27,18 +27,37 @@ public class UI_TMatch : MonoBehaviour
 
         if (PlayerContainer != null)
         {
-            // add every participant as a row
-            foreach (MatchParticipant p in match.Ranking)
+            if (match is TeamMatch teamMatch)
             {
-                UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                groupPlayer.Init(match, p, IsCompact);
-            }
+                // add every participant as a row
+                foreach (MatchParticipant_Team p in teamMatch.TeamRanking)
+                {
+                    UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
+                    groupPlayer.Init(match, p, IsCompact);
+                }
 
-            // add empty rows for slots that are not yet filled
-            for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
+                // add empty rows for slots that are not yet filled
+                for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
+                {
+                    UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
+                    groupPlayer.Init(match, null, IsCompact);
+                }
+            }
+            else
             {
-                UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                groupPlayer.Init(match, null, IsCompact);
+                // add every participant as a row
+                foreach (MatchParticipant p in match.Ranking)
+                {
+                    UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
+                    groupPlayer.Init(match, p, IsCompact);
+                }
+
+                // add empty rows for slots that are not yet filled
+                for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
+                {
+                    UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
+                    groupPlayer.Init(match, null, IsCompact);
+                }
             }
         }
     }

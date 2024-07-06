@@ -20,11 +20,12 @@ public class TournamentGroupParticipant
 
     public TournamentGroupParticipant(TournamentGroup g, Player p)
     {
+        Group = g;
         Player = p;
     }
     public TournamentGroupParticipant(TournamentGroup g, Team t)
     {
+        Group = g;
         Team = t;
-       
     }
 }

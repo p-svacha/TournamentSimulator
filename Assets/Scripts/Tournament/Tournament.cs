@@ -72,30 +72,28 @@ public abstract class Tournament
 
     #region Display
 
-    public abstract List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container);
+    public abstract void DisplayTournament(UI_Base baseUI, GameObject container);
 
     /// <summary>
     /// Displays the tournament as layers whereas each phase is represented as one row with the final phase on top.
     /// </summary>
-    protected List<UI_TMatch> DisplayTournamentAsLayers(UI_Base baseUI, GameObject Container, int[] playersPerPhase, int[] matchesPerPhase)
+    protected void DisplayTournamentAsLayers(UI_Base baseUI, GameObject container, int[] playersPerPhase, int[] matchesPerPhase)
     {
-        List<UI_TMatch> matches = new List<UI_TMatch>();
         int numPhases = playersPerPhase.Length;
-
         int matchCounter = 0;
 
-        HelperFunctions.SetRectTransformMargins(Container.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f); // Reset container size
+        HelperFunctions.SetRectTransformMargins(container.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f); // Reset container size to fit screen size
 
-        float totalWidth = Container.GetComponent<RectTransform>().rect.width;
-        float totalHeight = Container.GetComponent<RectTransform>().rect.height;
+        float totalWidth = container.GetComponent<RectTransform>().rect.width;
+        float totalHeight = container.GetComponent<RectTransform>().rect.height;
         Debug.Log("Tournament screen is " + totalWidth + "x" + totalHeight);
         float matchWidth = 300; // width of TMatch
 
         float[] matchHeights = new float[playersPerPhase.Length];
         for (int i = 0; i < playersPerPhase.Length; i++) matchHeights[i] = 35 + (playersPerPhase[i] * 35);
 
-        float totalGroupHeight = matchHeights.Sum(x => x);
-        float totalYSpacing = totalHeight - totalGroupHeight;
+        float totalMatchHeight = matchHeights.Sum(x => x);
+        float totalYSpacing = totalHeight - totalMatchHeight;
         float ySpacingStep = totalYSpacing / (matchesPerPhase.Length + 1);
         float currentMatchY = ySpacingStep;
 
@@ -112,23 +110,19 @@ public abstract class Tournament
             for (int m = 0; m < numMatches; m++)
             {
                 UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchPrefab;
-                UI_TMatch group = GameObject.Instantiate(matchPrefab, Container.transform);
-                RectTransform rect = group.GetComponent<RectTransform>();
+                UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
+                RectTransform rect = match.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(groupMargin + (m * (matchWidth + groupMargin)), yPos);
-                group.Init(baseUI, Matches[matchCounter++]);
-                matches.Add(group);
+                match.Init(baseUI, Matches[matchCounter++]);
             }
         }
-        return matches;
     }
 
     /// <summary>
-    /// Displays the tournament as a tableau where the first phase is split on both edges left and right going inwards with the final phase is in the center.
+    /// Displays the tournament as a dynamic tableau meaning it will be scrollable in all sides and get bigger with more players and spacing between matches will always be the same.
     /// </summary>
-    protected List<UI_TMatch> DisplayTournamentAsTableau(UI_Base baseUI, GameObject Container, int[] playersPerPhase, int[] matchesPerPhase)
+    protected void DisplayAsDynamicTableau(UI_Base baseUI, GameObject container, int[] playersPerPhase, int[] matchesPerPhase)
     {
-        List<UI_TMatch> matches = new List<UI_TMatch>();
-
         // Calculate amount of columns
         int numPhases = playersPerPhase.Length;
         int numColumns = (numPhases * 2) - 1;
@@ -148,8 +142,8 @@ public abstract class Tournament
 
         float totalHeight = (maxNumRows * matchHeight) + ((maxNumRows + 1) * outerColumnRowSpacing);
 
-        Container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, totalWidth);
-        Container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
+        container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, totalWidth);
+        container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
 
         // Calculate amount of rows and vertical spacing in each column
         int[] numRows = new int[numColumns];
@@ -168,87 +162,133 @@ public abstract class Tournament
             //Debug.Log("row spacing for column " + col + " is " + firstRowYPosition[col]);
         }
 
-        // Calculate the exact row and column index for each match
-        int[][] matchMap = new int[numColumns][];
-        for (int col = 0; col < numColumns; col++) matchMap[col] = new int[numRows[col]];
-        
-        for(int i = 0; i < Matches.Count; i++)
+        DisplayTableau(baseUI, container, Matches, numColumns, numRows, matchWidth, matchHeight, columnSpacing, rowSpacing);
+    }
+
+    /// <summary>
+    /// Displays the given matches as a fixed tableau meaning the spacing between matches will get dynamically smaller to fit the screen size.
+    /// </summary>
+    protected void DisplayAsFixedTableau(UI_Base baseUI, GameObject container, List<Match> matches, int numPlayersPerMatch, float marginBot = 0f)
+    {
+        // Prefab constants
+        float matchWidth = 190;
+        float matchHeight = 5 + 35 * numPlayersPerMatch;
+
+        // Calculate display values
+        float containerWidth = container.GetComponent<RectTransform>().rect.width;
+        float containerHeight = container.GetComponent<RectTransform>().rect.height;
+
+        float displayWidth = containerWidth;
+        float displayHeight = containerHeight - marginBot;
+
+        // Calculate column layout values
+        int numPhases = (int)Mathf.Log(matches.Count, 2);
+        int numColumns = (numPhases * 2) - 1;
+
+        float totalMatchWidth = numColumns * matchWidth;
+        float totalColSpacing = displayWidth - totalMatchWidth;
+        float colSpacing = totalColSpacing / (numColumns + 1);
+
+        // Calculate row layout values
+        int[] numRows = new int[numColumns];
+        float[] rowSpacing = new float[numColumns];
+        for (int col = 0; col < numColumns; col++)
         {
-            int matchIndex = Matches.Count - i - 1; // we start in final and go backwards from there
-            if(i < 2) // Finals
-            {
-                int col = numColumns / 2;
-                int row = Mathf.Abs(i - 1);
-                matchMap[col][row] = matchIndex;
-            }
-            else if(i < 4) // Semifinals
-            {
-                int col = i < 3 ? (numColumns / 2) + 1 : (numColumns / 2) - 1;
-                int row = 0;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 8) // Quarters
-            {
-                int col = i < 6 ? (numColumns / 2) + 2 : (numColumns / 2) - 2;
-                int row = i % 2;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 16) // Ro16
-            {
-                int col = i < 12 ? (numColumns / 2) + 3 : (numColumns / 2) - 3;
-                int row = i % 4;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 32) // Ro32
-            {
-                int col = i < 24 ? (numColumns / 2) + 4 : (numColumns / 2) - 4;
-                int row = i % 8;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 64) // Ro64
-            {
-                int col = i < 48 ? (numColumns / 2) + 5 : (numColumns / 2) - 5;
-                int row = i % 16;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 128) // Ro128
-            {
-                int col = i < 96 ? (numColumns / 2) + 6 : (numColumns / 2) - 6;
-                int row = i % 32;
-                matchMap[col][row] = matchIndex;
-            }
-            else if (i < 256) // Ro256
-            {
-                int col = i < 192 ? (numColumns / 2) + 7 : (numColumns / 2) - 7;
-                int row = i % 64;
-                matchMap[col][row] = matchIndex;
-            }
+            // Amount of rows in column
+            int distanceFromFinal = Mathf.Abs((numColumns / 2) - col);
+            if (distanceFromFinal == 0) numRows[col] = 2;
+            else numRows[col] = (int)Mathf.Pow(2, distanceFromFinal - 1);
+
+            // Vertical spacing between matches
+            float totalMatchHeight = numRows[col] * matchHeight;
+            float totalRowSpacing = displayHeight - totalMatchHeight;
+            rowSpacing[col] = totalRowSpacing / (numRows[col] + 1);
         }
 
+        // Display tableau
+        DisplayTableau(baseUI, container, matches, numColumns, numRows, matchWidth, matchHeight, colSpacing, rowSpacing, marginBot);
+    }
+
+    /// <summary>
+    /// Returns the position of a match in the tableau display as a Vector2Int(x = rowIndex, y = colIndex)
+    /// </summary>
+    private int GetTableauMatchIndexFor(int numMatches, int numColumns, int col, int row)
+    {
+        int reverseIndex = -1;
+        int distanceFromFinal = Mathf.Abs((numColumns / 2) - col);
+        if (distanceFromFinal == 0) reverseIndex = 1 - row;
+        else
+        {
+            int numRows = (int)Mathf.Pow(2, distanceFromFinal - 1);
+            int startIndexRight = (int)Mathf.Pow(2, distanceFromFinal) - 1;
+            int startIndexLeft = (int)Mathf.Pow(2, distanceFromFinal) + numRows - 1;
+            if (col < (numColumns / 2f)) reverseIndex = startIndexLeft + numRows - row;
+            if (col > (numColumns / 2f)) reverseIndex = startIndexRight + numRows - row;
+        }
+
+        return numMatches - reverseIndex - 1;
+    }
+
+    /// <summary>
+    /// Displays the tournament as a tableau where the first phase is split on both edges left and right going inwards with the final phase is in the center.
+    /// <br/>Layout values need to be given.
+    /// </summary>
+    private void DisplayTableau(UI_Base baseUI, GameObject container, List<Match> matches, int numColumns, int[] numRows, float matchWidth, float matchHeight, float colSpacing, float[] rowSpacing, float marginBot = 0)
+    {
         // Display matches column by column
         for (int col = 0; col < numColumns; col++)
         {
             for (int row = 0; row < numRows[col]; row++)
             {
                 // Get match index based on row and col
-                int matchIndex = matchMap[col][row];
+                int matchIndex = GetTableauMatchIndexFor(matches.Count, numColumns, col, row);
+                Debug.Log("Match index for " + col + "/" + row + " with " + numColumns + " columns and " + matches.Count + " matches is " + matchIndex);
 
                 // Calculate final match position
-                float xPos = ((col + 1) * columnSpacing) + (col * matchWidth);
+                float xPos = ((col + 1) * colSpacing) + (col * matchWidth);
 
                 //float rowSpacing = (col == 0 || col == numColumns - 1) ? outerColumnRowSpacing : innerColumnRowSpacing;
                 float yPos = (row * matchHeight) + ((row + 1) * rowSpacing[col]);
+                yPos += marginBot;
 
                 UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchCompactPrefab;
-                UI_TMatch group = GameObject.Instantiate(matchPrefab, Container.transform);
-                RectTransform rect = group.GetComponent<RectTransform>();
+                UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
+                RectTransform rect = match.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(xPos, yPos);
-                group.Init(baseUI, Matches[matchIndex]);
-
-                matches.Add(group);
+                match.Init(baseUI, matches[matchIndex]);
             }
         }
-        return matches;
+    }
+
+    protected void DisplayAsGroupAndTableau(UI_Base baseUI, GameObject container)
+    {
+        HelperFunctions.SetRectTransformMargins(container.GetComponent<RectTransform>(), 0f, 0f, 0f, 0f); // Reset container size to fit screen size
+        float containerWidth = container.GetComponent<RectTransform>().rect.width;
+        float containerHeight = container.GetComponent<RectTransform>().rect.height;
+
+        // Groups
+        int numGroups = Groups.Count;
+        float groupWidth = 400; // width of TGroup
+        float totalGroupWidth = numGroups * groupWidth;
+        float totalGroupXSpacing = containerWidth - totalGroupWidth;
+        float groupSpacingX = totalGroupXSpacing / (numGroups + 1);
+
+        float groupStartY = 20;
+        float groupHeight = 0;
+
+        for(int i = 0; i < Groups.Count; i++)
+        {
+            float xPos = ((i + 1) * groupSpacingX) + (i * groupWidth);
+            float yPos = groupStartY;
+            UI_TGroup group = GameObject.Instantiate(ResourceManager.Singleton.TournamentGroupPrefab, container.transform);
+            group.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
+            group.Init(baseUI, Groups[i]);
+            groupHeight = group.GetComponent<RectTransform>().rect.height;
+        }
+
+        // KO-Tableau
+        float tableauStartY = 500;
+        DisplayAsFixedTableau(baseUI, container, Matches.Skip(24).ToList(), numPlayersPerMatch: 2, tableauStartY);
     }
 
     #endregion

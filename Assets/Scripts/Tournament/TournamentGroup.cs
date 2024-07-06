@@ -55,8 +55,8 @@ public class TournamentGroup
             CreateGroupTeamMatch(round: 1, matchIndex: 2, startDayAbsolute, teams[2], teams[3]);
 
             // Day 2
-            CreateGroupTeamMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, teams[0], teams[2]);
-            CreateGroupTeamMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, teams[1], teams[3]);
+            CreateGroupTeamMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, teams[2], teams[0]);
+            CreateGroupTeamMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, teams[3], teams[1]);
 
             // Day 3
             CreateGroupTeamMatch(round: 3, matchIndex: 1, startDayAbsolute + 2, teams[0], teams[3]);
@@ -71,8 +71,8 @@ public class TournamentGroup
             CreateGroupMatch(round: 1, matchIndex: 2, startDayAbsolute, players[2], players[3]);
 
             // Day 2
-            CreateGroupMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, players[0], players[2]);
-            CreateGroupMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, players[1], players[3]);
+            CreateGroupMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, players[2], players[0]);
+            CreateGroupMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, players[3], players[1]);
 
             // Day 3
             CreateGroupMatch(round: 3, matchIndex: 1, startDayAbsolute + 2, players[0], players[3]);
@@ -157,7 +157,7 @@ public class TournamentGroup
 
     private List<TeamMatch> GetMatchesOf(Team t)
     {
-        return Matches.Select(x => (TeamMatch)x).Where(x => x.TeamParticipants.Contains(x.GetParticipant(t))).ToList();
+        return Matches.Select(x => (TeamMatch)x).Where(x => x.IncludesTeam(t)).ToList();
     }
 
     #region Save / Load

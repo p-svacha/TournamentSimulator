@@ -117,11 +117,9 @@ public class Format_WorldCup : Tournament
         Matches.Add(new TeamMatch("Final", this, finalsQuarter, finalsDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
     }
 
-    public override List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container)
+    public override void DisplayTournament(UI_Base baseUI, GameObject Container)
     {
-        int[] playersPerPhase = new int[] { 2, 2, 2, 2, 2, 2 };
-        int[] matchesPerPhase = new int[] { 32, 16, 8, 4, 2, 2 };
-        return DisplayTournamentAsTableau(baseUI, Container, playersPerPhase, matchesPerPhase);
+        DisplayAsGroupAndTableau(baseUI, Container);
     }
 
     public override string GetMatchDayTitle(int index)

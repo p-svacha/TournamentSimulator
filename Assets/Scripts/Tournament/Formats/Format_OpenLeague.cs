@@ -175,7 +175,7 @@ public class Format_OpenLeague : Tournament
         }
     }
 
-    public override List<UI_TMatch> DisplayTournament(UI_Base baseUI, GameObject Container)
+    public override void DisplayTournament(UI_Base baseUI, GameObject Container)
     {
         int[] playersPerPhase;
         int[] matchesPerPhase;
@@ -207,7 +207,7 @@ public class Format_OpenLeague : Tournament
             matchesPerPhase = new int[] { 4, 4, 2, 1 };
         }
 
-        return DisplayTournamentAsLayers(baseUI, Container, playersPerPhase, matchesPerPhase);
+        DisplayTournamentAsLayers(baseUI, Container, playersPerPhase, matchesPerPhase);
     }
 
     protected override void OnTournamentDone()

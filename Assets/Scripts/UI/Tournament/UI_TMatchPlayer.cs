@@ -20,119 +20,21 @@ public class UI_TMatchPlayer : MonoBehaviour
 
     public void Init(Match match, MatchParticipant p, bool isCompact)
     {
-        if (p == null) InitEmpty();
+        int currentLeaguePoints = match.Tournament.League != null ? p.Player.CurrentLeaguePoints : 0;
 
-        FlagIcon.sprite = p.Player.FlagSprite;
-        NameText.text = isCompact ? p.Player.LastName : p.Player.Name;
-        if(match.IsDone)
-        {
-            PointsText.text = p.TotalPoints.ToString();
-
-            int rank = match.PlayerRanking.IndexOf(p.Player);
-            if(match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
-            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
-            else Background.color = ColorManager.Singleton.KoColor;
-
-            if (!isCompact)
-            {
-                EloText.text = p.EloBeforeMatch.ToString();
-                int eloChange = p.EloAfterMatch - p.EloBeforeMatch;
-                if (eloChange > 0)
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 90);
-                    EloChangeIcon.color = ColorManager.Singleton.GreenTextColor;
-                    EloChangeText.text = "+" + eloChange;
-                    EloChangeText.color = ColorManager.Singleton.GreenTextColor;
-                }
-                else if (eloChange < 0)
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-                    EloChangeIcon.color = ColorManager.Singleton.RedTextColor;
-                    EloChangeText.text = eloChange.ToString();
-                    EloChangeText.color = ColorManager.Singleton.RedTextColor;
-                }
-                else
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-                    EloChangeText.text = "±0";
-                }
-            }
-        }
-        else
-        {
-            PointsText.text = "";
-            Background.color = ColorManager.Singleton.DefaultColor;
-
-            if (!isCompact)
-            {
-                EloChangeIcon.enabled = false;
-                EloText.text = p.Player.Elo.ToString();
-                EloChangeText.text = match.Tournament.League != null ? p.Player.CurrentLeaguePoints.ToString() : "";
-            }
-        }
+        if (isCompact) InitCompact(match, p.Player.FlagSprite, p.Player.LastName, match.Ranking.IndexOf(p), p.TotalPoints);
+        else InitFull(match, p.Player.FlagSprite, p.Player.Name, match.Ranking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
 
         GetComponent<PlayerTooltipTarget>().Player = p.Player;
     }
 
-    /*
-    public void Init(Match match, MatchParticipant_Team t, bool isCompact)
+    public void Init(TeamMatch match, MatchParticipant_Team t, bool isCompact)
     {
-        if (t == null) InitEmpty();
-
-        FlagIcon.sprite = p.Player.FlagSprite;
-        NameText.text = isCompact ? p.Player.LastName : p.Player.Name;
-        if (match.IsDone)
-        {
-            PointsText.text = p.TotalPoints.ToString();
-
-            int rank = match.PlayerRanking.IndexOf(p.Player);
-            if (match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
-            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
-            else Background.color = ColorManager.Singleton.KoColor;
-
-            if (!isCompact)
-            {
-                EloText.text = p.EloBeforeMatch.ToString();
-                int eloChange = p.EloAfterMatch - p.EloBeforeMatch;
-                if (eloChange > 0)
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 90);
-                    EloChangeIcon.color = ColorManager.Singleton.GreenTextColor;
-                    EloChangeText.text = "+" + eloChange;
-                    EloChangeText.color = ColorManager.Singleton.GreenTextColor;
-                }
-                else if (eloChange < 0)
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
-                    EloChangeIcon.color = ColorManager.Singleton.RedTextColor;
-                    EloChangeText.text = eloChange.ToString();
-                    EloChangeText.color = ColorManager.Singleton.RedTextColor;
-                }
-                else
-                {
-                    EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
-                    EloChangeText.text = "±0";
-                }
-            }
-        }
-        else
-        {
-            PointsText.text = "";
-            Background.color = ColorManager.Singleton.DefaultColor;
-
-            if (!isCompact)
-            {
-                EloChangeIcon.enabled = false;
-                EloText.text = p.Player.Elo.ToString();
-                EloChangeText.text = match.Tournament.League != null ? p.Player.CurrentLeaguePoints.ToString() : "";
-            }
-        }
-
-        GetComponent<PlayerTooltipTarget>().Player = p.Player;
+        if (isCompact) InitCompact(match, t.Team.Image, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints);
+        else InitFull(match, t.Team.Image, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints, t.Team.Elo, 0, t.EloBeforeMatch, t.EloAfterMatch);
     }
-    */
 
-    private void InitEmpty()
+    public void InitEmpty()
     {
         FlagIcon.enabled = false;
         NameText.text = "";
@@ -141,5 +43,68 @@ public class UI_TMatchPlayer : MonoBehaviour
         if (EloChangeText != null) EloChangeText.text = "";
         if (PointsText != null) PointsText.text = "";
         return;
+    }
+
+    private void InitCompact(Match match, Sprite sprite, string name, int rank, int points)
+    {
+        FlagIcon.sprite = sprite;
+        NameText.text = name;
+
+        if (match.IsDone)
+        {
+            PointsText.text = points.ToString();
+            if (match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
+            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
+            else Background.color = ColorManager.Singleton.KoColor;
+        }
+        else
+        {
+            PointsText.text = "";
+            Background.color = ColorManager.Singleton.DefaultColor;
+        }
+    }
+    private void InitFull(Match match, Sprite sprite, string name, int rank, int points, int currentElo, int currentLP, int eloBeforeMatch, int eloAfterMatch)
+    {
+        FlagIcon.sprite = sprite;
+        NameText.text = name;
+
+        if(match.IsDone)
+        {
+            PointsText.text = points.ToString();
+
+            if (match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
+            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
+            else Background.color = ColorManager.Singleton.KoColor;
+
+            EloText.text = eloBeforeMatch.ToString();
+            int eloChange = eloAfterMatch - eloBeforeMatch;
+            if (eloChange > 0)
+            {
+                EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 90);
+                EloChangeIcon.color = ColorManager.Singleton.GreenTextColor;
+                EloChangeText.text = "+" + eloChange;
+                EloChangeText.color = ColorManager.Singleton.GreenTextColor;
+            }
+            else if (eloChange < 0)
+            {
+                EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, -90);
+                EloChangeIcon.color = ColorManager.Singleton.RedTextColor;
+                EloChangeText.text = eloChange.ToString();
+                EloChangeText.color = ColorManager.Singleton.RedTextColor;
+            }
+            else
+            {
+                EloChangeIcon.GetComponent<RectTransform>().rotation = Quaternion.Euler(0, 0, 0);
+                EloChangeText.text = "±0";
+            }
+        }
+        else
+        {
+            PointsText.text = "";
+            Background.color = ColorManager.Singleton.DefaultColor;
+            EloChangeIcon.enabled = false;
+            EloText.text = currentElo.ToString();
+            EloChangeText.text = match.Tournament.League != null ? currentLP.ToString() : "";
+        }
     }
 }

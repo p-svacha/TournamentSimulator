@@ -126,9 +126,9 @@ public class Format_WorldCup : Tournament
     {
         return index switch
         {
-            0 => "Group Stage - Round 1",
-            1 => "Group Stage - Round 1",
-            2 => "Group Stage - Round 1",
+            0 => "Group Stage Round 1",
+            1 => "Group Stage Round 2",
+            2 => "Group Stage Round 3",
             3 => "Quarters",
             4 => "Semifinals",
             5 => "Finals",

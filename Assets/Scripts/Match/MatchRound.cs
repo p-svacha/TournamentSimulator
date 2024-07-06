@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MatchRound : MonoBehaviour
+public class MatchRound
 {
     private Match Match;
     public SkillId SkillId { get; private set; }

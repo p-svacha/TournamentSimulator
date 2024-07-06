@@ -15,15 +15,38 @@ public class UI_1v1ResultDisplay : MonoBehaviour
 
     public void DisplayMatch(TeamMatch m)
     {
-        DisplayMatch(m.TeamParticipants[0], m.TeamParticipants[1]);
+        if (m.TeamParticipants.Count == 0) InitEmpty();
+        else if (m.TeamParticipants.Count == 1) DisplayMatch(m.TeamParticipants[0]);
+        else DisplayMatch(m.TeamParticipants[0], m.TeamParticipants[1]);
     }
 
     public void DisplayMatch(MatchParticipant_Team team1, MatchParticipant_Team team2)
     {
+        Team1Flag.enabled = true;
         Team1Flag.sprite = team1.Team.Image;
         Team1NameText.text = team1.Team.Name;
+        Team2Flag.enabled = true;
         Team2Flag.sprite = team2.Team.Image;
         Team2NameText.text = team2.Team.Name;
         ScoreText.text = team1.TotalPoints + " : " + team2.TotalPoints;
+    }
+
+    private void InitEmpty()
+    {
+        Team1Flag.enabled = false;
+        Team1NameText.text = "";
+        Team2Flag.enabled = false;
+        Team2NameText.text = "";
+        ScoreText.text = " : ";
+    }
+
+    public void DisplayMatch(MatchParticipant_Team team1)
+    {
+        Team1Flag.enabled = true;
+        Team1Flag.sprite = team1.Team.Image;
+        Team1NameText.text = team1.Team.Name;
+        Team2Flag.enabled = false;
+        Team2NameText.text = "";
+        ScoreText.text = ":";
     }
 }

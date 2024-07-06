@@ -30,17 +30,17 @@ public class UI_TMatch : MonoBehaviour
             if (match is TeamMatch teamMatch)
             {
                 // add every participant as a row
-                foreach (MatchParticipant_Team p in teamMatch.TeamRanking)
+                foreach (MatchParticipant_Team t in teamMatch.TeamRanking)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                    groupPlayer.Init(match, p, IsCompact);
+                    groupPlayer.Init(teamMatch, t, IsCompact);
                 }
 
                 // add empty rows for slots that are not yet filled
-                for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
+                for (int i = teamMatch.TeamRanking.Count; i < teamMatch.NumTeams; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                    groupPlayer.Init(match, null, IsCompact);
+                    groupPlayer.InitEmpty();
                 }
             }
             else
@@ -56,7 +56,7 @@ public class UI_TMatch : MonoBehaviour
                 for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                    groupPlayer.Init(match, null, IsCompact);
+                    groupPlayer.InitEmpty();
                 }
             }
         }

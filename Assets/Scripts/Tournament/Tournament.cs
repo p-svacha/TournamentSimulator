@@ -235,6 +235,8 @@ public abstract class Tournament
     /// </summary>
     private void DisplayTableau(UI_Base baseUI, GameObject container, List<Match> matches, int numColumns, int[] numRows, float matchWidth, float matchHeight, float colSpacing, float[] rowSpacing, float marginBot = 0)
     {
+        float finalScale = 1.3f;
+
         // Display matches column by column
         for (int col = 0; col < numColumns; col++)
         {
@@ -242,7 +244,7 @@ public abstract class Tournament
             {
                 // Get match index based on row and col
                 int matchIndex = GetTableauMatchIndexFor(matches.Count, numColumns, col, row);
-                Debug.Log("Match index for " + col + "/" + row + " with " + numColumns + " columns and " + matches.Count + " matches is " + matchIndex);
+                // Debug.Log("Match index for " + col + "/" + row + " with " + numColumns + " columns and " + matches.Count + " matches is " + matchIndex);
 
                 // Calculate final match position
                 float xPos = ((col + 1) * colSpacing) + (col * matchWidth);
@@ -251,10 +253,19 @@ public abstract class Tournament
                 float yPos = (row * matchHeight) + ((row + 1) * rowSpacing[col]);
                 yPos += marginBot;
 
+                // Center final match
+                bool isFinal = (row == 1 && col == numColumns / 2);
+                if (isFinal)
+                {
+                    xPos = (container.GetComponent<RectTransform>().rect.width / 2f) - (matchWidth * finalScale / 2);
+                    yPos = marginBot + ((container.GetComponent<RectTransform>().rect.height - marginBot) / 2f) - (matchHeight * finalScale / 2f);
+                }
+
                 UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchCompactPrefab;
                 UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
                 RectTransform rect = match.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(xPos, yPos);
+                if (isFinal) rect.localScale = new Vector3(finalScale, finalScale, 1f);
                 match.Init(baseUI, matches[matchIndex]);
             }
         }

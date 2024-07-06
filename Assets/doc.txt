@@ -23,7 +23,6 @@ change medal list to dropdown for:
 	> make additional dropdown for player/team so you can see all permutations
 
 improve season cup tournament view
-	> scale up final in
 	> don't sort according to ranking but according to seed (as if it is not done)
 	> make that seed is depending on %2==0 or 1 of match within round so it gets displayed correctly in tableau
 	> fix color green/red in semifinals
@@ -40,6 +39,14 @@ new dedicated fullscreen Player page
 	> national team appearances
 	> elo graph
 	> rival stats (most played vs who)
+
+team tooltip
+	> same as player tooltip
+
+new dedicated team page
+	> shows most used players
+	> elo graph
+	> rival stats
 
 -------------------------------------------------------------------------------------------
 

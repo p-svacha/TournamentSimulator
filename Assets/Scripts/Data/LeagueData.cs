@@ -11,4 +11,6 @@ public class LeagueData
     public int Season { get; set; }
     public int LeagueType { get; set; }
     public List<LeagueParticipantData> Participants { get; set; }
+    public int NumPromotions { get; set; }
+    public int NumRelegations { get; set; }
 }

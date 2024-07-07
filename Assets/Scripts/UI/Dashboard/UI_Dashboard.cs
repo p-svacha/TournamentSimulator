@@ -43,9 +43,10 @@ public class UI_Dashboard : UI_Screen
 
         SeasonSelectionLabel.text = "Season " + SelectedSeason;
         UpdateSchedule();
-        UpdateGrandLeagueList();
-        UpdateChallengeLeagueList();
-        UpdateOpenLeagueList();
+
+        UpdateLeagueRanking(Database.GetLeague(TournamentType.GrandLeague, SelectedSeason), GrandLeagueList.ListContainer);
+        UpdateLeagueRanking(Database.GetLeague(TournamentType.ChallengeLeague, SelectedSeason), ChallengeLeagueList.ListContainer);
+        UpdateLeagueRanking(Database.GetLeague(TournamentType.OpenLeague, SelectedSeason), OpenLeagueList.ListContainer);
     }
 
     private void SeasonSelectionPrevBtn_OnClick()
@@ -96,44 +97,17 @@ public class UI_Dashboard : UI_Screen
     {
         Schedule.UpdateList(BaseUI, SelectedSeason);
     }
-    private void UpdateGrandLeagueList()
+
+    private void UpdateLeagueRanking(League l, GameObject container)
     {
-        League l = Database.GetLeague(TournamentType.GrandLeague, SelectedSeason);
-        foreach (Transform t in GrandLeagueList.ListContainer.transform) Destroy(t.gameObject);
+        HelperFunctions.DestroyAllChildredImmediately(container);
         int counter = 1;
         foreach (Player p in l.Ranking)
         {
-            UI_PlayerListElement elem = Instantiate(ListElement, GrandLeagueList.ListContainer.transform);
+            UI_PlayerListElement elem = Instantiate(ListElement, container.transform);
             Color c = ColorManager.Singleton.DefaultColor;
-            if (counter >= 20) c = ColorManager.Singleton.KoColor;
-            elem.Init(counter++, p, l.Standings[p].ToString(), c, showLeagueIcon: false);
-        }
-    }
-    private void UpdateChallengeLeagueList()
-    {
-        League l = Database.GetLeague(TournamentType.ChallengeLeague, SelectedSeason);
-        foreach (Transform t in ChallengeLeagueList.ListContainer.transform) Destroy(t.gameObject);
-        int counter = 1;
-        foreach (Player p in l.Ranking)
-        {
-            UI_PlayerListElement elem = Instantiate(ListElement, ChallengeLeagueList.ListContainer.transform);
-            Color c = ColorManager.Singleton.DefaultColor;
-            if (counter <= 5) c = ColorManager.Singleton.AdvanceColor;
-            if (counter >= 20) c = ColorManager.Singleton.KoColor;
-            elem.Init(counter++, p, l.Standings[p].ToString(), c, showLeagueIcon: false);
-        }
-    }
-    private void UpdateOpenLeagueList()
-    {
-        League l = Database.GetLeague(TournamentType.OpenLeague, SelectedSeason);
-        foreach (Transform t in OpenLeagueList.ListContainer.transform) Destroy(t.gameObject);
-        int counter = 1;
-        foreach (Player p in l.Ranking)
-        {
-            UI_PlayerListElement elem = Instantiate(ListElement, OpenLeagueList.ListContainer.transform);
-            Color c = ColorManager.Singleton.DefaultColor;
-            if (counter <= 5) c = ColorManager.Singleton.AdvanceColor;
-            else if (counter > l.Players.Count - 5) c = ColorManager.Singleton.KoColor;
+            if (counter <= l.NumPromotions) c = ColorManager.Singleton.AdvanceColor;
+            if (counter > l.Ranking.Count - l.NumRelegations) c = ColorManager.Singleton.KoColor;
             elem.Init(counter++, p, l.Standings[p].ToString(), c, showLeagueIcon: false);
         }
     }

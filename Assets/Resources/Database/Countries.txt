@@ -1,262 +1,244 @@
-Id;Name;Population;Region;Continent
-0;China;1419372786;Northern Asia;Asia
-1;India;1352642280;Subcontinent;Asia
-2;USA;327096265;Laurentia;North America
-3;Indonesia;267670543;Archipelago;Oceania
-4;Pakistan;212228286;Central Asia;Middle East
-5;Brazil;209469323;Amazon;South America
-6;Nigeria;166629000;West Africa;Africa
-7;Bangladesh;161376708;Subcontinent;Asia
-8;Russia;144526636;Northern Europe;Europe
-9;Japan;127202192;Northern Asia;Asia
-10;Mexico;126190788;Central America;North America
-11;Philippines;106651394;Archipelago;Oceania
-12;Vietnam;95545962;Southeast Asia;Asia
-13;Ethiopia;84320987;Horn of Africa;Africa
-14;Egypt;82868000;Sahara;Africa
-15;Germany;82800000;Western Europe;Europe
-16;Turkey;80810525;Caucasus;Middle East
-17;Iran;78868711;Caucasus;Middle East
-18;DR Congo;69575000;Equatorial Africa;Africa
-19;Thailand;69428453;Southeast Asia;Asia
-20;France;67348000;Western Europe;Europe
-21;Italy;60589445;Western Europe;Europe
-22;England;55980000;Northern Europe;Europe
-23;Myanmar;53708320;Southeast Asia;Asia
-24;South Africa;51770560;Southern Africa;Africa
-25;South Korea;51171706;Northern Asia;Asia
-26;Colombia;49661048;Andean;South America
-27;Spain;46698151;Western Europe;Europe
-28;Tanzania;44929002;Horn of Africa;Africa
-29;Argentina;44361150;Southern Cone;South America
-30;Ukraine;42418235;Eastern Europe;Europe
-31;Kenya;39002772;Horn of Africa;Africa
-32;Poland;38422346;Eastern Europe;Europe
-33;Canada;37064562;Laurentia;North America
-34;Morocco;35740000;Sahara;Africa
-35;Algeria;34178188;Sahara;Africa
-36;Uzbekistan;33905800;Central Asia;Middle East
-37;Iraq;33635000;Arabia;Middle East
-38;Uganda;32369558;Horn of Africa;Africa
-39;Afghanistan;32225560;Central Asia;Middle East
-40;Peru;31989260;Andean;South America
-41;Malaysia;31528033;Southeast Asia;Asia
-42;Sudan;30894000;Sahara;Africa
-43;Venezuela;28887118;Andean;South America
-44;Nepal;28095714;Subcontinent;Asia
-45;Saudi Arabia;27136977;Arabia;Middle East
-46;Australia;25723600;Australasia;Oceania
-47;North Korea;25549604;Northern Asia;Asia
-48;Ghana;23832495;West Africa;Africa
-49;Taiwan;23726460;Southeast Asia;Asia
-50;Syria;23695000;Arabia;Middle East
-51;Yemen;23580000;Arabia;Middle East
-52;Mozambique;21669278;Southern Africa;Africa
-53;Sri Lanka;21228763;Subcontinent;Asia
-54;Madagascar;20653556;Southern Africa;Africa
-55;Ivory Coast;20617068;West Africa;Africa
-56;Romania;19638000;Eastern Europe;Europe
-57;Cameroon;18879301;Equatorial Africa;Africa
-58;Chile;18729160;Southern Cone;South America
-59;Kazakhstan;18319618;Central Asia;Middle East
-60;Netherlands;17271990;Western Europe;Europe
-61;Guatemala;17247849;Central America;North America
-62;Ecuador;17084358;Andean;South America
-63;Cambodia;16249792;Southeast Asia;Asia
-64;Burkina Faso;15746232;West Africa;Africa
-65;Niger;15306252;Sahara;Africa
-66;Malawi;14268711;Southern Africa;Africa
-67;Senegal;13711597;West Africa;Africa
-68;Angola;12799293;Southern Africa;Africa
-69;Mali;12666987;Sahara;Africa
-70;Zambia;11862740;Southern Africa;Africa
-71;Zimbabwe;11392629;Southern Africa;Africa
-72;Belgium;11358357;Western Europe;Europe
-73;Bolivia;11353142;Andean;South America
-74;Cuba;11338134;Caribbean;North America
-75;Haiti;11123178;Caribbean;North America
-76;Greece;10768477;Eastern Europe;Europe
-77;Dominican Republic;10627141;Caribbean;North America
-78;Czech Republic;10610947;Western Europe;Europe
-79;Tunisia;10486339;Sahara;Africa
-80;Rwanda;10473282;Equatorial Africa;Africa
-81;Portugal;10379537;Western Europe;Europe
-82;Chad;10329208;Equatorial Africa;Africa
-83;Sweden;10151588;Northern Europe;Europe
-84;Guinea;10057975;West Africa;Africa
-85;Azerbaijan;9911646;Caucasus;Middle East
-86;Somalia;9832017;Horn of Africa;Africa
-87;Hungary;9797561;Eastern Europe;Europe
-88;Honduras;9587522;Central America;North America
-89;Belarus;9504700;Eastern Europe;Europe
-90;Tajikistan;9100835;Central Asia;Middle East
-91;Burundi;8988091;Equatorial Africa;Africa
-92;Papua New Guinea;8935000;Australasia;Oceania
-93;Austria;8823054;Western Europe;Europe
-94;Benin;8791832;West Africa;Africa
-95;Switzerland;8401120;Western Europe;Europe
-96;United Arab Emirates;8264070;Arabia;Middle East
-97;South Sudan;8260490;Equatorial Africa;Africa
-98;Israel;7653600;Arabia;Middle East
-99;Hong Kong;7582000;Southeast Asia;Asia
-100;Bulgaria;7101859;Eastern Europe;Europe
-101;Laos;7061507;Southeast Asia;Asia
-102;Paraguay;6956066;Southern Cone;South America
-103;Nicaragua;6465501;Central America;North America
-104;Sierra Leone;6440053;West Africa;Africa
-105;El Salvador;6420746;Central America;North America
-106;Jordan;6318677;Arabia;Middle East
-107;Libya;6310434;Sahara;Africa
-108;Kyrgystan;6304030;Central Asia;Middle East
-109;Togo;6019877;West Africa;Africa
-110;Turkmenistan;5850901;Central Asia;Middle East
-111;Singapore;5757499;Archipelago;Oceania
-112;Eritrea;5647168;Horn of Africa;Africa
-113;Denmark;5642141;Northern Europe;Europe
-114;Finland;5480228;Northern Europe;Europe
-115;Scotland;5454000;Northern Europe;Europe
-116;Slovakia;5435343;Eastern Europe;Europe
-117;Norway;5292952;Northern Europe;Europe
-118;Serbia;5120193;Eastern Europe;Europe
-119;New Zealand;5108950;Australasia;Oceania
-120;Costa Rica;4999441;Central America;North America
-121;Ireland;4761865;Northern Europe;Europe
-122;Central African Republic;4511488;Equatorial Africa;Africa
-123;Croatia;4284889;Eastern Europe;Europe
-124;Palestine;4260636;Arabia;Middle East
-125;Lebanon;4228000;Arabia;Middle East
-126;Panama;4176869;Central America;North America
-127;Republic of the Congo;4012809;Equatorial Africa;Africa
-128;Moldova;3958882;Eastern Europe;Europe
-129;Kuwait;3566437;Arabia;Middle East
-130;Bosnia and Herzegovina;3531159;Eastern Europe;Europe
-131;Somaliland;3508180;Horn of Africa;Africa
-132;Uruguay;3449285;Southern Cone;South America
-133;Liberia;3441790;West Africa;Africa
-134;Georgia;3421462;Caucasus;Middle East
-135;Wales;3136000;Northern Europe;Europe
-136;Mongolia;3170216;Northern Asia;Asia
-137;Mauritania;3129486;Sahara;Africa
-138;Puerto Rico;3039596;Caribbean;North America
-139;Jamaica;2934847;Caribbean;North America
-140;Albania;2876591;Eastern Europe;Europe
-141;Lithuania;2800667;Northern Europe;Europe
-142;Armenia;2773884;Caucasus;Middle East
-143;Oman;2694094;Arabia;Middle East
-144;Canary Islands;2154905;Sahara;Africa
-145;Lesotho;2130819;Southern Africa;Africa
-146;Namibia;2108665;Southern Africa;Africa
-147;North Macedonia;2103721;Eastern Europe;Europe
-148;Slovenia;2066880;Western Europe;Europe
-149;Botswana;1990876;Southern Africa;Africa
-150;Latvia;1925800;Northern Europe;Europe
-151;Kosovo;1920079;Eastern Europe;Europe
-152;Northern Ireland;1885000;Northern Europe;Europe
-153;The Gambia;1782893;West Africa;Africa
-154;Qatar;1696563;Arabia;Middle East
-155;Guinea-Bissau;1533964;West Africa;Africa
-156;Gabon;1514993;Equatorial Africa;Africa
-157;Trinidad and Tobago;1389843;Caribbean;North America
-158;Estonia;1319133;Northern Europe;Europe
-159;Mauritius;1284264;Southern Africa;Africa
-160;East Timor;1267974;Australasia;Oceania
-161;Bahrain;1234596;Arabia;Middle East
-162;Eswatini;1123913;Southern Africa;Africa
-163;Fiji;883483;Pacific Islands;Oceania
-164;Cyprus;856499;Caucasus;Middle East
-165;Djibouti;828324;Horn of Africa;Africa
-166;Guyana;779006;Amazon;South America
-167;Bhutan;754388;Subcontinent;Asia
-168;Comoros;752438;Southern Africa;Africa
-169;Réunion;743981;Southern Africa;Africa
-170;Macau;693000;Southeast Asia;Asia
-171;Solomon Islands;652857;Pacific Islands;Oceania
-172;Montenegro;642550;Eastern Europe;Europe
-173;Equatorial Guinea;633441;Equatorial Africa;Africa
-174;Luxembourg;602005;Western Europe;Europe
-175;Suriname;575990;Amazon;South America
-176;Maldives;515696;Subcontinent;Asia
-177;Nueva Esparta;491610;Caribbean;North America
-178;Transnistria;475665;Eastern Europe;Europe
-179;Malta;445426;Western Europe;Europe
-180;Cape Verde;429474;Sahara;Africa
-181;Brunei;428963;Archipelago;Oceania
-182;Western Sahara;405210;Sahara;Africa
-183;Guadeloupe;399848;Caribbean;North America
-184;Bahamas;385637;Caribbean;North America
-185;Belize;383071;Central America;North America
-186;Martinique;375673;Caribbean;North America
-187;Iceland;350710;Northern Europe;Europe
-188;Northern Cyprus;313626;Caucasus;Middle East
-189;Vanuatu;292680;Pacific Islands;Oceania
-190;Barbados;286641;Caribbean;North America
-191;French Guiana;282938;Amazon;South America
-192;New Caledonia;279993;Pacific Islands;Oceania
-193;French Polynesia;277679;Pacific Islands;Oceania
-194;Madeira;245000;Sahara;Africa
-195;Abkhazia;243206;Caucasus;Middle East
-196;Mayotte;223765;Southern Africa;Africa
-197;São Tomé and Príncipe;212679;Equatorial Africa;Africa
-198;Samoa;196129;Pacific Islands;Oceania
-199;Saint Lucia;181889;Caribbean;North America
-200;Guam;168485;Pacific Islands;Oceania
-201;Curaçao;162752;Caribbean;North America
-202;Artsakh;150932;Caucasus;Middle East
-203;Kiribati;115847;Pacific Islands;Oceania
-204;Micronesia;112640;Pacific Islands;Oceania
-205;Grenada;111454;Caribbean;North America
-206;Saint Vincent and the Grenadines;110211;Caribbean;North America
-207;Aruba;105845;Caribbean;North America
-208;US Virgin Islands;104680;Caribbean;North America
-209;Tonga;103197;Pacific Islands;Oceania
-210;Bailiwick of Jersey;100080;Northern Europe;Europe
-211;Antigua and Barbuda;96286;Caribbean;North America
-212;Seychelles;87476;Horn of Africa;Africa
-213;Melilla;85116;Sahara;Africa
-214;Ceuta;85107;Sahara;Africa
-215;Isle of Man;83314;Northern Europe;Europe
-216;San Andrés and Providencia;77701;Caribbean;North America
-217;Andorra;77281;Western Europe;Europe
-218;Dominica;71625;Caribbean;North America
-219;Bailiwick of Guernsey;65849;Northern Europe;Europe
-220;Cayman Islands;64174;Caribbean;North America
-221;Bermuda;62756;Caribbean;North America
-222;Marshall Islands;58413;Pacific Islands;Oceania
-223;Greenland;56564;Laurentia;North America
-224;American Samoa;55212;Pacific Islands;Oceania
-225;Northern Mariana Islands;53883;Pacific Islands;Oceania
-226;South Ossetia;53532;Caucasus;Middle East
-227;Saint Kitts and Nevis;52441;Caribbean;North America
-228;Faroe Islands;50778;Northern Europe;Europe
-229;Sint Maarten;41940;Caribbean;North America
-230;Monaco;38400;Western Europe;Europe
-231;Liechtenstein;38111;Western Europe;Europe
-232;Turks and Caicos Islands;37665;Caribbean;North America
-233;San Marino;33285;Western Europe;Europe
-234;Gibraltar;32194;Western Europe;Europe
-235;Saint Martin;29820;Caribbean;North America
-236;British Virgin Islands;29802;Caribbean;North America
-237;Åland;29489;Northern Europe;Europe
-238;Palau;17907;Pacific Islands;Oceania
-239;Cook Islands;17518;Pacific Islands;Oceania
-240;Sovereign Base Areas of Akrotiri and Dhekelia;15700;Caucasus;Middle East
-241;Anguilla;14731;Caribbean;North America
-242;Bonaire;12093;Caribbean;North America
-243;Wallis and Futuna;11558;Pacific Islands;Oceania
-244;Tuvalu;11508;Pacific Islands;Oceania
-245;Nauru;10670;Pacific Islands;Oceania
-246;Saint Helena, Ascension and Tristan da Cunha;7728;Southern Africa;Africa
-247;Saint Barthélemy;7448;Caribbean;North America
-248;Saint Pierre and Miquelon;5849;Caribbean;North America
-249;Montserrat;4993;Caribbean;North America
-250;British Indian Ocean Territory;4000;Subcontinent;Asia
-251;Falkland Islands;3234;Southern Cone;South America
-252;Sint Eustatius;2739;Caribbean;North America
-253;Svalbard;2667;Northern Europe;Europe
-254;Federal Dependencies of Venezuela;2155;Caribbean;North America
-255;Niue;1620;Pacific Islands;Oceania
-256;Saba;1537;Caribbean;North America
-257;Tokelau;1319;Pacific Islands;Oceania
-258;Vatican City;1000;Western Europe;Europe
-259;French Southern Territories;100;Southern Africa;Africa
-260;South Georgia & South Sandwich Islands;20;Southern Cone;South America
+Id;Name;Population;Region;Continent;FIFA-Code
+0;China;1419372786;Northern Asia;Asia;CHN
+1;India;1352642280;Subcontinent;Asia;IND
+2;USA;327096265;Laurentia;North America;USA
+3;Indonesia;267670543;Archipelago;Oceania;IDN
+4;Pakistan;212228286;Central Asia;Middle East;PAK
+5;Brazil;209469323;Amazon;South America;BRA
+6;Nigeria;166629000;West Africa;Africa;NGA
+7;Bangladesh;161376708;Subcontinent;Asia;BAN
+8;Russia;144526636;Northern Europe;Europe;RUS
+9;Japan;127202192;Northern Asia;Asia;JPN
+10;Mexico;126190788;Central America;North America;MEX
+11;Philippines;106651394;Archipelago;Oceania;PHI
+12;Vietnam;95545962;Southeast Asia;Asia;VIE
+13;Ethiopia;84320987;Horn of Africa;Africa;ETH
+14;Egypt;82868000;Sahara;Africa;EGY
+15;Germany;82800000;Western Europe;Europe;GER
+16;Turkey;80810525;Caucasus;Middle East;TUR
+17;Iran;78868711;Caucasus;Middle East;IRN
+18;DR Congo;69575000;Equatorial Africa;Africa;COD
+19;Thailand;69428453;Southeast Asia;Asia;THA
+20;France;67348000;Western Europe;Europe;FRA
+21;Italy;60589445;Western Europe;Europe;ITA
+22;England;55980000;Northern Europe;Europe;ENG
+23;Myanmar;53708320;Southeast Asia;Asia;MYA
+24;South Africa;51770560;Southern Africa;Africa;RSA
+25;South Korea;51171706;Northern Asia;Asia;KOR
+26;Colombia;49661048;Andean;South America;COL
+27;Spain;46698151;Western Europe;Europe;ESP
+28;Tanzania;43039229;Horn of Africa;Africa;TAN
+29;Argentina;44361150;Southern Cone;South America;ARG
+30;Ukraine;42418235;Eastern Europe;Europe;UKR
+31;Kenya;39002772;Horn of Africa;Africa;KEN
+32;Poland;38422346;Eastern Europe;Europe;POL
+33;Canada;37064562;Laurentia;North America;CAN
+34;Morocco;35740000;Sahara;Africa;MAR
+35;Algeria;34178188;Sahara;Africa;ALG
+36;Uzbekistan;33905800;Central Asia;Middle East;UZB
+37;Iraq;33635000;Arabia;Middle East;IRQ
+38;Uganda;32369558;Horn of Africa;Africa;UGA
+39;Afghanistan;32225560;Central Asia;Middle East;AFG
+40;Peru;31989260;Andean;South America;PER
+41;Malaysia;31528033;Southeast Asia;Asia;MAS
+42;Sudan;30894000;Sahara;Africa;SDN
+43;Venezuela;28887118;Andean;South America;VEN
+44;Nepal;28095714;Subcontinent;Asia;NEP
+45;Saudi Arabia;27136977;Arabia;Middle East;KSA
+46;Australia;25723600;Australasia;Oceania;AUS
+47;North Korea;25549604;Northern Asia;Asia;PRK
+48;Ghana;23832495;West Africa;Africa;GHA
+49;Taiwan;23726460;Southeast Asia;Asia;TPE
+50;Syria;23695000;Arabia;Middle East;SYR
+51;Yemen;23580000;Arabia;Middle East;YEM
+52;Mozambique;21669278;Southern Africa;Africa;MOZ
+53;Sri Lanka;21228763;Subcontinent;Asia;SRI
+54;Madagascar;20653556;Southern Africa;Africa;MAD
+55;Ivory Coast;20617068;West Africa;Africa;CIV
+56;Romania;19638000;Eastern Europe;Europe;ROU
+57;Cameroon;18879301;Equatorial Africa;Africa;CMR
+58;Chile;18729160;Southern Cone;South America;CHI
+59;Kazakhstan;18319618;Central Asia;Middle East;KAZ
+60;Netherlands;17271990;Western Europe;Europe;NED
+61;Guatemala;17247849;Central America;North America;GUA
+62;Ecuador;17084358;Andean;South America;ECU
+63;Cambodia;16249792;Southeast Asia;Asia;CAM
+64;Burkina Faso;15746232;West Africa;Africa;BFA
+65;Niger;15306252;Sahara;Africa;NIG
+66;Malawi;14268711;Southern Africa;Africa;MWI
+67;Senegal;13711597;West Africa;Africa;SEN
+68;Angola;12799293;Southern Africa;Africa;ANG
+69;Mali;12666987;Sahara;Africa;MLI
+70;Zambia;11862740;Southern Africa;Africa;ZAM
+71;Zimbabwe;11392629;Southern Africa;Africa;ZIM
+72;Belgium;11358357;Western Europe;Europe;BEL
+73;Bolivia;11353142;Andean;South America;BOL
+74;Cuba;11338134;Caribbean;North America;CUB
+75;Haiti;11123178;Caribbean;North America;HAI
+76;Greece;10768477;Eastern Europe;Europe;GRE
+77;Dominican Republic;10627141;Caribbean;North America;DOM
+78;Czech Republic;10610947;Western Europe;Europe;CZE
+79;Tunisia;10486339;Sahara;Africa;TUN
+80;Rwanda;10473282;Equatorial Africa;Africa;RWA
+81;Portugal;10379537;Western Europe;Europe;POR
+82;Chad;10329208;Equatorial Africa;Africa;CHA
+83;Sweden;10151588;Northern Europe;Europe;SWE
+84;Guinea;10057975;West Africa;Africa;GUI
+85;Azerbaijan;9911646;Caucasus;Middle East;AZE
+86;Somalia;9832017;Horn of Africa;Africa;SOM
+87;Hungary;9797561;Eastern Europe;Europe;HUN
+88;Honduras;9587522;Central America;North America;HON
+89;Belarus;9504700;Eastern Europe;Europe;BLR
+90;Tajikistan;9100835;Central Asia;Middle East;TJK
+91;Burundi;8988091;Equatorial Africa;Africa;BDI
+92;Papua New Guinea;8935000;Australasia;Oceania;PNG
+93;Austria;8823054;Western Europe;Europe;AUT
+94;Benin;8791832;West Africa;Africa;BEN
+95;Switzerland;8401120;Western Europe;Europe;SUI
+96;United Arab Emirates;8264070;Arabia;Middle East;UAE
+97;South Sudan;8260490;Equatorial Africa;Africa;SSD
+98;Israel;7653600;Arabia;Middle East;ISR
+99;Hong Kong;7582000;Southeast Asia;Asia;HKG
+100;Bulgaria;7101859;Eastern Europe;Europe;BUL
+101;Laos;7061507;Southeast Asia;Asia;LAO
+102;Paraguay;6956066;Southern Cone;South America;PAR
+103;Nicaragua;6465501;Central America;North America;NCA
+104;Sierra Leone;6440053;West Africa;Africa;SLE
+105;El Salvador;6420746;Central America;North America;SLV
+106;Jordan;6318677;Arabia;Middle East;JOR
+107;Libya;6310434;Sahara;Africa;LBY
+108;Kyrgystan;6304030;Central Asia;Middle East;KGZ
+109;Togo;6019877;West Africa;Africa;TOG
+110;Turkmenistan;5850901;Central Asia;Middle East;TKM
+111;Singapore;5757499;Archipelago;Oceania;SGP
+112;Eritrea;5647168;Horn of Africa;Africa;ERI
+113;Denmark;5642141;Northern Europe;Europe;DEN
+114;Finland;5480228;Northern Europe;Europe;FIN
+115;Scotland;5454000;Northern Europe;Europe;SCO
+116;Slovakia;5435343;Eastern Europe;Europe;SVK
+117;Norway;5292952;Northern Europe;Europe;NOR
+118;Serbia;5120193;Eastern Europe;Europe;SRB
+119;New Zealand;5108950;Australasia;Oceania;NZL
+120;Costa Rica;4999441;Central America;North America;CRC
+121;Ireland;4761865;Northern Europe;Europe;IRL
+122;Central African Republic;4511488;Equatorial Africa;Africa;CTA
+123;Croatia;4284889;Eastern Europe;Europe;CRO
+124;Palestine;4260636;Arabia;Middle East;PLE
+125;Lebanon;4228000;Arabia;Middle East;LBN
+126;Panama;4176869;Central America;North America;PAN
+127;Republic of the Congo;4012809;Equatorial Africa;Africa;CGO
+128;Moldova;3958882;Eastern Europe;Europe;MDA
+129;Kuwait;3566437;Arabia;Middle East;KUW
+130;Bosnia and Herzegovina;3531159;Eastern Europe;Europe;BIH
+131;Somaliland;3508180;Horn of Africa;Africa;SML
+132;Uruguay;3449285;Southern Cone;South America;URU
+133;Liberia;3441790;West Africa;Africa;LBR
+134;Georgia;3421462;Caucasus;Middle East;GEO
+136;Mongolia;3170216;Northern Asia;Asia;MNG
+135;Wales;3136000;Northern Europe;Europe;WAL
+137;Mauritania;3129486;Sahara;Africa;MTN
+138;Puerto Rico;3039596;Caribbean;North America;PUR
+139;Jamaica;2934847;Caribbean;North America;JAM
+140;Albania;2876591;Eastern Europe;Europe;ALB
+141;Lithuania;2800667;Northern Europe;Europe;LTU
+142;Armenia;2773884;Caucasus;Middle East;ARM
+143;Oman;2694094;Arabia;Middle East;OMA
+144;Canary Islands;2154905;Sahara;Africa;CNI
+145;Lesotho;2130819;Southern Africa;Africa;LES
+146;Namibia;2108665;Southern Africa;Africa;NAM
+147;North Macedonia;2103721;Eastern Europe;Europe;MKD
+148;Slovenia;2066880;Western Europe;Europe;SVN
+149;Botswana;1990876;Southern Africa;Africa;BOT
+150;Latvia;1925800;Northern Europe;Europe;LVA
+151;Kosovo;1920079;Eastern Europe;Europe;KOS
+152;Northern Ireland;1885000;Northern Europe;Europe;NIR
+153;The Gambia;1782893;West Africa;Africa;GAM
+154;Qatar;1696563;Arabia;Middle East;QAT
+155;Guinea-Bissau;1533964;West Africa;Africa;GNB
+156;Gabon;1514993;Equatorial Africa;Africa;GAB
+157;Trinidad and Tobago;1389843;Caribbean;North America;TRI
+158;Estonia;1319133;Northern Europe;Europe;EST
+159;Mauritius;1284264;Southern Africa;Africa;MRI
+160;East Timor;1267974;Australasia;Oceania;TLS
+161;Bahrain;1234596;Arabia;Middle East;BHR
+162;Eswatini;1123913;Southern Africa;Africa;SWZ
+163;Fiji;883483;Pacific Islands;Oceania;FIJ
+164;Cyprus;856499;Caucasus;Middle East;CYP
+165;Djibouti;828324;Horn of Africa;Africa;DJI
+166;Guyana;779006;Amazon;South America;GUY
+167;Bhutan;754388;Subcontinent;Asia;BHU
+168;Comoros;752438;Southern Africa;Africa;COM
+169;Réunion;743981;Southern Africa;Africa;REU
+170;Macau;693000;Southeast Asia;Asia;MAC
+171;Solomon Islands;652857;Pacific Islands;Oceania;SOL
+172;Montenegro;642550;Eastern Europe;Europe;MNE
+173;Equatorial Guinea;633441;Equatorial Africa;Africa;EQG
+174;Luxembourg;602005;Western Europe;Europe;LUX
+175;Suriname;575990;Amazon;South America;SUR
+176;Maldives;515696;Subcontinent;Asia;MDV
+178;Transnistria;475665;Eastern Europe;Europe;PMR
+179;Malta;445426;Western Europe;Europe;MLT
+180;Cape Verde;429474;Sahara;Africa;CPV
+181;Brunei;428963;Archipelago;Oceania;BRU
+182;Western Sahara;405210;Sahara;Africa;ESH
+183;Guadeloupe;399848;Caribbean;North America;GLP
+184;Bahamas;385637;Caribbean;North America;BAH
+185;Belize;383071;Central America;North America;BLZ
+186;Martinique;375673;Caribbean;North America;MTQ
+187;Iceland;350710;Northern Europe;Europe;ISL
+188;Northern Cyprus;313626;Caucasus;Middle East;NCY
+189;Vanuatu;292680;Pacific Islands;Oceania;VAN
+190;Barbados;286641;Caribbean;North America;BRB
+191;French Guiana;282938;Amazon;South America;GUI
+192;New Caledonia;279993;Pacific Islands;Oceania;NCL
+193;Tahiti;277679;Pacific Islands;Oceania;TAH
+195;Abkhazia;243206;Caucasus;Middle East;ABK
+197;São Tomé and Príncipe;212679;Equatorial Africa;Africa;STP
+198;Samoa;196129;Pacific Islands;Oceania;SAM
+199;Saint Lucia;181889;Caribbean;North America;LCA
+200;Guam;168485;Pacific Islands;Oceania;GUM
+201;Curaçao;162752;Caribbean;North America;CUW
+203;Kiribati;115847;Pacific Islands;Oceania;KIR
+204;Micronesia;112640;Pacific Islands;Oceania;FSM
+205;Grenada;111454;Caribbean;North America;GRN
+206;Saint Vincent and the Grenadines;110211;Caribbean;North America;VIN
+207;Aruba;105845;Caribbean;North America;ARU
+208;US Virgin Islands;104680;Caribbean;North America;VIR
+209;Tonga;103197;Pacific Islands;Oceania;TGA
+211;Antigua and Barbuda;96286;Caribbean;North America;ATG
+212;Seychelles;87476;Horn of Africa;Africa;SEY
+215;Isle of Man;83314;Northern Europe;Europe;IOM
+217;Andorra;77281;Western Europe;Europe;AND
+218;Dominica;71625;Caribbean;North America;DMA
+220;Cayman Islands;64174;Caribbean;North America;CAY
+221;Bermuda;62756;Caribbean;North America;BER
+222;Marshall Islands;58413;Pacific Islands;Oceania;MHL
+223;Greenland;56564;Laurentia;North America;GRL
+224;American Samoa;55212;Pacific Islands;Oceania;ASA
+225;Northern Mariana Islands;53883;Pacific Islands;Oceania;MNP
+226;South Ossetia;53532;Caucasus;Middle East;SOS
+227;Saint Kitts and Nevis;52441;Caribbean;North America;SKN
+228;Faroe Islands;50778;Northern Europe;Europe;FRO
+229;Sint Maarten;41940;Caribbean;North America;SMA
+230;Monaco;38400;Western Europe;Europe;MON
+231;Liechtenstein;38111;Western Europe;Europe;LIE
+232;Turks and Caicos Islands;37665;Caribbean;North America;TCA
+233;San Marino;33285;Western Europe;Europe;SMR
+234;Gibraltar;32194;Western Europe;Europe;GIB
+235;Saint Martin;29820;Caribbean;North America;SMN
+236;British Virgin Islands;29802;Caribbean;North America;VGB
+238;Palau;17907;Pacific Islands;Oceania;PLW
+239;Cook Islands;17518;Pacific Islands;Oceania;COK
+241;Anguilla;14731;Caribbean;North America;AIA
+242;Bonaire;12093;Caribbean;North America;BOE
+243;Wallis and Futuna;11558;Pacific Islands;Oceania;WLF
+244;Tuvalu;11508;Pacific Islands;Oceania;TUV
+245;Nauru;10670;Pacific Islands;Oceania;NRU
+246;Saint Helena;7728;Southern Africa;Africa;SHN
+247;Saint Barthélemy;7448;Caribbean;North America;BLM
+248;Saint Pierre and Miquelon;5849;Caribbean;North America;SPM
+249;Montserrat;4993;Caribbean;North America;MSR
+255;Niue;1620;Pacific Islands;Oceania;NIU
+257;Tokelau;1319;Pacific Islands;Oceania;TOK
+258;Vatican City;1000;Western Europe;Europe;VAT
+259;Zanzibar;1889773;Horn of Africa;Africa;CAF

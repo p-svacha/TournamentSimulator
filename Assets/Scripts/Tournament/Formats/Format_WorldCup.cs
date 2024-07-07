@@ -9,8 +9,8 @@ public class Format_WorldCup : Tournament
     private static int POINTS_FOR_DRAW = 1;
     private static int POINTS_FOR_LOSS = 0;
 
-    private static int START_QUARTER = 3;
-    private static int START_DAY = 15;
+    private static int START_QUARTER = 4;
+    private static int START_DAY = 6;
 
     private List<int> ValidTeamAmounts = new List<int>() { 16 };
     private List<int> TeamPointDistribution = new List<int>() { 1, 0 };

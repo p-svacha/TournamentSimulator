@@ -8,6 +8,13 @@ public class TournamentSimulator : MonoBehaviour
 {
     public const int DEFAULT_RATING = 5000;
 
+    private const int NUM_GRAND_CHALLENGE_SWAPS = 5;
+    private const int NUM_CHALLENGE_OPEN_SWAPS = 5;
+    private const int NUM_OPEN_LEAGUE_RELEGATIONS = 9;
+
+    private const int NUM_RANDOM_REVIVES = 2;
+    private const int NUM_NEW_GENERATIONS = 7;
+
     [HideInInspector]
     public UI_Base UI;
 
@@ -136,9 +143,9 @@ public class TournamentSimulator : MonoBehaviour
             else if (p.LeagueType == TournamentType.ChallengeLeague) challengeLeaguePlayers.Add(p);
             else if (p.LeagueType == TournamentType.OpenLeague) openLeaguePlayers.Add(p);
         }
-        AddNewLeague("Grand League", Database.Season, 0, grandLeaguePlayers);
-        AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers);
-        AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers);
+        AddNewLeague("Grand League", Database.Season, 0, grandLeaguePlayers, numPromotions: 0, numRelegations: NUM_GRAND_CHALLENGE_SWAPS);
+        AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers, numPromotions: NUM_GRAND_CHALLENGE_SWAPS, numRelegations: NUM_CHALLENGE_OPEN_SWAPS);
+        AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers, numPromotions: NUM_CHALLENGE_OPEN_SWAPS, numRelegations: NUM_OPEN_LEAGUE_RELEGATIONS);
 
         // Create league tournaments
         ScheduleTournament(TournamentType.GrandLeague, 1, 10);
@@ -171,9 +178,9 @@ public class TournamentSimulator : MonoBehaviour
         Save();
     }
 
-    private void AddNewLeague(string name, int season, int formatId, List<Player> players)
+    private void AddNewLeague(string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
     {
-        League newLeague = new League(name, season, formatId, players);
+        League newLeague = new League(name, season, formatId, players, numPromotions, numRelegations);
         Database.Leagues.Add(newLeague.Id, newLeague);
     }
 
@@ -201,20 +208,20 @@ public class TournamentSimulator : MonoBehaviour
 
         // Relegations
         Debug.Log("Performing relegations.");
-        List<Player> grandLegueRanking = Database.GetLeague(TournamentType.GrandLeague, Database.Season - 1).Ranking;
-        for(int i = 19; i < grandLegueRanking.Count; i++) grandLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
+        League greandLeague = Database.GetLeague(TournamentType.GrandLeague, Database.Season - 1);
+        for(int i = greandLeague.Ranking.Count - greandLeague.NumRelegations; i < greandLeague.Ranking.Count; i++) greandLeague.Ranking[i].SetLeague(TournamentType.ChallengeLeague);
 
-        List<Player> challengeLegueRanking = Database.GetLeague(TournamentType.ChallengeLeague, Database.Season - 1).Ranking;
-        for(int i = 0; i < 5; i++) challengeLegueRanking[i].SetLeague(TournamentType.GrandLeague);
-        for (int i = 19; i < challengeLegueRanking.Count; i++) challengeLegueRanking[i].SetLeague(TournamentType.OpenLeague);
+        League challengeLeague = Database.GetLeague(TournamentType.ChallengeLeague, Database.Season - 1);
+        for(int i = 0; i < challengeLeague.NumPromotions; i++) challengeLeague.Ranking[i].SetLeague(TournamentType.GrandLeague);
+        for (int i = challengeLeague.Ranking.Count - challengeLeague.NumRelegations; i < challengeLeague.Ranking.Count; i++) challengeLeague.Ranking[i].SetLeague(TournamentType.OpenLeague);
 
-        List<Player> openLegueRanking = Database.GetLeague(TournamentType.OpenLeague, Database.Season - 1).Ranking;
-        for (int i = 0; i < 5; i++) openLegueRanking[i].SetLeague(TournamentType.ChallengeLeague);
+        League openLeague = Database.GetLeague(TournamentType.OpenLeague, Database.Season - 1);
+        for (int i = 0; i < openLeague.NumPromotions; i++) openLeague.Ranking[i].SetLeague(TournamentType.ChallengeLeague);
         List<Player> eliminatedPlayers = new List<Player>();
-        for (int i = openLegueRanking.Count - 5; i < openLegueRanking.Count; i++)
+        for (int i = openLeague.Ranking.Count - openLeague.NumRelegations; i < openLeague.Ranking.Count; i++)
         {
-            eliminatedPlayers.Add(openLegueRanking[i]);
-            openLegueRanking[i].SetLeague(TournamentType.None);
+            eliminatedPlayers.Add(openLeague.Ranking[i]);
+            openLeague.Ranking[i].SetLeague(TournamentType.None);
         }
 
         // Revive 2 inactive players and put them into open league (only ones that haven't just been eliminated)

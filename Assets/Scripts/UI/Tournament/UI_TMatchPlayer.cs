@@ -20,7 +20,7 @@ public class UI_TMatchPlayer : MonoBehaviour
 
     public void Init(Match match, MatchParticipant p, bool isCompact)
     {
-        int currentLeaguePoints = match.Tournament.League != null ? p.Player.CurrentLeaguePoints : 0;
+        int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? p.Player.CurrentLeaguePoints : 0;
 
         if (isCompact) InitCompact(match, p.Player.FlagSprite, p.Player.LastName, match.Ranking.IndexOf(p), p.TotalPoints);
         else InitFull(match, p.Player.FlagSprite, p.Player.Name, match.Ranking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);

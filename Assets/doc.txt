@@ -1,32 +1,19 @@
-------------------------------- Before season 5 -------------------------------------------
-world cup
-	> new system: groups into ko
-	> groups need to be a completely new datastructure with own advancement rules
-	> groups are round robin
-	> allow draws in groups, not in ko (a draw is simply when both teams have the same amount of points)
-		> if draw is not allowed, take TeamMatch.GetTotalTeamScore() as tiebreaker
-		> add some kind of visual cue that shows if a draw is a draw or someone got the tiebreaker like (2 : 2*) *= won tiebreaker by total team score
-	> take 8/16/24/32 best national teams by averegae player elo and randomly seed them
-	> new overview page for that tournament
-	> mode is team 1v1
-	> each year different amount of players
-	> first world cup is 2 players per team, then 3, then 2 or 4 (depending if enough teams with 4)
--------------------------------------------------------------------------------------------
-
-take country images from https://cdn-csd.swisstxt.ch/images/geo/country/flag/large/ESP.png
-
-------------------------------- Before season 6 -------------------------------------------
+------------------------------- Before season 6 ------------------------------------------- the stat update
 change medal list to dropdown for:
 - grand league medals
 - cup medals
 - world cup medals
-	> make additional dropdown for player/team so you can see all permutations
+- S-Tier medals (all of the above combined)
 
-improve season cup tournament view
+	> make additional dropdown to select between player/country so you can see all permutations
+	> player gets a medal for a team tournament if they have played in at least 1 game for the country winning the medal during the tournament
+
+take country images from https://cdn-csd.swisstxt.ch/images/geo/country/flag/large/ESP.png
+
+improve tableau tournament view
 	> don't sort according to ranking but according to seed (as if it is not done)
 	> make that seed is depending on %2==0 or 1 of match within round so it gets displayed correctly in tableau
 	> fix color green/red in semifinals
-	> make result score bold
 	> add lines between matches that show which match goes to which (https://www.srf.ch/sport/resultcenter/results#/euro-2024/results/football/euro/KoRound-1-1/tableau)
 
 show elo change in UI_MatchOverviewPlayer

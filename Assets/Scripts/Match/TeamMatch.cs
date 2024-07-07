@@ -41,17 +41,25 @@ public class TeamMatch : Match
         if (IsDone) return false; // match already done
         if (IsRunning) return false; // match already running
         if (TeamParticipants.Count != NumTeams) return false; // wrong amount of teams
-        if (!IsMatchToday()) return false; // match not today
+        if (!IsToday) return false; // match not today
         return true;
     }
 
     public override void StartMatch()
     {
         foreach (MatchParticipant_Team teamParticipant in TeamParticipants)
-        {
             teamParticipant.SetPreMatchStats();
 
-            // Get the players that will play for each team
+        base.StartMatch();
+    }
+
+    public override void OnDayStart()
+    {
+        base.OnDayStart();
+
+        // Select the players that will play for each team
+        foreach (MatchParticipant_Team teamParticipant in TeamParticipants)
+        {
             List<Player> teamPlayers = teamParticipant.Team.GetPlayersForMatch(this);
             foreach (Player teamPlayer in teamPlayers)
             {
@@ -61,8 +69,6 @@ public class TeamMatch : Match
 
         if (TeamParticipants.Any(t => Participants.Where(p => p.Team == t.Team).Count() != NumPlayersPerTeam))
             throw new System.Exception("Not all teams are exactly full"); // used as a fail-safe
-
-        base.StartMatch();
     }
 
     #endregion
@@ -234,9 +240,6 @@ public class TeamMatch : Match
         NumPlayersPerTeam = data.NumPlayersPerTeam;
         TeamPointDistribution = data.TeamPointDistribution;
         TeamParticipants = data.TeamParticipants.Select(x => new MatchParticipant_Team(x)).ToList();
-
-        // Parent ref
-        Tournament.Matches.Add(this);
     }
 
     #endregion

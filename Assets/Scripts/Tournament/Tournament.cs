@@ -220,10 +220,10 @@ public abstract class Tournament
         else
         {
             int numRows = (int)Mathf.Pow(2, distanceFromFinal - 1);
-            int startIndexRight = (int)Mathf.Pow(2, distanceFromFinal) - 1;
-            int startIndexLeft = (int)Mathf.Pow(2, distanceFromFinal) + numRows - 1;
-            if (col < (numColumns / 2f)) reverseIndex = startIndexLeft + numRows - row;
-            if (col > (numColumns / 2f)) reverseIndex = startIndexRight + numRows - row;
+            int startIndexRight = (int)Mathf.Pow(2, distanceFromFinal);
+            int startIndexLeft = (int)Mathf.Pow(2, distanceFromFinal) + numRows;
+            if (col < (numColumns / 2f)) reverseIndex = startIndexLeft + row;
+            if (col > (numColumns / 2f)) reverseIndex = startIndexRight + row;
         }
 
         return numMatches - reverseIndex - 1;
@@ -299,6 +299,7 @@ public abstract class Tournament
 
         // KO-Tableau
         float tableauStartY = 500;
+        Debug.Log(Matches.Count);
         DisplayAsFixedTableau(baseUI, container, Matches.Skip(24).ToList(), numPlayersPerMatch: 2, tableauStartY);
     }
 
@@ -329,6 +330,7 @@ public abstract class Tournament
         if (format == TournamentType.ChallengeLeague) return new Format_ChallengeLeague(data);
         if (format == TournamentType.OpenLeague) return new Format_OpenLeague(data);
         if (format == TournamentType.SeasonCup) return new Format_SeasonCup(data);
+        if (format == TournamentType.WorldCup) return new Format_WorldCup(data);
         throw new System.Exception("Format not handled");
     }
     protected Tournament(TournamentData data)

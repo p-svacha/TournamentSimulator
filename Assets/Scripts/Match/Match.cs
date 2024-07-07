@@ -44,6 +44,7 @@ public class Match
         Day = day;
         NumPlayers = numPlayers;
         PointDistribution = pointDistribution;
+        Group = group;
 
         Participants = new List<MatchParticipant>();
         Rounds = new List<MatchRound>();
@@ -71,11 +72,11 @@ public class Match
         if (IsDone) return false; // match already done
         if (IsRunning) return false; // match already running
         if (NumPlayers != Participants.Count) return false; // match not full
-        if (!IsMatchToday()) return false; // match not today
+        if (!IsToday) return false; // match not today
         return true;
     }
 
-    public bool IsMatchToday() => Database.Season == Season && Database.Quarter == Quarter && Database.Day == Day;
+    public bool IsToday => Database.Season == Season && Database.Quarter == Quarter && Database.Day == Day;
 
     public virtual void StartMatch()
     {
@@ -84,6 +85,11 @@ public class Match
         foreach (MatchParticipant participant in Participants) participant.SetPreMatchStats();
         IsRunning = true;
     }
+
+    /// <summary>
+    /// Gets executed when the day this match happens is starting.
+    /// </summary>
+    public virtual void OnDayStart() { }
 
     #endregion
 

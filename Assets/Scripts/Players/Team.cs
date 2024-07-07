@@ -15,7 +15,6 @@ public class Team
     public bool IsCountryTeam => Country != null;
 
     public int Elo { get; protected set; }
-    public int AveragePlayerElo => (int)Players.Average(x => x.Elo);
 
     // New country team
     public Team(Country c)
@@ -46,6 +45,12 @@ public class Team
     {
         // Sort players by their elo and take top x for match
         return Players.OrderByDescending(x => x.Elo).Take(m.NumPlayersPerTeam).ToList();
+    }
+
+    public int GetAveragePlayerElo(int onlyCountNBestPlayers = 0)
+    {
+        if(onlyCountNBestPlayers == 0) return (int)Players.Average(x => x.Elo);
+        else return (int)Players.OrderByDescending(x => x.Elo).Take(onlyCountNBestPlayers).Average(x => x.Elo);
     }
 
     public void SetElo(int value)

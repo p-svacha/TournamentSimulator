@@ -9,14 +9,14 @@ public class Format_WorldCup : Tournament
     private static int POINTS_FOR_DRAW = 1;
     private static int POINTS_FOR_LOSS = 0;
 
-    private static int START_QUARTER = 4;
-    private static int START_DAY = 6;
+    private static int START_QUARTER = 3;
+    private static int START_DAY = 15;
 
     private List<int> ValidTeamAmounts = new List<int>() { 16 };
     private List<int> TeamPointDistribution = new List<int>() { 1, 0 };
 
     public Format_WorldCup(TournamentData data) : base(data) { }
-    public Format_WorldCup(int season, int playersPerTeam) : base(TournamentType.SeasonCup, season)
+    public Format_WorldCup(int season, int playersPerTeam) : base(TournamentType.WorldCup, season)
     {
         NumPlayersPerTeam = playersPerTeam;
         if (NumPlayersPerTeam == 0) NumPlayersPerTeam = 2; // fallback
@@ -35,7 +35,7 @@ public class Format_WorldCup : Tournament
         if (numTeams == -1) throw new System.Exception("Not enough eligible teams to create a world cup with " + NumPlayersPerTeam + " players per team.");
 
         // Select participants
-        Teams = eligibleTeams.OrderByDescending(x => x.AveragePlayerElo).Take(numTeams).ToList();
+        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(NumPlayersPerTeam)).Take(numTeams).ToList();
 
         Initialize();
     }

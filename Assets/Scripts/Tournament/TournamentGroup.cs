@@ -183,6 +183,8 @@ public class TournamentGroup
         PointsForWin = data.PointsForWin;
         PointsForDraw = data.PointsForDraw;
         PointsForLoss = data.PointsForLoss;
+
+        Matches = new List<Match>();
     }
 
     #endregion

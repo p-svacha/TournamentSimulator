@@ -41,6 +41,8 @@ public static class PlayerGenerator
         List<string> regions = new List<string>();
         foreach (Country c in countries) regions.Add(c.Name.ToLower().Replace(" ", "-").Replace(",", "").Replace("é","e"));
 
+        int warnBelowNumberOfNames = 10;
+
         string line;
         foreach (string region in regions)
         {
@@ -50,9 +52,9 @@ public static class PlayerGenerator
                 MaleForenames.Add(region, new List<string>());
                 System.IO.StreamReader mForenamesFile = new System.IO.StreamReader(NamePath + "forenames/" + region + "_forenames_male.txt");
                 while ((line = mForenamesFile.ReadLine()) != null) MaleForenames[region].Add(line);
-                if (MaleForenames[region].Count < 50) Debug.LogWarning("Only " + MaleForenames[region].Count + " male fornames in dataset for " + region);
+                if (MaleForenames[region].Count < warnBelowNumberOfNames) Debug.LogWarning("Only " + MaleForenames[region].Count + " male fornames in dataset for " + region);
             }
-            else Debug.LogWarning("No male forenames found for " + region);
+            else Debug.LogError("No male forenames found for " + region);
 
             if (File.Exists(NamePath + "forenames/" + region + "_forenames_female.txt"))
             {
@@ -60,9 +62,9 @@ public static class PlayerGenerator
                 FemaleForenames.Add(region, new List<string>());
                 System.IO.StreamReader fForenamesFile = new System.IO.StreamReader(NamePath + "forenames/" + region + "_forenames_female.txt");
                 while ((line = fForenamesFile.ReadLine()) != null) FemaleForenames[region].Add(line);
-                if (FemaleForenames[region].Count < 50) Debug.LogWarning("Only " + FemaleForenames[region].Count + " male fornames in dataset for " + region);
+                if (FemaleForenames[region].Count < warnBelowNumberOfNames) Debug.LogWarning("Only " + FemaleForenames[region].Count + " female fornames in dataset for " + region);
             }
-            else Debug.LogWarning("No female forenames found for " + region);
+            else Debug.LogError("No female forenames found for " + region);
 
             if (File.Exists(NamePath + "surnames/" + region + "_surnames.txt"))
             {
@@ -70,9 +72,9 @@ public static class PlayerGenerator
                 Surnames.Add(region, new List<string>());
                 System.IO.StreamReader surnamesFile = new System.IO.StreamReader(NamePath + "surnames/" + region + "_surnames.txt");
                 while ((line = surnamesFile.ReadLine()) != null) Surnames[region].Add(line);
-                if (Surnames[region].Count < 50) Debug.LogWarning("Only " + Surnames[region].Count + " male fornames in dataset for " + region);
+                if (Surnames[region].Count < warnBelowNumberOfNames * 4) Debug.LogWarning("Only " + Surnames[region].Count + " surnames in dataset for " + region);
             }
-            else Debug.LogWarning("No surnames found for " + region);
+            else Debug.LogError("No surnames found for " + region);
         }
     }
 

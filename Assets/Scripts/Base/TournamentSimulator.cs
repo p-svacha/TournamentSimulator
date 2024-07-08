@@ -43,6 +43,7 @@ public class TournamentSimulator : MonoBehaviour
 
         Database.ListCountriesByPlayerAmount();
         AddMissingCountryTeams();
+        // FlagImageScraper.DownloadAllFlagImages();
 
         /* Test Relative <-> Absolute Dates
         int absoluteDay = Database.CurrentDayAbsolute;

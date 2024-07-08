@@ -20,7 +20,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
     {
         GetComponent<PlayerTooltipTarget>().Player = p.Player;
 
-        FlagIcon.sprite = p.Player.FlagSprite;
+        FlagIcon.sprite = p.Player.FlagBig;
         NameText.text = p.Player.Name;
         ScoreText.text = "";
 

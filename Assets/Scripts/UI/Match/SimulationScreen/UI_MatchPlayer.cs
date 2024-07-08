@@ -19,7 +19,7 @@ public class UI_MatchPlayer : MonoBehaviour
     {
         IsTeamMatch = isTeamMatch;
 
-        FlagIcon.sprite = p.FlagSprite;
+        FlagIcon.sprite = p.FlagBig;
         NameText.text = p.Name;
         ScoreText.text = "";
         PlusPointsText.text = "";

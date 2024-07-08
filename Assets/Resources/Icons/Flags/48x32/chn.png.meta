@@ -3,8 +3,8 @@ guid: d19463396bc480a4a98fb8e74b7088db
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9166978680380501256
-    second: chn_0
+      213: 5034012400596933929
+    second: CHN_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: chn_0
+      name: CHN_0
       rect:
         serializedVersion: 2
         x: 0
@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8f2575c757958c080800000000000000
-      internalID: -9166978680380501256
+      spriteID: 92ddd746b976cd540800000000000000
+      internalID: 5034012400596933929
       vertices: []
       indices: 
       edges: []

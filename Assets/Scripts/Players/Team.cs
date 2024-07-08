@@ -8,7 +8,8 @@ public class Team
     public int Id { get; private set; }
     public string Name { get; protected set; }
     public List<Player> Players { get; protected set; }
-    public Sprite Image { get; protected set; }
+    public Sprite FlagBig { get; protected set; }
+    public Sprite FlagSmall { get; protected set; }
     public Color Color1 { get; protected set; }
     public Color Color2 { get; protected set; }
     public Country Country { get; protected set; } // null if not a country team
@@ -23,10 +24,11 @@ public class Team
 
         Name = c.Name;
         Players = Database.Players.Values.Where(x => x.Country == c).ToList();
-        Image = c.Flag;
+        FlagBig = c.FlagBig;
+        FlagSmall = c.FlagSmall;
         Country = c;
 
-        Color[] mostCommonFlagColors = HelperFunctions.GetMostCommonColors(c.Flag);
+        Color[] mostCommonFlagColors = HelperFunctions.GetMostCommonColors(c.FlagBig);
         Color1 = mostCommonFlagColors[0];
         Color2 = mostCommonFlagColors[1];
 
@@ -83,7 +85,11 @@ public class Team
         Country = data.CountryId == -1 ? null : Database.Countries[data.CountryId];
         Elo = data.Elo;
 
-        if (IsCountryTeam) Image = Country.Flag;
+        if (IsCountryTeam)
+        {
+            FlagBig = Country.FlagBig;
+            FlagSmall = Country.FlagSmall;
+        }
     }
 
     #endregion

@@ -22,16 +22,16 @@ public class UI_TMatchPlayer : MonoBehaviour
     {
         int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? p.Player.CurrentLeaguePoints : 0;
 
-        if (isCompact) InitCompact(match, p.Player.FlagSprite, p.Player.LastName, match.Ranking.IndexOf(p), p.TotalPoints);
-        else InitFull(match, p.Player.FlagSprite, p.Player.Name, match.Ranking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
+        if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.Ranking.IndexOf(p), p.TotalPoints);
+        else InitFull(match, p.Player.FlagSmall, p.Player.Name, match.Ranking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
 
         GetComponent<PlayerTooltipTarget>().Player = p.Player;
     }
 
     public void Init(TeamMatch match, MatchParticipant_Team t, bool isCompact)
     {
-        if (isCompact) InitCompact(match, t.Team.Image, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints);
-        else InitFull(match, t.Team.Image, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints, t.Team.Elo, 0, t.EloBeforeMatch, t.EloAfterMatch);
+        if (isCompact) InitCompact(match, t.Team.FlagSmall, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints);
+        else InitFull(match, t.Team.FlagSmall, t.Team.Name, match.TeamRanking.IndexOf(t), t.TotalPoints, t.Team.Elo, 0, t.EloBeforeMatch, t.EloAfterMatch);
     }
 
     public void InitEmpty()

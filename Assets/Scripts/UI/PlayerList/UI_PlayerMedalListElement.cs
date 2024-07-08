@@ -20,7 +20,7 @@ public class UI_PlayerMedalListElement : MonoBehaviour
     {
         Background.color = c;
         RankText.text = rank.ToString();
-        FlagIcon.sprite = p.FlagSprite;
+        FlagIcon.sprite = p.FlagSmall;
         NameText.text = p.Name;
         GoldText.text = gold.ToString();
         SilverText.text = silver.ToString();

@@ -22,7 +22,8 @@ public class Player : IPlayer
     public int LeagueRank => League.GetRankOf(this);
     public Sprite LeagueIcon => League == null ? ColorManager.Singleton.NoLeagueIcon : League.Icon;
     public Color LeagueColor => League == null ? ColorManager.Singleton.NoLeagueColor : League.Color;
-    public Sprite FlagSprite => Country.Flag;
+    public Sprite FlagBig => Country.FlagBig;
+    public Sprite FlagSmall => Country.FlagSmall;
     public int Age => 20 + (Database.Season - Database.Leagues.Values.Where(x => x.Players.Contains(this)).Min(x => x.Season));
     public int WorldRank => Database.Players.Values.OrderByDescending(x => x.Elo).ToList().IndexOf(this) + 1;
 

@@ -91,10 +91,12 @@ public static class Database
                 int population = int.Parse(fields[2]);
                 string region = fields[3];
                 string continent = fields[4];
+                string fifaCode = fields[5];
 
-                countries.Add(id, new Country(id, name, population, region, continent));
+                countries.Add(id, new Country(id, name, population, region, continent, fifaCode));
 
-                if (!File.Exists("Assets/Resources/Icons/Flags/" + name.Replace(' ','-') + ".png")) Debug.LogWarning("No flag icon found for " + name);
+                if (!File.Exists("Assets/Resources/Icons/Flags/180x120/" + fifaCode + ".png")) Debug.LogWarning("No big (180x120) flag icon found for " + name + " (" + fifaCode + ")");
+                if (!File.Exists("Assets/Resources/Icons/Flags/48x32/" + fifaCode + ".png")) Debug.LogWarning("No small (48x32) flag icon found for " + name + " (" + fifaCode + ")");
             }
             counter++;
         }

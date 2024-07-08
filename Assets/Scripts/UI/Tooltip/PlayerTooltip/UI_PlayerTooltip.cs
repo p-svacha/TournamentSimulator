@@ -50,7 +50,7 @@ public class UI_PlayerTooltip : UI_Tooltip
         ShowTooltip();
 
         // Header
-        FlagIcon.sprite = p.FlagSprite;
+        FlagIcon.sprite = p.FlagBig;
         FirstNameText.text = p.FirstName;
         LastNameText.text = p.LastName;
 

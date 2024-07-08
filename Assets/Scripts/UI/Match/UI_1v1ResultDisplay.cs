@@ -23,10 +23,10 @@ public class UI_1v1ResultDisplay : MonoBehaviour
     public void DisplayMatch(MatchParticipant_Team team1, MatchParticipant_Team team2)
     {
         Team1Flag.enabled = true;
-        Team1Flag.sprite = team1.Team.Image;
+        Team1Flag.sprite = team1.Team.FlagBig;
         Team1NameText.text = team1.Team.Name;
         Team2Flag.enabled = true;
-        Team2Flag.sprite = team2.Team.Image;
+        Team2Flag.sprite = team2.Team.FlagBig;
         Team2NameText.text = team2.Team.Name;
         ScoreText.text = team1.TotalPoints + " : " + team2.TotalPoints;
     }
@@ -43,7 +43,7 @@ public class UI_1v1ResultDisplay : MonoBehaviour
     public void DisplayMatch(MatchParticipant_Team team1)
     {
         Team1Flag.enabled = true;
-        Team1Flag.sprite = team1.Team.Image;
+        Team1Flag.sprite = team1.Team.FlagBig;
         Team1NameText.text = team1.Team.Name;
         Team2Flag.enabled = false;
         Team2NameText.text = "";

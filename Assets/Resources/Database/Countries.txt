@@ -168,7 +168,6 @@ Id;Name;Population;Region;Continent;FIFA-Code
 166;Guyana;779006;Amazon;South America;GUY
 167;Bhutan;754388;Subcontinent;Asia;BHU
 168;Comoros;752438;Southern Africa;Africa;COM
-169;Réunion;743981;Southern Africa;Africa;REU
 170;Macau;693000;Southeast Asia;Asia;MAC
 171;Solomon Islands;652857;Pacific Islands;Oceania;SOL
 172;Montenegro;642550;Eastern Europe;Europe;MNE
@@ -181,7 +180,6 @@ Id;Name;Population;Region;Continent;FIFA-Code
 180;Cape Verde;429474;Sahara;Africa;CPV
 181;Brunei;428963;Archipelago;Oceania;BRU
 182;Western Sahara;405210;Sahara;Africa;ESH
-183;Guadeloupe;399848;Caribbean;North America;GLP
 184;Bahamas;385637;Caribbean;North America;BAH
 185;Belize;383071;Central America;North America;BLZ
 186;Martinique;375673;Caribbean;North America;MTQ
@@ -203,7 +201,6 @@ Id;Name;Population;Region;Continent;FIFA-Code
 205;Grenada;111454;Caribbean;North America;GRN
 206;Saint Vincent and the Grenadines;110211;Caribbean;North America;VIN
 207;Aruba;105845;Caribbean;North America;ARU
-208;US Virgin Islands;104680;Caribbean;North America;VIR
 209;Tonga;103197;Pacific Islands;Oceania;TGA
 211;Antigua and Barbuda;96286;Caribbean;North America;ATG
 212;Seychelles;87476;Horn of Africa;Africa;SEY
@@ -219,26 +216,10 @@ Id;Name;Population;Region;Continent;FIFA-Code
 226;South Ossetia;53532;Caucasus;Middle East;SOS
 227;Saint Kitts and Nevis;52441;Caribbean;North America;SKN
 228;Faroe Islands;50778;Northern Europe;Europe;FRO
-229;Sint Maarten;41940;Caribbean;North America;SMA
 230;Monaco;38400;Western Europe;Europe;MON
 231;Liechtenstein;38111;Western Europe;Europe;LIE
-232;Turks and Caicos Islands;37665;Caribbean;North America;TCA
 233;San Marino;33285;Western Europe;Europe;SMR
 234;Gibraltar;32194;Western Europe;Europe;GIB
-235;Saint Martin;29820;Caribbean;North America;SMN
-236;British Virgin Islands;29802;Caribbean;North America;VGB
 238;Palau;17907;Pacific Islands;Oceania;PLW
-239;Cook Islands;17518;Pacific Islands;Oceania;COK
-241;Anguilla;14731;Caribbean;North America;AIA
-242;Bonaire;12093;Caribbean;North America;BOE
-243;Wallis and Futuna;11558;Pacific Islands;Oceania;WLF
 244;Tuvalu;11508;Pacific Islands;Oceania;TUV
 245;Nauru;10670;Pacific Islands;Oceania;NRU
-246;Saint Helena;7728;Southern Africa;Africa;SHN
-247;Saint Barthélemy;7448;Caribbean;North America;BLM
-248;Saint Pierre and Miquelon;5849;Caribbean;North America;SPM
-249;Montserrat;4993;Caribbean;North America;MSR
-255;Niue;1620;Pacific Islands;Oceania;NIU
-257;Tokelau;1319;Pacific Islands;Oceania;TOK
-258;Vatican City;1000;Western Europe;Europe;VAT
-259;Zanzibar;1889773;Horn of Africa;Africa;CAF

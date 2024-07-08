@@ -3,8 +3,8 @@ guid: 3d2ff45c9ec8e5a4d8bdb94eea74e269
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2669971452244533510
-    second: sui_0
+      213: -5881423774343831379
+    second: SUI_0
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sui_0
+      name: SUI_0
       rect:
         serializedVersion: 2
         x: 28
@@ -124,8 +124,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: afed78c3c1b52fad0800000000000000
-      internalID: -2669971452244533510
+      spriteID: da0e2b40d3cf06ea0800000000000000
+      internalID: -5881423774343831379
       vertices: []
       indices: 
       edges: []

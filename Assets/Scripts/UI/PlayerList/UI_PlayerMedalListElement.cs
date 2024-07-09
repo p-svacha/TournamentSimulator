@@ -14,18 +14,27 @@ public class UI_PlayerMedalListElement : MonoBehaviour
     public Text SilverText;
     public Text BronzeText;
 
-    private bool IsHovering;
-
-    public void Init(int rank, Player p, Color c, int gold, int silver, int bronze)
+    public void Init(int rank, Player player, Vector3 medals)
     {
-        Background.color = c;
+        Background.color = ColorManager.Singleton.DefaultColor;
         RankText.text = rank.ToString();
-        FlagIcon.sprite = p.FlagSmall;
-        NameText.text = p.Name;
-        GoldText.text = gold.ToString();
-        SilverText.text = silver.ToString();
-        BronzeText.text = bronze.ToString();
+        FlagIcon.sprite = player.FlagSmall;
+        NameText.text = player.Name;
+        GoldText.text = medals.x.ToString();
+        SilverText.text = medals.y.ToString();
+        BronzeText.text = medals.z.ToString();
 
-        GetComponent<PlayerTooltipTarget>().Player = p;
+        GetComponent<PlayerTooltipTarget>().Player = player;
+    }
+
+    public void Init(int rank, Team team, Vector3 medals)
+    {
+        Background.color = ColorManager.Singleton.DefaultColor;
+        RankText.text = rank.ToString();
+        FlagIcon.sprite = team.FlagSmall;
+        NameText.text = team.Name;
+        GoldText.text = medals.x.ToString();
+        SilverText.text = medals.y.ToString();
+        BronzeText.text = medals.z.ToString();
     }
 }

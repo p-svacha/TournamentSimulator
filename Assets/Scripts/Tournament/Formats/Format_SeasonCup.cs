@@ -134,4 +134,19 @@ public class Format_SeasonCup : Tournament
             _ => ""
         };
     }
+
+    public override Dictionary<int, List<Player>> PlayerRanking
+    {
+        get
+        {
+            Dictionary<int, List<Player>> ranking = new Dictionary<int, List<Player>>();
+            ranking.Add(0, new List<Player>() { Matches[Matches.Count - 1].Ranking[0].Player });
+            ranking.Add(1, new List<Player>() { Matches[Matches.Count - 1].Ranking[1].Player });
+            ranking.Add(2, new List<Player>() { Matches[Matches.Count - 2].Ranking[0].Player });
+            ranking.Add(3, new List<Player>() { Matches[Matches.Count - 2].Ranking[1].Player });
+            return ranking;
+        }
+    }
+
+    public override Dictionary<int, List<Team>> TeamRanking => PlayerRanking.ToDictionary(x => x.Key, x => x.Value.Select(x => Database.GetNationalTeam(x.Country)).ToList());
 }

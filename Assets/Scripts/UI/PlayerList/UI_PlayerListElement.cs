@@ -29,4 +29,15 @@ public class UI_PlayerListElement : MonoBehaviour
 
         GetComponent<PlayerTooltipTarget>().Player = p;
     }
+
+    public void InitTeamRanking(int rank, Team t)
+    {
+        Background.color = ColorManager.Singleton.DefaultColor;
+        RankText.text = rank.ToString();
+        FlagIcon.sprite = t.FlagSmall;
+        NameText.text = t.Name;
+
+        LeagueIcon.gameObject.SetActive(false);
+        ValueText.text = t.Elo.ToString();
+    }
 }

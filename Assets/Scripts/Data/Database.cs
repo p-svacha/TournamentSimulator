@@ -145,6 +145,8 @@ public static class Database
     public static List<Team> GetNationalTeams(int minPlayers = 9999999) => Teams.Values.Where(x => x.IsCountryTeam && x.Players.Count >= minPlayers).ToList();
 
     public static List<Player> WorldRanking => Players.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.TiebreakerScore).ToList();
+    public static List<Team> TeamWorldRanking => Teams.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.GetAveragePlayerElo()).ToList();
+
     /// <summary>
     /// Returns an ordered dictionary representing the country leaderboard of a given country based on elo rating.
     /// </summary>
@@ -167,44 +169,25 @@ public static class Database
         return Database.Players.Values.Where(x => x.Country.Continent == continent).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
     }
 
-    public static List<Tuple<Player, int, int, int>> GetHistoricGrandLeagueMedals()
+    public static void GetAddMedals<T>(Dictionary<int, List<T>> ranking, Dictionary<T, Vector3Int> medals)
     {
-        List<Tuple<Player, int, int, int>> medals = new List<Tuple<Player, int, int, int>>();
-        Dictionary<Player, int> goldMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> silverMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> bronzeMedals = new Dictionary<Player, int>();
-        Dictionary<Player, int> medalScore = new Dictionary<Player, int>();
-
-        foreach (Player p in Players.Values)
+        foreach (T goldWinner in ranking[0])
         {
-            goldMedals.Add(p, 0);
-            silverMedals.Add(p, 0);
-            bronzeMedals.Add(p, 0);
-            medalScore.Add(p, 0);
+            if (!medals.ContainsKey(goldWinner)) medals.Add(goldWinner, new Vector3Int(1, 0, 0));
+            else medals[goldWinner] += new Vector3Int(1, 0, 0);
         }
 
-        foreach (League l in Leagues.Values.Where(x => x.Season < Season && x.LeagueType == TournamentType.GrandLeague))
+        foreach (T silverWinner in ranking[1])
         {
-            List<Player> ranking = l.Ranking;
-            goldMedals[ranking[0]]++;
-            medalScore[ranking[0]] += 3;
-            silverMedals[ranking[1]]++;
-            medalScore[ranking[1]] += 2;
-            bronzeMedals[ranking[2]]++;
-            medalScore[ranking[2]] += 1;
+            if (!medals.ContainsKey(silverWinner)) medals.Add(silverWinner, new Vector3Int(0, 1, 0));
+            else medals[silverWinner] += new Vector3Int(0, 1, 0);
         }
 
-        medalScore = medalScore.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
-        foreach (KeyValuePair<Player, int> kvp in medalScore)
+        foreach (T bronzeWinner in ranking[2])
         {
-            if (kvp.Value > 0)
-            {
-                Player p = kvp.Key;
-                medals.Add(new Tuple<Player, int, int, int>(p, goldMedals[p], silverMedals[p], bronzeMedals[p]));
-            }
+            if (!medals.ContainsKey(bronzeWinner)) medals.Add(bronzeWinner, new Vector3Int(0, 0, 1));
+            else medals[bronzeWinner] += new Vector3Int(0, 0, 1);
         }
-
-        return medals;
     }
 
     public static Dictionary<Country, List<Player>> GetPlayersByCountry() => Players.Values.GroupBy(x => x.Country).OrderByDescending(x => x.Count()).ToDictionary(x => x.Key, x => x.ToList());

@@ -31,6 +31,8 @@ public abstract class Tournament
         IsDone = false;
         League = league;
 
+        if (League != null) League.Tournaments.Add(this);
+
         Players = new List<Player>();
         Teams = new List<Team>();
     }
@@ -68,6 +70,35 @@ public abstract class Tournament
         List<int> playerPointDistribution = new List<int>();
         for (int i = 0; i < n; i++) playerPointDistribution.Add((n) - i);
         return playerPointDistribution;
+    }
+
+    /// <summary>
+    /// Returns the (top) players for each rank.
+    /// </summary>
+    public abstract Dictionary<int, List<Player>> PlayerRanking { get; }
+
+    /// <summary>
+    /// Returns the (top) teams for each rank.
+    /// </summary>
+    public abstract Dictionary<int, List<Team>> TeamRanking { get; }
+
+    /// <summary>
+    /// Returns a list of all players that played for the given team in this tournament.
+    /// </summary>
+    public List<Player> GetTeamPlayers(Team team)
+    {
+        List<Player> players = new List<Player>();
+        foreach(TeamMatch match in Matches.Select(x => (TeamMatch)x))
+        {
+            if(match.IncludesTeam(team))
+            {
+                foreach(MatchParticipant player in match.Participants.Where(x => x.Team == team))
+                {
+                    if (!players.Contains(player.Player)) players.Add(player.Player);
+                }
+            }
+        }
+        return players;
     }
 
     #region Display
@@ -346,6 +377,9 @@ public abstract class Tournament
 
         Teams = data.Teams.Select(x => Database.Teams[x]).ToList();
         NumPlayersPerTeam = data.NumPlayersPerTeam;
+
+        // References
+        if(League != null) League.Tournaments.Add(this);
 
         Matches = new List<Match>();
     }

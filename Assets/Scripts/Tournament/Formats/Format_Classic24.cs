@@ -108,4 +108,7 @@ public class Format_Classic24 : Tournament
         return "Step " + stepIndex;
     }
 
+    public override Dictionary<int, List<Player>> PlayerRanking => Matches.Last().Ranking.ToDictionary(x => Matches.Last().Ranking.IndexOf(x), x => new List<Player>() { x.Player });
+    public override Dictionary<int, List<Team>> TeamRanking => PlayerRanking.ToDictionary(x => x.Key, x => x.Value.Select(x => Database.GetNationalTeam(x.Country)).ToList());
+
 }

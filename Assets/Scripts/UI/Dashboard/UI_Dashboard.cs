@@ -8,8 +8,10 @@ using TMPro;
 public class UI_Dashboard : UI_Screen
 {
     [Header("Elements")]
+    public TMP_Dropdown ParticipantTypeDropdown;
     public UI_PlayerList RatingList;
-    public GameObject MedalList;
+    public TMP_Dropdown MedalTypeDropdown;
+    public GameObject MedalListContainer;
 
     public Button SeasonSelectionPrevBtn;
     public TextMeshProUGUI SeasonSelectionLabel;
@@ -30,6 +32,9 @@ public class UI_Dashboard : UI_Screen
     public override void Init(UI_Base baseUI)
     {
         base.Init(baseUI);
+
+        ParticipantTypeDropdown.onValueChanged.AddListener(ParticipantTypeDropdown_OnValueChanged);
+        MedalTypeDropdown.onValueChanged.AddListener(MedalTypeDropdown_OnValueChanged);
 
         SelectedSeason = Database.Season;
         SeasonSelectionPrevBtn.onClick.AddListener(SeasonSelectionPrevBtn_OnClick);
@@ -63,29 +68,102 @@ public class UI_Dashboard : UI_Screen
         Refresh();
     }
 
+    private void ParticipantTypeDropdown_OnValueChanged(int value)
+    {
+        UpdateRatingList();
+        UpdateMedalList();
+    }
+
+    private void MedalTypeDropdown_OnValueChanged(int value)
+    {
+        UpdateMedalList();
+    }
+
     #region General Info
 
     private void UpdateRatingList()
     {
-        foreach (Transform t in RatingList.ListContainer.transform) Destroy(t.gameObject);
+        HelperFunctions.DestroyAllChildredImmediately(RatingList.ListContainer);
 
-        int counter = 1;
-        foreach (Player p in Database.WorldRanking)
+        if (ParticipantTypeDropdown.value == 0) // Players
         {
-            UI_PlayerListElement elem = Instantiate(ListElement, RatingList.ListContainer.transform);
-            elem.Init(counter++, p, p.Elo.ToString(), ColorManager.Singleton.DefaultColor, showLeagueIcon: true);
+            int counter = 1;
+            foreach (Player p in Database.WorldRanking)
+            {
+                UI_PlayerListElement elem = Instantiate(ListElement, RatingList.ListContainer.transform);
+                elem.Init(counter++, p, p.Elo.ToString(), ColorManager.Singleton.DefaultColor, showLeagueIcon: true);
+            }
+        }
+        if (ParticipantTypeDropdown.value == 1) // Teams
+        {
+            int counter = 1;
+            foreach (Team t in Database.TeamWorldRanking)
+            {
+                UI_PlayerListElement elem = Instantiate(ListElement, RatingList.ListContainer.transform);
+                elem.InitTeamRanking(counter++, t);
+            }
         }
     }
     private void UpdateMedalList()
     {
-        List<System.Tuple<Player, int, int, int>> medals = Database.GetHistoricGrandLeagueMedals();
-        foreach (Transform t in MedalList.transform) Destroy(t.gameObject);
+        HelperFunctions.DestroyAllChildredImmediately(MedalListContainer);
 
-        int counter = 1;
-        foreach (System.Tuple<Player, int, int, int> medal in medals)
+        if(ParticipantTypeDropdown.value == 0) // Players
         {
-            UI_PlayerMedalListElement elem = Instantiate(MedalListElement, MedalList.transform);
-            elem.Init(counter++, medal.Item1, ColorManager.Singleton.DefaultColor, medal.Item2, medal.Item3, medal.Item4);
+            // Get medals
+            Dictionary<Player, Vector3Int> medals = new Dictionary<Player, Vector3Int>();
+
+            if(MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 1) // Grand League
+                foreach (League l in Database.Leagues.Values.Where(x => x.LeagueType == TournamentType.GrandLeague && x.IsDone))
+                    Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Player>() { x }), medals);
+
+            if (MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 2) // Season Cup
+                foreach (Tournament t in Database.Tournaments.Values.Where(x => x.Format == TournamentType.SeasonCup && x.IsDone))
+                    Database.GetAddMedals(t.PlayerRanking, medals);
+
+            if (MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 3) // World Cup
+                foreach (Tournament t in Database.Tournaments.Values.Where(x => x.Format == TournamentType.WorldCup && x.IsDone))
+                    Database.GetAddMedals(t.PlayerRanking, medals);
+
+            // Order
+            medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);
+
+            // Display
+            int rank = 1;
+            foreach (var medal in medals)
+            {
+                UI_PlayerMedalListElement elem = Instantiate(MedalListElement, MedalListContainer.transform);
+                elem.Init(rank++, medal.Key, medal.Value);
+            }
+        }
+
+        if (ParticipantTypeDropdown.value == 1) // Teams
+        {
+            // Get medals
+            Dictionary<Team, Vector3Int> medals = new Dictionary<Team, Vector3Int>();
+
+            if (MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 1) // Grand League
+                foreach (League l in Database.Leagues.Values.Where(x => x.LeagueType == TournamentType.GrandLeague && x.IsDone))
+                    Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Team>() { Database.GetNationalTeam(x.Country) }), medals);
+
+            if (MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 2) // Season Cup
+                foreach (Tournament t in Database.Tournaments.Values.Where(x => x.Format == TournamentType.SeasonCup && x.IsDone))
+                    Database.GetAddMedals(t.TeamRanking, medals);
+
+            if (MedalTypeDropdown.value == 0 || MedalTypeDropdown.value == 3) // World Cup
+                foreach (Tournament t in Database.Tournaments.Values.Where(x => x.Format == TournamentType.WorldCup && x.IsDone))
+                    Database.GetAddMedals(t.TeamRanking, medals);
+
+            // Order
+            medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);
+
+            // Display
+            int rank = 1;
+            foreach (var medal in medals)
+            {
+                UI_PlayerMedalListElement elem = Instantiate(MedalListElement, MedalListContainer.transform);
+                elem.Init(rank++, medal.Key, medal.Value);
+            }
         }
     }
 

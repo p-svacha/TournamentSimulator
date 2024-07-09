@@ -12,11 +12,13 @@ public class League
     public Dictionary<Player, int> Standings { get; private set; }
     public int NumPromotions { get; private set; }
     public int NumRelegations { get; private set; }
+    public List<Tournament> Tournaments { get; private set; }
     
 
     public Sprite Icon => ColorManager.Singleton.LeagueIcons[(int)LeagueType];
     public Color Color => ColorManager.Singleton.LeagueColors[(int)LeagueType];
     public List<Player> Players => Standings.Keys.ToList();
+    public bool IsDone => Tournaments.All(x => x.IsDone);
 
     public League(string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
     {
@@ -29,6 +31,8 @@ public class League
 
         Standings = new Dictionary<Player, int>();
         foreach (Player p in players) Standings.Add(p, 0);
+
+        Tournaments = new List<Tournament>();
     }
 
     public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.TiebreakerScore).Select(x => x.Key).ToList();
@@ -58,6 +62,8 @@ public class League
         Standings = data.Participants.ToDictionary(x => Database.Players[x.PlayerId], x => x.LeaguePoints);
         NumPromotions = data.NumPromotions;
         NumRelegations = data.NumRelegations;
+
+        Tournaments = new List<Tournament>();
     }
 
     #endregion

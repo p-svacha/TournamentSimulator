@@ -8,8 +8,6 @@ change medal list to dropdown for:
 	> make additional dropdown to select between player/country so you can see all permutations
 	> player gets a medal for a team tournament if they have played in at least 1 game for the country winning the medal during the tournament
 
-take country images from https://cdn-csd.swisstxt.ch/images/geo/country/flag/large/ESP.png
-
 improve tableau tournament view
 	> don't sort according to ranking but according to seed (as if it is not done)
 	> make that seed is depending on %2==0 or 1 of match within round so it gets displayed correctly in tableau

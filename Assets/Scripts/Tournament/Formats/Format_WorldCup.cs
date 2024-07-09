@@ -135,4 +135,8 @@ public class Format_WorldCup : Tournament
             _ => ""
         };
     }
+
+
+    public override Dictionary<int, List<Player>> PlayerRanking => TeamRanking.ToDictionary(x => x.Key, x => GetTeamPlayers(x.Value.First()));
+    public override Dictionary<int, List<Team>> TeamRanking => Matches.Select(x => ((TeamMatch)x)).Last().TeamRanking.ToDictionary(x => Matches.Select(x => ((TeamMatch)x)).Last().TeamRanking.IndexOf(x), x => new List<Team>() { x.Team });
 }

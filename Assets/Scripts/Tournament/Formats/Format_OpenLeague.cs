@@ -266,4 +266,7 @@ public class Format_OpenLeague : Tournament
         int stepIndex = Database.Tournaments.Values.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
         return "Step " + stepIndex;
     }
+
+    public override Dictionary<int, List<Player>> PlayerRanking => Matches.Last().Ranking.ToDictionary(x => Matches.Last().Ranking.IndexOf(x), x => new List<Player>() { x.Player });
+    public override Dictionary<int, List<Team>> TeamRanking => PlayerRanking.ToDictionary(x => x.Key, x => x.Value.Select(x => Database.GetNationalTeam(x.Country)).ToList());
 }

@@ -32,6 +32,15 @@ public static class HelperFunctions
         return Vector3.Lerp(start, end, t);
     }
 
+    private static float GetDirectionVectorAngle(Vector3 dir)
+    {
+        dir = dir.normalized;
+        float n = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        if (n < 0) n += 360;
+
+        return n;
+    }
+
     #endregion
 
     #region Random
@@ -187,6 +196,30 @@ public static class HelperFunctions
     public static bool IsMouseOverUi()
     {
         return EventSystem.current.IsPointerOverGameObject();
+    }
+
+    public static Image DrawLine(GameObject parent, Vector2 from, Vector2 to, Color color, float thickness)
+    {
+        // Init object
+        GameObject gameObject = new GameObject("Line", typeof(Image));
+        gameObject.transform.SetParent(parent.transform, false);
+        Image img = gameObject.GetComponent<Image>();
+        img.color = color;
+
+        // Position and dimensions
+        RectTransform rectTransform = gameObject.GetComponent<RectTransform>();
+        Vector2 dir = (to - from).normalized;
+        float distance = Vector2.Distance(from, to);
+        rectTransform.anchoredPosition = new Vector2((to.x + from.x) / 2, (to.y + from.y) / 2);
+        rectTransform.sizeDelta = new Vector2(distance, thickness);
+        rectTransform.anchorMin = new Vector2(0, 0);
+        rectTransform.anchorMax = new Vector2(0, 0);
+
+        // Rotation
+        rectTransform.localEulerAngles = new Vector3(0, 0, GetDirectionVectorAngle(dir));
+        gameObject.transform.SetSiblingIndex(0);
+
+        return img;
     }
 
     #endregion

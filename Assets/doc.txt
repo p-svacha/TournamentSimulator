@@ -1,21 +1,7 @@
 ------------------------------- Before season 6 ------------------------------------------- the stat update
-change medal list to dropdown for:
-- grand league medals
-- cup medals
-- world cup medals
-- S-Tier medals (all of the above combined)
-
-	> make additional dropdown to select between player/country so you can see all permutations
-	> player gets a medal for a team tournament if they have played in at least 1 game for the country winning the medal during the tournament
-
-improve tableau tournament view
-	> don't sort according to ranking but according to seed (as if it is not done)
-	> make that seed is depending on %2==0 or 1 of match within round so it gets displayed correctly in tableau
-	> fix color green/red in semifinals
-	> add lines between matches that show which match goes to which (https://www.srf.ch/sport/resultcenter/results#/euro-2024/results/football/euro/KoRound-1-1/tableau)
-
 show elo change in UI_MatchOverviewPlayer
 show rank in UI_MatchOverviewPlayer
+show seed in UI_MatchOverviewPlayer
 
 show current team score during round in team match simulation screen
 

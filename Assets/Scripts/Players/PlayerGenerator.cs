@@ -41,7 +41,7 @@ public static class PlayerGenerator
         List<string> regions = new List<string>();
         foreach (Country c in countries) regions.Add(c.Name.ToLower().Replace(" ", "-").Replace(",", "").Replace("é","e"));
 
-        int warnBelowNumberOfNames = 10;
+        int warnBelowNumberOfNames = 50;
 
         string line;
         foreach (string region in regions)

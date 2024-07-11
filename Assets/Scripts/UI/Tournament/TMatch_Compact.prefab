@@ -135,6 +135,7 @@ MonoBehaviour:
   MatchOverviewButton: {fileID: 8558831225443646619}
   PlayerContainer: {fileID: 7713239197231529680}
   IsCompact: 1
+  AlwaysOrderBySeed: 1
   PlayerPrefab: {fileID: 1532127121303272560, guid: 328b06a18213b634fbb57cd17520a701, type: 3}
 --- !u!114 &8558831225443646619
 MonoBehaviour:

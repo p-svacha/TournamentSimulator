@@ -16,6 +16,7 @@ public class MatchData
     public bool IsDone { get; set; }
     public int NumPlayers { get; set; }
     public List<int> TargetMatchIndices { get; set; }
+    public List<int> TargetMatchSeeds { get; set; }
     public List<int> PointDistribution { get; set; }
 
     public List<MatchParticipantData> Participants { get; set; }

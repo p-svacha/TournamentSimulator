@@ -54,11 +54,12 @@ public class Format_SeasonCup : Tournament
             {
                 Player p = unassignedPlayers[Random.Range(0, unassignedPlayers.Count)];
                 unassignedPlayers.Remove(p);
-                ro64Match.AddPlayerToMatch(p, seed: 0);
+                ro64Match.AddPlayerToMatch(p, seed: j);
             }
 
             // Advancement matches
             ro64Match.SetTargetMatches(new List<int>() { 32 + (i / 2) });
+            ro64Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
 
             Matches.Add(ro64Match);
         }
@@ -70,6 +71,7 @@ public class Format_SeasonCup : Tournament
 
             // Advancement matches
             ro32Match.SetTargetMatches(new List<int>() { 48 + (i / 2) });
+            ro32Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
 
             Matches.Add(ro32Match);
         }
@@ -81,6 +83,7 @@ public class Format_SeasonCup : Tournament
 
             // Advancement matches
             ro16Match.SetTargetMatches(new List<int>() { 56 + (i / 2) });
+            ro16Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
 
             Matches.Add(ro16Match);
         }
@@ -92,6 +95,7 @@ public class Format_SeasonCup : Tournament
 
             // Advancement matches
             quarterfinal.SetTargetMatches(new List<int>() { 60 + (i / 2) });
+            quarterfinal.SetTargetMatchSeeds(new List<int>() { i % 2 });
 
             Matches.Add(quarterfinal);
         }
@@ -103,6 +107,7 @@ public class Format_SeasonCup : Tournament
 
             // Advancement matches
             semifinal.SetTargetMatches(new List<int>() { 63, 62 });
+            semifinal.SetTargetMatchSeeds(new List<int>() { i % 2, i % 2 });
 
             Matches.Add(semifinal);
         }

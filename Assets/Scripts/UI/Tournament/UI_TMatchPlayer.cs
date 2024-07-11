@@ -49,32 +49,20 @@ public class UI_TMatchPlayer : MonoBehaviour
     {
         FlagIcon.sprite = sprite;
         NameText.text = name;
+        Background.color = GetBackgroundColor(match, rank);
 
-        if (match.IsDone)
-        {
-            PointsText.text = points.ToString();
-            if (match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
-            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
-            else Background.color = ColorManager.Singleton.KoColor;
-        }
-        else
-        {
-            PointsText.text = "";
-            Background.color = ColorManager.Singleton.DefaultColor;
-        }
+        if (match.IsDone) PointsText.text = points.ToString();
+        else PointsText.text = "";
     }
     private void InitFull(Match match, Sprite sprite, string name, int rank, int points, int currentElo, int currentLP, int eloBeforeMatch, int eloAfterMatch)
     {
         FlagIcon.sprite = sprite;
         NameText.text = name;
+        Background.color = GetBackgroundColor(match, rank);
 
-        if(match.IsDone)
+        if (match.IsDone)
         {
             PointsText.text = points.ToString();
-
-            if (match.NumAdvancements == 0) Background.color = ColorManager.Singleton.DefaultColor;
-            else if (rank < match.NumAdvancements) Background.color = ColorManager.Singleton.AdvanceColor;
-            else Background.color = ColorManager.Singleton.KoColor;
 
             EloText.text = eloBeforeMatch.ToString();
             int eloChange = eloAfterMatch - eloBeforeMatch;
@@ -101,10 +89,26 @@ public class UI_TMatchPlayer : MonoBehaviour
         else
         {
             PointsText.text = "";
-            Background.color = ColorManager.Singleton.DefaultColor;
             EloChangeIcon.enabled = false;
             EloText.text = currentElo.ToString();
             EloChangeText.text = match.Tournament.League != null ? currentLP.ToString() : "";
         }
+    }
+
+    private Color GetBackgroundColor(Match match, int rank)
+    {
+        if (match.IsDone)
+        {
+            if (match.Ranking.Count == 2) // Always color winner green and loser red in finished matches with 2 participants
+            {
+                if (rank == 0) return ColorManager.Singleton.AdvanceColor;
+                else return ColorManager.Singleton.KoColor;
+            }
+
+            else if (match.NumAdvancements == 0) return ColorManager.Singleton.DefaultColor; // Gray if there are no advancements in this match
+            else if (rank < match.NumAdvancements) return ColorManager.Singleton.AdvanceColor; // Green if within advancements
+            else return ColorManager.Singleton.KoColor; // Red if not within advancements
+        }
+        else return ColorManager.Singleton.DefaultColor; // Gray if match is not done
     }
 }

@@ -91,6 +91,7 @@ public class Format_WorldCup : Tournament
         {
             TeamMatch quarterfinal = new TeamMatch("Quarterfinal " + (i + 1), this, quartersQuarter, quartersDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
             quarterfinal.SetTargetMatches(new List<int>() { 28 + (i / 2) });
+            quarterfinal.SetTargetMatchSeeds(new List<int>() { i % 2 });
             Matches.Add(quarterfinal);
         }
 
@@ -102,6 +103,7 @@ public class Format_WorldCup : Tournament
         {
             TeamMatch semifinal = new TeamMatch("Semifinal " + (i + 1), this, semisQuarter, semisDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
             semifinal.SetTargetMatches(new List<int>() { 31, 30 });
+            semifinal.SetTargetMatchSeeds(new List<int>() { i % 2, i % 2 });
             Matches.Add(semifinal);
         }
 

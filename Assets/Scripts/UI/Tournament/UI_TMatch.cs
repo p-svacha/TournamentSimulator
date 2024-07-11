@@ -15,6 +15,8 @@ public class UI_TMatch : MonoBehaviour
     public Button MatchOverviewButton;
     public GameObject PlayerContainer;
     public bool IsCompact;
+    public bool AlwaysOrderBySeed;
+    public bool AlwaysUseGrayBackground;
 
     [Header("Prefabs")]
     public UI_TMatchPlayer PlayerPrefab;
@@ -30,7 +32,7 @@ public class UI_TMatch : MonoBehaviour
             if (match is TeamMatch teamMatch)
             {
                 // add every participant as a row
-                foreach (MatchParticipant_Team t in teamMatch.TeamRanking)
+                foreach (MatchParticipant_Team t in AlwaysOrderBySeed ? teamMatch.TeamSeeding : teamMatch.TeamRanking)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.Init(teamMatch, t, IsCompact);
@@ -46,7 +48,7 @@ public class UI_TMatch : MonoBehaviour
             else
             {
                 // add every participant as a row
-                foreach (MatchParticipant p in match.Ranking)
+                foreach (MatchParticipant p in AlwaysOrderBySeed ? match.PlayerSeeding : match.Ranking)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.Init(match, p, IsCompact);

@@ -267,39 +267,84 @@ public abstract class Tournament
     private void DisplayTableau(UI_Base baseUI, GameObject container, List<Match> matches, int numColumns, int[] numRows, float matchWidth, float matchHeight, float colSpacing, float[] rowSpacing, float marginBot = 0)
     {
         float finalScale = 1.3f;
+        float lineWidth = 1.5f;
 
         // Display matches column by column
         for (int col = 0; col < numColumns; col++)
         {
             for (int row = 0; row < numRows[col]; row++)
             {
+                int distanceFromFinal = Mathf.Abs((numColumns / 2) - col);
+                bool isOnLeftSide = col < numColumns / 2f;
+                bool isCenter = col == numColumns / 2;
+
                 // Get match index based on row and col
                 int matchIndex = GetTableauMatchIndexFor(matches.Count, numColumns, col, row);
                 // Debug.Log("Match index for " + col + "/" + row + " with " + numColumns + " columns and " + matches.Count + " matches is " + matchIndex);
 
                 // Calculate final match position
-                float xPos = ((col + 1) * colSpacing) + (col * matchWidth);
-
-                //float rowSpacing = (col == 0 || col == numColumns - 1) ? outerColumnRowSpacing : innerColumnRowSpacing;
-                float yPos = (row * matchHeight) + ((row + 1) * rowSpacing[col]);
-                yPos += marginBot;
+                Vector2 matchPos = GetTableauMatchPosition(col, row, matchWidth, matchHeight, colSpacing, rowSpacing, marginBot);
+                float matchCenterY = matchPos.y + matchHeight / 2;
 
                 // Center final match
-                bool isFinal = (row == 1 && col == numColumns / 2);
+                bool isFinal = (isCenter && row == 1);
                 if (isFinal)
                 {
-                    xPos = (container.GetComponent<RectTransform>().rect.width / 2f) - (matchWidth * finalScale / 2);
-                    yPos = marginBot + ((container.GetComponent<RectTransform>().rect.height - marginBot) / 2f) - (matchHeight * finalScale / 2f);
+                    matchPos.x = (container.GetComponent<RectTransform>().rect.width / 2f) - (matchWidth * finalScale / 2);
+                    matchPos.y = marginBot + ((container.GetComponent<RectTransform>().rect.height - marginBot) / 2f) - (matchHeight * finalScale / 2f);
                 }
 
                 UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchCompactPrefab;
                 UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
                 RectTransform rect = match.GetComponent<RectTransform>();
-                rect.anchoredPosition = new Vector2(xPos, yPos);
+                rect.anchoredPosition = matchPos;
                 if (isFinal) rect.localScale = new Vector3(finalScale, finalScale, 1f);
                 match.Init(baseUI, matches[matchIndex]);
+
+                // Draw line going to next match
+                if (!isCenter)
+                {
+                    float toLineStartX = isOnLeftSide ? matchPos.x + matchWidth : matchPos.x;
+
+                    float width = distanceFromFinal == 1 ? colSpacing : colSpacing / 2;
+                    float toLineEndX = isOnLeftSide ? toLineStartX + width : toLineStartX - width;
+                    HelperFunctions.DrawLine(container, new Vector2(toLineStartX, matchCenterY), new Vector2(toLineEndX, matchCenterY), Color.white, lineWidth);
+                }
+
+                // Draw lines coming from previous 2 matches
+                if(col != 0 && col != numColumns - 1 && !isCenter)
+                {
+                    // Vertical line
+                    float verticalX = isOnLeftSide ? matchPos.x - colSpacing / 2 : matchPos.x + matchWidth + colSpacing / 2;
+
+                    Vector2Int prevMatch1GridPosition = isOnLeftSide ? new Vector2Int(col - 1, row * 2) : new Vector2Int(col + 1, row * 2);
+                    Vector2 prevMatch1Pos = GetTableauMatchPosition(prevMatch1GridPosition.x, prevMatch1GridPosition.y, matchWidth, matchHeight, colSpacing, rowSpacing, marginBot);
+                    float verticalYStart = prevMatch1Pos.y + matchHeight / 2;
+
+                    Vector2Int prevMatch2GridPosition = isOnLeftSide ? new Vector2Int(col - 1, row * 2 + 1) : new Vector2Int(col + 1, row * 2 + 1);
+                    Vector2 prevMatch2Pos = GetTableauMatchPosition(prevMatch2GridPosition.x, prevMatch2GridPosition.y, matchWidth, matchHeight, colSpacing, rowSpacing, marginBot);
+                    float verticalYEnd = prevMatch2Pos.y + matchHeight / 2;
+
+                    HelperFunctions.DrawLine(container, new Vector2(verticalX, verticalYStart), new Vector2(verticalX, verticalYEnd), Color.white, lineWidth);
+
+                    // Horizontal line
+                    float fromLineEndX = isOnLeftSide ? matchPos.x : matchPos.x + matchWidth;
+                    HelperFunctions.DrawLine(container, new Vector2(verticalX, matchCenterY), new Vector2(fromLineEndX, matchCenterY), Color.white, lineWidth);
+                }
             }
         }
+    }
+
+    private Vector2 GetTableauMatchPosition(int col, int row, float matchWidth, float matchHeight, float colSpacing, float[] rowSpacing, float marginBot)
+    {
+        // Calculate final match position
+        float xPos = ((col + 1) * colSpacing) + (col * matchWidth);
+
+        //float rowSpacing = (col == 0 || col == numColumns - 1) ? outerColumnRowSpacing : innerColumnRowSpacing;
+        float yPos = (row * matchHeight) + ((row + 1) * rowSpacing[col]);
+        yPos += marginBot;
+
+        return new Vector2(xPos, yPos);
     }
 
     protected void DisplayAsGroupAndTableau(UI_Base baseUI, GameObject container)

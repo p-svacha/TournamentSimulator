@@ -20,8 +20,9 @@ public class Match
 
     // Rules
     public int NumPlayers { get; private set; } // How many players there are in the match
-    public List<int> TargetMatchIndices { get; private set; } // Indices of matches within tournament that players in this match are advancing to
+    public List<int> TargetMatchIndices { get; private set; } // Indices of matches within tournament that participants in this match are advancing to
     public int NumAdvancements => TargetMatchIndices == null ? 0 : TargetMatchIndices.Count;
+    public List<int> TargetMatchSeeds { get; private set; } // List containing the seeds that advancing participants will have in their next match. If empty the seed will be the rank in this match.
     public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks
 
     // State
@@ -48,6 +49,7 @@ public class Match
 
         Participants = new List<MatchParticipant>();
         Rounds = new List<MatchRound>();
+        TargetMatchSeeds = new List<int>();
     }
 
     public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
@@ -65,6 +67,11 @@ public class Match
     public void SetTargetMatches(List<int> targetMatchIndices)
     {
         TargetMatchIndices = targetMatchIndices;
+    }
+
+    public void SetTargetMatchSeeds(List<int> targetMatchSeeds)
+    {
+        TargetMatchSeeds = targetMatchSeeds;
     }
 
     public virtual bool CanStartMatch()
@@ -161,7 +168,9 @@ public class Match
             Player advancingPlayer = PlayerRanking[rank];
             Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
             Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
-            targetMatch.AddPlayerToMatch(advancingPlayer, seed: rank);
+            int targetSeed = rank;
+            if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
+            targetMatch.AddPlayerToMatch(advancingPlayer, targetSeed);
         }
 
         // Check if group is done
@@ -223,10 +232,18 @@ public class Match
         get
         {
             if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else if(Tournament.League != null) return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return PlayerSeeding;
+        }
+    }
+    public virtual List<MatchParticipant> PlayerSeeding
+    {
+        get
+        {
+            if (Tournament.League != null) return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
     }
+
     public List<Player> PlayerRanking => Ranking.Select(x => x.Player).ToList();
     
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
@@ -250,6 +267,7 @@ public class Match
         data.IsDone = IsDone;
         data.NumPlayers = NumPlayers;
         data.TargetMatchIndices = TargetMatchIndices;
+        data.TargetMatchSeeds = TargetMatchSeeds;
         data.PointDistribution = PointDistribution;
         data.Participants = Participants.Select(x => x.ToData()).ToList();
         data.Rounds = Rounds.Select(x => x.ToData()).ToList();
@@ -274,6 +292,7 @@ public class Match
         Day = data.Day;
         NumPlayers = data.NumPlayers;
         TargetMatchIndices = data.TargetMatchIndices;
+        TargetMatchSeeds = data.TargetMatchSeeds;
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
         Participants = data.Participants.Select(x => new MatchParticipant(x)).ToList();

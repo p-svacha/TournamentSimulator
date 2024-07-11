@@ -130,7 +130,10 @@ public class TeamMatch : Match
             Team advancingTeam = TeamRanking[rank].Team;
             TeamMatch targetMatch = (TeamMatch)Tournament.Matches[TargetMatchIndices[rank]];
             Debug.Log(advancingTeam.Name + " is advancing to " + targetMatch.ToString());
-            targetMatch.AddTeamToMatch(advancingTeam, seed: rank);
+
+            int targetSeed = rank;
+            if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
+            targetMatch.AddTeamToMatch(advancingTeam, targetSeed);
         }
 
         // Check if tournament is done
@@ -182,28 +185,16 @@ public class TeamMatch : Match
         get
         {
             if (IsDone || IsRunning) return Participants.OrderByDescending(x => GetParticipant(x.Team).TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ThenByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return Participants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return PlayerSeeding;
         }
     }
+    public override List<MatchParticipant> PlayerSeeding => Participants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
 
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.
     /// </summary>
-    public List<MatchParticipant_Team> TeamRanking
-    {
-        get
-        {
-            if (IsDone)
-            {
-                return TeamParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ToList();
-            }
-
-            else
-            {
-                return TeamParticipants.OrderBy(x => x.Seed).ToList();
-            }
-        }
-    }
+    public List<MatchParticipant_Team> TeamRanking => IsDone ? TeamParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ToList() : TeamSeeding;
+    public List<MatchParticipant_Team> TeamSeeding => TeamParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Team.Elo).ToList();
 
     /// <summary>
     /// Returns the accumulated amount of SCORE a team has gathered throughout the match. Team score is the combined number of POINTS players have made.

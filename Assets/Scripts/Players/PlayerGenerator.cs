@@ -38,21 +38,25 @@ public static class PlayerGenerator
         MaleForenames = new Dictionary<string, List<string>>();
         Surnames = new Dictionary<string, List<string>>();
 
-        List<string> regions = new List<string>();
-        foreach (Country c in countries) regions.Add(c.Name.ToLower().Replace(" ", "-").Replace(",", "").Replace("é","e"));
-
-        int warnBelowNumberOfNames = 50;
+        // Limit that decides when a warning is logged for too few names for a country. Scales with country population. Decrease for more warnings.
+        int minForenames = 16;
+        float nameNumberWarningLimit = 3000000 / minForenames;
+        int absoluteWarningLimit = (int)(3000000 / nameNumberWarningLimit);
 
         string line;
-        foreach (string region in regions)
+        foreach (Country c in countries)
         {
+            string region = c.Name.ToLower().Replace(" ", "-").Replace(",", "").Replace("é", "e");
+
             if (File.Exists(NamePath + "forenames/" + region + "_forenames_male.txt"))
             {
                 // male forenames
                 MaleForenames.Add(region, new List<string>());
                 System.IO.StreamReader mForenamesFile = new System.IO.StreamReader(NamePath + "forenames/" + region + "_forenames_male.txt");
                 while ((line = mForenamesFile.ReadLine()) != null) MaleForenames[region].Add(line);
-                if (MaleForenames[region].Count < warnBelowNumberOfNames) Debug.LogWarning("Only " + MaleForenames[region].Count + " male fornames in dataset for " + region);
+
+                int warningLimit = (int)(Mathf.Max(GetScaledPopulation(c.Population) / nameNumberWarningLimit, absoluteWarningLimit));
+                if (MaleForenames[region].Count < warningLimit) Debug.LogWarning("Only " + MaleForenames[region].Count + " male fornames in dataset for " + region + ". (Warning limit = " + warningLimit + ")");
             }
             else Debug.LogError("No male forenames found for " + region);
 
@@ -62,7 +66,9 @@ public static class PlayerGenerator
                 FemaleForenames.Add(region, new List<string>());
                 System.IO.StreamReader fForenamesFile = new System.IO.StreamReader(NamePath + "forenames/" + region + "_forenames_female.txt");
                 while ((line = fForenamesFile.ReadLine()) != null) FemaleForenames[region].Add(line);
-                if (FemaleForenames[region].Count < warnBelowNumberOfNames) Debug.LogWarning("Only " + FemaleForenames[region].Count + " female fornames in dataset for " + region);
+
+                int warningLimit = (int)(Mathf.Max(GetScaledPopulation(c.Population) / nameNumberWarningLimit, absoluteWarningLimit));
+                if (FemaleForenames[region].Count < warningLimit) Debug.LogWarning("Only " + FemaleForenames[region].Count + " female fornames in dataset for " + region + ". (Warning limit = " + warningLimit + ")");
             }
             else Debug.LogError("No female forenames found for " + region);
 
@@ -72,7 +78,9 @@ public static class PlayerGenerator
                 Surnames.Add(region, new List<string>());
                 System.IO.StreamReader surnamesFile = new System.IO.StreamReader(NamePath + "surnames/" + region + "_surnames.txt");
                 while ((line = surnamesFile.ReadLine()) != null) Surnames[region].Add(line);
-                if (Surnames[region].Count < warnBelowNumberOfNames * 4) Debug.LogWarning("Only " + Surnames[region].Count + " surnames in dataset for " + region);
+
+                int warningLimit = (int)(Mathf.Max(GetScaledPopulation(c.Population) * 2 / nameNumberWarningLimit, absoluteWarningLimit * 3));
+                if (Surnames[region].Count < warningLimit) Debug.LogWarning("Only " + Surnames[region].Count + " surnames in dataset for " + region + ". (Warning limit = " + warningLimit + ")");
             }
             else Debug.LogError("No surnames found for " + region);
         }
@@ -144,7 +152,7 @@ public static class PlayerGenerator
         int sum = 0;
         foreach(Country c in countries)
         {
-            int scaledPopulation = (int)(Mathf.Pow(Mathf.Log10(c.Population), 8));
+            int scaledPopulation = GetScaledPopulation(c.Population);
             sum += scaledPopulation;
         }
         int rng = Random.Range(0, sum);
@@ -155,6 +163,12 @@ public static class PlayerGenerator
             if (rng < tmp) return c;
         }
         throw new System.Exception();
+    }
+
+    // Used so countries with low populations still have some chance to get picked
+    private static int GetScaledPopulation(int population)
+    {
+        return (int)(Mathf.Pow(Mathf.Log10(population), 8));
     }
 
     private static int GetRandomSkillScore()

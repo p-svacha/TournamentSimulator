@@ -177,17 +177,6 @@ public class TeamMatch : Match
         }
     }
 
-    /// <summary>
-    /// Returns an a list of all match participants ordered by match result.
-    /// </summary>
-    public override List<MatchParticipant> Ranking
-    {
-        get
-        {
-            if (IsDone || IsRunning) return Participants.OrderByDescending(x => GetParticipant(x.Team).TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ThenByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return PlayerSeeding;
-        }
-    }
     public override List<MatchParticipant> PlayerSeeding => Participants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
 
     /// <summary>

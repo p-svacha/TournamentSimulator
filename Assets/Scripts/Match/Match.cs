@@ -227,7 +227,7 @@ public class Match
     /// <summary>
     /// Returns an a list of all match participants ordered by match result.
     /// </summary>
-    public virtual List<MatchParticipant> Ranking 
+    public List<MatchParticipant> Ranking 
     {
         get
         {

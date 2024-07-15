@@ -200,7 +200,6 @@ Id;Name;Population;Region;Continent;FIFA-Code
 204;Micronesia;112640;Pacific Islands;Oceania;FSM
 205;Grenada;111454;Caribbean;North America;GRN
 206;Saint Vincent and the Grenadines;110211;Caribbean;North America;VIN
-207;Aruba;105845;Caribbean;North America;ARU
 209;Tonga;103197;Pacific Islands;Oceania;TGA
 211;Antigua and Barbuda;96286;Caribbean;North America;ATG
 212;Seychelles;87476;Horn of Africa;Africa;SEY

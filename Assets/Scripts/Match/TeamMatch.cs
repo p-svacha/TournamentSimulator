@@ -104,12 +104,15 @@ public class TeamMatch : Match
 
     public override void SetDone()
     {
-        // Set match as done
-        if (Rounds.Count == 0) throw new System.Exception("Can't end a match without any rounds.");
-        IsDone = true;
-        IsRunning = false;
+        MarkMatchAsDone();
+        AdjustTeamElos();
+        AdjustPlayerElos();
+        SetTeamAdvancements();
+        TryConcludeParents();
+    }
 
-        // Adjust team elos
+    private void AdjustTeamElos()
+    {
         Dictionary<Team, int> newTeamElos = GetNewTeamEloRatings();
         foreach (KeyValuePair<Team, int> kvp in newTeamElos)
         {
@@ -119,11 +122,10 @@ public class TeamMatch : Match
             GetParticipant(t).SetEloAfterMatch(newElo);
             t.SetElo(newElo);
         }
+    }
 
-        // Adjust player elos
-        AdjustPlayerElos();
-
-        // Set team advancements
+    private void SetTeamAdvancements()
+    {
         for (int i = 0; i < NumAdvancements; i++)
         {
             int rank = i;
@@ -135,10 +137,6 @@ public class TeamMatch : Match
             if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
             targetMatch.AddTeamToMatch(advancingTeam, targetSeed);
         }
-
-        // Check if tournament is done
-        if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
-
     }
 
     private Dictionary<Team, int> GetNewTeamEloRatings()

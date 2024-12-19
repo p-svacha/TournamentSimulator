@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Match
+public abstract class Match
 {
     // General
     public int Id { get; private set; }
@@ -35,7 +35,7 @@ public class Match
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    public Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
+    protected Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
     {
         Id = Database.GetNewMatchId();
         Name = name;
@@ -151,32 +151,21 @@ public class Match
     /// <summary>
     /// Ends the match, calculates the new elo ratings for all players and moves advancing players to the next matches.
     /// </summary>
-    public virtual void SetDone()
+    public abstract void SetDone();
+
+    protected void MarkMatchAsDone()
     {
-        // Set match as done
         if (Rounds.Count == 0) throw new System.Exception("Can't end a match without any rounds.");
         IsDone = true;
         IsRunning = false;
+    }
 
-        // Adjust player elos
-        AdjustPlayerElos();
-
-        // Set player advancements
-        for (int i = 0; i < NumAdvancements; i++)
-        {
-            int rank = i;
-            Player advancingPlayer = PlayerRanking[rank];
-            Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
-            Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
-            int targetSeed = rank;
-            if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
-            targetMatch.AddPlayerToMatch(advancingPlayer, targetSeed);
-        }
-
-        // Check if group is done
-        if (Group != null && Group.IsDone) Group.SetDone();
-
-        // Check if tournament is done
+    /// <summary>
+    /// Checks if the group or torunament of this match is done if so concludes them.
+    /// </summary>
+    protected void TryConcludeParents()
+    {
+        if (Group != null && Group.IsDone) Group.Conclude();
         if (Tournament.Matches.All(x => x.IsDone)) Tournament.SetDone();
     }
 
@@ -277,7 +266,7 @@ public class Match
     public static Match LoadMatch(MatchData data)
     {
         MatchType type = (MatchType)data.Type;
-        if (type == MatchType.FreeForAll) return new Match(data);
+        if (type == MatchType.FreeForAll) return new FreeForAllMatch(data);
         if (type == MatchType.TeamMatch_1v1) return new TeamMatch(data);
         throw new System.Exception("Format not handled");
     }

@@ -47,7 +47,7 @@ public class Format_SeasonCup : Tournament
         unassignedPlayers.AddRange(Players);
         for (int i = 0; i < 32; i++)
         {
-            Match ro64Match = new Match("RO64 - Match " + (i + 1), this, RO64_QUARTER, RO64_DAY, numPlayers: 2, PointDistribution);
+            Match ro64Match = new FreeForAllMatch("RO64 - Match " + (i + 1), this, RO64_QUARTER, RO64_DAY, numPlayers: 2, PointDistribution);
 
             // Add initial players
             for (int j = 0; j < 2; j++)
@@ -67,7 +67,7 @@ public class Format_SeasonCup : Tournament
         // RO32
         for (int i = 0; i < 16; i++)
         {
-            Match ro32Match = new Match("RO32 - Match " + (i + 1), this, RO32_QUARTER, RO32_DAY, numPlayers: 2, PointDistribution);
+            Match ro32Match = new FreeForAllMatch("RO32 - Match " + (i + 1), this, RO32_QUARTER, RO32_DAY, numPlayers: 2, PointDistribution);
 
             // Advancement matches
             ro32Match.SetTargetMatches(new List<int>() { 48 + (i / 2) });
@@ -79,7 +79,7 @@ public class Format_SeasonCup : Tournament
         // RO16
         for (int i = 0; i < 8; i++)
         {
-            Match ro16Match = new Match("RO16 - Match " + (i + 1), this, RO16_QUARTER, RO16_DAY, numPlayers: 2, PointDistribution);
+            Match ro16Match = new FreeForAllMatch("RO16 - Match " + (i + 1), this, RO16_QUARTER, RO16_DAY, numPlayers: 2, PointDistribution);
 
             // Advancement matches
             ro16Match.SetTargetMatches(new List<int>() { 56 + (i / 2) });
@@ -91,7 +91,7 @@ public class Format_SeasonCup : Tournament
         // Quarterfinals
         for (int i = 0; i < 4; i++)
         {
-            Match quarterfinal = new Match("Quarterfinal " + (i + 1), this, QUARTERS_QUARTER, QUARTERS_DAY, numPlayers: 2, PointDistribution);
+            Match quarterfinal = new FreeForAllMatch("Quarterfinal " + (i + 1), this, QUARTERS_QUARTER, QUARTERS_DAY, numPlayers: 2, PointDistribution);
 
             // Advancement matches
             quarterfinal.SetTargetMatches(new List<int>() { 60 + (i / 2) });
@@ -103,7 +103,7 @@ public class Format_SeasonCup : Tournament
         // Semifinals
         for (int i = 0; i < 2; i++)
         {
-            Match semifinal = new Match("Semifinal " + (i + 1), this, SEMIS_QUARTER, SEMIS_DAY, numPlayers: 2, PointDistribution);
+            Match semifinal = new FreeForAllMatch("Semifinal " + (i + 1), this, SEMIS_QUARTER, SEMIS_DAY, numPlayers: 2, PointDistribution);
 
             // Advancement matches
             semifinal.SetTargetMatches(new List<int>() { 63, 62 });
@@ -113,10 +113,10 @@ public class Format_SeasonCup : Tournament
         }
 
         // Match for place 3
-        Matches.Add(new Match("Match for place 3", this, FINALS_QUARTER, FINALS_DAY, numPlayers: 2, PointDistribution));
+        Matches.Add(new FreeForAllMatch("Match for place 3", this, FINALS_QUARTER, FINALS_DAY, numPlayers: 2, PointDistribution));
 
         // Final
-        Matches.Add(new Match("Final", this, FINALS_QUARTER, FINALS_DAY, numPlayers: 2, PointDistribution));
+        Matches.Add(new FreeForAllMatch("Final", this, FINALS_QUARTER, FINALS_DAY, numPlayers: 2, PointDistribution));
     }
 
     public override void DisplayTournament(UI_Base baseUI, GameObject Container)

@@ -19,7 +19,7 @@ public class UI_TGroupParticipant : MonoBehaviour
     {
         if(p.Team != null)
         {
-            if (p.Group.IsDone && p.Rank < p.Group.NumAdvancements) RankBackground.color = new Color(RankBackground.color.r, RankBackground.color.g, RankBackground.color.b, 1f);
+            if (p.Group.IsDone && p.Rank <= p.Group.NumAdvancements) RankBackground.color = new Color(RankBackground.color.r, RankBackground.color.g, RankBackground.color.b, 1f);
             RankText.text = p.Rank.ToString() + ".";
             Flag.sprite = p.Team.FlagSmall;
             NameText.text = p.Team.Name;

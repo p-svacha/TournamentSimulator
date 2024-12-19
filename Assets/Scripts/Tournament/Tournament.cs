@@ -375,7 +375,6 @@ public abstract class Tournament
 
         // KO-Tableau
         float tableauStartY = 500;
-        Debug.Log(Matches.Count);
         DisplayAsFixedTableau(baseUI, container, Matches.Skip(24).ToList(), numPlayersPerMatch: 2, tableauStartY);
     }
 

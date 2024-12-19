@@ -284,7 +284,7 @@ public class TournamentSimulator : MonoBehaviour
 
     private void StartTestMatch()
     {
-        Match testMatch = new Match("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numPlayers: 3, new List<int>() { 5, 3, 1 });
+        Match testMatch = new FreeForAllMatch("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numPlayers: 3, new List<int>() { 5, 3, 1 });
         testMatch.AddPlayerToMatch(Database.Players[0], 0);
         testMatch.AddPlayerToMatch(Database.Players[1], 0);
         testMatch.AddPlayerToMatch(Database.Players[2], 0);

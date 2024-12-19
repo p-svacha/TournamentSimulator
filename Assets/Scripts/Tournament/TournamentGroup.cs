@@ -98,7 +98,7 @@ public class TournamentGroup
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
 
-        Match match = new Match("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, numPlayers: 2, PointDistribution, group: this);
+        Match match = new FreeForAllMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, numPlayers: 2, PointDistribution, group: this);
         match.AddPlayerToMatch(p1);
         match.AddPlayerToMatch(p2);
 
@@ -138,17 +138,22 @@ public class TournamentGroup
         else throw new System.Exception("Group leaderboard not yet implemented for individual players, should basically be the same as team.");
     }
 
-    public void SetDone()
+    /// <summary>
+    /// Gets executed once all matches in a group are done. Advancing teams will be added to the next matches.
+    /// </summary>
+    public void Conclude()
     {
         // Advancements
         if (Tournament.IsTeamTournament)
         {
+            Debug.Log($"Concluding tournament group with {NumAdvancements} advancements.");
             for (int i = 0; i < NumAdvancements; i++)
             {
                 int rank = i;
                 Team advancingTeam = GetGroupLeaderboard()[rank].Team;
                 TeamMatch targetMatch = (TeamMatch)Tournament.Matches[TargetMatchIndices[rank]];
-                Debug.Log(advancingTeam.Name + " is advancing to " + targetMatch.ToString());
+                int seed = rank;
+                Debug.Log($"{advancingTeam.Name} is advancing to {targetMatch} as seed {seed}.");
                 targetMatch.AddTeamToMatch(advancingTeam, seed: rank);
             }
         }

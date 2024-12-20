@@ -45,21 +45,26 @@ public class TournamentSimulator : MonoBehaviour
         AddMissingCountryTeams();
         // FlagImageScraper.DownloadAllFlagImages();
 
-        /* Test Relative <-> Absolute Dates
-        int absoluteDay = Database.CurrentDayAbsolute;
-        Debug.Log("absDay: " + absoluteDay);
-        int season = Database.ToRelativeSeason(absoluteDay);
-        int qu = Database.ToRelativeQuarter(absoluteDay);
-        int da = Database.ToRelativeDay(absoluteDay);
-        Debug.Log(season + "|" + qu + "|" + da);
-        */
-
         UI = GetComponent<UI_Base>();
         UI.Init(this);
         UpdateUI();
 
         //StartTestMatch();
         //StartTestTeamMatch();
+
+        int n = 16;
+        for(int i = 0; i < n; i++)
+        {
+            Debug.Log($"first match id for seed {i} = {SingleElimination.GetFirstMatchId(i, n)}");
+        }
+
+        int numQualified = 4;
+        int groupSize = 4;
+        int numPlayers = numQualified * groupSize;
+        for (int seed = 0; seed < numPlayers; seed++)
+        {
+            Debug.Log($"Seed {seed} is assigned to group {SingleElimination.GetGroupForSeed(seed, numPlayers, numQualified)} with group seed {SingleElimination.GetSeedWithinGroup(seed, numPlayers, numQualified)}.");
+        }
     }
 
     private void AddMissingCountryTeams()

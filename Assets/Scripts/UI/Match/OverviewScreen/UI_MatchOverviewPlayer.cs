@@ -26,14 +26,14 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
         if (m.IsDone)
         {
-            ScoreText.text = p.TotalPoints.ToString();
+            ScoreText.text = p.MatchScore.ToString();
 
-            if (m.Rounds.Count > 1)
+            if (m.Games[0].Rounds.Count > 1)
             {
                 foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
                 {
-                    MatchRound round = m.Rounds.First(x => x.Skill == skillDef);
-                    PlayerMatchRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
+                    GameRound round = m.Games[0].Rounds.First(x => x.Skill == skillDef);
+                    PlayerGameRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
 
                     int score = pRound.Score;
 

@@ -85,7 +85,7 @@ public class TournamentGroup
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
         
-        TeamMatch match = new TeamMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, numTeams: 2, Tournament.NumPlayersPerTeam, PointDistribution, Tournament.GetBasicPointDistribution(Tournament.NumPlayersPerTeam * 2), group: this);
+        TeamMatch match = new TeamMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, numTeams: 2, Tournament.NumPlayersPerTeam, PointDistribution, Tournament.GetBasicPointDistribution(Tournament.NumPlayersPerTeam * 2), group: this);
         match.AddTeamToMatch(team1);
         match.AddTeamToMatch(team2);
 
@@ -98,7 +98,7 @@ public class TournamentGroup
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
 
-        Match match = new FreeForAllMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, numPlayers: 2, PointDistribution, group: this);
+        Match match = new SoloMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution, group: this);
         match.AddPlayerToMatch(p1);
         match.AddPlayerToMatch(p2);
 
@@ -122,11 +122,11 @@ public class TournamentGroup
                     MatchParticipant_Team opponentPart = m.GetOpponent(team);
 
                     leaderboard[team].NumMatches++;
-                    leaderboard[team].TotalMatchPointsGained += teamPart.TotalPoints;
-                    leaderboard[team].TotalMatchPointsLost += opponentPart.TotalPoints;
+                    leaderboard[team].TotalMatchPointsGained += teamPart.MatchScore;
+                    leaderboard[team].TotalMatchPointsLost += opponentPart.MatchScore;
 
-                    if (teamPart.TotalPoints > opponentPart.TotalPoints) leaderboard[team].GroupPoints += PointsForWin;
-                    else if(teamPart.TotalPoints == opponentPart.TotalPoints) leaderboard[team].GroupPoints += PointsForDraw;
+                    if (teamPart.MatchScore > opponentPart.MatchScore) leaderboard[team].GroupPoints += PointsForWin;
+                    else if(teamPart.MatchScore == opponentPart.MatchScore) leaderboard[team].GroupPoints += PointsForDraw;
                     else leaderboard[team].GroupPoints += PointsForLoss;
                 }
             }

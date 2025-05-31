@@ -22,19 +22,19 @@ public class UI_MatchOverviewHeader : MonoBehaviour
         SimulateButton.onClick.RemoveAllListeners();
         SimulateFastButton.onClick.RemoveAllListeners();
 
-        // Header
+        // Headers
         TitleText.text = match.Name;
         TournamentText.text = match.Tournament.Name;
         DateText.text = match.DateString;
 
         BackButton.onClick.AddListener(() => baseUI.DisplayTournament(match.Tournament));
 
-        if (match.CanStartMatch())
+        if (match.CanStartNextGame())
         {
             SimulateButton.gameObject.SetActive(true);
-            SimulateButton.onClick.AddListener(() => baseUI.StartMatchSimulation(match, stepTime: 1.5f));
+            SimulateButton.onClick.AddListener(() => match.SimulateNextGame(stepTime: 1.5f));
             SimulateFastButton.gameObject.SetActive(true);
-            SimulateFastButton.onClick.AddListener(() => baseUI.StartMatchSimulation(match, stepTime: 0.01f));
+            SimulateFastButton.onClick.AddListener(() => match.SimulateNextGame(stepTime: 0.1f));
         }
         else
         {

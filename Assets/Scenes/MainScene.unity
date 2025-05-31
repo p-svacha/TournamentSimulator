@@ -6165,8 +6165,8 @@ MonoBehaviour:
   Header: {fileID: 161680037}
   DashboardScreen: {fileID: 1097094717}
   TournamentScreen: {fileID: 406630017}
-  MatchSimulationScreen_FreeForAll: {fileID: 1438259080}
-  MatchSimulationScreen_1v1TeamMatch: {fileID: 1031686847}
+  GameSimulationScreen_SoloFreeForAll: {fileID: 1438259080}
+  GameSimulationScreen_Team1v1: {fileID: 1031686847}
   MatchOverviewScreen: {fileID: 1863617639}
   Team1v1MatchOverviewScreen: {fileID: 1549593116}
   Popup: {fileID: 1797829886}
@@ -8644,7 +8644,7 @@ GameObject:
   - component: {fileID: 1031686848}
   - component: {fileID: 1031686847}
   m_Layer: 5
-  m_Name: 1v1TeamMatchSimulation
+  m_Name: 1v1TeamGameSimulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12263,7 +12263,7 @@ GameObject:
   - component: {fileID: 1438259078}
   - component: {fileID: 1438259080}
   m_Layer: 5
-  m_Name: MatchSimulation
+  m_Name: SoloGameSimulation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

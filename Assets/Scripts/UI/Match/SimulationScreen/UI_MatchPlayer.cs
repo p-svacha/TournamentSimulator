@@ -45,7 +45,7 @@ public class UI_MatchPlayer : MonoBehaviour
         if (IsTeamMatch) PointsText.text = "";
     }
 
-    public void DisplayResult(PlayerMatchRound round)
+    public void DisplayResult(PlayerGameRound round)
     {
         ScoreText.text = round.Score.ToString();
         ScoreText.color = round.Modifiers.Contains(Player.MISTAKE_MODIFIER) ? Color.red : Color.white;

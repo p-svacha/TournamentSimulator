@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// A team vs team vs team ... vs team match.
+/// </summary>
 public class TeamMatch : Match
 {
+    public new List<TeamGame> Games => base.Games.Select(g => (TeamGame)g).ToList();
+
     public int NumTeams { get; private set; }
     public int NumPlayersPerTeam { get; private set; }
     public List<int> TeamPointDistribution { get; private set; } // How the round points are distributed among the teams based on team rank
@@ -18,10 +23,10 @@ public class TeamMatch : Match
     #region Before match
 
     // Create a new match with all attributes that are known from the start
-    public TeamMatch(string name, Tournament tournament, int quarter, int day, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null)
-        : base(name, tournament, quarter, day, numTeams * numPlayersPerTeam, playerPointDistribution, group)
+    public TeamMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null)
+        : base(name, tournament, quarter, day, format, numTeams * numPlayersPerTeam, playerPointDistribution, group)
     {
-        Type = MatchType.TeamMatch_1v1;
+        IsTeamMatch = true;
         NumTeams = numTeams;
         NumPlayersPerTeam = numPlayersPerTeam;
         TeamPointDistribution = teamPointDistribution;
@@ -46,12 +51,17 @@ public class TeamMatch : Match
         return true;
     }
 
-    public override void StartMatch()
+    protected override void StartMatch()
     {
         foreach (MatchParticipant_Team teamParticipant in TeamParticipants)
             teamParticipant.SetPreMatchStats();
 
         base.StartMatch();
+    }
+
+    protected override Game CreateGame(int index)
+    {
+        return new TeamGame(this, index);
     }
 
     public override void OnDayStart()
@@ -74,36 +84,9 @@ public class TeamMatch : Match
 
     #endregion
 
-    #region During match
-
-    public override void ApplyMatchRound(MatchRound round)
-    {
-        base.ApplyMatchRound(round);
-
-        // Add to team points
-        Dictionary<Team, int> teamScores = round.GetTeamScores();
-        List<Team> teamRanking = teamScores.Keys.Reverse().ToList();
-
-        int lastScore = -1;
-        int lastPoints = -1;
-        for (int rank = 0; rank < teamScores.Count; rank++)
-        {
-            Team team = teamRanking[rank];
-            int score = teamScores[team];
-            int pointsGained = TeamPointDistribution[TeamPointDistribution.Count - rank - 1];
-            if (score == 0) pointsGained = 0;
-            else if (score == lastScore) pointsGained = lastPoints;
-            GetParticipant(team).IncreaseTotalPoints(pointsGained);
-            lastScore = score;
-            lastPoints = pointsGained;
-        }
-    }
-
-    #endregion
-
     #region After match
 
-    public override void SetDone()
+    protected override void SetDone()
     {
         MarkMatchAsDone();
         AdjustTeamElos();
@@ -151,7 +134,7 @@ public class TeamMatch : Match
         {
             for (int j = i + 1; j < teamRanking.Count; j++)
             {
-                bool isDraw = (teamRanking[i].TotalPoints == teamRanking[j].TotalPoints);
+                bool isDraw = (teamRanking[i].MatchScore == teamRanking[j].MatchScore);
                 AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team, isDraw);
             }
         }
@@ -181,13 +164,8 @@ public class TeamMatch : Match
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.
     /// </summary>
-    public List<MatchParticipant_Team> TeamRanking => IsDone ? TeamParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => GetTotalTeamScore(x.Team)).ToList() : TeamSeeding;
+    public List<MatchParticipant_Team> TeamRanking => IsDone ? TeamParticipants.OrderByDescending(x => x.MatchScore).ToList() : TeamSeeding;
     public List<MatchParticipant_Team> TeamSeeding => TeamParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Team.Elo).ToList();
-
-    /// <summary>
-    /// Returns the accumulated amount of SCORE a team has gathered throughout the match. Team score is the combined number of POINTS players have made.
-    /// </summary>
-    public int GetTotalTeamScore(Team team) => Rounds.Sum(x => x.GetTeamScores()[team]);
 
     /// <summary>
     /// Returns the opponent team in a 1v1 match.

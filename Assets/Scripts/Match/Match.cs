@@ -8,7 +8,7 @@ public abstract class Match
     // General
     public int Id { get; private set; }
     public string Name { get; private set; }
-    public MatchType Type { get; protected set; }
+    public MatchFormatDef Format { get; protected set; }
     public Tournament Tournament { get; private set; }
     public TournamentGroup Group { get; private set; }
     public int Quarter { get; private set; }
@@ -16,6 +16,7 @@ public abstract class Match
     public int AbsoluteDay => Database.ToAbsoluteDay(Tournament.Season, Quarter, Day);
     public int Season => Tournament.Season;
     public string DateString => Database.GetDateString(Season, Quarter, Day);
+    public bool IsTeamMatch { get; protected set; }
 
 
     // Rules
@@ -23,32 +24,33 @@ public abstract class Match
     public List<int> TargetMatchIndices { get; private set; } // Indices of matches within tournament that participants in this match are advancing to
     public int NumAdvancements => TargetMatchIndices == null ? 0 : TargetMatchIndices.Count;
     public List<int> TargetMatchSeeds { get; private set; } // List containing the seeds that advancing participants will have in their next match. If empty the seed will be the rank in this match.
-    public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks
+    public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks. Usually {1,0} in 2 player matches, or something like {10,6,4,3} else.
 
     // State
+    public List<Game> Games { get; protected set; }
     public bool IsDone { get; protected set; }
     public bool IsRunning { get; protected set; }
     public List<MatchParticipant_Player> PlayerParticipants { get; private set; }
     public MatchParticipant_Player GetParticipant(Player p) => PlayerParticipants.First(x => x.Player == p);
-    public List<MatchRound> Rounds { get; private set; }
+    
 
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    protected Match(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
+    protected Match(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
     {
         Id = Database.GetNewMatchId();
         Name = name;
-        Type = MatchType.FreeForAll;
         Tournament = tournament;
         Quarter = quarter;
         Day = day;
+        Format = format;
         NumPlayers = numPlayers;
         PointDistribution = pointDistribution;
         Group = group;
 
         PlayerParticipants = new List<MatchParticipant_Player>();
-        Rounds = new List<MatchRound>();
+        Games = new List<Game>();
         TargetMatchSeeds = new List<int>();
     }
 
@@ -60,6 +62,40 @@ public abstract class Match
 
         PlayerParticipants.Add(new MatchParticipant_Player(p, seed, team));
     }
+
+    public bool CanStartNextGame()
+    {
+        if (IsDone) return false;
+        if (!IsRunning && !CanStartMatch()) return false;
+        if (!Games.Last().IsDone) return false;
+        if (Games.Last().IsRunning) return false;
+        return true;
+    }
+
+    /// <summary>
+    /// Creates the next game for this match
+    /// </summary>
+    private Game CreateNextGame()
+    {
+        int numExistingGames = Games.Count;
+
+        Game nextGame = CreateGame(numExistingGames);
+        Games.Add(nextGame);
+        return nextGame;
+    }
+
+    /// <summary>
+    /// Creates the next game for this match and instantly starts the simulation.
+    /// </summary>
+    public void SimulateNextGame(float stepTime)
+    {
+        if (!CanStartNextGame()) throw new System.Exception("Can't start next game.");
+        if (!IsRunning) StartMatch();
+        Game nextGame = CreateNextGame();
+        UI_Base.Instance.StartGameSimulation(nextGame, stepTime);
+    }
+
+    protected abstract Game CreateGame(int index);
 
     /// <summary>
     /// Sets the matches the top x players in this match advance to, with x being the length of the list and the integers in the list corresponding to the match index within the tournament.
@@ -85,7 +121,7 @@ public abstract class Match
 
     public bool IsToday => Database.Season == Season && Database.Quarter == Quarter && Database.Day == Day;
 
-    public virtual void StartMatch()
+    protected virtual void StartMatch()
     {
         if (!CanStartMatch()) throw new System.Exception("Can't start a match that doesn't fulfill all starting requirements.");
 
@@ -103,59 +139,45 @@ public abstract class Match
     #region During Match
 
     /// <summary>
-    /// Executes all the logic behind a round in the match for a certain skill and returns the complete results.
+    /// Gets called when a game in this match is done simulating.
     /// </summary>
-    public MatchRound CalculateRoundResult(SkillDef skill)
+    public void OnGameDone(Game game)
     {
-        // Calculate skill score for each participant
-        Dictionary<Player, PlayerMatchRound> roundResults = new Dictionary<Player, PlayerMatchRound>();
+        // Validate
+        if (!Games.Contains(game)) throw new System.Exception("Can't conclude a game that is not part of this match.");
+        if (IsDone) throw new System.Exception("Can't conclude a game on a match that is already done.");
+        if (!IsRunning) throw new System.Exception("Can't conclude a game on a match that is not running.");
+        if (!game.IsDone) throw new System.Exception("Can't conclude a game that is not done.");
+        if (game.IsRunning) throw new System.Exception("Can't conclude a game that is still running.");
 
-        foreach (MatchParticipant_Player p in PlayerParticipants)
+        // Check if match is over (based on format)
+        if(IsMatchOver())
         {
-            PlayerMatchRound playerResult = p.Player.GetMatchRoundResult(skill);
-            roundResults.Add(p.Player, playerResult);
+            SetDone();
         }
 
-        // Save all values for the round
-        List<Player> attributeRanking = roundResults.OrderBy(x => x.Value.Score).Select(x => x.Key).ToList();
-        int lastScore = -1;
-        int lastPoints = -1;
-        for (int rank = 0; rank < attributeRanking.Count; rank++)
-        {
-            Player player = attributeRanking[rank];
-            int score = roundResults[player].Score;
-            int points = PointDistribution[PointDistribution.Count - rank - 1];
-            if (score == 0) points = 0;
-            else if (score == lastScore) points = lastPoints;
-            roundResults[player].SetPointsGained(points);
-            lastScore = score;
-            lastPoints = points;
-        }
-
-        return new MatchRound(this, skill, roundResults.Values.ToList());
+        // Save game to database and save game state
+        Database.Games.Add(Id, game);
+        TournamentSimulator.Instance.Save();
     }
 
-    /// <summary>
-    /// Adds a match round to the match, saving it as a part of it and increasing the participants total scores according to it.
-    /// </summary>
-    public virtual void ApplyMatchRound(MatchRound round)
+    private bool IsMatchOver()
     {
-        // Distribute Points
-        foreach (MatchParticipant_Player participant in PlayerParticipants)
-            participant.IncreaseTotalPoints(round.GetPlayerResult(participant.Player).PointsGained);
-
-        // Save
-        Rounds.Add(round);
+        if (Format == MatchFormatDefOf.SingleGame)
+        {
+            return true;
+        }
+        throw new System.Exception($"IsMatchOver() not handled for format {Format.DefName}");
     }
 
     /// <summary>
     /// Ends the match, calculates the new elo ratings for all players and moves advancing players to the next matches.
     /// </summary>
-    public abstract void SetDone();
+    protected abstract void SetDone();
 
     protected void MarkMatchAsDone()
     {
-        if (Rounds.Count == 0) throw new System.Exception("Can't end a match without any rounds.");
+        if (Games.Count == 0) throw new System.Exception("Can't end a match without any games.");
         IsDone = true;
         IsRunning = false;
     }
@@ -220,7 +242,7 @@ public abstract class Match
     {
         get
         {
-            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.MatchScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return PlayerSeeding;
         }
     }
@@ -244,7 +266,11 @@ public abstract class Match
 
     #endregion
 
+    #region Getters
+
     public Team GetTeamOf(Player p) => GetParticipant(p).Team;
+
+    #endregion
 
     #region Save / Load
 
@@ -253,44 +279,43 @@ public abstract class Match
         MatchData data = new MatchData();
         data.Id = Id;
         data.Name = Name;
-        data.Type = (int)Type;
+        data.IsTeamMatch = IsTeamMatch;
         data.TournamentId = Tournament.Id;
         data.GroupIndex = Group == null ? -1 : Tournament.Groups.IndexOf(Group);
         data.Quarter = Quarter;
         data.Day = Day;
+        data.Format = Format.DefName;
         data.IsDone = IsDone;
         data.NumPlayers = NumPlayers;
         data.TargetMatchIndices = TargetMatchIndices;
         data.TargetMatchSeeds = TargetMatchSeeds;
         data.PointDistribution = PointDistribution;
         data.Participants = PlayerParticipants.Select(x => x.ToData()).ToList();
-        data.Rounds = Rounds.Select(x => x.ToData()).ToList();
         return data;
     }
 
     public static Match LoadMatch(MatchData data)
     {
-        MatchType type = (MatchType)data.Type;
-        if (type == MatchType.FreeForAll) return new FreeForAllMatch(data);
-        if (type == MatchType.TeamMatch_1v1) return new TeamMatch(data);
-        throw new System.Exception("Format not handled");
+        if (data.IsTeamMatch) return new TeamMatch(data);
+        else return new SoloMatch(data);
     }
     protected Match(MatchData data)
     {
         Id = data.Id;
         Name = data.Name;
-        Type = (MatchType)data.Type;
+        IsTeamMatch = data.IsTeamMatch;
         Tournament = Database.Tournaments[data.TournamentId];
         Group = data.GroupIndex == -1 ? null : Tournament.Groups[data.GroupIndex];
         Quarter = data.Quarter;
         Day = data.Day;
+        Format = DefDatabase<MatchFormatDef>.GetNamed(data.Format);
         NumPlayers = data.NumPlayers;
         TargetMatchIndices = data.TargetMatchIndices;
         TargetMatchSeeds = data.TargetMatchSeeds;
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
         PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(x)).ToList();
-        Rounds = data.Rounds.Select(x => new MatchRound(this, x)).ToList();
+        Games = new List<Game>();
 
         // Parent ref
         Tournament.Matches.Add(this);

@@ -14,4 +14,5 @@ public class SimulationData
     public List<LeagueData> Leagues { get; set; }
     public List<TournamentData> Tournaments { get; set; }
     public List<MatchData> Matches { get; set; }
+    public List<GameData> Games { get; set; }
 }

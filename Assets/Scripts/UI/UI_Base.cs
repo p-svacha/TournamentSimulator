@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class UI_Base : MonoBehaviour
 {
+    public static UI_Base Instance;
+
     [HideInInspector]
     public TournamentSimulator Simulator;
 
@@ -12,8 +14,8 @@ public class UI_Base : MonoBehaviour
     [Header("Screens")]
     public UI_Dashboard DashboardScreen;
     public UI_Tournament TournamentScreen;
-    public UI_MatchSimulationScreen MatchSimulationScreen_FreeForAll;
-    public UI_1v1TeamMatchSimulationScreen MatchSimulationScreen_1v1TeamMatch;
+    public UI_SoloFfaGameSimulationScreen GameSimulationScreen_SoloFreeForAll;
+    public UI_1v1TeamGameSimulationScreen GameSimulationScreen_Team1v1;
 
     public UI_MatchOverviewScreen MatchOverviewScreen;
     public UI_1v1TeamMatchOverviewScreen Team1v1MatchOverviewScreen;
@@ -22,6 +24,11 @@ public class UI_Base : MonoBehaviour
 
     [Header("Popup")]
     public UI_Popup Popup;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     public void Init(TournamentSimulator sim)
@@ -32,8 +39,8 @@ public class UI_Base : MonoBehaviour
         Header.Init(this);
         DashboardScreen.Init(this);
         TournamentScreen.Init(this);
-        MatchSimulationScreen_FreeForAll.Init(this);
-        MatchSimulationScreen_1v1TeamMatch.Init(this);
+        GameSimulationScreen_SoloFreeForAll.Init(this);
+        GameSimulationScreen_Team1v1.Init(this);
         MatchOverviewScreen.Init(this);
         Team1v1MatchOverviewScreen.Init(this);
 
@@ -61,29 +68,29 @@ public class UI_Base : MonoBehaviour
 
     public void DisplayMatchOverviewScreen(Match match)
     {
-        if (match.Type == MatchType.FreeForAll)
-        {
-            DisplayScreen(MatchOverviewScreen);
-            MatchOverviewScreen.DisplayMatch(match);
-        }
-        else if (match.Type == MatchType.TeamMatch_1v1)
+        if (match.IsTeamMatch)
         {
             DisplayScreen(Team1v1MatchOverviewScreen);
             Team1v1MatchOverviewScreen.DisplayMatch((TeamMatch)match);
         }
+        else
+        {
+            DisplayScreen(MatchOverviewScreen);
+            MatchOverviewScreen.DisplayMatch(match);
+        }
     }
 
-    public void StartMatchSimulation(Match match, float stepTime)
+    public void StartGameSimulation(Game game, float stepTime)
     {
-        if (match.Type == MatchType.FreeForAll)
+        if (game.IsTeamGame)
         {
-            DisplayScreen(MatchSimulationScreen_FreeForAll);
-            MatchSimulationScreen_FreeForAll.DisplayAndSimulateMatch(match, stepTime);
+            DisplayScreen(GameSimulationScreen_Team1v1);
+            GameSimulationScreen_Team1v1.DisplayAndSimulateMatch((TeamGame)game, stepTime);
         }
-        else if(match.Type == MatchType.TeamMatch_1v1)
+        else
         {
-            DisplayScreen(MatchSimulationScreen_1v1TeamMatch);
-            MatchSimulationScreen_1v1TeamMatch.DisplayAndSimulateMatch((TeamMatch)match, stepTime);
+            DisplayScreen(GameSimulationScreen_SoloFreeForAll);
+            GameSimulationScreen_SoloFreeForAll.DisplayAndSimulateMatch((SoloGame)game, stepTime);
         }
     }
 

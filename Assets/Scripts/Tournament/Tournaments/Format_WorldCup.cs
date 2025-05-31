@@ -89,7 +89,7 @@ public class Format_WorldCup : Tournament
         int quartersDay = Database.ToRelativeDay(quartersStartDayAbsolute);
         for (int i = 0; i < 4; i++)
         {
-            TeamMatch quarterfinal = new TeamMatch("Quarterfinal " + (i + 1), this, quartersQuarter, quartersDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
+            TeamMatch quarterfinal = new TeamMatch("Quarterfinal " + (i + 1), this, quartersQuarter, quartersDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
             quarterfinal.SetTargetMatches(new List<int>() { 28 + (i / 2) });
             quarterfinal.SetTargetMatchSeeds(new List<int>() { i % 2 });
             Matches.Add(quarterfinal);
@@ -101,7 +101,7 @@ public class Format_WorldCup : Tournament
         int semisDay = Database.ToRelativeDay(semisStartDayAbsolute);
         for (int i = 0; i < 2; i++)
         {
-            TeamMatch semifinal = new TeamMatch("Semifinal " + (i + 1), this, semisQuarter, semisDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
+            TeamMatch semifinal = new TeamMatch("Semifinal " + (i + 1), this, semisQuarter, semisDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
             semifinal.SetTargetMatches(new List<int>() { 31, 30 });
             semifinal.SetTargetMatchSeeds(new List<int>() { i % 2, i % 2 });
             Matches.Add(semifinal);
@@ -113,10 +113,10 @@ public class Format_WorldCup : Tournament
         int finalsDay = Database.ToRelativeDay(finalsDayAbsolute);
 
         // Match for place 3
-        Matches.Add(new TeamMatch("Match for place 3", this, finalsQuarter, finalsDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
+        Matches.Add(new TeamMatch("Match for place 3", this, finalsQuarter, finalsDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
 
         // Final
-        Matches.Add(new TeamMatch("Final", this, finalsQuarter, finalsDay, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
+        Matches.Add(new TeamMatch("Final", this, finalsQuarter, finalsDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
     }
 
     public override void DisplayTournament(UI_Base baseUI, GameObject Container)

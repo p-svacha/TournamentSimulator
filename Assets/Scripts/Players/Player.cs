@@ -52,7 +52,7 @@ public class Player : IPlayer
     /// <summary>
     /// Returns a match round result value for a specific skill, given the match state.
     /// </summary>
-    public PlayerMatchRound GetMatchRoundResult(SkillDef skillDef)
+    public PlayerGameRound GetMatchRoundResult(SkillDef skillDef)
     {
         List<string> modifiers = new List<string>();
 
@@ -68,7 +68,7 @@ public class Player : IPlayer
             score = Mathf.RoundToInt(HelperFunctions.RandomGaussian(minValue: Skills[skillDef] - Inconsistency, maxValue: Skills[skillDef] + Inconsistency));
             if (score < 0) score = 0;
         }
-        return new PlayerMatchRound(this, score, modifiers);
+        return new PlayerGameRound(this, score, modifiers);
     }
     
     /// <summary>

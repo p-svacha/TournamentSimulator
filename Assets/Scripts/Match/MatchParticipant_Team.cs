@@ -6,20 +6,15 @@ public class MatchParticipant_Team
 {
     public Team Team { get; private set; }
     public int Seed { get; private set; }
-    public int TotalPoints { get; private set; }
+    public int MatchScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
-    public List<string> Modifiers { get; private set; }
+    //public List<string> Modifiers { get; private set; }
 
     public MatchParticipant_Team(Team team, int seed)
     {
         Team = team;
         Seed = seed;
-    }
-
-    public void IncreaseTotalPoints(int points)
-    {
-        TotalPoints += points;
     }
 
     public void SetPreMatchStats()
@@ -38,10 +33,9 @@ public class MatchParticipant_Team
         TeamMatchParticipantData data = new TeamMatchParticipantData();
         data.TeamId = Team.Id;
         data.Seed = Seed;
-        data.TotalScore = TotalPoints;
+        data.MatchScore = MatchScore;
         data.EloBeforeMatch = EloBeforeMatch;
         data.EloAfterMatch = EloAfterMatch;
-        data.Modifiers = Modifiers;
         return data;
     }
 
@@ -49,10 +43,9 @@ public class MatchParticipant_Team
     {
         Team = Database.Teams[data.TeamId];
         Seed = data.Seed;
-        TotalPoints = data.TotalScore;
+        MatchScore = data.MatchScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;
-        Modifiers = data.Modifiers;
     }
 
     #endregion

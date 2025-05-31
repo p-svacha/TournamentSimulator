@@ -28,7 +28,7 @@ public class UI_1v1ResultDisplay : MonoBehaviour
         Team2Flag.enabled = true;
         Team2Flag.sprite = team2.Team.FlagBig;
         Team2NameText.text = team2.Team.Name;
-        ScoreText.text = team1.TotalPoints + " : " + team2.TotalPoints;
+        ScoreText.text = team1.MatchScore + " : " + team2.MatchScore;
     }
 
     private void InitEmpty()

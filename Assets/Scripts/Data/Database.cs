@@ -18,6 +18,7 @@ public static class Database
     private static int NextPlayerId;
     private static int NextTeamId;
     private static int NextMatchId;
+    private static int NextGameId;
     private static int NextTournamentId;
     private static int NextLeagueId;
 
@@ -28,6 +29,7 @@ public static class Database
     public static Dictionary<int, League> Leagues;
     public static Dictionary<int, Tournament> Tournaments;
     public static Dictionary<int, Match> Matches;
+    public static Dictionary<int, Game> Games;
 
     public const int DAYS_PER_QUARTER = 15;
     public const int QUARTERS_PER_SEASON = 4;
@@ -51,6 +53,7 @@ public static class Database
 
         SimulationData data = JsonUtilities.LoadData<SimulationData>("simulation_data");
 
+        // Games = new Dictionary<int, Game>(); // todo: remove
         Season = data.CurrentSeason;
         Quarter = data.CurrentQuarter;
         Day = data.CurrentDay;
@@ -59,12 +62,14 @@ public static class Database
         Leagues = data.Leagues.Select(x => new League(x)).ToDictionary(x => x.Id, x => x);
         Tournaments = data.Tournaments.Select(x => Tournament.LoadTournament(x)).ToDictionary(x => x.Id, x => x);
         Matches = data.Matches.Select(x => Match.LoadMatch(x)).ToDictionary(x => x.Id, x => x);
+        Games = data.Games.Select(x => Game.LoadGame(x)).ToDictionary(x => x.Id, x => x); // todo: uncomment
 
         NextPlayerId = Players.Count == 0 ? 1 :         Players.Values.Max(x => x.Id) + 1;
         NextTeamId = Teams.Count == 0 ? 1 :             Teams.Values.Max(x => x.Id) + 1;
         NextLeagueId = Leagues.Count == 0 ? 1 :         Leagues.Values.Max(x => x.Id) + 1;
         NextTournamentId = Tournaments.Count == 0 ? 1 : Tournaments.Values.Max(x => x.Id) + 1;
         NextMatchId = Matches.Count == 0 ? 1 :          Matches.Values.Max(x => x.Id) + 1;
+        NextGameId = Games.Count == 0 ? 1 :             Games.Values.Max(x => x.Id) + 1;
 
         Debug.Log("Loaded simulation state at " + GetQuarterName(Quarter) + " " + Day + ", Season " + Season);
     }
@@ -113,6 +118,7 @@ public static class Database
     public static int GetNewPlayerId() => NextPlayerId++;
     public static int GetNewTeamId() => NextTeamId++;
     public static int GetNewMatchId() => NextMatchId++;
+    public static int GetNewGameId() => NextGameId++;
     public static int GetNewTournamentId() => NextTournamentId++;
     public static int GetNewLeagueId() => NextLeagueId++;
 

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class TournamentSimulator : MonoBehaviour
 {
+    public static TournamentSimulator Instance;
+
     public const int DEFAULT_RATING = 5000;
 
     private const int NUM_GRAND_CHALLENGE_SWAPS = 5;
@@ -19,6 +21,11 @@ public class TournamentSimulator : MonoBehaviour
     public UI_Base UI;
 
     #region Init
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -278,20 +285,20 @@ public class TournamentSimulator : MonoBehaviour
 
     private void StartTestMatch()
     {
-        Match testMatch = new FreeForAllMatch("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numPlayers: 3, new List<int>() { 5, 3, 1 });
+        SoloMatch testMatch = new SoloMatch("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numPlayers: 3, new List<int>() { 5, 3, 1 });
         testMatch.AddPlayerToMatch(Database.Players[0], 0);
         testMatch.AddPlayerToMatch(Database.Players[1], 0);
         testMatch.AddPlayerToMatch(Database.Players[2], 0);
-        UI.StartMatchSimulation(testMatch, 1.5f);
+        testMatch.SimulateNextGame(1.5f);
     }
 
     private void StartTestTeamMatch()
     {
-        TeamMatch testMatch = new TeamMatch("Test Match", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
+        TeamMatch testMatch = new TeamMatch("Test Match", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Pakistan")), 0);
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Guatemala")), 0);
         //Database.Matches.Add(testMatch.Id, testMatch); // only uncomment if you want to save the match
-        UI.StartMatchSimulation(testMatch, 0.05f);
+        testMatch.SimulateNextGame(1.5f);
     }
 
     #endregion
@@ -322,6 +329,7 @@ public class TournamentSimulator : MonoBehaviour
         data.Leagues = Database.Leagues.Select(x => x.Value.ToData()).ToList();
         data.Tournaments = Database.Tournaments.Select(x => x.Value.ToData()).ToList();
         data.Matches = Database.Matches.Select(x => x.Value.ToData()).ToList();
+        data.Games = Database.Games.Select(x => x.Value.ToData()).ToList();
         return data;
     }
 

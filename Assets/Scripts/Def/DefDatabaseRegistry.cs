@@ -23,6 +23,7 @@ public static class DefDatabaseRegistry
     public static void AddAllDefs()
     {
         ClearAllDatabases();
+        DefDatabase<MatchFormatDef>.AddDefs(MatchFormatDefs.Defs);
         DefDatabase<SkillDef>.AddDefs(SkillDefs.Defs);
         DefDatabase<MapDef>.AddDefs(MapDefs.Defs);
         DefDatabase<DisciplineDef>.AddDefs(DisciplineDefs.Defs);

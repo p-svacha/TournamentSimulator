@@ -17,7 +17,7 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
     {
         // Title Row
         HelperFunctions.DestroyAllChildredImmediately(TitleRow.SkillContainer);
-        foreach (SkillDef skillDef in TournamentSimulator.SkillDefs)
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
         {
             TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
             skillText.text = skillDef.Triplet;

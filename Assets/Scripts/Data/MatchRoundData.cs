@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class MatchRoundData
 {
-    public int SkillId { get; set; }
+    public string Skill { get; set; }
     public List<PlayerMatchRoundData> PlayerResults { get; set; } 
 
 }

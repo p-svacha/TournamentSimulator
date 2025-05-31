@@ -30,9 +30,9 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
             if (m.Rounds.Count > 1)
             {
-                foreach (SkillDef skillDef in TournamentSimulator.SkillDefs)
+                foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
                 {
-                    MatchRound round = m.Rounds.First(x => x.SkillId == skillDef.Id);
+                    MatchRound round = m.Rounds.First(x => x.Skill == skillDef);
                     PlayerMatchRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
 
                     int score = pRound.Score;

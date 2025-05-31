@@ -59,7 +59,7 @@ public class UI_PlayerTooltip : UI_Tooltip
 
         // Skills
         HelperFunctions.DestroyAllChildredImmediately(SkillContainer);
-        foreach(SkillDef skillDef in TournamentSimulator.SkillDefs)
+        foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
         {
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);
             skillRow.Init(p, skillDef);

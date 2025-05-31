@@ -99,8 +99,8 @@ public static class PlayerGenerator
         string firstname = GetRandomFirstname(country, sex);
         string lastname = GetRandomLastname(country);
 
-        Dictionary<SkillId, int> skills = new Dictionary<SkillId, int>();
-        foreach (SkillDef skillDef in TournamentSimulator.SkillDefs) skills.Add(skillDef.Id, GetRandomSkillScore());
+        Dictionary<SkillDef, int> skills = new Dictionary<SkillDef, int>();
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs) skills.Add(skillDef, GetRandomSkillScore());
 
         float inconsistency = GetRandomInconsistency();
         float tiebreakerScore = GetRandomTiebreakerScore();

@@ -132,7 +132,7 @@ public abstract class Match
             lastPoints = points;
         }
 
-        return new MatchRound(this, skill.Id, roundResults.Values.ToList());
+        return new MatchRound(this, skill, roundResults.Values.ToList());
     }
 
     /// <summary>

@@ -6,13 +6,13 @@ using UnityEngine;
 public class MatchRound
 {
     private Match Match;
-    public SkillId SkillId { get; private set; }
+    public SkillDef Skill { get; private set; }
     public List<PlayerMatchRound> PlayerResults { get; private set; }
 
-    public MatchRound (Match match, SkillId skillId, List<PlayerMatchRound> playerResults)
+    public MatchRound (Match match, SkillDef skill, List<PlayerMatchRound> playerResults)
     {
         Match = match;
-        SkillId = skillId;
+        Skill = skill;
         PlayerResults = playerResults;
     }
 
@@ -45,7 +45,7 @@ public class MatchRound
     public MatchRoundData ToData()
     {
         MatchRoundData data = new MatchRoundData();
-        data.SkillId = (int)SkillId;
+        data.Skill = Skill.DefName;
         data.PlayerResults = PlayerResults.Select(x => x.ToData()).ToList();
         return data;
     }
@@ -53,7 +53,7 @@ public class MatchRound
     public MatchRound(Match match, MatchRoundData data)
     {
         Match = match;
-        SkillId = (SkillId)data.SkillId;
+        Skill = DefDatabase<SkillDef>.AllDefs.First(s => s.DefName == data.Skill);
         PlayerResults = data.PlayerResults.Select(x => new PlayerMatchRound(x)).ToList();
     }
 

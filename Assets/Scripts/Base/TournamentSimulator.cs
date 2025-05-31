@@ -18,14 +18,14 @@ public class TournamentSimulator : MonoBehaviour
     [HideInInspector]
     public UI_Base UI;
 
-    public static List<SkillDef> SkillDefs;
-
     #region Init
 
     // Start is called before the first frame update
     void Start()
     {
-        CreateSkillDefs();
+        DefDatabaseRegistry.AddAllDefs();
+        DefDatabaseRegistry.ResolveAllReferences();
+        DefDatabaseRegistry.OnLoadingDone();
 
         Database.LoadData();
         PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
@@ -54,26 +54,6 @@ public class TournamentSimulator : MonoBehaviour
         {
             Debug.Log($"Seed {seed} is assigned to group {SingleElimination.GetGroupForSeed(seed, numPlayers, numQualified)} with group seed {SingleElimination.GetSeedWithinGroup(seed, numPlayers, numQualified)}.");
         }
-    }
-
-    private void CreateSkillDefs()
-    {
-        SkillDefs = new List<SkillDef>()
-        {
-            new SkillDef(SkillId.Agility, "Agility", "Agility", "AGI"),
-            new SkillDef(SkillId.BallControl, "BallControl", "Ball Control", "BCT"),
-            new SkillDef(SkillId.Dribbling, "Dribbling", "Dribbling", "DRB"),
-            new SkillDef(SkillId.Jumping, "Jumping", "Jumping", "JMP"),
-            new SkillDef(SkillId.Mentality, "MentalityGeneral", "Mentality", "MNT"),
-            new SkillDef(SkillId.Passing, "Passing", "Passing", "PAS"),
-            new SkillDef(SkillId.Positioning, "Positioning", "Positioning", "POS"),
-            new SkillDef(SkillId.Shooting, "Shooting", "Shooting", "SHO"),
-            new SkillDef(SkillId.Sprint, "Sprint", "Sprint", "SPR"),
-            new SkillDef(SkillId.Stamina, "Stamina", "Stamina", "STM"),
-            new SkillDef(SkillId.Strength, "Strength", "Strength", "STR"),
-        };
-
-        if (SkillDefs.Any(x => SkillDefs.Any(o => x != o && x.Triplet == o.Triplet))) throw new Exception("2 skills have the same triplet.");
     }
 
     private void AddMissingCountryTeams()
@@ -219,7 +199,7 @@ public class TournamentSimulator : MonoBehaviour
     {
         // Skill and attribute shuffle
         Debug.Log("Shuffling skills and attributes of all players.");
-        ShuffleSkillsAndAttributes();
+        AdjustAllSkillsOfAllPlayers();
 
         // Relegations
         Debug.Log("Performing relegations.");
@@ -251,11 +231,11 @@ public class TournamentSimulator : MonoBehaviour
         Save();
     }
 
-    public void ShuffleSkillsAndAttributes()
+    public void AdjustAllSkillsOfAllPlayers()
     {
         foreach(Player p in Database.Players.Values)
         {
-            foreach(SkillDef skillDef in SkillDefs)
+            foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
                 p.AdjustSkill(skillDef, PlayerGenerator.GetRandomSkillAdjustment());
 
             p.AdjustInconsistency(PlayerGenerator.GetRandomInconsistencyAdjustment());

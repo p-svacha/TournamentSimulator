@@ -140,5 +140,16 @@ public class Format_WorldCup : Tournament
 
 
     public override Dictionary<int, List<Player>> PlayerRanking => TeamRanking.ToDictionary(x => x.Key, x => GetTeamPlayers(x.Value.First()));
-    public override Dictionary<int, List<Team>> TeamRanking => Matches.Select(x => ((TeamMatch)x)).Last().TeamRanking.ToDictionary(x => Matches.Select(x => ((TeamMatch)x)).Last().TeamRanking.IndexOf(x), x => new List<Team>() { x.Team });
+    public override Dictionary<int, List<Team>> TeamRanking
+    {
+        get
+        {
+            Dictionary<int, List<Team>> ranking = new Dictionary<int, List<Team>>();
+            ranking.Add(0, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).TeamRanking[0].Team });
+            ranking.Add(1, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).TeamRanking[1].Team });
+            ranking.Add(2, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).TeamRanking[0].Team });
+            ranking.Add(3, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).TeamRanking[1].Team });
+            return ranking;
+        }
+    }
 }

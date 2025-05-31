@@ -92,7 +92,7 @@ public abstract class Tournament
         {
             if(match.IncludesTeam(team))
             {
-                foreach(MatchParticipant player in match.Participants.Where(x => x.Team == team))
+                foreach(MatchParticipant_Player player in match.PlayerParticipants.Where(x => x.Team == team))
                 {
                     if (!players.Contains(player.Player)) players.Add(player.Player);
                 }

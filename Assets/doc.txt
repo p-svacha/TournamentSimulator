@@ -23,3 +23,115 @@ new dedicated team page
 
 player events
 player traits
+
+New Aoe2 Discipline (v2):
+
+Game itself works the same way as football.
+It uses different skills (11-13).
+And each match takes place on a particular map (MapDef).
+Some skills are used in every match (5):
+	- Gaming
+	- Multitasking
+	- Adaptility
+	- Resource Management
+	- Strategic Planning
+Some skills are used based on match state (3):
+	- Score-Mentality [winning / even / losing] in match
+	- Endurance-Mentality [early / mid / late] in match 
+	- Clutch-Mentality [low / neutral / high] pressure (based on match position in tournament, stays the same within match)
+Some skills are used based on map (3-5):
+	- Map knowledge skill [1 per map]
+	- Skill for every tag the map has
+If end result after this is a tie, the tiebreaker skill is used to decide (cannot be even).
+
+Change to Skills:
+	Each player will now have 3 values per skill
+	SkillVaulue, SkillInconsistency, SkillFailChance
+	SkillInconsistency and SkillFailChance replace the general inconcistency and fail chance
+
+Existing Skill "Mentality" will be renamed to "Adaptility" and be used in both disciplines
+
+Map Tags:
+- Open (7)
+- Closed (4)
+- Land (6)
+- Water (2)
+- Hybrid (3)
+- Iconic (5)
+- Chokepoint (2)
+- Nomad (2)
+- Centralized (2)
+- Elevation (2)
+
+
+Maps:
+
+Arabia:			Open, Land, Iconic
+Black Forest:		Closed, Land, Chokepoint, Iconic
+Arena:			Closed, Land, Iconic
+Nomad:			Open, Hybrid, Nomad, Iconic
+Islands:		Closed, Water, Iconic
+Four Lakes:		Open, Hybrid
+Gold Rush:		Open, Centralized, Land, Elevation
+Migration:		Closed, Water, Centralized
+Highland:		Open, Hybrid, Chokepoint
+Acropolis:		Open, Land, Elevation
+African Clearing:	Open, Land, Nomad
+
+Pick & Ban:
+Players ban maps until [n+2] in a best of n are left.
+	In a bo5 with 11 maps, 4 (2 each) would be banned - so 5+2=7 are left
+Then players pick n-1 maps (2 each in a bo5) - 3 are left
+Last map (that is played first in the match) is picked at random from the remaining 3.
+Bans are calculated by combining own and opponent skill on each map and then banning those where the gap in favor of opponent is the biggest.
+
+
+
+
+
+-------------------------------------------------------------- New Discipline + Match Type
+
+Match types:
+
+Round-based (single skills pitted against each other each round)
+Single-score (multiple skills combined into one final score) (no mistakes)
+
+
+Single-score for an aoe2 match:
+
+[ALL-DISCIPLINE-MENTAL (3-8)]
+1 * Mentality +
+x * Mental Endurance (x = Round number) +
+2 * Mental (one skill of [winning / even / losing] mental)
+
+[GENERAL (6)]
+1 * Gaming Skill +
+1 * RTS Skill +
+1 * Multitasking +
+1 * Adaptility +
+1 * Resource Management +
+1 * Strategic Planning +
+
+
+[AOE2-SPECIFIC GENERAL (5)]
+1 * Combat Micro +
+1 * Build Order Mastery +
+1 * Scouting +
+1 * Unit Composition Understanding +
+1 * Eco/Army Balance
+
+[AOE2-SPECIFIC MAP-BASED (4-7)]
+1 * Map knowledge skill (skill per map)
+1 * Terrain knowledge skill (interpolation between Land/Water map skill)
+1 * Openness knowledge skill (interpolation between Open/Closed map skill)
+x * Map tag skill (1 per tag out of Centralized Resources / Sparse Resources / Small / Random / Nomad / Forest Heavy / Arena / Migration / Chokepoint)
+
+
+
+
+AoE Skill general
+[MAP skill]
+Map terrain skills (land, water) - each map has a linear value from land <-> water
+Map resource skills (sparse, abundant / centralized)
+
+------------------------------------------------------

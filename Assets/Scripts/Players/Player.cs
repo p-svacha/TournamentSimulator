@@ -13,6 +13,7 @@ public class Player : IPlayer
     public int Elo { get; private set; }
     public TournamentType LeagueType { get; private set; }
     private Dictionary<SkillId, int> Skills { get; set; }
+    private Dictionary<SkillDef, int> Attributes { get; set; }
     public float Inconsistency { get; private set; }
     public float TiebreakerScore { get; private set; }
     public float MistakeChance { get; private set; }

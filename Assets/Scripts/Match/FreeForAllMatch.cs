@@ -10,6 +10,8 @@ public class FreeForAllMatch : Match
     public FreeForAllMatch(string name, Tournament tournament, int quarter, int day, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
         : base(name, tournament, quarter, day, numPlayers, pointDistribution, group) { }
 
+    public override int NumParticipants => NumPlayers;
+
     public override void SetDone()
     {
         MarkMatchAsDone();

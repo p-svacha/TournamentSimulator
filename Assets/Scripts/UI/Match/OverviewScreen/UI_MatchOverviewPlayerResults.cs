@@ -20,13 +20,13 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
         foreach (SkillDef skillDef in TournamentSimulator.SkillDefs)
         {
             TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
-            skillText.text = skillDef.ThreeLetterDisplay;
+            skillText.text = skillDef.Triplet;
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
 
         // Player rows
         HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);
-        foreach (MatchParticipant part in match.Ranking)
+        foreach (MatchParticipant_Player part in match.PlayerParticipantRanking)
         {
             UI_MatchOverviewPlayer row = Instantiate(PlayerRowPrefab, Container.transform);
             row.Init(match, part);

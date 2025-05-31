@@ -18,12 +18,12 @@ public class UI_TMatchPlayer : MonoBehaviour
     public TextMeshProUGUI EloChangeText;
     public TextMeshProUGUI PointsText;
 
-    public void Init(Match match, MatchParticipant p, bool isCompact)
+    public void Init(Match match, MatchParticipant_Player p, bool isCompact)
     {
         int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? p.Player.CurrentLeaguePoints : 0;
 
-        if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.Ranking.IndexOf(p), p.TotalPoints);
-        else InitFull(match, p.Player.FlagSmall, p.Player.Name, match.Ranking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
+        if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.PlayerParticipantRanking.IndexOf(p), p.TotalPoints);
+        else InitFull(match, p.Player.FlagSmall, p.Player.Name, match.PlayerParticipantRanking.IndexOf(p), p.TotalPoints, p.Player.Elo, currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
 
         GetComponent<PlayerTooltipTarget>().Player = p.Player;
     }
@@ -99,7 +99,7 @@ public class UI_TMatchPlayer : MonoBehaviour
     {
         if (match.IsDone)
         {
-            if (match.Ranking.Count == 2) // Always color winner green and loser red in finished matches with 2 participants
+            if (match.NumParticipants == 2) // Always color winner green and loser red in finished matches with 2 participants
             {
                 if (rank == 0) return ColorManager.Singleton.AdvanceColor;
                 else return ColorManager.Singleton.KoColor;

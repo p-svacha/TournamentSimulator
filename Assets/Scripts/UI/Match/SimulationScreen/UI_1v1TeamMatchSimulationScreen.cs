@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class UI_1v1TeamMatchSimulationScreen : UI_Screen
 {
@@ -54,15 +55,25 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         // Teams
         MatchHeader.DisplayMatch(Match.TeamParticipants[0], Match.TeamParticipants[1]);
 
+        // Team colors
+        Dictionary<Team, Color> teamColors = new Dictionary<Team, Color>();
+        foreach(MatchParticipant_Team team in Match.TeamParticipants)
+        {
+            Color c = team.Team.Color1;
+            if (teamColors.Values.Any(x => ColorManager.Singleton.AreColorsSimilar(x, c))) c = team.Team.Color2;
+            teamColors.Add(team.Team, c);
+        }
+
         // Players
         HelperFunctions.DestroyAllChildredImmediately(PlayerContainer, skipElements: 1);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (MatchParticipant p in Match.Ranking)
+        foreach (MatchParticipant_Player p in Match.PlayerParticipantRanking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
             row.Init(p.Player, p.TotalPoints, isTeamMatch: true);
-            row.Background.color = new Color(p.Team.Color1.r, p.Team.Color1.g, p.Team.Color1.b, 0.2f);
+            Color teamColor = teamColors[p.Team];
+            row.Background.color = new Color(teamColor.r, teamColor.g, teamColor.b, 0.2f);
             PlayerRows.Add(p.Player, row);
         }
 
@@ -119,13 +130,13 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         Match.ApplyMatchRound(CurrentMatchRound);
 
         // Clear row texts
-        foreach (MatchParticipant p in Match.Participants)
+        foreach (MatchParticipant_Player p in Match.PlayerParticipants)
         {
             PlayerRows[p.Player].HideResult();
         }
 
         // Update total scores
-        foreach (MatchParticipant participant in Match.Participants)
+        foreach (MatchParticipant_Player participant in Match.PlayerParticipants)
         {
             PlayerRows[participant.Player].PlusPointsText.text = participant.TotalPoints.ToString();
         }
@@ -140,7 +151,7 @@ public class UI_1v1TeamMatchSimulationScreen : UI_Screen
         CurrentSkillIndex++;
         CurrentSkill = TournamentSimulator.SkillDefs[CurrentSkillIndex];
         ProgressTitleText.text = (CurrentSkillIndex + 1) + "/" + TournamentSimulator.SkillDefs.Count;
-        AttributeTitleText.text = TournamentSimulator.SkillDefs[CurrentSkillIndex].DisplayName;
+        AttributeTitleText.text = TournamentSimulator.SkillDefs[CurrentSkillIndex].Label;
         SimPlayer = 0;
 
         // Execute match round

@@ -40,7 +40,7 @@ public class UI_MatchSimulationScreen : UI_Screen
         for (int i = 1; i < PlayerContainer.transform.childCount; i++) GameObject.Destroy(PlayerContainer.transform.GetChild(i).gameObject);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (MatchParticipant p in m.Ranking)
+        foreach (MatchParticipant_Player p in m.PlayerParticipantRanking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
             row.Init(p.Player, p.TotalPoints);
@@ -106,13 +106,13 @@ public class UI_MatchSimulationScreen : UI_Screen
         Match.ApplyMatchRound(CurrentMatchRound);
 
         // Clear row texts
-        foreach (MatchParticipant p in Match.Participants)
+        foreach (MatchParticipant_Player p in Match.PlayerParticipants)
         {
             PlayerRows[p.Player].HideResult();
         }
 
         // Update total scores
-        foreach (MatchParticipant participant in Match.Participants)
+        foreach (MatchParticipant_Player participant in Match.PlayerParticipants)
         {
             PlayerRows[participant.Player].PointsText.text = participant.TotalPoints.ToString();
         }
@@ -128,7 +128,7 @@ public class UI_MatchSimulationScreen : UI_Screen
         CurrentSkillIndex++;
         CurrentSkill = TournamentSimulator.SkillDefs[CurrentSkillIndex];
         ProgressText.text = (CurrentSkillIndex + 1) + "/" + TournamentSimulator.SkillDefs.Count;
-        AttributeText.text = TournamentSimulator.SkillDefs[CurrentSkillIndex].DisplayName;
+        AttributeText.text = TournamentSimulator.SkillDefs[CurrentSkillIndex].Label;
         SimPlayer = 0;
 
         // Execute match round

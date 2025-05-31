@@ -16,7 +16,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
     [Header("Prefabs")]
     public TextMeshProUGUI SkillTextPrefab;
 
-    public void Init(Match m, MatchParticipant p)
+    public void Init(Match m, MatchParticipant_Player p)
     {
         GetComponent<PlayerTooltipTarget>().Player = p.Player;
 

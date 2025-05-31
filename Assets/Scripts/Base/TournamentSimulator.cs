@@ -18,26 +18,15 @@ public class TournamentSimulator : MonoBehaviour
     [HideInInspector]
     public UI_Base UI;
 
-    public static List<SkillDef> SkillDefs = new List<SkillDef>()
-    {
-        new SkillDef(SkillId.Agility, "Agility", "AGI"),
-        new SkillDef(SkillId.BallControl, "Ball Control", "BCT"),
-        new SkillDef(SkillId.Dribbling, "Dribbling", "DRB"),
-        new SkillDef(SkillId.Jumping, "Jumping", "JMP"),
-        new SkillDef(SkillId.Mentality, "Mentality", "MNT"),
-        new SkillDef(SkillId.Passing, "Passing", "PAS"),
-        new SkillDef(SkillId.Positioning, "Positioning", "POS"),
-        new SkillDef(SkillId.Shooting, "Shooting", "SHO"),
-        new SkillDef(SkillId.Sprint, "Sprint", "SPR"),
-        new SkillDef(SkillId.Stamina, "Stamina", "STM"),
-        new SkillDef(SkillId.Strength, "Strength", "STR"),
-    };
+    public static List<SkillDef> SkillDefs;
 
     #region Init
 
     // Start is called before the first frame update
     void Start()
     {
+        CreateSkillDefs();
+
         Database.LoadData();
         PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
 
@@ -65,6 +54,26 @@ public class TournamentSimulator : MonoBehaviour
         {
             Debug.Log($"Seed {seed} is assigned to group {SingleElimination.GetGroupForSeed(seed, numPlayers, numQualified)} with group seed {SingleElimination.GetSeedWithinGroup(seed, numPlayers, numQualified)}.");
         }
+    }
+
+    private void CreateSkillDefs()
+    {
+        SkillDefs = new List<SkillDef>()
+        {
+            new SkillDef(SkillId.Agility, "Agility", "Agility", "AGI"),
+            new SkillDef(SkillId.BallControl, "BallControl", "Ball Control", "BCT"),
+            new SkillDef(SkillId.Dribbling, "Dribbling", "Dribbling", "DRB"),
+            new SkillDef(SkillId.Jumping, "Jumping", "Jumping", "JMP"),
+            new SkillDef(SkillId.Mentality, "MentalityGeneral", "Mentality", "MNT"),
+            new SkillDef(SkillId.Passing, "Passing", "Passing", "PAS"),
+            new SkillDef(SkillId.Positioning, "Positioning", "Positioning", "POS"),
+            new SkillDef(SkillId.Shooting, "Shooting", "Shooting", "SHO"),
+            new SkillDef(SkillId.Sprint, "Sprint", "Sprint", "SPR"),
+            new SkillDef(SkillId.Stamina, "Stamina", "Stamina", "STM"),
+            new SkillDef(SkillId.Strength, "Strength", "Strength", "STR"),
+        };
+
+        if (SkillDefs.Any(x => SkillDefs.Any(o => x != o && x.Triplet == o.Triplet))) throw new Exception("2 skills have the same triplet.");
     }
 
     private void AddMissingCountryTeams()
@@ -234,7 +243,7 @@ public class TournamentSimulator : MonoBehaviour
         Debug.Log("Reviving random inactive players.");
         for (int i = 0; i < 2; i++) ReviveRandomPlayer(eliminatedPlayers);
 
-        // Add 6 completely new players to the open league
+        // Add 7 completely new players to the open league
         Debug.Log("Generating new players.");
         for (int i = 0; i < 7; i++) AddRandomPlayer();
 

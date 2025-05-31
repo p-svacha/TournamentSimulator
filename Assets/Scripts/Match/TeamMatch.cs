@@ -13,6 +13,7 @@ public class TeamMatch : Match
 
     public MatchParticipant_Team GetParticipant(Team t) => TeamParticipants.First(x => x.Team == t);
     public bool IncludesTeam(Team t) => TeamParticipants.Any(x => x.Team == t);
+    public override int NumParticipants => NumTeams;
 
     #region Before match
 
@@ -67,7 +68,7 @@ public class TeamMatch : Match
             }
         }
 
-        if (TeamParticipants.Any(t => Participants.Where(p => p.Team == t.Team).Count() != NumPlayersPerTeam))
+        if (TeamParticipants.Any(t => PlayerParticipants.Where(p => p.Team == t.Team).Count() != NumPlayersPerTeam))
             throw new System.Exception("Not all teams are exactly full"); // used as a fail-safe
     }
 
@@ -175,7 +176,7 @@ public class TeamMatch : Match
         }
     }
 
-    public override List<MatchParticipant> PlayerSeeding => Participants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+    public override List<MatchParticipant_Player> PlayerSeeding => PlayerParticipants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
 
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.

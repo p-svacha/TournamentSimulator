@@ -145,10 +145,10 @@ public class Format_SeasonCup : Tournament
         get
         {
             Dictionary<int, List<Player>> ranking = new Dictionary<int, List<Player>>();
-            ranking.Add(0, new List<Player>() { Matches[Matches.Count - 1].Ranking[0].Player });
-            ranking.Add(1, new List<Player>() { Matches[Matches.Count - 1].Ranking[1].Player });
-            ranking.Add(2, new List<Player>() { Matches[Matches.Count - 2].Ranking[0].Player });
-            ranking.Add(3, new List<Player>() { Matches[Matches.Count - 2].Ranking[1].Player });
+            ranking.Add(0, new List<Player>() { Matches[Matches.Count - 1].PlayerParticipantRanking[0].Player });
+            ranking.Add(1, new List<Player>() { Matches[Matches.Count - 1].PlayerParticipantRanking[1].Player });
+            ranking.Add(2, new List<Player>() { Matches[Matches.Count - 2].PlayerParticipantRanking[0].Player });
+            ranking.Add(3, new List<Player>() { Matches[Matches.Count - 2].PlayerParticipantRanking[1].Player });
             return ranking;
         }
     }

@@ -5,13 +5,15 @@ using UnityEngine;
 public class SkillDef
 {
     public SkillId Id;
-    public string DisplayName;
-    public string ThreeLetterDisplay;
+    public string DefName;
+    public string Label;
+    public string Triplet;
 
-    public SkillDef(SkillId id, string displayName, string threeLetterDisplay)
+    public SkillDef(SkillId id, string defName, string label, string triplet)
     {
         Id = id;
-        DisplayName = displayName;
-        ThreeLetterDisplay = threeLetterDisplay;
+        DefName = defName;
+        Label = label;
+        Triplet = triplet;
     }
 }

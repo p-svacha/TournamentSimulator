@@ -48,14 +48,14 @@ public class UI_TMatch : MonoBehaviour
             else
             {
                 // add every participant as a row
-                foreach (MatchParticipant p in AlwaysOrderBySeed ? match.PlayerSeeding : match.Ranking)
+                foreach (MatchParticipant_Player p in AlwaysOrderBySeed ? match.PlayerSeeding : match.PlayerParticipantRanking)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.Init(match, p, IsCompact);
                 }
 
                 // add empty rows for slots that are not yet filled
-                for (int i = match.Ranking.Count; i < match.NumPlayers; i++)
+                for (int i = match.PlayerParticipantRanking.Count; i < match.NumPlayers; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.InitEmpty();

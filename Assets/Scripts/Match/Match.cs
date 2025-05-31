@@ -28,8 +28,8 @@ public abstract class Match
     // State
     public bool IsDone { get; protected set; }
     public bool IsRunning { get; protected set; }
-    public List<MatchParticipant> Participants { get; private set; }
-    public MatchParticipant GetParticipant(Player p) => Participants.First(x => x.Player == p);
+    public List<MatchParticipant_Player> PlayerParticipants { get; private set; }
+    public MatchParticipant_Player GetParticipant(Player p) => PlayerParticipants.First(x => x.Player == p);
     public List<MatchRound> Rounds { get; private set; }
 
     #region Init / Before start
@@ -47,7 +47,7 @@ public abstract class Match
         PointDistribution = pointDistribution;
         Group = group;
 
-        Participants = new List<MatchParticipant>();
+        PlayerParticipants = new List<MatchParticipant_Player>();
         Rounds = new List<MatchRound>();
         TargetMatchSeeds = new List<int>();
     }
@@ -55,10 +55,10 @@ public abstract class Match
     public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
     {
         if (IsDone) throw new System.Exception("Cannot add a player to match that is already done.");
-        if (Participants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + Participants.Count + "/" + NumPlayers + " players)");
-        if (Participants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
+        if (PlayerParticipants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + PlayerParticipants.Count + "/" + NumPlayers + " players)");
+        if (PlayerParticipants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
 
-        Participants.Add(new MatchParticipant(p, seed, team));
+        PlayerParticipants.Add(new MatchParticipant_Player(p, seed, team));
     }
 
     /// <summary>
@@ -78,7 +78,7 @@ public abstract class Match
     {
         if (IsDone) return false; // match already done
         if (IsRunning) return false; // match already running
-        if (NumPlayers != Participants.Count) return false; // match not full
+        if (NumPlayers != PlayerParticipants.Count) return false; // match not full
         if (!IsToday) return false; // match not today
         return true;
     }
@@ -89,7 +89,7 @@ public abstract class Match
     {
         if (!CanStartMatch()) throw new System.Exception("Can't start a match that doesn't fulfill all starting requirements.");
 
-        foreach (MatchParticipant participant in Participants) participant.SetPreMatchStats();
+        foreach (MatchParticipant_Player participant in PlayerParticipants) participant.SetPreMatchStats();
         IsRunning = true;
     }
 
@@ -110,7 +110,7 @@ public abstract class Match
         // Calculate skill score for each participant
         Dictionary<Player, PlayerMatchRound> roundResults = new Dictionary<Player, PlayerMatchRound>();
 
-        foreach (MatchParticipant p in Participants)
+        foreach (MatchParticipant_Player p in PlayerParticipants)
         {
             PlayerMatchRound playerResult = p.Player.GetMatchRoundResult(skill);
             roundResults.Add(p.Player, playerResult);
@@ -141,7 +141,7 @@ public abstract class Match
     public virtual void ApplyMatchRound(MatchRound round)
     {
         // Distribute Points
-        foreach (MatchParticipant participant in Participants)
+        foreach (MatchParticipant_Player participant in PlayerParticipants)
             participant.IncreaseTotalPoints(round.GetPlayerResult(participant.Player).PointsGained);
 
         // Save
@@ -216,24 +216,29 @@ public abstract class Match
     /// <summary>
     /// Returns an a list of all match participants ordered by match result.
     /// </summary>
-    public List<MatchParticipant> Ranking 
+    public List<MatchParticipant_Player> PlayerParticipantRanking 
     {
         get
         {
-            if (IsDone || IsRunning) return Participants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.TotalPoints).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
             else return PlayerSeeding;
         }
     }
-    public virtual List<MatchParticipant> PlayerSeeding
+    public virtual List<MatchParticipant_Player> PlayerSeeding
     {
         get
         {
-            if (Tournament.League != null) return Participants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return Participants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
         }
     }
 
-    public List<Player> PlayerRanking => Ranking.Select(x => x.Player).ToList();
+    /// <summary>
+    /// The amount of participating parties that are ranked. Equals the amount of players in a free for all match or the amount of teams in a team match.
+    /// </summary>
+    public abstract int NumParticipants { get; }
+
+    public List<Player> PlayerRanking => PlayerParticipantRanking.Select(x => x.Player).ToList();
     
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
 
@@ -258,7 +263,7 @@ public abstract class Match
         data.TargetMatchIndices = TargetMatchIndices;
         data.TargetMatchSeeds = TargetMatchSeeds;
         data.PointDistribution = PointDistribution;
-        data.Participants = Participants.Select(x => x.ToData()).ToList();
+        data.Participants = PlayerParticipants.Select(x => x.ToData()).ToList();
         data.Rounds = Rounds.Select(x => x.ToData()).ToList();
         return data;
     }
@@ -284,7 +289,7 @@ public abstract class Match
         TargetMatchSeeds = data.TargetMatchSeeds;
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
-        Participants = data.Participants.Select(x => new MatchParticipant(x)).ToList();
+        PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(x)).ToList();
         Rounds = data.Rounds.Select(x => new MatchRound(this, x)).ToList();
 
         // Parent ref

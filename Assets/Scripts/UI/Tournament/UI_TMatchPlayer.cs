@@ -25,7 +25,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.PlayerParticipantRanking.IndexOf(p), p.MatchScore);
         else InitFull(match, p.Player.FlagSmall, p.Player.Name, match.PlayerParticipantRanking.IndexOf(p), p.MatchScore, p.Player.Elo[match.Discipline], currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
 
-        GetComponent<PlayerTooltipTarget>().Player = p.Player;
+        GetComponent<PlayerTooltipTarget>().Init(match.Discipline, p.Player);
     }
 
     public void Init(TeamMatch match, MatchParticipant_Team t, bool isCompact)

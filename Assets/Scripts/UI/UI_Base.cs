@@ -85,12 +85,12 @@ public class UI_Base : MonoBehaviour
         if (game.IsTeamGame)
         {
             DisplayScreen(GameSimulationScreen_Team1v1);
-            GameSimulationScreen_Team1v1.DisplayAndSimulateMatch((TeamGame)game, stepTime);
+            GameSimulationScreen_Team1v1.DisplayAndSimulateGame((TeamGame)game, stepTime);
         }
         else
         {
             DisplayScreen(GameSimulationScreen_SoloFreeForAll);
-            GameSimulationScreen_SoloFreeForAll.DisplayAndSimulateMatch((SoloGame)game, stepTime);
+            GameSimulationScreen_SoloFreeForAll.DisplayAndSimulateGame((SoloGame)game, stepTime);
         }
     }
 

@@ -7,12 +7,18 @@ using UnityEngine.EventSystems;
 
 public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public DisciplineDef Discpline;
-    public Player Player;
+    private DisciplineDef Discipline;
+    private Player Player;
 
     [HideInInspector] public bool IsFocussed;
     private float Delay = 0.5f;
     [HideInInspector] public float CurrentDelay;
+
+    public void Init(DisciplineDef discipline, Player player)
+    {
+        Discipline = discipline;
+        Player = player;
+    }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -36,7 +42,7 @@ public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointer
     private void ShowTooltip()
     {
         if (Player == null) return;
-        UI_PlayerTooltip.Singleton.Init(Discpline, Player);
+        UI_PlayerTooltip.Singleton.Init(Discipline, Player);
     }
 
     private void HideTooltip()

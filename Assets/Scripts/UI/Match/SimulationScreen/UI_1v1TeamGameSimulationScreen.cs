@@ -33,7 +33,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
 
     private TeamGameRound CurrentGameRound;
 
-    public void DisplayAndSimulateMatch(TeamGame game, float stepTime)
+    public void DisplayAndSimulateGame(TeamGame game, float stepTime)
     {
         Game = game;
         StartSimulation(stepTime);
@@ -72,7 +72,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         foreach (MatchParticipant_Player p in Match.PlayerParticipantRanking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(p.Player, p.MatchScore, isTeamMatch: true);
+            row.Init(Game, p.Player, p.MatchScore);
             Color teamColor = teamColors[p.Team];
             row.Background.color = new Color(teamColor.r, teamColor.g, teamColor.b, 0.2f);
             PlayerRows.Add(p.Player, row);

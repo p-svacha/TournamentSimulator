@@ -6,6 +6,8 @@ using TMPro;
 
 public class UI_MatchPlayer : MonoBehaviour
 {
+    private Game Game;
+
     public Image Background;
     public Image FlagIcon;
     public TextMeshProUGUI NameText;
@@ -13,19 +15,17 @@ public class UI_MatchPlayer : MonoBehaviour
     public TextMeshProUGUI PlusPointsText;
     public TextMeshProUGUI PointsText;
 
-    private bool IsTeamMatch;
-
-    public void Init(Player p, int points, bool isTeamMatch = false)
+    public void Init(Game game, Player p, int points)
     {
-        IsTeamMatch = isTeamMatch;
+        Game = game;
 
         FlagIcon.sprite = p.FlagBig;
         NameText.text = p.Name;
         ScoreText.text = "";
         PlusPointsText.text = "";
-        PointsText.text = IsTeamMatch ? "" : points.ToString();
+        PointsText.text = Game.IsTeamGame ? "" : points.ToString();
 
-        GetComponent<PlayerTooltipTarget>().Player = p;
+        GetComponent<PlayerTooltipTarget>().Init(game.Discipline, p);
     }
 
     public void InitEmpty()
@@ -42,7 +42,7 @@ public class UI_MatchPlayer : MonoBehaviour
         ScoreText.text = "";
         PlusPointsText.text = "";
 
-        if (IsTeamMatch) PointsText.text = "";
+        if (Game.IsTeamGame) PointsText.text = "";
     }
 
     public void DisplayResult(PlayerGameRound round)
@@ -50,7 +50,7 @@ public class UI_MatchPlayer : MonoBehaviour
         ScoreText.text = round.Score.ToString();
         ScoreText.color = round.Modifiers.Contains(Player.MISTAKE_MODIFIER) ? Color.red : Color.white;
 
-        if(IsTeamMatch) PointsText.text = "+" + round.PointsGained.ToString();
+        if (Game.IsTeamGame) PointsText.text = "+" + round.PointsGained.ToString();
         else PlusPointsText.text = "+" + round.PointsGained.ToString();
     }
 }

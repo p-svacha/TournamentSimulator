@@ -17,6 +17,7 @@ public abstract class Game
     /// </summary>
     public Match Match { get; private set; }
     public abstract bool IsTeamGame { get; }
+    public DisciplineDef Discipline => Match.Discipline;
 
     /// <summary>
     /// The final points that individual players have accumulated throughout the game.

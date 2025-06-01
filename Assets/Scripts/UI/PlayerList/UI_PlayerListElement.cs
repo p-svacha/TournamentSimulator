@@ -100,8 +100,7 @@ public class UI_PlayerListElement : MonoBehaviour
         RankText.text = rank.ToString();
         FlagIcon.sprite = player.FlagSmall;
         NameText.text = player.Name;
-        GetComponent<PlayerTooltipTarget>().Player = player;
-        GetComponent<PlayerTooltipTarget>().Discpline = discpline;
+        GetComponent<PlayerTooltipTarget>().Init(discpline, player);
     }
     private void ShowLeagueInfo(Player player)
     {

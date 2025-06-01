@@ -30,7 +30,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
 
     private SoloGameRound CurrentGameRound;
 
-    public void DisplayAndSimulateMatch(SoloGame game, float stepTime)
+    public void DisplayAndSimulateGame(SoloGame game, float stepTime)
     {
         Game = game;
 
@@ -44,7 +44,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         foreach (MatchParticipant_Player p in Match.PlayerParticipantRanking)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(p.Player, p.MatchScore);
+            row.Init(game, p.Player, p.MatchScore);
             PlayerRows.Add(p.Player, row);
         }
 

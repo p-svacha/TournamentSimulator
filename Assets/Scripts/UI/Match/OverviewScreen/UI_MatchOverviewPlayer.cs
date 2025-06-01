@@ -18,7 +18,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
     public void Init(Match m, MatchParticipant_Player p)
     {
-        GetComponent<PlayerTooltipTarget>().Player = p.Player;
+        GetComponent<PlayerTooltipTarget>().Init(m.Discipline, p.Player);
 
         FlagIcon.sprite = p.Player.FlagBig;
         NameText.text = p.Player.Name;

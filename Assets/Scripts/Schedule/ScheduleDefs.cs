@@ -2,17 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScheduleDefs : MonoBehaviour
+public static class ScheduleDefs
 {
-    // Start is called before the first frame update
-    void Start()
+    public static List<ScheduleDef> Defs => new List<ScheduleDef>()
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    };
 }

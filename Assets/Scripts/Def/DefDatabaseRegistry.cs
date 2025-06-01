@@ -27,6 +27,9 @@ public static class DefDatabaseRegistry
         DefDatabase<SkillDef>.AddDefs(SkillDefs.Defs);
         DefDatabase<MapDef>.AddDefs(MapDefs.Defs);
         DefDatabase<DisciplineDef>.AddDefs(DisciplineDefs.Defs);
+        DefDatabase<TournamentFormatDef>.AddDefs(TournamentFormatDefs.Defs);
+        DefDatabase<TournamentDef>.AddDefs(TournamentDefs.Defs);
+        DefDatabase<ScheduleDef>.AddDefs(ScheduleDefs.Defs);
     }
 
     // Called when a DefDatabase<T> type is accessed for the first time

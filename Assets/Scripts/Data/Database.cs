@@ -53,7 +53,6 @@ public static class Database
 
         SimulationData data = JsonUtilities.LoadData<SimulationData>("simulation_data");
 
-        // Games = new Dictionary<int, Game>(); // todo: remove
         Season = data.CurrentSeason;
         Quarter = data.CurrentQuarter;
         Day = data.CurrentDay;
@@ -62,7 +61,7 @@ public static class Database
         Leagues = data.Leagues.Select(x => new League(x)).ToDictionary(x => x.Id, x => x);
         Tournaments = data.Tournaments.Select(x => Tournament.LoadTournament(x)).ToDictionary(x => x.Id, x => x);
         Matches = data.Matches.Select(x => Match.LoadMatch(x)).ToDictionary(x => x.Id, x => x);
-        Games = data.Games.Select(x => Game.LoadGame(x)).ToDictionary(x => x.Id, x => x); // todo: uncomment
+        Games = data.Games.Select(x => Game.LoadGame(x)).ToDictionary(x => x.Id, x => x);
 
         NextPlayerId = Players.Count == 0 ? 1 :         Players.Values.Max(x => x.Id) + 1;
         NextTeamId = Teams.Count == 0 ? 1 :             Teams.Values.Max(x => x.Id) + 1;

@@ -11,7 +11,6 @@ public class MatchParticipant_Player
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
     public int LeaguePointsBeforeMatch { get; private set; }
-    //public List<string> Modifiers { get; private set; }
 
     public MatchParticipant_Player(Player player, int seed, Team team)
     {

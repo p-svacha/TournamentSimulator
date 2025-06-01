@@ -8,7 +8,6 @@ public class MatchData
 {
     public int Id { get; set; }
     public string Name { get; set; }
-    public int Type { get; set; } // deprecated
     public bool IsTeamMatch { get; set; }
     public int TournamentId { get; set; }
     public int GroupIndex { get; set; } // index refers to position in group list of tournament
@@ -22,7 +21,6 @@ public class MatchData
     public List<int> PointDistribution { get; set; }
 
     public List<MatchParticipantData> Participants { get; set; }
-    public List<GameRoundData> Rounds { get; set; } // deprecated
 
     // Only used for team matches
     public int NumTeams { get; set; }

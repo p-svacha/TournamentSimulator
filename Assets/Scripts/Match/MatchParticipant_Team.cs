@@ -9,7 +9,6 @@ public class MatchParticipant_Team
     public int MatchScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
-    //public List<string> Modifiers { get; private set; }
 
     public MatchParticipant_Team(Team team, int seed)
     {

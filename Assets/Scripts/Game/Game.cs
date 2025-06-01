@@ -36,7 +36,7 @@ public abstract class Game
     /// <summary>
     /// The list of each round in this game.
     /// </summary>
-    public List<GameRound> Rounds; // todo: private set
+    public List<GameRound> Rounds { get; private set; }
 
     /// <summary>
     /// Flag if this game has already been played.

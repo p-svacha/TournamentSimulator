@@ -11,7 +11,7 @@ public class UI_Schedule : MonoBehaviour
     [Header("Prefabs")]
     public UI_ScheduleElement ListElement;
 
-    public void UpdateList(UI_Base baseUI, int season)
+    public void UpdateList(int season)
     {
         foreach (Transform t in ListContainer.transform) Destroy(t.gameObject);
 
@@ -30,7 +30,7 @@ public class UI_Schedule : MonoBehaviour
         foreach(System.Tuple<Tournament, int> matchDay in matchDays)
         {
             UI_ScheduleElement elem = Instantiate(ListElement, ListContainer.transform);
-            elem.Init(baseUI, matchDay.Item1, matchDay.Item2);
+            elem.Init(matchDay.Item1, matchDay.Item2);
         }
     }
 }

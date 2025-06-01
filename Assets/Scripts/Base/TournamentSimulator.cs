@@ -175,7 +175,7 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(TournamentType.WorldCup, numPlayersPerTeam: 2);
 
         // Switch season view
-        UI.DashboardScreen.SelectedSeason = Database.Season;
+        UI.DashboardScreen.SelectedSeasonIndex = Database.Season;
 
         Save();
     }

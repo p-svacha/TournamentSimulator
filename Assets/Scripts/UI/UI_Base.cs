@@ -12,7 +12,7 @@ public class UI_Base : MonoBehaviour
     public UI_Header Header;
 
     [Header("Screens")]
-    public UI_Dashboard DashboardScreen;
+    public UI_DashboardScreen DashboardScreen;
     public UI_Tournament TournamentScreen;
     public UI_SoloFfaGameSimulationScreen GameSimulationScreen_SoloFreeForAll;
     public UI_1v1TeamGameSimulationScreen GameSimulationScreen_Team1v1;

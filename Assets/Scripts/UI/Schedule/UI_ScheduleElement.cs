@@ -13,7 +13,7 @@ public class UI_ScheduleElement : MonoBehaviour
     public TextMeshProUGUI RoundText;
     public Button SimulateButton;
 
-    public void Init(UI_Base baseUI, Tournament t, int absoluteDay)
+    public void Init(Tournament t, int absoluteDay)
     {
         int quarter = Database.ToRelativeQuarter(absoluteDay);
         int day = Database.ToRelativeDay(absoluteDay);
@@ -29,6 +29,6 @@ public class UI_ScheduleElement : MonoBehaviour
         DateText.text = Database.GetQuarterName(quarter) + " " + day;
         NameText.text = t.Name;
         RoundText.text = t.GetMatchDayTitle(t.GetMatchDays().IndexOf(absoluteDay));
-        SimulateButton.onClick.AddListener(() => baseUI.DisplayTournament(t));
+        SimulateButton.onClick.AddListener(() => UI_Base.Instance.DisplayTournament(t));
     }
 }

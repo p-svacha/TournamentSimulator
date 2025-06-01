@@ -17,7 +17,7 @@ public class Format_Classic24 : Tournament
     public Format_Classic24(TournamentData data) : base(data) { }
     public Format_Classic24(TournamentType type, int season, int quarter, int day, League league) : base(type, season, league)
     {
-        Players = Database.Players.Values.Where(x => x.LeagueType == type).ToList();
+        Players = Database.AllPlayers.Where(x => x.LeagueType == type).ToList();
         Quarter = quarter;
         Day = day;
 
@@ -107,7 +107,7 @@ public class Format_Classic24 : Tournament
 
     public override string GetMatchDayTitle(int index)
     {
-        int stepIndex = Database.Tournaments.Values.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
+        int stepIndex = Database.AllTournaments.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
         return "Step " + stepIndex;
     }
 

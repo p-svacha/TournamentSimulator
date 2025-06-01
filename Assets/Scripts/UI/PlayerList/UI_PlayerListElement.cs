@@ -12,7 +12,14 @@ public class UI_PlayerListElement : MonoBehaviour
     public Image FlagIcon;
     public TextMeshProUGUI NameText;
     public Image LeagueIcon;
-    public TextMeshProUGUI ValueText;
+    public TextMeshProUGUI MainValueText;
+    public TextMeshProUGUI NumMatchesText;
+    public TextMeshProUGUI NumWinsText;
+    public TextMeshProUGUI NumLossesText;
+
+    public GameObject WinRateContainer;
+    public TextMeshProUGUI WinRateText;
+    public GameObject WinRateBar;
 
     public Image GoldMedalIcon;
     public TextMeshProUGUI GoldMedalText;
@@ -21,69 +28,32 @@ public class UI_PlayerListElement : MonoBehaviour
     public Image BronzeMedalIcon;
     public TextMeshProUGUI BronzeMedalText;
 
-    public void Init(int rank, Player p, string value, Color c, bool showLeagueIcon)
+    private void HideAllFields()
     {
-        Background.color = c;
-        RankText.text = rank.ToString();
-        FlagIcon.sprite = p.FlagSmall;
-        NameText.text = p.Name;
-
-        LeagueIcon.sprite = p.LeagueIcon;
-        LeagueIcon.color = p.LeagueColor;
-
-        LeagueIcon.gameObject.SetActive(showLeagueIcon);
-        ValueText.text = value;
-
-        HideMedals();
-
-        GetComponent<PlayerTooltipTarget>().Player = p;
-    }
-
-    public void InitTeamRanking(int rank, Team t)
-    {
-        Background.color = ColorManager.Singleton.DefaultColor;
-        RankText.text = rank.ToString();
-        FlagIcon.sprite = t.FlagSmall;
-        NameText.text = t.Name;
+        MainValueText.gameObject.SetActive(false);
 
         LeagueIcon.gameObject.SetActive(false);
-        ValueText.text = t.Elo.ToString();
 
-        HideMedals();
-    }
+        NumMatchesText.gameObject.SetActive(false);
+        NumWinsText.gameObject.SetActive(false);
+        NumLossesText.gameObject.SetActive(false);
+        WinRateContainer.SetActive(false);
 
-    public void InitPlayerMedals(int rank, Player player, Vector3 medals)
-    {
-        Background.color = ColorManager.Singleton.DefaultColor;
-        RankText.text = rank.ToString();
-        FlagIcon.sprite = player.FlagSmall;
-        NameText.text = player.Name;
-
-        ShowMedals(medals);
-
-        GetComponent<PlayerTooltipTarget>().Player = player;
-    }
-
-    public void InitTeamMedals(int rank, Team team, Vector3 medals)
-    {
-        Background.color = ColorManager.Singleton.DefaultColor;
-        RankText.text = rank.ToString();
-        FlagIcon.sprite = team.FlagSmall;
-        NameText.text = team.Name;
-        
-        ShowMedals(medals);
-    }
-
-    private void HideMedals()
-    {
         GoldMedalIcon.gameObject.SetActive(false);
         SilverMedalIcon.gameObject.SetActive(false);
         BronzeMedalIcon.gameObject.SetActive(false);
     }
+
+    private void ShowMainValue(string value)
+    {
+        MainValueText.gameObject.SetActive(true);
+        MainValueText.text = value;
+    }
+
     private void ShowMedals(Vector3 medalValues)
     {
         LeagueIcon.gameObject.SetActive(false);
-        ValueText.gameObject.SetActive(false);
+        MainValueText.gameObject.SetActive(false);
         GoldMedalIcon.gameObject.SetActive(true);
         SilverMedalIcon.gameObject.SetActive(true);
         BronzeMedalIcon.gameObject.SetActive(true);
@@ -91,4 +61,94 @@ public class UI_PlayerListElement : MonoBehaviour
         SilverMedalText.text = medalValues.y.ToString();
         BronzeMedalText.text = medalValues.z.ToString();
     }
+
+    #region Player
+
+    public void InitEloList_Player_Short(int rank, Player player)
+    {
+        HideAllFields();
+
+        SetBasicFields(rank, player);
+        ShowMainValue(player.Elo.ToString());
+        ShowLeagueInfo(player);
+    }
+    public void InitEloList_Player_Full(int rank, Player player)
+    {
+        SetBasicFields(rank, player);
+        ShowMainValue(player.Elo.ToString());
+        ShowMatchStatistics(player);
+    }
+    public void InitMedalList_Player(int rank, Player player, Vector3 medals)
+    {
+        HideAllFields();
+
+        SetBasicFields(rank, player);
+        ShowMedals(medals);
+    }
+    public void InitLeagueList_Player(int rank, League league, Player player, Color bgColor)
+    {
+        HideAllFields();
+
+        SetBasicFields(rank, player);
+        Background.color = bgColor;
+        ShowMainValue(league.Standings[player].ToString());
+    }
+
+    private void SetBasicFields(int rank, Player player)
+    {
+        Background.color = ColorManager.Singleton.DefaultColor;
+        RankText.text = rank.ToString();
+        FlagIcon.sprite = player.FlagSmall;
+        NameText.text = player.Name;
+        GetComponent<PlayerTooltipTarget>().Player = player;
+    }
+    private void ShowLeagueInfo(Player player)
+    {
+        LeagueIcon.gameObject.SetActive(true);
+        LeagueIcon.sprite = player.LeagueIcon;
+        LeagueIcon.color = player.LeagueColor;
+    }
+    private void ShowMatchStatistics(Player player)
+    {
+        NumMatchesText.gameObject.SetActive(true);
+        NumWinsText.gameObject.SetActive(true);
+        NumLossesText.gameObject.SetActive(true);
+        WinRateContainer.SetActive(true);
+    }
+
+    #endregion
+
+    #region Team
+
+    public void InitEloList_Team_Short(int rank, Team team)
+    {
+        HideAllFields();
+
+        SetBasicFields(rank, team);
+        ShowMainValue(team.Elo.ToString());
+    }
+    public void InitEloList_Team_Full(int rank, Team team)
+    {
+        SetBasicFields(rank, team);
+        ShowMainValue(team.Elo.ToString());
+    }
+    public void InitMedalList_Team(int rank, Team team, Vector3 medals)
+    {
+        HideAllFields();
+
+        SetBasicFields(rank, team);
+        ShowMedals(medals);
+    }
+
+
+    private void SetBasicFields(int rank, Team t)
+    {
+        Background.color = ColorManager.Singleton.DefaultColor;
+        RankText.text = rank.ToString();
+        FlagIcon.sprite = t.FlagSmall;
+        NameText.text = t.Name;
+    }
+
+    #endregion
+
 }

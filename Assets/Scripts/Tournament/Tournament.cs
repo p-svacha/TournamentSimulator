@@ -413,13 +413,13 @@ public abstract class Tournament
         Id = data.Id;
         Name = data.Name;
         Format = (TournamentType)data.Format;
-        League = data.LeagueId == -1 ? null : Database.Leagues[data.LeagueId];
+        League = data.LeagueId == -1 ? null : Database.GetLeague(data.LeagueId);
         Season = data.Season;
         IsDone = data.IsDone;
-        Players = data.Players.Select(x => Database.Players[x]).ToList();
+        Players = data.Players.Select(id => Database.GetPlayer(id)).ToList();
         Groups = data.Groups.Select(x => new TournamentGroup(this, x)).ToList();
 
-        Teams = data.Teams.Select(x => Database.Teams[x]).ToList();
+        Teams = data.Teams.Select(id => Database.GetTeam(id)).ToList();
         NumPlayersPerTeam = data.NumPlayersPerTeam;
 
         // References

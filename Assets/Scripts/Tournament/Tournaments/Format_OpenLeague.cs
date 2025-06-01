@@ -29,7 +29,7 @@ public class Format_OpenLeague : Tournament
     public Format_OpenLeague(TournamentData data) : base(data) { }
     public Format_OpenLeague(int season, int quarter, int day, League league) : base(TournamentType.OpenLeague, season, league)
     {
-        Players = Database.Players.Values.Where(x => x.LeagueType == TournamentType.OpenLeague).ToList();
+        Players = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.OpenLeague).ToList();
         Quarter = quarter;
         Day = day;
 
@@ -263,7 +263,7 @@ public class Format_OpenLeague : Tournament
 
     public override string GetMatchDayTitle(int index)
     {
-        int stepIndex = Database.Tournaments.Values.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
+        int stepIndex = Database.AllTournaments.Where(x => x.League == League).OrderBy(x => x.Matches[0].Quarter).ThenBy(x => x.Matches[0].Day).ToList().IndexOf(this) + 1;
         return "Step " + stepIndex;
     }
 

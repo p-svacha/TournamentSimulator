@@ -35,7 +35,7 @@ public class TournamentSimulator : MonoBehaviour
         DefDatabaseRegistry.OnLoadingDone();
 
         Database.LoadData();
-        PlayerGenerator.InitGenerator(Database.Countries.Values.ToList());
+        PlayerGenerator.InitGenerator(Database.AllCountries);
 
         Database.ListCountriesByPlayerAmount();
         AddMissingCountryTeams();
@@ -65,10 +65,10 @@ public class TournamentSimulator : MonoBehaviour
 
     private void AddMissingCountryTeams()
     {
-        foreach(Country c in Database.Countries.Values)
+        foreach(Country c in Database.AllCountries)
         {
-            if (Database.Teams.Values.Where(x => x.Country == c).Count() > 0) continue; // Country team already exists
-            if (Database.Players.Values.Where(x => x.Country == c).Count() == 0) continue; // No player with that country exists yet
+            if (Database.AllTeams.Where(x => x.Country == c).Count() > 0) continue; // Country team already exists
+            if (Database.AllPlayers.Where(x => x.Country == c).Count() == 0) continue; // No player with that country exists yet
 
             CreateNationalTeam(c);
         }
@@ -77,7 +77,7 @@ public class TournamentSimulator : MonoBehaviour
     private void CreateNationalTeam(Country c)
     {
         Team newCountryTeam = new Team(c);
-        Database.Teams.Add(newCountryTeam.Id, newCountryTeam);
+        Database.AddTeam(newCountryTeam);
     }
 
     #endregion
@@ -120,7 +120,7 @@ public class TournamentSimulator : MonoBehaviour
     }
     public bool CanGoToNextDay()
     {
-        return Database.Matches.Values.Where(x => x.Tournament.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
+        return Database.AllMatches.Where(x => x.Tournament.Season == Database.Season && x.Quarter == Database.Quarter && x.Day == Database.Day && !x.IsDone).Count() == 0;
     }
 
     /// <summary>
@@ -128,7 +128,7 @@ public class TournamentSimulator : MonoBehaviour
     /// </summary>
     private void OnDayStart()
     {
-        foreach (Match m in Database.Matches.Values.Where(x => x.IsToday)) m.OnDayStart();
+        foreach (Match m in Database.AllMatches.Where(x => x.IsToday)) m.OnDayStart();
     }
 
     #region Season Transition
@@ -139,7 +139,7 @@ public class TournamentSimulator : MonoBehaviour
         List<Player> grandLeaguePlayers = new List<Player>();
         List<Player> challengeLeaguePlayers = new List<Player>();
         List<Player> openLeaguePlayers = new List<Player>();
-        foreach (Player p in Database.Players.Values)
+        foreach (Player p in Database.AllPlayers)
         {
             if (p.LeagueType == TournamentType.GrandLeague) grandLeaguePlayers.Add(p);
             else if (p.LeagueType == TournamentType.ChallengeLeague) challengeLeaguePlayers.Add(p);
@@ -183,7 +183,7 @@ public class TournamentSimulator : MonoBehaviour
     private void AddNewLeague(string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
     {
         League newLeague = new League(name, season, formatId, players, numPromotions, numRelegations);
-        Database.Leagues.Add(newLeague.Id, newLeague);
+        Database.AddLeague(newLeague);
     }
 
     public void ScheduleTournament(TournamentType type, int quarter = 0, int day = 0, int numPlayersPerTeam = 0)
@@ -198,8 +198,8 @@ public class TournamentSimulator : MonoBehaviour
         else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(season, numPlayersPerTeam);
         else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
 
-        Database.Tournaments.Add(newTournament.Id, newTournament);
-        foreach (Match m in newTournament.Matches) Database.Matches.Add(m.Id, m);
+        Database.AddTournament(newTournament);
+        foreach (Match m in newTournament.Matches) Database.AddMatch(m);
     }
 
     public void EndSeason()
@@ -240,7 +240,7 @@ public class TournamentSimulator : MonoBehaviour
 
     public void AdjustAllSkillsOfAllPlayers()
     {
-        foreach(Player p in Database.Players.Values)
+        foreach(Player p in Database.AllPlayers)
         {
             foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
                 p.AdjustSkill(skillDef, PlayerGenerator.GetRandomSkillAdjustment());
@@ -252,7 +252,7 @@ public class TournamentSimulator : MonoBehaviour
 
     public void ReviveRandomPlayer(List<Player> excludedPlayers)
     {
-        List<Player> candidates = Database.Players.Values.Where(x => x.LeagueType == TournamentType.None && !excludedPlayers.Contains(x)).ToList();
+        List<Player> candidates = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.None && !excludedPlayers.Contains(x)).ToList();
         Player playerToRevive = candidates[UnityEngine.Random.Range(0, candidates.Count)];
         playerToRevive.SetLeague(TournamentType.OpenLeague);
         Debug.Log(playerToRevive.ToString() + " has been revived.");
@@ -265,11 +265,11 @@ public class TournamentSimulator : MonoBehaviour
     {
         Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent, rating);
 
-        int league = (Database.Players.Count / 24);
+        int league = (Database.AllPlayers.Count / 24);
         if (league > 2) league = 2;
         newPlayer.SetLeague((TournamentType)league);
 
-        Database.Players.Add(newPlayer.Id, newPlayer);
+        Database.AddPlayer(newPlayer);
 
         // Add to country team
         Team nationalTeam = Database.GetNationalTeam(newPlayer.Country);
@@ -285,16 +285,16 @@ public class TournamentSimulator : MonoBehaviour
 
     private void StartTestMatch()
     {
-        SoloMatch testMatch = new SoloMatch("Test", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numPlayers: 3, new List<int>() { 5, 3, 1 });
-        testMatch.AddPlayerToMatch(Database.Players[0], 0);
-        testMatch.AddPlayerToMatch(Database.Players[1], 0);
-        testMatch.AddPlayerToMatch(Database.Players[2], 0);
+        SoloMatch testMatch = new SoloMatch("Test", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numPlayers: 3, new List<int>() { 5, 3, 1 });
+        testMatch.AddPlayerToMatch(Database.GetPlayer(0), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(1), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(2), 0);
         testMatch.SimulateNextGame(1.5f);
     }
 
     private void StartTestTeamMatch()
     {
-        TeamMatch testMatch = new TeamMatch("Test Match", Database.Tournaments.Values.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
+        TeamMatch testMatch = new TeamMatch("Test Match", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numTeams: 2, numPlayersPerTeam: 2, new List<int>() { 1, 0 }, new List<int>() { 4, 3, 2, 1 });
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Pakistan")), 0);
         testMatch.AddTeamToMatch(Database.GetNationalTeam(Database.GetCountry("Guatemala")), 0);
         //Database.Matches.Add(testMatch.Id, testMatch); // only uncomment if you want to save the match
@@ -324,12 +324,12 @@ public class TournamentSimulator : MonoBehaviour
         data.CurrentSeason = Database.Season;
         data.CurrentQuarter = Database.Quarter;
         data.CurrentDay = Database.Day;
-        data.Players = Database.Players.Select(x => x.Value.ToData()).ToList();
-        data.Teams = Database.Teams.Select(x => x.Value.ToData()).ToList();
-        data.Leagues = Database.Leagues.Select(x => x.Value.ToData()).ToList();
-        data.Tournaments = Database.Tournaments.Select(x => x.Value.ToData()).ToList();
-        data.Matches = Database.Matches.Select(x => x.Value.ToData()).ToList();
-        data.Games = Database.Games.Select(x => x.Value.ToData()).ToList();
+        data.Players = Database.AllPlayers.Select(x => x.ToData()).ToList();
+        data.Teams = Database.AllTeams.Select(x => x.ToData()).ToList();
+        data.Leagues = Database.AllLeagues.Select(x => x.ToData()).ToList();
+        data.Tournaments = Database.AllTournaments.Select(x => x.ToData()).ToList();
+        data.Matches = Database.AllMatches.Select(x => x.ToData()).ToList();
+        data.Games = Database.AllGames.Select(x => x.ToData()).ToList();
         return data;
     }
 

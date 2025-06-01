@@ -23,7 +23,7 @@ public class Team
         Id = Database.GetNewTeamId();
 
         Name = c.Name;
-        Players = Database.Players.Values.Where(x => x.Country == c).ToList();
+        Players = Database.AllPlayers.Where(x => x.Country == c).ToList();
         FlagBig = c.FlagBig;
         FlagSmall = c.FlagSmall;
         Country = c;
@@ -79,10 +79,10 @@ public class Team
     {
         Id = data.Id;
         Name = data.Name;
-        Players = data.Players.Select(x => Database.Players[x]).ToList();
+        Players = data.Players.Select(id => Database.GetPlayer(id)).ToList();
         Color1 = HelperFunctions.Data2Color(data.Color1);
         Color2 = HelperFunctions.Data2Color(data.Color2);
-        Country = data.CountryId == -1 ? null : Database.Countries[data.CountryId];
+        Country = data.CountryId == -1 ? null : Database.GetCountry(data.CountryId);
         Elo = data.Elo;
 
         if (IsCountryTeam)

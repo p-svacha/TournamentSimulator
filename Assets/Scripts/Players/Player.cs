@@ -24,10 +24,13 @@ public class Player : IPlayer
     public Color LeagueColor => League == null ? ColorManager.Singleton.NoLeagueColor : League.Color;
     public Sprite FlagBig => Country.FlagBig;
     public Sprite FlagSmall => Country.FlagSmall;
-    public int Age => 20 + (Database.Season - Database.Leagues.Values.Where(x => x.Players.Contains(this)).Min(x => x.Season));
-    public int WorldRank => Database.Players.Values.OrderByDescending(x => x.Elo).ToList().IndexOf(this) + 1;
+    public int Age => 20 + (Database.Season - Database.AllLeagues.Where(x => x.Players.Contains(this)).Min(x => x.Season));
+    public int WorldRank => Database.AllPlayers.OrderByDescending(x => x.Elo).ToList().IndexOf(this) + 1;
 
     public static string MISTAKE_MODIFIER = "Mistake";
+
+    // Stats
+    public List<Match> Matches = new List<Match>();
 
     // New player
     public Player(string firstName, string lastName, Country country, string sex, int elo, Dictionary<SkillDef, int> skills, float inconsistecy, float tiebreakerScore, float mistakeChance)
@@ -128,7 +131,7 @@ public class Player : IPlayer
         Id = data.Id;
         FirstName = data.FirstName;
         LastName = data.LastName;
-        Country = Database.Countries[data.CountryId];
+        Country = Database.GetCountry(data.CountryId);
         Sex = data.Sex;
         Elo = data.Elo;
         LeagueType = (TournamentType)data.LeagueType;

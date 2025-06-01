@@ -59,7 +59,7 @@ public class League
         Name = data.Name;
         Season = data.Season;
         LeagueType = (TournamentType)data.LeagueType;
-        Standings = data.Participants.ToDictionary(x => Database.Players[x.PlayerId], x => x.LeaguePoints);
+        Standings = data.Participants.ToDictionary(p => Database.GetPlayer(p.PlayerId), p => p.LeaguePoints);
         NumPromotions = data.NumPromotions;
         NumRelegations = data.NumRelegations;
 

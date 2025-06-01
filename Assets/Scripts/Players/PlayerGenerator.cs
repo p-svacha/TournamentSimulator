@@ -91,9 +91,9 @@ public static class PlayerGenerator
     public static Player GenerateRandomPlayer(string region, string continent, int rating)
     {
         Country country;
-        if (region != "") country = GetRandomCountryFromRegion(Database.Countries.Values.ToList(), region);
-        else if (continent != "") country = GetRandomCountryFromContinent(Database.Countries.Values.ToList(), continent);
-        else country = GetRandomCountry(Database.Countries.Values.ToList());
+        if (region != "") country = GetRandomCountryFromRegion(Database.AllCountries.ToList(), region);
+        else if (continent != "") country = GetRandomCountryFromContinent(Database.AllCountries.ToList(), continent);
+        else country = GetRandomCountry(Database.AllCountries.ToList());
 
         string sex = GetRandomSex();
         string firstname = GetRandomFirstname(country, sex);

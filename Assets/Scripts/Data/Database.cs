@@ -22,14 +22,14 @@ public static class Database
     private static int NextTournamentId;
     private static int NextLeagueId;
 
-    public static Dictionary<int, Country> Countries;
-    public static Dictionary<int, Player> Players;
-    public static Dictionary<int, Team> Teams;
+    private static Dictionary<int, Country> Countries;
+    private static Dictionary<int, Player> Players;
+    private static Dictionary<int, Team> Teams;
 
-    public static Dictionary<int, League> Leagues;
-    public static Dictionary<int, Tournament> Tournaments;
-    public static Dictionary<int, Match> Matches;
-    public static Dictionary<int, Game> Games;
+    private static Dictionary<int, League> Leagues;
+    private static Dictionary<int, Tournament> Tournaments;
+    private static Dictionary<int, Match> Matches;
+    private static Dictionary<int, Game> Games;
 
     public const int DAYS_PER_QUARTER = 15;
     public const int QUARTERS_PER_SEASON = 4;
@@ -72,6 +72,18 @@ public static class Database
 
         Debug.Log("Loaded simulation state at " + GetQuarterName(Quarter) + " " + Day + ", Season " + Season);
     }
+
+    #endregion
+
+    #region Save
+
+    public static void AddCountry(Country c) => Countries.Add(c.Id, c);
+    public static void AddPlayer(Player p) => Players.Add(p.Id, p);
+    public static void AddTeam(Team t) => Teams.Add(t.Id, t);
+    public static void AddLeague(League l) => Leagues.Add(l.Id, l);
+    public static void AddTournament(Tournament t) => Tournaments.Add(t.Id, t);
+    public static void AddMatch(Match m) => Matches.Add(m.Id, m);
+    public static void AddGame(Game g) => Games.Add(g.Id, g);
 
     #endregion
 
@@ -124,6 +136,24 @@ public static class Database
     #endregion
 
     #region Getters / Stats
+
+    // Read full tables
+    public static List<Country> AllCountries => Countries.Values.ToList();
+    public static List<Player> AllPlayers => Players.Values.ToList();
+    public static List<Team> AllTeams => Teams.Values.ToList();
+    public static List<League> AllLeagues => Leagues.Values.ToList();
+    public static List<Tournament> AllTournaments => Tournaments.Values.ToList();
+    public static List<Match> AllMatches => Matches.Values.ToList();
+    public static List<Game> AllGames => Games.Values.ToList();
+
+    // Read single entries by id
+    public static Country GetCountry(int id) => Countries[id];
+    public static Player GetPlayer(int id) => Players[id];
+    public static Team GetTeam(int id) => Teams[id];
+    public static League GetLeague(int id) => Leagues[id];
+    public static Tournament GetTournament(int id) => Tournaments[id];
+    public static Match GetMatch(int id) => Matches[id];
+    public static Game GetGame(int id) => Games[id];
 
     public static int LatestSeason => Leagues.Values.Max(x => x.Season);
 

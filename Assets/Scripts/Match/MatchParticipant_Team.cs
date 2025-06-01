@@ -40,7 +40,7 @@ public class MatchParticipant_Team
 
     public MatchParticipant_Team(TeamMatchParticipantData data)
     {
-        Team = Database.Teams[data.TeamId];
+        Team = Database.GetTeam(data.TeamId);
         Seed = data.Seed;
         MatchScore = data.MatchScore;
         EloBeforeMatch = data.EloBeforeMatch;

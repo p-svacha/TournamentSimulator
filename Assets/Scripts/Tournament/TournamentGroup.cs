@@ -13,8 +13,8 @@ public class TournamentGroup
     public Tournament Tournament { get; private set; }
     public string Name { get; private set; }
     public List<int> Participants { get; private set; } // Id's of participants, which can either be players or teams
-    public List<Team> ParticipantTeams => Participants.Select(x => Database.Teams[x]).ToList();
-    public List<Player> ParticipantPlayers => Participants.Select(x => Database.Players[x]).ToList();
+    public List<Team> ParticipantTeams => Participants.Select(id => Database.GetTeam(id)).ToList();
+    public List<Player> ParticipantPlayers => Participants.Select(id => Database.GetPlayer(id)).ToList();
     public List<Match> Matches { get; private set; }
     public bool IsDone => Matches.All(x => x.IsDone);
 
@@ -48,7 +48,7 @@ public class TournamentGroup
 
         if(Tournament.IsTeamTournament)
         {
-            Team[] teams = Participants.Select(x => Database.Teams[x]).ToArray();
+            Team[] teams = Participants.Select(id => Database.GetTeam(id)).ToArray();
 
             // Day 1
             CreateGroupTeamMatch(round: 1, matchIndex: 1, startDayAbsolute, teams[0], teams[1]);
@@ -64,7 +64,7 @@ public class TournamentGroup
         }
         else
         {
-            Player[] players = Participants.Select(x => Database.Players[x]).ToArray();
+            Player[] players = Participants.Select(id => Database.GetPlayer(id)).ToArray();
 
             // Day 1
             CreateGroupMatch(round: 1, matchIndex: 1, startDayAbsolute, players[0], players[1]);

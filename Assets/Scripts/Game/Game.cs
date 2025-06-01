@@ -158,7 +158,7 @@ public abstract class Game
 
     public static Game LoadGame(GameData data)
     {
-        Match match = Database.Matches[data.MatchId];
+        Match match = Database.GetMatch(data.MatchId);
         if (match.IsTeamMatch) return new SoloGame(match, data);
         else return new TeamGame(match, data);
     }

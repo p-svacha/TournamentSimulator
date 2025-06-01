@@ -157,7 +157,7 @@ public abstract class Match
         }
 
         // Save game to database and save game state
-        Database.Games.Add(Id, game);
+        Database.AddGame(game);
         TournamentSimulator.Instance.Save();
     }
 
@@ -304,7 +304,7 @@ public abstract class Match
         Id = data.Id;
         Name = data.Name;
         IsTeamMatch = data.IsTeamMatch;
-        Tournament = Database.Tournaments[data.TournamentId];
+        Tournament = Database.GetTournament(data.TournamentId);
         Group = data.GroupIndex == -1 ? null : Tournament.Groups[data.GroupIndex];
         Quarter = data.Quarter;
         Day = data.Day;
@@ -317,8 +317,9 @@ public abstract class Match
         PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(x)).ToList();
         Games = new List<Game>();
 
-        // Parent ref
+        // References
         Tournament.Matches.Add(this);
+        foreach (var p in PlayerParticipants) p.Player.Matches.Add(this);
         if (Group != null) Group.Matches.Add(this);
     }
 

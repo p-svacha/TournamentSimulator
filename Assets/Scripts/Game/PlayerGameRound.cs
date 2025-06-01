@@ -38,7 +38,7 @@ public class PlayerGameRound
 
     public PlayerGameRound(PlayerMatchRoundData data)
     {
-        Player = Database.Players[data.PlayerId];
+        Player = Database.GetPlayer(data.PlayerId);
         Score = data.Score;
         PointsGained = data.PointsGained;
         Modifiers = data.Modifiers;

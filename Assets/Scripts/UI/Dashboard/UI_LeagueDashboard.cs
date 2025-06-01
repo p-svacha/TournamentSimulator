@@ -40,14 +40,17 @@ public class UI_LeagueDashboard : UI_Dashboard
     private void UpdateLeagueRanking(League l, GameObject container)
     {
         HelperFunctions.DestroyAllChildredImmediately(container);
-        int counter = 1;
+        int rank = 1;
         foreach (Player p in l.Ranking)
         {
             UI_PlayerListElement elem = Instantiate(PlayerListElement, container.transform);
+
             Color c = ColorManager.Singleton.DefaultColor;
-            if (counter <= l.NumPromotions) c = ColorManager.Singleton.AdvanceColor;
-            if (counter > l.Ranking.Count - l.NumRelegations) c = ColorManager.Singleton.KoColor;
-            elem.Init(counter++, p, l.Standings[p].ToString(), c, showLeagueIcon: false);
+            if (rank <= l.NumPromotions) c = ColorManager.Singleton.AdvanceColor;
+            if (rank > l.Ranking.Count - l.NumRelegations) c = ColorManager.Singleton.KoColor;
+
+            elem.InitLeagueList_Player(rank, l, p, c);
+            rank++;
         }
     }
 }

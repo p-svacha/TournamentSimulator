@@ -47,9 +47,9 @@ public class MatchParticipant_Player
 
     public MatchParticipant_Player(MatchParticipantData data)
     {
-        Player = Database.Players[data.PlayerId];
+        Player = Database.GetPlayer(data.PlayerId);
         Seed = data.Seed;
-        Team = data.Team == -1 ? null : Database.Teams[data.Team];
+        Team = data.Team == -1 ? null : Database.GetTeam(data.Team);
         MatchScore = data.MatchScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;

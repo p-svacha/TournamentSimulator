@@ -14,7 +14,7 @@ public static class FlagImageScraper
         string targetPathSmall = "C:/Workspace/Unity/TournamentSimulator/Assets/Resources/Icons/Flags/48x32/";
         string targetPathBig = "C:/Workspace/Unity/TournamentSimulator/Assets/Resources/Icons/Flags/180x120/";
 
-        foreach (Country c in Database.Countries.Values)
+        foreach (Country c in Database.AllCountries)
         {
             string imageUrlSmall = imageUrlBaseSmall + c.FifaCode + ".png";
             DownloadImage(imageUrlSmall, targetPathSmall);

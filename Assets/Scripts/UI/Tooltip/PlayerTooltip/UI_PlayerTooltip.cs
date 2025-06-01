@@ -89,7 +89,7 @@ public class UI_PlayerTooltip : UI_Tooltip
 
         // History
         HelperFunctions.DestroyAllChildredImmediately(HistoryContainer, skipElements: 1);
-        foreach(League league in Database.Leagues.Values.Where(x => x.Season < Database.Season && x.Players.Contains(p)))
+        foreach(League league in Database.AllLeagues.Where(x => x.Season < Database.Season && x.Players.Contains(p)))
         {
             UI_HistoryRow historyRow = Instantiate(HistoryRowPrefab, HistoryContainer.transform);
             historyRow.Init(p, league);

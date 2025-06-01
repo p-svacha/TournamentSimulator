@@ -9,14 +9,14 @@ public static class DisciplineDefs
         new DisciplineDef()
         {
             DefName = "Football",
-            Label = "football",
+            Label = "Football",
             Description = "The classic football game."
         },
 
         new DisciplineDef()
         {
             DefName = "AgeOfEmpires",
-            Label = "age of empires",
+            Label = "Age of Empires",
             Description = "Age of Empires II"
         },
     };

@@ -60,7 +60,7 @@ public class Popup_AddPlayer : PopupContent
         if (LocationDropdown.value > 7) region = LocationValues[LocationDropdown.value];
         else if (LocationDropdown.value > 0) continent = LocationValues[LocationDropdown.value];
 
-        for(int i = 0; i < int.Parse(AmountInput.text); i++) simulator.AddRandomPlayer(region, continent, int.Parse(RatingInput.text));
+        for(int i = 0; i < int.Parse(AmountInput.text); i++) simulator.AddRandomPlayer(region, continent);
 
     }
 }

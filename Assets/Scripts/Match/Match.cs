@@ -17,6 +17,7 @@ public abstract class Match
     public int Season => Tournament.Season;
     public string DateString => Database.GetDateString(Season, Quarter, Day);
     public bool IsTeamMatch { get; protected set; }
+    public DisciplineDef Discipline => Tournament.Discipline;
 
 
     // Rules
@@ -60,7 +61,7 @@ public abstract class Match
         if (PlayerParticipants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + PlayerParticipants.Count + "/" + NumPlayers + " players)");
         if (PlayerParticipants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
 
-        PlayerParticipants.Add(new MatchParticipant_Player(p, seed, team));
+        PlayerParticipants.Add(new MatchParticipant_Player(this, p, seed, team));
     }
 
     public bool CanStartNextGame()
@@ -200,7 +201,7 @@ public abstract class Match
             int newElo = kvp.Value;
 
             GetParticipant(p).SetEloAfterMatch(newElo);
-            p.SetElo(newElo);
+            p.SetElo(Discipline, newElo);
         }
     }
 
@@ -213,7 +214,7 @@ public abstract class Match
         List<Player> ranking = PlayerRanking;
 
         Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
-        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo);
+        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo[Discipline]);
 
         for (int i = 0; i < ranking.Count; i++)
         {
@@ -228,8 +229,8 @@ public abstract class Match
 
     private void GetAdjustedNewRatings(Dictionary<Player, int> newRatings, Player winner, Player loser)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo - winner.Elo) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo - loser.Elo) / 400f));
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline] - winner.Elo[Discipline]) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline] - loser.Elo[Discipline]) / 400f));
 
         newRatings[winner] += (int)(20 * (1 - expWinner));
         newRatings[loser] += (int)(20 * (0 - expLoser));
@@ -314,7 +315,7 @@ public abstract class Match
         TargetMatchSeeds = data.TargetMatchSeeds;
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
-        PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(x)).ToList();
+        PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(this, x)).ToList();
         Games = new List<Game>();
 
         // References

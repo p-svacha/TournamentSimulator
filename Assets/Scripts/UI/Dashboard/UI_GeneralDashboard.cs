@@ -14,8 +14,8 @@ public class UI_GeneralDashboard : UI_Dashboard
         Leaderboard.Init();
     }
 
-    public override void Refresh(int season)
+    public override void Refresh(DisciplineDef discipline, int season)
     {
-        Leaderboard.Refresh();
+        Leaderboard.Refresh(discipline);
     }
 }

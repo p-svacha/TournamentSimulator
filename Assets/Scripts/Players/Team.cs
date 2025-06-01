@@ -15,7 +15,7 @@ public class Team
     public Country Country { get; protected set; } // null if not a country team
     public bool IsCountryTeam => Country != null;
 
-    public int Elo { get; protected set; }
+    public Dictionary<DisciplineDef, int> Elo { get; private set; }
 
     // New country team
     public Team(Country c)
@@ -32,7 +32,11 @@ public class Team
         Color1 = mostCommonFlagColors[0];
         Color2 = mostCommonFlagColors[1];
 
-        Elo = TournamentSimulator.DEFAULT_RATING;
+        Elo = new Dictionary<DisciplineDef, int>();
+        foreach (DisciplineDef discipline in DefDatabase<DisciplineDef>.AllDefs)
+        {
+            Elo.Add(discipline, TournamentSimulator.DEFAULT_RATING);
+        }
     }
 
     public void AddPlayer(Player p)
@@ -49,15 +53,15 @@ public class Team
         return Players.OrderByDescending(x => x.Elo).Take(m.NumPlayersPerTeam).ToList();
     }
 
-    public int GetAveragePlayerElo(int onlyCountNBestPlayers = 0)
+    public int GetAveragePlayerElo(DisciplineDef discipline, int onlyCountNBestPlayers = 0)
     {
-        if(onlyCountNBestPlayers == 0) return (int)Players.Average(x => x.Elo);
-        else return (int)Players.OrderByDescending(x => x.Elo).Take(onlyCountNBestPlayers).Average(x => x.Elo);
+        if(onlyCountNBestPlayers == 0) return (int)Players.Average(x => x.Elo[discipline]);
+        else return (int)Players.OrderByDescending(x => x.Elo).Take(onlyCountNBestPlayers).Average(x => x.Elo[discipline]);
     }
 
-    public void SetElo(int value)
+    public void SetElo(DisciplineDef discipline, int value)
     {
-        Elo = value;
+        Elo[discipline] = value;
     }
 
     #region Save / Load
@@ -71,7 +75,7 @@ public class Team
         data.Color1 = HelperFunctions.Color2Data(Color1);
         data.Color2 = HelperFunctions.Color2Data(Color2);
         data.CountryId = Country == null ? -1 : Country.Id;
-        data.Elo = Elo;
+        data.Elos = Elo.Select(x => new EloData(x.Key.DefName, x.Value)).ToList();
         return data;
     }
 
@@ -83,12 +87,20 @@ public class Team
         Color1 = HelperFunctions.Data2Color(data.Color1);
         Color2 = HelperFunctions.Data2Color(data.Color2);
         Country = data.CountryId == -1 ? null : Database.GetCountry(data.CountryId);
-        Elo = data.Elo;
 
         if (IsCountryTeam)
         {
             FlagBig = Country.FlagBig;
             FlagSmall = Country.FlagSmall;
+        }
+
+        // Elos
+        Elo = new Dictionary<DisciplineDef, int>();
+        foreach (DisciplineDef discipline in DefDatabase<DisciplineDef>.AllDefs)
+        {
+            EloData disciplineData = data.Elos.First(x => x.Discipline == discipline.DefName);
+            if (disciplineData != null) Elo.Add(discipline, disciplineData.Elo);
+            else Elo.Add(discipline, TournamentSimulator.DEFAULT_RATING);
         }
     }
 

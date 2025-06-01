@@ -9,6 +9,8 @@ using UnityEngine;
 /// </summary>
 public class UI_Leaderboard : MonoBehaviour
 {
+    private DisciplineDef Discipline;
+
     [Header("Display Settings")]
     public bool ShowMatchStatisticsInEloLeaderboard;
 
@@ -38,8 +40,9 @@ public class UI_Leaderboard : MonoBehaviour
         UpdateMedalLeaderboard();
     }
 
-    public void Refresh()
+    public void Refresh(DisciplineDef discipline)
     {
+        Discipline = discipline;
         UpdateEloLeaderboard();
         UpdateMedalLeaderboard();
     }
@@ -51,22 +54,22 @@ public class UI_Leaderboard : MonoBehaviour
         if (ParticipantTypeDropdown.value == 0) // Players
         {
             int rank = 1;
-            foreach (Player p in Database.WorldRanking)
+            foreach (Player p in Database.GetPlayerEloRanking(Discipline))
             {
                 UI_PlayerListElement elem = Instantiate(PlayerListElement, EloLeaderboard.ListContainer.transform);
-                if (ShowMatchStatisticsInEloLeaderboard) elem.InitEloList_Player_Full(rank, p);
-                else elem.InitEloList_Player_Short(rank, p);
+                if (ShowMatchStatisticsInEloLeaderboard) elem.InitEloList_Player_Full(Discipline, rank, p);
+                else elem.InitEloList_Player_Short(Discipline, rank, p);
                 rank++;
             }
         }
         if (ParticipantTypeDropdown.value == 1) // Teams
         {
             int rank = 1;
-            foreach (Team t in Database.TeamWorldRanking)
+            foreach (Team t in Database.GetTeamEloRanking(Discipline))
             {
                 UI_PlayerListElement elem = Instantiate(PlayerListElement, EloLeaderboard.ListContainer.transform);
-                if (ShowMatchStatisticsInEloLeaderboard) elem.InitEloList_Team_Full(rank, t);
-                else elem.InitEloList_Team_Short(rank, t);
+                if (ShowMatchStatisticsInEloLeaderboard) elem.InitEloList_Team_Full(Discipline, rank, t);
+                else elem.InitEloList_Team_Short(Discipline, rank, t);
                 rank++;
             }
         }
@@ -81,15 +84,15 @@ public class UI_Leaderboard : MonoBehaviour
             Dictionary<Player, Vector3Int> medals = new Dictionary<Player, Vector3Int>();
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 1) // Grand League
-                foreach (League l in Database.AllLeagues.Where(x => x.LeagueType == TournamentType.GrandLeague && x.IsDone))
+                foreach (League l in Database.AllLeagues.Where(x => x.Discipline == Discipline && x.LeagueType == TournamentType.GrandLeague && x.IsDone))
                     Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Player>() { x }), medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 2) // Season Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Format == TournamentType.SeasonCup && x.IsDone))
+                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.SeasonCup && x.IsDone))
                     Database.GetAddMedals(t.PlayerRanking, medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 3) // World Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Format == TournamentType.WorldCup && x.IsDone))
+                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.WorldCup && x.IsDone))
                     Database.GetAddMedals(t.PlayerRanking, medals);
 
             // Order
@@ -100,7 +103,7 @@ public class UI_Leaderboard : MonoBehaviour
             foreach (var medal in medals)
             {
                 UI_PlayerListElement elem = Instantiate(PlayerListElement, MedalLeaderboard.ListContainer.transform);
-                elem.InitMedalList_Player(rank, medal.Key, medal.Value);
+                elem.InitMedalList_Player(Discipline, rank, medal.Key, medal.Value);
                 rank++;
             }
         }
@@ -111,15 +114,15 @@ public class UI_Leaderboard : MonoBehaviour
             Dictionary<Team, Vector3Int> medals = new Dictionary<Team, Vector3Int>();
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 1) // Grand League
-                foreach (League l in Database.AllLeagues.Where(x => x.LeagueType == TournamentType.GrandLeague && x.IsDone))
+                foreach (League l in Database.AllLeagues.Where(x => x.Discipline == Discipline && x.LeagueType == TournamentType.GrandLeague && x.IsDone))
                     Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Team>() { Database.GetNationalTeam(x.Country) }), medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 2) // Season Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Format == TournamentType.SeasonCup && x.IsDone))
+                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.SeasonCup && x.IsDone))
                     Database.GetAddMedals(t.TeamRanking, medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 3) // World Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Format == TournamentType.WorldCup && x.IsDone))
+                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.WorldCup && x.IsDone))
                     Database.GetAddMedals(t.TeamRanking, medals);
 
             // Order

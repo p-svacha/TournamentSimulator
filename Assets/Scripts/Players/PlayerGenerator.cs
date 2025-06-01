@@ -88,7 +88,7 @@ public static class PlayerGenerator
 
     #endregion
 
-    public static Player GenerateRandomPlayer(string region, string continent, int rating)
+    public static Player GenerateRandomPlayer(string region, string continent)
     {
         Country country;
         if (region != "") country = GetRandomCountryFromRegion(Database.AllCountries.ToList(), region);
@@ -106,7 +106,7 @@ public static class PlayerGenerator
         float tiebreakerScore = GetRandomTiebreakerScore();
         float mistakeChance = GetRandomMistakeChance();
 
-        Player player = new Player(firstname, lastname, country, sex, rating, skills, inconsistency, tiebreakerScore, mistakeChance);
+        Player player = new Player(firstname, lastname, country, sex, skills, inconsistency, tiebreakerScore, mistakeChance);
         return player;
     }
 

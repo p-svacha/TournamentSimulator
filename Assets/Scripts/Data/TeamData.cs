@@ -12,5 +12,5 @@ public class TeamData
     public int CountryId { get; set; }
     public ColorData Color1 { get; set; }
     public ColorData Color2 { get; set; }
-    public int Elo { get; set; }
+    public List<EloData> Elos { get; set; }
 }

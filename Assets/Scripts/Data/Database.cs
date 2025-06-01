@@ -179,29 +179,35 @@ public static class Database
     public static Team GetNationalTeam(Country c) => Teams.Values.FirstOrDefault(x => x.Country == c);
     public static List<Team> GetNationalTeams(int minPlayers = 9999999) => Teams.Values.Where(x => x.IsCountryTeam && x.Players.Count >= minPlayers).ToList();
 
-    public static List<Player> WorldRanking => Players.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.TiebreakerScore).ToList();
-    public static List<Team> TeamWorldRanking => Teams.Values.OrderByDescending(x => x.Elo).ThenByDescending(x => x.GetAveragePlayerElo()).ToList();
+    public static List<Player> GetPlayerEloRanking(DisciplineDef discipline)
+    {
+        return Players.Values.OrderByDescending(x => x.Elo[discipline]).ThenByDescending(x => x.TiebreakerScore).ToList();
+    }
+    public static List<Team> GetTeamEloRanking(DisciplineDef discipline)
+    {
+        return Teams.Values.OrderByDescending(x => x.Elo[discipline]).ThenByDescending(x => x.GetAveragePlayerElo(discipline)).ToList();
+    }
 
     /// <summary>
     /// Returns an ordered dictionary representing the country leaderboard of a given country based on elo rating.
     /// </summary>
-    public static Dictionary<Player, int> GetCountryRanking(string country)
+    public static Dictionary<Player, int> GetCountryRanking(DisciplineDef discipline, string country)
     {
-        return Database.Players.Values.Where(x => x.Country.Name == country).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
+        return Database.Players.Values.Where(x => x.Country.Name == country).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
     }
     /// <summary>
     /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
     /// </summary>
-    public static Dictionary<Player, int> GetRegionRanking(string region)
+    public static Dictionary<Player, int> GetRegionRanking(DisciplineDef discipline, string region)
     {
-        return Database.Players.Values.Where(x => x.Country.Region == region).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
+        return Database.Players.Values.Where(x => x.Country.Region == region).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
     }
     /// <summary>
     /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
     /// </summary>
-    public static Dictionary<Player, int> GetContinentRanking(string continent)
+    public static Dictionary<Player, int> GetContinentRanking(DisciplineDef discipline, string continent)
     {
-        return Database.Players.Values.Where(x => x.Country.Continent == continent).OrderByDescending(x => x.Elo).ToDictionary(x => x, x => x.Elo);
+        return Database.Players.Values.Where(x => x.Country.Continent == continent).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
     }
 
     public static void GetAddMedals<T>(Dictionary<int, List<T>> ranking, Dictionary<T, Vector3Int> medals)

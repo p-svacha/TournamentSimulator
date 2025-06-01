@@ -29,7 +29,7 @@ public class Format_SeasonCup : Tournament
     public Format_SeasonCup(int season) : base(TournamentType.SeasonCup, season)
     {
         Name = "Season Cup";
-        Players = Database.WorldRanking.Take(64).ToList();
+        Players = Database.GetPlayerEloRanking(Discipline).Take(64).ToList();
 
         Initialize();
     }

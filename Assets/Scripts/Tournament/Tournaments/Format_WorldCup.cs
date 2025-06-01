@@ -35,7 +35,7 @@ public class Format_WorldCup : Tournament
         if (numTeams == -1) throw new System.Exception("Not enough eligible teams to create a world cup with " + NumPlayersPerTeam + " players per team.");
 
         // Select participants
-        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(NumPlayersPerTeam)).Take(numTeams).ToList();
+        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(Discipline, NumPlayersPerTeam)).Take(numTeams).ToList();
 
         Initialize();
     }

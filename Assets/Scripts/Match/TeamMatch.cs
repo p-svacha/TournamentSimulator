@@ -39,7 +39,7 @@ public class TeamMatch : Match
         if (TeamParticipants.Count >= NumTeams) throw new System.Exception("Can't add a team to a match that is already full. (match has " + TeamParticipants.Count + "/" + NumTeams + " teams)");
         if (TeamParticipants.Any(x => x.Team == t)) throw new System.Exception("Can't add the same team to the match twice (" + t.Name + ")");
 
-        TeamParticipants.Add(new MatchParticipant_Team(t, seed));
+        TeamParticipants.Add(new MatchParticipant_Team(this, t, seed));
     }
 
     public override bool CanStartMatch()
@@ -104,7 +104,7 @@ public class TeamMatch : Match
             int newElo = kvp.Value;
 
             GetParticipant(t).SetEloAfterMatch(newElo);
-            t.SetElo(newElo);
+            t.SetElo(Discipline, newElo);
         }
     }
 
@@ -128,7 +128,7 @@ public class TeamMatch : Match
         List<MatchParticipant_Team> teamRanking = TeamRanking;
 
         Dictionary<Team, int> newRatings = new Dictionary<Team, int>();
-        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo);
+        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo[Discipline]);
 
         for (int i = 0; i < teamRanking.Count; i++)
         {
@@ -144,8 +144,8 @@ public class TeamMatch : Match
 
     private void AdjustTeamRatings(Dictionary<Team, int> newRatings, Team winner, Team loser, bool isDraw)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo - winner.Elo) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo - loser.Elo) / 400f));
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline] - winner.Elo[Discipline]) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline] - loser.Elo[Discipline]) / 400f));
 
         if (isDraw)
         {
@@ -196,7 +196,7 @@ public class TeamMatch : Match
         NumTeams = data.NumTeams;
         NumPlayersPerTeam = data.NumPlayersPerTeam;
         TeamPointDistribution = data.TeamPointDistribution;
-        TeamParticipants = data.TeamParticipants.Select(x => new MatchParticipant_Team(x)).ToList();
+        TeamParticipants = data.TeamParticipants.Select(x => new MatchParticipant_Team(this, x)).ToList();
     }
 
     #endregion

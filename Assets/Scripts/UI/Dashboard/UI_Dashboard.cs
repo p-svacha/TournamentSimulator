@@ -12,7 +12,7 @@ public abstract class UI_Dashboard : MonoBehaviour
     /// <summary>
     /// Gets called when the content of this dashboard should be loaded and displayed for the given season.
     /// </summary>
-    public abstract void Refresh(int season);
+    public abstract void Refresh(DisciplineDef discipline, int season);
 
     /// <summary>
     /// Display label of the dashboard.

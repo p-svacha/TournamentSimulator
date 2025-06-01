@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    public DisciplineDef Discpline;
     public Player Player;
 
     [HideInInspector] public bool IsFocussed;
@@ -35,7 +36,7 @@ public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointer
     private void ShowTooltip()
     {
         if (Player == null) return;
-        UI_PlayerTooltip.Singleton.Init(Player);
+        UI_PlayerTooltip.Singleton.Init(Discpline, Player);
     }
 
     private void HideTooltip()

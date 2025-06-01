@@ -199,7 +199,10 @@ public class TournamentSimulator : MonoBehaviour
         else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
 
         Database.AddTournament(newTournament);
-        foreach (Match m in newTournament.Matches) Database.AddMatch(m);
+        foreach (Match m in newTournament.Matches)
+        {
+            Database.AddMatch(m);
+        }
     }
 
     public void EndSeason()
@@ -261,9 +264,9 @@ public class TournamentSimulator : MonoBehaviour
     /// <summary>
     /// Generates a new random player with default rating and adds them to the lowest league with space.
     /// </summary>
-    public void AddRandomPlayer(string region = "", string continent = "", int rating = DEFAULT_RATING)
+    public void AddRandomPlayer(string region = "", string continent = "")
     {
-        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent, rating);
+        Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent);
 
         int league = (Database.AllPlayers.Count / 24);
         if (league > 2) league = 2;

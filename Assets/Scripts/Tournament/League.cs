@@ -7,6 +7,7 @@ public class League
 {
     public int Id { get; private set; }
     public string Name { get; private set; }
+    public DisciplineDef Discipline { get; private set; }
     public int Season { get; private set; }
     public TournamentType LeagueType { get; private set; }
     public Dictionary<Player, int> Standings { get; private set; }
@@ -45,6 +46,7 @@ public class League
         LeagueData data = new LeagueData();
         data.Id = Id;
         data.Name = Name;
+        data.Discipline = Discipline.DefName;
         data.Season = Season;
         data.LeagueType = (int)LeagueType;
         data.Participants = Standings.Select(x => new LeagueParticipantData() { PlayerId = x.Key.Id, LeaguePoints = x.Value }).ToList();
@@ -57,6 +59,7 @@ public class League
     {
         Id = data.Id;
         Name = data.Name;
+        Discipline = DefDatabase<DisciplineDef>.GetNamed(data.Discipline);
         Season = data.Season;
         LeagueType = (TournamentType)data.LeagueType;
         Standings = data.Participants.ToDictionary(p => Database.GetPlayer(p.PlayerId), p => p.LeaguePoints);

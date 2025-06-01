@@ -21,15 +21,15 @@ public class UI_LeagueDashboard : UI_Dashboard
         Leaderboard.Init();
     }
 
-    public override void Refresh(int season)
+    public override void Refresh(DisciplineDef discipline, int season)
     {
-        Leaderboard.Refresh();
+        Leaderboard.Refresh(discipline);
 
         UpdateSchedule(season);
 
-        UpdateLeagueRanking(Database.GetLeague(TournamentType.GrandLeague, season), GrandLeagueList.ListContainer);
-        UpdateLeagueRanking(Database.GetLeague(TournamentType.ChallengeLeague, season), ChallengeLeagueList.ListContainer);
-        UpdateLeagueRanking(Database.GetLeague(TournamentType.OpenLeague, season), OpenLeagueList.ListContainer);
+        UpdateLeagueRanking(discipline, Database.GetLeague(TournamentType.GrandLeague, season), GrandLeagueList.ListContainer);
+        UpdateLeagueRanking(discipline, Database.GetLeague(TournamentType.ChallengeLeague, season), ChallengeLeagueList.ListContainer);
+        UpdateLeagueRanking(discipline, Database.GetLeague(TournamentType.OpenLeague, season), OpenLeagueList.ListContainer);
     }
 
     private void UpdateSchedule(int season)
@@ -37,7 +37,7 @@ public class UI_LeagueDashboard : UI_Dashboard
         Schedule.UpdateList(season);
     }
 
-    private void UpdateLeagueRanking(League l, GameObject container)
+    private void UpdateLeagueRanking(DisciplineDef discipline, League l, GameObject container)
     {
         HelperFunctions.DestroyAllChildredImmediately(container);
         int rank = 1;
@@ -49,7 +49,7 @@ public class UI_LeagueDashboard : UI_Dashboard
             if (rank <= l.NumPromotions) c = ColorManager.Singleton.AdvanceColor;
             if (rank > l.Ranking.Count - l.NumRelegations) c = ColorManager.Singleton.KoColor;
 
-            elem.InitLeagueList_Player(rank, l, p, c);
+            elem.InitLeagueList_Player(discipline, rank, l, p, c);
             rank++;
         }
     }

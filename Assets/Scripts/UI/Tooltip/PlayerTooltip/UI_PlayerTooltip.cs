@@ -45,54 +45,54 @@ public class UI_PlayerTooltip : UI_Tooltip
         Singleton = this;
     }
 
-    public void Init(Player p)
+    public void Init(DisciplineDef discipline, Player player)
     {
         ShowTooltip();
 
         // Header
-        FlagIcon.sprite = p.FlagBig;
-        FirstNameText.text = p.FirstName;
-        LastNameText.text = p.LastName;
+        FlagIcon.sprite = player.FlagBig;
+        FirstNameText.text = player.FirstName;
+        LastNameText.text = player.LastName;
 
-        LeagueIcon.sprite = p.LeagueIcon;
-        LeagueIcon.color = p.LeagueColor;
+        LeagueIcon.sprite = player.LeagueIcon;
+        LeagueIcon.color = player.LeagueColor;
 
         // Skills
         HelperFunctions.DestroyAllChildredImmediately(SkillContainer);
         foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
         {
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);
-            skillRow.Init(p, skillDef);
+            skillRow.Init(player, skillDef);
         }
 
         // Attributes
-        InconsistencyText.text = p.Inconsistency.ToString("0.0");
-        TiebreakerScoreText.text = p.TiebreakerScore.ToString("0.0");
-        MistakeChanceText.text = p.MistakeChance.ToString("0.0%");
+        InconsistencyText.text = player.Inconsistency.ToString("0.0");
+        TiebreakerScoreText.text = player.TiebreakerScore.ToString("0.0");
+        MistakeChanceText.text = player.MistakeChance.ToString("0.0%");
 
         // Stats
-        AgeText.text = p.Age.ToString();
-        EloText.text = p.Elo + " (#" + p.WorldRank + ")";
-        LeagueRankText.text = p.League == null ? "-" : p.CurrentLeaguePoints + " (#" + p.LeagueRank + ")";
+        AgeText.text = player.Age.ToString();
+        EloText.text = player.Elo[discipline] + " (#" + player.GetWorldRank(discipline) + ")";
+        LeagueRankText.text = player.League == null ? "-" : player.CurrentLeaguePoints + " (#" + player.LeagueRank + ")";
 
-        CountryLabelText.text = p.Country.Name;
-        Dictionary<Player, int> countryRanking = Database.GetCountryRanking(p.Country.Name);
-        CountryRankText.text = (countryRanking.Keys.ToList().IndexOf(p) + 1) + " / " + countryRanking.Count;
+        CountryLabelText.text = player.Country.Name;
+        Dictionary<Player, int> countryRanking = Database.GetCountryRanking(discipline, player.Country.Name);
+        CountryRankText.text = (countryRanking.Keys.ToList().IndexOf(player) + 1) + " / " + countryRanking.Count;
 
-        RegionLabelText.text = p.Country.Region;
-        Dictionary<Player, int> regionRanking = Database.GetRegionRanking(p.Country.Region);
-        RegionRankText.text = (regionRanking.Keys.ToList().IndexOf(p) + 1) + " / " + regionRanking.Count;
+        RegionLabelText.text = player.Country.Region;
+        Dictionary<Player, int> regionRanking = Database.GetRegionRanking(discipline, player.Country.Region);
+        RegionRankText.text = (regionRanking.Keys.ToList().IndexOf(player) + 1) + " / " + regionRanking.Count;
 
-        ContinentLabelText.text = p.Country.Continent;
-        Dictionary<Player, int> continentRanking = Database.GetContinentRanking(p.Country.Continent);
-        ContinentRankText.text = (continentRanking.Keys.ToList().IndexOf(p) + 1) + " / " + continentRanking.Count;
+        ContinentLabelText.text = player.Country.Continent;
+        Dictionary<Player, int> continentRanking = Database.GetContinentRanking(discipline, player.Country.Continent);
+        ContinentRankText.text = (continentRanking.Keys.ToList().IndexOf(player) + 1) + " / " + continentRanking.Count;
 
         // History
         HelperFunctions.DestroyAllChildredImmediately(HistoryContainer, skipElements: 1);
-        foreach(League league in Database.AllLeagues.Where(x => x.Season < Database.Season && x.Players.Contains(p)))
+        foreach(League league in Database.AllLeagues.Where(x => x.Season < Database.Season && x.Players.Contains(player)))
         {
             UI_HistoryRow historyRow = Instantiate(HistoryRowPrefab, HistoryContainer.transform);
-            historyRow.Init(p, league);
+            historyRow.Init(player, league);
         }
     }
 }

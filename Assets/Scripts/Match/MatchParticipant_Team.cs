@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class MatchParticipant_Team
 {
+    public TeamMatch Match { get; private set; }
     public Team Team { get; private set; }
     public int Seed { get; private set; }
     public int MatchScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
 
-    public MatchParticipant_Team(Team team, int seed)
+    public MatchParticipant_Team(TeamMatch match, Team team, int seed)
     {
+        Match = match;
         Team = team;
         Seed = seed;
     }
 
     public void SetPreMatchStats()
     {
-        EloBeforeMatch = Team.Elo;
+        EloBeforeMatch = Team.Elo[Match.Discipline];
     }
     public void SetEloAfterMatch(int eloAfterMatch)
     {
@@ -38,8 +40,9 @@ public class MatchParticipant_Team
         return data;
     }
 
-    public MatchParticipant_Team(TeamMatchParticipantData data)
+    public MatchParticipant_Team(TeamMatch match, TeamMatchParticipantData data)
     {
+        Match = match;
         Team = Database.GetTeam(data.TeamId);
         Seed = data.Seed;
         MatchScore = data.MatchScore;

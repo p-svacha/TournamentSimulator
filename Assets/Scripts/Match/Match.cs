@@ -250,7 +250,7 @@ public abstract class Match
     {
         get
         {
-            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.MatchScore).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.MatchScore).ToList();
             else return PlayerSeeding;
         }
     }
@@ -258,8 +258,8 @@ public abstract class Match
     {
         get
         {
-            if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
-            else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+            if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
+            else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ToList();
         }
     }
 

@@ -17,11 +17,6 @@ public class UI_PlayerTooltip : UI_Tooltip
 
     public GameObject SkillContainer;
 
-    [Header("Attributes")]
-    public TextMeshProUGUI InconsistencyText;
-    public TextMeshProUGUI TiebreakerScoreText;
-    public TextMeshProUGUI MistakeChanceText;
-
     [Header("Stats")]
     public TextMeshProUGUI AgeText;
     public TextMeshProUGUI EloText;
@@ -62,15 +57,11 @@ public class UI_PlayerTooltip : UI_Tooltip
         bool darkBackground = true;
         foreach(SkillDef skillDef in discipline.Skills)
         {
+            Skill skill = player.Skills[skillDef];
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);
-            skillRow.Init(player, skillDef, darkBackground ? ColorManager.Singleton.TableListDarkColor : ColorManager.Singleton.TableListLightColor);
+            skillRow.Init(player, skill, darkBackground ? ColorManager.Singleton.TableListDarkColor : ColorManager.Singleton.TableListLightColor);
             darkBackground = !darkBackground;
         }
-
-        // Attributes
-        InconsistencyText.text = player.Inconsistency.ToString("0.0");
-        TiebreakerScoreText.text = player.TiebreakerScore.ToString("0.0");
-        MistakeChanceText.text = player.MistakeChance.ToString("0.0%");
 
         // Stats
         AgeText.text = player.Age.ToString();

@@ -14,7 +14,4 @@ public class PlayerData
     public List<EloData> Elos { get; set; }
     public int LeagueType { get; set; }
     public List<PlayerSkillData> Skills { get; set; }
-    public float Inconsistency { get; set; }
-    public float TiebreakerScore { get; set; }
-    public float MistakeChance { get; set; }
 }

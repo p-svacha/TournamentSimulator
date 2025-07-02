@@ -13,22 +13,24 @@ public static class PlayerGenerator
     private static Dictionary<string, List<string>> Surnames;
 
     // Initial values
-    private static int MIN_INITIAL_SKILL_SCORE = 0;
-    private static int MAX_INITIAL_SKILL_SCORE = 100;
+    private static float MIN_INITIAL_SKILL_BASE_VALUE = 0f;
+    private static float MAX_INITIAL_SKILL_BASE_VALUE = 100f;
 
-    private static float MIN_INITIAL_INCONSISTENCY = 5f;
-    private static float MAX_INITIAL_INCONSISTENCY = 15f;
+    private static float MIN_INITIAL_INCONSISTENCY = 0f;
+    private static float MAX_INITIAL_INCONSISTENCY = 20f;
 
-    private static float MIN_INITIAL_TIEBREAKER_SCORE = 0f;
-    private static float MAX_INITIAL_TIEBREAKER_SCORE = 100;
+    private static float MIN_INITIAL_MISTAKE_CHANCE = 0f;
+    private static float MAX_INITIAL_MISTAKE_CHANCE = 0.20f;
 
-    private static float MIN_INITIAL_MISTAKE_CHANCE = 0.02f;
-    private static float MAX_INITIAL_MISTAKE_CHANCE = 0.08f;
+    // End of game adjustment values
+    private static float EOG_SKILL_ADJUSTMENT_RANGE = 0.5f;
+    private static float EOG_INCONSISTENCY_ADJUSTMENT_RANGE = 0.2f;
+    private static float EOG_MISTAKE_CHANCE_ADJUSTMENT_RANGE = 0.002f;
 
     // End of season adjustment values
-    private static int SKILL_ADJUSTMENT_RANGE = 5;
-    private static float INCONSISTENCY_ADJUSTMENT_RANGE = 1f;
-    private static float MISTAKE_CHANCE_ADJUSTMENT_RANGE = 0.005f;
+    private static float EOS_SKILL_ADJUSTMENT_RANGE = 5;
+    private static float EOS_INCONSISTENCY_ADJUSTMENT_RANGE = 2f;
+    private static float EOS_MISTAKE_CHANCE_ADJUSTMENT_RANGE = 0.02f;
 
     #region Init
 
@@ -99,14 +101,15 @@ public static class PlayerGenerator
         string firstname = GetRandomFirstname(country, sex);
         string lastname = GetRandomLastname(country);
 
-        Dictionary<SkillDef, int> skills = new Dictionary<SkillDef, int>();
-        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs) skills.Add(skillDef, GetRandomSkillScore());
-
-        float inconsistency = GetRandomInconsistency();
-        float tiebreakerScore = GetRandomTiebreakerScore();
-        float mistakeChance = GetRandomMistakeChance();
-
-        Player player = new Player(firstname, lastname, country, sex, skills, inconsistency, tiebreakerScore, mistakeChance);
+        Dictionary<SkillDef, Skill> skills = new Dictionary<SkillDef, Skill>();
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+        {
+            float baseValue = GetRandomSkillBaseValue();
+            float inconsistency = GetRandomInconsistency();
+            float mistakeChance = GetRandomMistakeChance();
+            skills.Add(skillDef, new Skill(skillDef, baseValue, inconsistency, mistakeChance));
+        }
+        Player player = new Player(firstname, lastname, country, sex, skills);
         return player;
     }
 
@@ -171,35 +174,45 @@ public static class PlayerGenerator
         return (int)(Mathf.Pow(Mathf.Log10(population), 8));
     }
 
-    private static int GetRandomSkillScore()
+    private static float GetRandomSkillBaseValue()
     {
-        return Random.Range(MIN_INITIAL_SKILL_SCORE, MAX_INITIAL_SKILL_SCORE + 1);
+        return Random.Range(MIN_INITIAL_SKILL_BASE_VALUE, MAX_INITIAL_SKILL_BASE_VALUE);
     }
     
     public static float GetRandomInconsistency()
     {
         return Random.Range(MIN_INITIAL_INCONSISTENCY, MAX_INITIAL_INCONSISTENCY);
     }
-    public static float GetRandomTiebreakerScore()
-    {
-        return Random.Range(MIN_INITIAL_TIEBREAKER_SCORE, MAX_INITIAL_TIEBREAKER_SCORE);
-    }
     public static float GetRandomMistakeChance()
     {
         return Random.Range(MIN_INITIAL_MISTAKE_CHANCE, MAX_INITIAL_MISTAKE_CHANCE);
     }
 
-    public static int GetRandomSkillAdjustment()
+
+    public static float GetRandomEndOfGameSkillAdjustment()
     {
-        return Random.Range(-SKILL_ADJUSTMENT_RANGE, SKILL_ADJUSTMENT_RANGE + 1);
+        return Random.Range(-EOG_SKILL_ADJUSTMENT_RANGE, EOG_SKILL_ADJUSTMENT_RANGE);
     }
-    public static float GetRandomInconsistencyAdjustment()
+    public static float GetRandomEndOfGameInconsistencyAdjustment()
     {
-        return Random.Range(-INCONSISTENCY_ADJUSTMENT_RANGE, INCONSISTENCY_ADJUSTMENT_RANGE);
+        return Random.Range(-EOG_INCONSISTENCY_ADJUSTMENT_RANGE, EOG_INCONSISTENCY_ADJUSTMENT_RANGE);
     }
-    public static float GetRandomMistakeChanceAdjustment()
+    public static float GetRandomEndOfGameMistakeChanceAdjustment()
     {
-        return Random.Range(-MISTAKE_CHANCE_ADJUSTMENT_RANGE, MISTAKE_CHANCE_ADJUSTMENT_RANGE);
+        return Random.Range(-EOG_MISTAKE_CHANCE_ADJUSTMENT_RANGE, EOG_MISTAKE_CHANCE_ADJUSTMENT_RANGE);
+    }
+
+    public static float GetRandomEndOfSeasonSkillAdjustment()
+    {
+        return Random.Range(-EOS_SKILL_ADJUSTMENT_RANGE, EOS_SKILL_ADJUSTMENT_RANGE);
+    }
+    public static float GetRandomEndOfSeasonInconsistencyAdjustment()
+    {
+        return Random.Range(-EOS_INCONSISTENCY_ADJUSTMENT_RANGE, EOS_INCONSISTENCY_ADJUSTMENT_RANGE);
+    }
+    public static float GetRandomEndOfSeasonMistakeChanceAdjustment()
+    {
+        return Random.Range(-EOS_MISTAKE_CHANCE_ADJUSTMENT_RANGE, EOS_MISTAKE_CHANCE_ADJUSTMENT_RANGE);
     }
 
 

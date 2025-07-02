@@ -159,7 +159,7 @@ public class TeamMatch : Match
         }
     }
 
-    public override List<MatchParticipant_Player> PlayerSeeding => PlayerParticipants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ThenByDescending(x => x.Player.TiebreakerScore).ToList();
+    public override List<MatchParticipant_Player> PlayerSeeding => PlayerParticipants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ToList();
 
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.

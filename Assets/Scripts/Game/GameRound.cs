@@ -17,7 +17,7 @@ public abstract class GameRound
     }
 
     public PlayerGameRound GetPlayerResult(Player p) => PlayerResults.First(x => x.Player == p);
-    public List<Player> PlayerRanking => PlayerResults.OrderByDescending(x => x.Score).ThenByDescending(x => x.Player.TiebreakerScore).Select(x => x.Player).ToList();
+    public List<Player> PlayerRanking => PlayerResults.OrderByDescending(x => x.Score).Select(x => x.Player).ToList();
 
     #region Save / Load
 

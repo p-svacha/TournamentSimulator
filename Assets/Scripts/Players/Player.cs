@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class Player : IPlayer
+public class Player
 {
     public int Id { get; private set; }
     public string FirstName { get; private set; }
@@ -12,10 +12,7 @@ public class Player : IPlayer
     public string Sex { get; private set; }
     public Dictionary<DisciplineDef, int> Elo { get; private set; }
     public TournamentType LeagueType { get; private set; }
-    private Dictionary<SkillDef, int> Skills { get; set; }
-    public float Inconsistency { get; private set; }
-    public float TiebreakerScore { get; private set; }
-    public float MistakeChance { get; private set; }
+    public Dictionary<SkillDef, Skill> Skills { get; private set; }
 
     public League League => Database.GetCurrentLeague(LeagueType);
     public int CurrentLeaguePoints => League.Standings[this];
@@ -34,7 +31,7 @@ public class Player : IPlayer
     public int GetWorldRank(DisciplineDef discipline) => Database.AllPlayers.OrderByDescending(x => x.Elo[discipline]).ToList().IndexOf(this) + 1;
 
     // New player
-    public Player(string firstName, string lastName, Country country, string sex, Dictionary<SkillDef, int> skills, float inconsistecy, float tiebreakerScore, float mistakeChance)
+    public Player(string firstName, string lastName, Country country, string sex, Dictionary<SkillDef, Skill> skills)
     {
         Id = Database.GetNewPlayerId();
 
@@ -42,10 +39,7 @@ public class Player : IPlayer
         LastName = lastName;
         Sex = sex;
         Country = country;
-        Skills = skills;
-        Inconsistency = inconsistecy;
-        TiebreakerScore = tiebreakerScore;
-        MistakeChance = mistakeChance;
+        Skills = new Dictionary<SkillDef, Skill>(skills);
 
         Elo = new Dictionary<DisciplineDef, int>();
         foreach (DisciplineDef discipline in DefDatabase<DisciplineDef>.AllDefs)
@@ -56,48 +50,18 @@ public class Player : IPlayer
         LeagueType = TournamentType.None;
     }
 
-    public int GetSkillBaseValue(SkillDef skillDef) => Skills[skillDef];
+    public float GetSkillBaseValue(SkillDef skillDef) => Skills[skillDef].BaseValue;
 
     /// <summary>
     /// Returns a match round result value for a specific skill, given the match state.
     /// </summary>
     public PlayerGameRound GetMatchRoundResult(SkillDef skillDef)
     {
-        List<string> modifiers = new List<string>();
-
-        // Score
-        int score;
-        if (Random.value < MistakeChance) // Mistake
-        {
-            score = 0;
-            modifiers.Add(MISTAKE_MODIFIER);
-        }
-        else // Inconsistency
-        {
-            score = Mathf.RoundToInt(HelperFunctions.RandomGaussian(minValue: Skills[skillDef] - Inconsistency, maxValue: Skills[skillDef] + Inconsistency));
-            if (score < 0) score = 0;
-        }
-        return new PlayerGameRound(this, score, modifiers);
+        Skill skill = Skills[skillDef];
+        return skill.GetGameRoundResult(this);
     }
     
-    /// <summary>
-    /// Changes the specified skill by the specified value.
-    /// </summary>
-    public void AdjustSkill(SkillDef skillDef, int adjustmentValue)
-    {
-        Skills[skillDef] += adjustmentValue;
-        if (Skills[skillDef] < 0) Skills[skillDef] = 0;
-    }
-    public void AdjustInconsistency(float adjustmentValue)
-    {
-        Inconsistency += adjustmentValue;
-        Inconsistency = Mathf.Clamp(Inconsistency, 0f, 20f);
-    }
-    public void AdjustMistakeChance(float adjustmentValue)
-    {
-        MistakeChance += adjustmentValue;
-        MistakeChance = Mathf.Clamp01(MistakeChance);
-    }
+
 
     public void SetElo(DisciplineDef discipline, int value)
     {
@@ -125,10 +89,7 @@ public class Player : IPlayer
         data.Sex = Sex;
         data.Elos = Elo.Select(x => new EloData(x.Key.DefName, x.Value)).ToList();
         data.LeagueType = (int)LeagueType;
-        data.Skills = Skills.Select(x => new PlayerSkillData() { Skill = x.Key.DefName, Value = x.Value }).ToList();
-        data.Inconsistency = Inconsistency;
-        data.TiebreakerScore = TiebreakerScore;
-        data.MistakeChance = MistakeChance;
+        data.Skills = Skills.Select(x => x.Value.ToData()).ToList();
         return data;
     }
 
@@ -140,10 +101,7 @@ public class Player : IPlayer
         Country = Database.GetCountry(data.CountryId);
         Sex = data.Sex;
         LeagueType = (TournamentType)data.LeagueType;
-        Skills = data.Skills.ToDictionary(x => DefDatabase<SkillDef>.AllDefs.First(s => s.DefName == x.Skill), x => x.Value);
-        Inconsistency = data.Inconsistency;
-        TiebreakerScore = data.TiebreakerScore;
-        MistakeChance = data.MistakeChance;
+        Skills = data.Skills.ToDictionary(x => DefDatabase<SkillDef>.GetNamed(x.Skill), x => new Skill(x));
 
         // Elos
         Elo = new Dictionary<DisciplineDef, int>();

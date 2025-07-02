@@ -7,5 +7,7 @@ using UnityEngine;
 public class PlayerSkillData
 {
     public string Skill { get; set; }
-    public int Value { get; set; }
+    public float BaseValue { get; set; }
+    public float Inconsistency { get; set; }
+    public float MistakeChance { get; set; }
 }

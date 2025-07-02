@@ -70,6 +70,12 @@ public static class HelperFunctions
         throw new System.Exception();
     }
 
+    /// <summary>
+    /// Returns a random float following a Gaussian (normal) distribution,
+    /// centered between <paramref name="minValue"/> and <paramref name="maxValue"/>, and clamped within that range.
+    /// The method uses the Box-Muller transform to generate a standard normal value,
+    /// then scales it using the "three-sigma rule" so ~99.7% of values fall within the range.
+    /// </summary>
     public static float RandomGaussian(float minValue = 0.0f, float maxValue = 1.0f)
     {
         float u, v, S;

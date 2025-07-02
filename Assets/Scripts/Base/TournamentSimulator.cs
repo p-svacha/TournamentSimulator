@@ -245,11 +245,12 @@ public class TournamentSimulator : MonoBehaviour
     {
         foreach(Player p in Database.AllPlayers)
         {
-            foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
-                p.AdjustSkill(skillDef, PlayerGenerator.GetRandomSkillAdjustment());
-
-            p.AdjustInconsistency(PlayerGenerator.GetRandomInconsistencyAdjustment());
-            p.AdjustMistakeChance(PlayerGenerator.GetRandomMistakeChanceAdjustment());
+            foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+            {
+                p.Skills[skillDef].AdjustBaseValue(PlayerGenerator.GetRandomEndOfSeasonSkillAdjustment());
+                p.Skills[skillDef].AdjustInconsistency(PlayerGenerator.GetRandomEndOfSeasonInconsistencyAdjustment());
+                p.Skills[skillDef].AdjustMistakeChance(PlayerGenerator.GetRandomEndOfSeasonMistakeChanceAdjustment());
+            }
         }
     }
 

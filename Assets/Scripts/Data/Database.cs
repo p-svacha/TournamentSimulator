@@ -181,7 +181,7 @@ public static class Database
 
     public static List<Player> GetPlayerEloRanking(DisciplineDef discipline)
     {
-        return Players.Values.OrderByDescending(x => x.Elo[discipline]).ThenByDescending(x => x.TiebreakerScore).ToList();
+        return Players.Values.OrderByDescending(x => x.Elo[discipline]).ToList();
     }
     public static List<Team> GetTeamEloRanking(DisciplineDef discipline)
     {

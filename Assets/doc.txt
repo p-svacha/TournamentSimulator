@@ -1,4 +1,12 @@
-------------------------------- Before season 6 ------------------------------------------- the stat update
+-- before season 6
+
+adjust skill after every game a little
+
+replace tiebreaker with real tiebreakers (total score in a match)
+
+5% football modifier with 1 skill
+
+------------------------------- Before season 7 ------------------------------------------- the stat update
 show elo change in UI_MatchOverviewPlayer
 show rank in UI_MatchOverviewPlayer
 show seed in UI_MatchOverviewPlayer

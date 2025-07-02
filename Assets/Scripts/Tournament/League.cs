@@ -36,7 +36,7 @@ public class League
         Tournaments = new List<Tournament>();
     }
 
-    public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).ThenByDescending(x => x.Key.TiebreakerScore).Select(x => x.Key).ToList();
+    public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
     public int GetRankOf(Player p) => Ranking.IndexOf(p) + 1;
 
     #region Save / Load

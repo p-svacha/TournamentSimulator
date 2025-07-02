@@ -25,7 +25,7 @@ public class UI_MatchPlayer : MonoBehaviour
         PlusPointsText.text = "";
         PointsText.text = Game.IsTeamGame ? "" : points.ToString();
 
-        GetComponent<PlayerTooltipTarget>().Init(game.Discipline, p);
+        GetComponent<PlayerTooltipTarget>().Init(game.Discipline.Def, p);
     }
 
     public void InitEmpty()

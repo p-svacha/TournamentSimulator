@@ -150,29 +150,29 @@ public class TournamentSimulator : MonoBehaviour
         AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers, numPromotions: NUM_CHALLENGE_OPEN_SWAPS, numRelegations: NUM_OPEN_LEAGUE_RELEGATIONS);
 
         // Create league tournaments
-        ScheduleTournament(TournamentType.GrandLeague, 1, 10);
-        ScheduleTournament(TournamentType.GrandLeague, 2, 10);
-        ScheduleTournament(TournamentType.GrandLeague, 3, 10);
-        ScheduleTournament(TournamentType.GrandLeague, 3, 14);
-        ScheduleTournament(TournamentType.GrandLeague, 4, 4);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 1, 10);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 2, 10);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 3, 10);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 3, 14);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 4, 4);
 
-        ScheduleTournament(TournamentType.ChallengeLeague, 1, 6);
-        ScheduleTournament(TournamentType.ChallengeLeague, 2, 6);
-        ScheduleTournament(TournamentType.ChallengeLeague, 2, 14);
-        ScheduleTournament(TournamentType.ChallengeLeague, 3, 6);
-        ScheduleTournament(TournamentType.ChallengeLeague, 4, 3);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.ChallengeLeague, 1, 6);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.ChallengeLeague, 2, 6);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.ChallengeLeague, 2, 14);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.ChallengeLeague, 3, 6);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.ChallengeLeague, 4, 3);
 
-        ScheduleTournament(TournamentType.OpenLeague, 1, 2);
-        ScheduleTournament(TournamentType.OpenLeague, 1, 14);
-        ScheduleTournament(TournamentType.OpenLeague, 2, 2);
-        ScheduleTournament(TournamentType.OpenLeague, 3, 2);
-        ScheduleTournament(TournamentType.OpenLeague, 4, 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.OpenLeague, 1, 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.OpenLeague, 1, 14);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.OpenLeague, 2, 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.OpenLeague, 3, 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.OpenLeague, 4, 2);
 
         // Season Cup
-        ScheduleTournament(TournamentType.SeasonCup);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.SeasonCup);
 
         // World Cup
-        ScheduleTournament(TournamentType.WorldCup, numPlayersPerTeam: 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
 
         // Switch season view
         UI.DashboardScreen.SelectedSeasonIndex = Database.Season;
@@ -186,16 +186,16 @@ public class TournamentSimulator : MonoBehaviour
         Database.AddLeague(newLeague);
     }
 
-    public void ScheduleTournament(TournamentType type, int quarter = 0, int day = 0, int numPlayersPerTeam = 0)
+    public void ScheduleTournament(DisciplineDef disciplineDef, TournamentType type, int quarter = 0, int day = 0, int numPlayersPerTeam = 0)
     {
         int season = Database.Season;
 
         Tournament newTournament;
-        if (type == TournamentType.GrandLeague) newTournament = new Format_GrandLeague(season, quarter, day, Database.CurrentGrandLeague);
-        else if (type == TournamentType.ChallengeLeague) newTournament = new Format_ChallengeLeague(season, quarter, day, Database.CurrentChallengeLeague);
-        else if (type == TournamentType.OpenLeague) newTournament = new Format_OpenLeague(season, quarter, day, Database.CurrentOpenLeague);
-        else if (type == TournamentType.SeasonCup) newTournament = new Format_SeasonCup(season);
-        else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(season, numPlayersPerTeam);
+        if (type == TournamentType.GrandLeague) newTournament = new Format_GrandLeague(disciplineDef, season, quarter, day, Database.CurrentGrandLeague);
+        else if (type == TournamentType.ChallengeLeague) newTournament = new Format_ChallengeLeague(disciplineDef, season, quarter, day, Database.CurrentChallengeLeague);
+        else if (type == TournamentType.OpenLeague) newTournament = new Format_OpenLeague(disciplineDef, season, quarter, day, Database.CurrentOpenLeague);
+        else if (type == TournamentType.SeasonCup) newTournament = new Format_SeasonCup(disciplineDef, season);
+        else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(disciplineDef, season, numPlayersPerTeam);
         else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
 
         Database.AddTournament(newTournament);

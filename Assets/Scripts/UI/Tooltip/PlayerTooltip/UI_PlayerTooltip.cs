@@ -59,10 +59,12 @@ public class UI_PlayerTooltip : UI_Tooltip
 
         // Skills
         HelperFunctions.DestroyAllChildredImmediately(SkillContainer);
-        foreach(SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+        bool darkBackground = true;
+        foreach(SkillDef skillDef in discipline.Skills)
         {
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);
-            skillRow.Init(player, skillDef);
+            skillRow.Init(player, skillDef, darkBackground ? ColorManager.Singleton.TableListDarkColor : ColorManager.Singleton.TableListLightColor);
+            darkBackground = !darkBackground;
         }
 
         // Attributes

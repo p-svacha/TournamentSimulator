@@ -27,7 +27,7 @@ public class Popup_ScheduleTournament : PopupContent
     public override void OnOkClick(TournamentSimulator simulator)
     {
         TournamentType type = (TournamentType)TypeDropdown.value;
-        simulator.ScheduleTournament(type, QuarterDropdown.value + 1, DayDropdown.value + 1);
+        simulator.ScheduleTournament(DisciplineDefOf.Football, type, QuarterDropdown.value + 1, DayDropdown.value + 1);
         simulator.UpdateUI();
     }
 }

@@ -16,7 +16,7 @@ public class Format_WorldCup : Tournament
     private List<int> TeamPointDistribution = new List<int>() { 1, 0 };
 
     public Format_WorldCup(TournamentData data) : base(data) { }
-    public Format_WorldCup(int season, int playersPerTeam) : base(TournamentType.WorldCup, season)
+    public Format_WorldCup(DisciplineDef disciplineDef, int season, int playersPerTeam) : base(disciplineDef, TournamentType.WorldCup, season)
     {
         NumPlayersPerTeam = playersPerTeam;
         if (NumPlayersPerTeam == 0) NumPlayersPerTeam = 2; // fallback
@@ -35,7 +35,7 @@ public class Format_WorldCup : Tournament
         if (numTeams == -1) throw new System.Exception("Not enough eligible teams to create a world cup with " + NumPlayersPerTeam + " players per team.");
 
         // Select participants
-        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(Discipline, NumPlayersPerTeam)).Take(numTeams).ToList();
+        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(Discipline.Def, NumPlayersPerTeam)).Take(numTeams).ToList();
 
         Initialize();
     }

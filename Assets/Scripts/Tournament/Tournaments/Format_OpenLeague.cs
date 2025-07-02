@@ -27,7 +27,7 @@ public class Format_OpenLeague : Tournament
     public int Day { get; private set; }
 
     public Format_OpenLeague(TournamentData data) : base(data) { }
-    public Format_OpenLeague(int season, int quarter, int day, League league) : base(TournamentType.OpenLeague, season, league)
+    public Format_OpenLeague(DisciplineDef disciplineDef, int season, int quarter, int day, League league) : base(disciplineDef, TournamentType.OpenLeague, season, league)
     {
         Players = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.OpenLeague).ToList();
         Quarter = quarter;

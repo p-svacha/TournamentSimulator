@@ -18,9 +18,9 @@ public class SoloMatch : Match
 
     public override int NumParticipants => NumPlayers;
 
-    protected override Game CreateGame(int index)
+    protected override Game CreateGame(int index, List<GameModifierDef> gameModifiers)
     {
-        return new SoloGame(this, index);
+        return new SoloGame(this, index, gameModifiers);
     }
 
     protected override void SetDone()

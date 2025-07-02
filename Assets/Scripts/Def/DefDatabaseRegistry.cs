@@ -25,7 +25,7 @@ public static class DefDatabaseRegistry
         ClearAllDatabases();
         DefDatabase<MatchFormatDef>.AddDefs(MatchFormatDefs.Defs);
         DefDatabase<SkillDef>.AddDefs(SkillDefs.Defs);
-        DefDatabase<MapDef>.AddDefs(MapDefs.Defs);
+        DefDatabase<GameModifierDef>.AddDefs(GameModifierDefs.Defs);
         DefDatabase<DisciplineDef>.AddDefs(DisciplineDefs.Defs);
         DefDatabase<TournamentFormatDef>.AddDefs(TournamentFormatDefs.Defs);
         DefDatabase<TournamentDef>.AddDefs(TournamentDefs.Defs);

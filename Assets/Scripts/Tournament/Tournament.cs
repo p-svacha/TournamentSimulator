@@ -8,7 +8,7 @@ public abstract class Tournament
 {
     public int Id { get; private set; }
     public string Name { get; protected set; }
-    public DisciplineDef Discipline { get; private set; }
+    public Discipline Discipline { get; private set; }
     public TournamentType Format { get; private set; }
     public League League { get; protected set; }
     public int Season { get; protected set; }
@@ -23,10 +23,11 @@ public abstract class Tournament
     public bool IsTeamTournament => NumPlayersPerTeam > 0;
 
     // New tournament
-    public Tournament(TournamentType format, int season, League league = null)
+    public Tournament(DisciplineDef disciplineDef, TournamentType format, int season, League league = null)
     {
         Id = Database.GetNewTournamentId();
 
+        Discipline = new Discipline(disciplineDef);
         Format = format;
         Season = season;
         IsDone = false;
@@ -388,7 +389,7 @@ public abstract class Tournament
         TournamentData data = new TournamentData();
         data.Id = Id;
         data.Name = Name;
-        data.Discipline = Discipline.DefName;
+        data.DisciplineInfo = Discipline.ToData();
         data.Format = (int)Format;
         data.LeagueId = League == null ? -1 : League.Id;
         data.Season = Season;
@@ -414,7 +415,7 @@ public abstract class Tournament
     {
         Id = data.Id;
         Name = data.Name;
-        Discipline = DefDatabase<DisciplineDef>.GetNamed(data.Discipline);
+        Discipline = new Discipline(data.DisciplineInfo);
         Format = (TournamentType)data.Format;
         League = data.LeagueId == -1 ? null : Database.GetLeague(data.LeagueId);
         Season = data.Season;

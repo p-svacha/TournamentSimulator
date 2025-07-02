@@ -10,7 +10,7 @@ public class TeamGame : Game
     private Dictionary<MatchParticipant_Team, int> TeamPoints;
     public new List<TeamGameRound> Rounds => base.Rounds.Select(r => (TeamGameRound)r).ToList();
 
-    public TeamGame(Match match, int gameIndex) : base(match, gameIndex) { }
+    public TeamGame(Match match, int gameIndex, List<GameModifierDef> gameModifierDefs) : base(match, gameIndex, gameModifierDefs) { }
     public TeamGame(Match match, GameData data) : base(match, data) { }
 
     protected override void OnStartGame()

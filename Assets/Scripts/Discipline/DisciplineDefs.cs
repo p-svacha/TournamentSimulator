@@ -10,7 +10,21 @@ public static class DisciplineDefs
         {
             DefName = "Football",
             Label = "Football",
-            Description = "The classic football game."
+            Description = "The classic football game.",
+            Skills = new List<SkillDef>()
+            {
+                SkillDefOf.Agility,
+                SkillDefOf.BallControl,
+                SkillDefOf.Dribbling,
+                SkillDefOf.Jumping,
+                SkillDefOf.MentalityGeneral,
+                SkillDefOf.Passing,
+                SkillDefOf.Positioning,
+                SkillDefOf.Shooting,
+                SkillDefOf.Sprint,
+                SkillDefOf.Stamina,
+                SkillDefOf.Strength,
+            }
         },
 
         new DisciplineDef()

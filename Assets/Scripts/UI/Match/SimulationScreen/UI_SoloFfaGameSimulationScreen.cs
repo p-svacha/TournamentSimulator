@@ -82,7 +82,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
             }
             else if(SimPlayer == Match.NumPlayers + 1)
             {
-                if (CurrentSkillIndex == DefDatabase<SkillDef>.AllDefs.Count - 1) EndSimulation();
+                if (CurrentSkillIndex == Game.Skills.Count - 1) EndSimulation();
                 else GoToNextSkill();
             }
             else
@@ -125,9 +125,9 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
     {
         // Change attribute
         CurrentSkillIndex++;
-        CurrentSkill =  DefDatabase<SkillDef>.AllDefs[CurrentSkillIndex];
-        ProgressText.text = (CurrentSkillIndex + 1) + "/" + DefDatabase<SkillDef>.AllDefs.Count;
-        AttributeText.text = DefDatabase<SkillDef>.AllDefs[CurrentSkillIndex].Label;
+        CurrentSkill =  Game.Skills[CurrentSkillIndex];
+        ProgressText.text = (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
+        AttributeText.text = CurrentSkill.Label;
         SimPlayer = 0;
 
         // Execute game round

@@ -59,9 +59,9 @@ public class TeamMatch : Match
         base.StartMatch();
     }
 
-    protected override Game CreateGame(int index)
+    protected override Game CreateGame(int index, List<GameModifierDef> gameModifiers)
     {
-        return new TeamGame(this, index);
+        return new TeamGame(this, index, gameModifiers);
     }
 
     public override void OnDayStart()
@@ -104,7 +104,7 @@ public class TeamMatch : Match
             int newElo = kvp.Value;
 
             GetParticipant(t).SetEloAfterMatch(newElo);
-            t.SetElo(Discipline, newElo);
+            t.SetElo(Discipline.Def, newElo);
         }
     }
 
@@ -128,7 +128,7 @@ public class TeamMatch : Match
         List<MatchParticipant_Team> teamRanking = TeamRanking;
 
         Dictionary<Team, int> newRatings = new Dictionary<Team, int>();
-        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo[Discipline]);
+        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo[Discipline.Def]);
 
         for (int i = 0; i < teamRanking.Count; i++)
         {
@@ -144,8 +144,8 @@ public class TeamMatch : Match
 
     private void AdjustTeamRatings(Dictionary<Team, int> newRatings, Team winner, Team loser, bool isDraw)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline] - winner.Elo[Discipline]) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline] - loser.Elo[Discipline]) / 400f));
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline.Def] - winner.Elo[Discipline.Def]) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline.Def] - loser.Elo[Discipline.Def]) / 400f));
 
         if (isDraw)
         {

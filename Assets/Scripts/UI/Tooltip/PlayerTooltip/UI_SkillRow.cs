@@ -11,10 +11,10 @@ public class UI_SkillRow : MonoBehaviour
     public TextMeshProUGUI ValueText;
     public Image Background;
 
-    public void Init(Player p, SkillDef def)
+    public void Init(Player p, SkillDef def, Color backgroundColor)
     {
         LabelText.text = def.Triplet;
         ValueText.text = p.GetSkillBaseValue(def).ToString();
-        Background.color = DefDatabase<SkillDef>.AllDefs.IndexOf(def) % 2 == 0 ? ColorManager.Singleton.TableListDarkColor : ColorManager.Singleton.TableListLightColor;
+        Background.color = backgroundColor;
     }
 }

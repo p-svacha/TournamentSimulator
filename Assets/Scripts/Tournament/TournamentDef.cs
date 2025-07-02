@@ -22,7 +22,7 @@ public class TournamentDef : Def
     /// <summary>
     /// The set of maps that can be played during this tournament.
     /// </summary>
-    public List<MapDef> MapPool { get; init; }
+    public List<GameModifierDef> MapPool { get; init; }
 
     /// <summary>
     /// How maps are chosen in games.

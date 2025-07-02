@@ -4,6 +4,10 @@ using UnityEngine;
 
 public static class SkillDefs
 {
+    /// <summary>
+    /// IMPORTANT!
+    /// Never remove or rename DefNames of existing SkillDefs, as that would ruin the history and break the game!
+    /// </summary>
     public static List<SkillDef> Defs => new List<SkillDef>()
     {
         new SkillDef()
@@ -82,5 +86,12 @@ public static class SkillDefs
             Label = "Strength",
             Triplet = "STR",
         },
+
+        new SkillDef()
+        {
+            DefName = "Gaming",
+            Label = "Gaming",
+            Triplet = "GAM"
+        }
     };
 }

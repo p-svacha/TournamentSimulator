@@ -9,5 +9,7 @@ public class GameData
     public int Id { get; set; }
     public int MatchId { get; set; }
     public int Index { get; set; }
+    public List<string> Skills { get; set; }
+    public List<GameModifierData> GameModifiers { get; set; }
     public List<GameRoundData> Rounds { get; set; }
 }

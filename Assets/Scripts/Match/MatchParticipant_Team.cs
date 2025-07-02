@@ -20,7 +20,7 @@ public class MatchParticipant_Team
 
     public void SetPreMatchStats()
     {
-        EloBeforeMatch = Team.Elo[Match.Discipline];
+        EloBeforeMatch = Team.Elo[Match.Discipline.Def];
     }
     public void SetEloAfterMatch(int eloAfterMatch)
     {

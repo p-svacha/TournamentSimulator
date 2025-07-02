@@ -15,7 +15,7 @@ public class Format_Classic24 : Tournament
     public int Day { get; private set; }
 
     public Format_Classic24(TournamentData data) : base(data) { }
-    public Format_Classic24(TournamentType type, int season, int quarter, int day, League league) : base(type, season, league)
+    public Format_Classic24(DisciplineDef disciplineDef, TournamentType type, int season, int quarter, int day, League league) : base(disciplineDef, type, season, league)
     {
         Players = Database.AllPlayers.Where(x => x.LeagueType == type).ToList();
         Quarter = quarter;

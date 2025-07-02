@@ -84,16 +84,16 @@ public class UI_Leaderboard : MonoBehaviour
             Dictionary<Player, Vector3Int> medals = new Dictionary<Player, Vector3Int>();
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 1) // Grand League
-                foreach (League l in Database.AllLeagues.Where(x => x.Discipline == Discipline && x.LeagueType == TournamentType.GrandLeague && x.IsDone))
-                    Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Player>() { x }), medals);
+                foreach (League league in Database.AllLeagues.Where(l => l.Discipline == Discipline && l.LeagueType == TournamentType.GrandLeague && l.IsDone))
+                    Database.GetAddMedals(league.Ranking.ToDictionary(l => league.Ranking.IndexOf(l), x => new List<Player>() { x }), medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 2) // Season Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.SeasonCup && x.IsDone))
-                    Database.GetAddMedals(t.PlayerRanking, medals);
+                foreach (Tournament tournament in Database.AllTournaments.Where(t => t.Discipline.Def == Discipline && t.Format == TournamentType.SeasonCup && t.IsDone))
+                    Database.GetAddMedals(tournament.PlayerRanking, medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 3) // World Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.WorldCup && x.IsDone))
-                    Database.GetAddMedals(t.PlayerRanking, medals);
+                foreach (Tournament tournament in Database.AllTournaments.Where(t => t.Discipline.Def == Discipline && t.Format == TournamentType.WorldCup && t.IsDone))
+                    Database.GetAddMedals(tournament.PlayerRanking, medals);
 
             // Order
             medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);
@@ -114,16 +114,16 @@ public class UI_Leaderboard : MonoBehaviour
             Dictionary<Team, Vector3Int> medals = new Dictionary<Team, Vector3Int>();
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 1) // Grand League
-                foreach (League l in Database.AllLeagues.Where(x => x.Discipline == Discipline && x.LeagueType == TournamentType.GrandLeague && x.IsDone))
-                    Database.GetAddMedals(l.Ranking.ToDictionary(x => l.Ranking.IndexOf(x), x => new List<Team>() { Database.GetNationalTeam(x.Country) }), medals);
+                foreach (League league in Database.AllLeagues.Where(l => l.Discipline == Discipline && l.LeagueType == TournamentType.GrandLeague && l.IsDone))
+                    Database.GetAddMedals(league.Ranking.ToDictionary(l => league.Ranking.IndexOf(l), x => new List<Team>() { Database.GetNationalTeam(x.Country) }), medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 2) // Season Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.SeasonCup && x.IsDone))
-                    Database.GetAddMedals(t.TeamRanking, medals);
+                foreach (Tournament tournament in Database.AllTournaments.Where(t => t.Discipline.Def == Discipline && t.Format == TournamentType.SeasonCup && t.IsDone))
+                    Database.GetAddMedals(tournament.TeamRanking, medals);
 
             if (MedalTournamentTypeDropdown.value == 0 || MedalTournamentTypeDropdown.value == 3) // World Cup
-                foreach (Tournament t in Database.AllTournaments.Where(x => x.Discipline == Discipline && x.Format == TournamentType.WorldCup && x.IsDone))
-                    Database.GetAddMedals(t.TeamRanking, medals);
+                foreach (Tournament tournament in Database.AllTournaments.Where(t => t.Discipline.Def == Discipline && t.Format == TournamentType.WorldCup && t.IsDone))
+                    Database.GetAddMedals(tournament.TeamRanking, medals);
 
             // Order
             medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);

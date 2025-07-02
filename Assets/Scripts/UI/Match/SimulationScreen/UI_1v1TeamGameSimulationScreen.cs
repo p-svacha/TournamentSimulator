@@ -104,7 +104,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
             }
             else if (SimPlayer == Match.NumPlayers + 1)
             {
-                if (CurrentSkillIndex == DefDatabase<SkillDef>.AllDefs.Count - 1) EndSimulation();
+                if (CurrentSkillIndex == Game.Skills.Count - 1) EndSimulation();
                 else GoToNextSkill();
             }
             else
@@ -149,9 +149,9 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
     {
         // Change attribute
         CurrentSkillIndex++;
-        CurrentSkill = DefDatabase<SkillDef>.AllDefs[CurrentSkillIndex];
-        ProgressTitleText.text = (CurrentSkillIndex + 1) + "/" + DefDatabase<SkillDef>.AllDefs.Count;
-        AttributeTitleText.text = DefDatabase<SkillDef>.AllDefs[CurrentSkillIndex].Label;
+        CurrentSkill = Game.Skills[CurrentSkillIndex];
+        ProgressTitleText.text = (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
+        AttributeTitleText.text = CurrentSkill.Label;
         SimPlayer = 0;
 
         // Execute game round

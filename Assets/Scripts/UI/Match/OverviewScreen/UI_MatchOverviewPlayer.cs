@@ -18,7 +18,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
     public void Init(Match m, MatchParticipant_Player p)
     {
-        GetComponent<PlayerTooltipTarget>().Init(m.Discipline, p.Player);
+        GetComponent<PlayerTooltipTarget>().Init(m.Discipline.Def, p.Player);
 
         FlagIcon.sprite = p.Player.FlagBig;
         NameText.text = p.Player.Name;
@@ -28,9 +28,11 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
         {
             ScoreText.text = p.MatchScore.ToString();
 
-            if (m.Games[0].Rounds.Count > 1)
+            if (m.Games.Count == 1)
             {
-                foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+                Game game = m.Games[0];
+
+                foreach (SkillDef skillDef in game.Skills)
                 {
                     GameRound round = m.Games[0].Rounds.First(x => x.Skill == skillDef);
                     PlayerGameRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
@@ -43,6 +45,8 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
                 }
                 LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
             }
+
+            else throw new System.Exception("Not implemented yet for games with multiple matches.");
         }
     }
 }

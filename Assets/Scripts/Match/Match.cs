@@ -17,7 +17,7 @@ public abstract class Match
     public int Season => Tournament.Season;
     public string DateString => Database.GetDateString(Season, Quarter, Day);
     public bool IsTeamMatch { get; protected set; }
-    public DisciplineDef Discipline => Tournament.Discipline;
+    public Discipline Discipline => Tournament.Discipline;
 
 
     // Rules
@@ -78,11 +78,18 @@ public abstract class Match
     /// </summary>
     private Game CreateNextGame()
     {
-        int numExistingGames = Games.Count;
+        int gameIndex = Games.Count;
 
-        Game nextGame = CreateGame(numExistingGames);
+        List<GameModifierDef> gameModifiers = GenerateGameModifiersFor(gameIndex);
+
+        Game nextGame = CreateGame(gameIndex, gameModifiers);
         Games.Add(nextGame);
         return nextGame;
+    }
+
+    private List<GameModifierDef> GenerateGameModifiersFor(int gameIndex)
+    {
+        return new List<GameModifierDef>();
     }
 
     /// <summary>
@@ -96,7 +103,7 @@ public abstract class Match
         UI_Base.Instance.StartGameSimulation(nextGame, stepTime);
     }
 
-    protected abstract Game CreateGame(int index);
+    protected abstract Game CreateGame(int index, List<GameModifierDef> gameModifiers);
 
     /// <summary>
     /// Sets the matches the top x players in this match advance to, with x being the length of the list and the integers in the list corresponding to the match index within the tournament.
@@ -201,7 +208,7 @@ public abstract class Match
             int newElo = kvp.Value;
 
             GetParticipant(p).SetEloAfterMatch(newElo);
-            p.SetElo(Discipline, newElo);
+            p.SetElo(Discipline.Def, newElo);
         }
     }
 
@@ -214,7 +221,7 @@ public abstract class Match
         List<Player> ranking = PlayerRanking;
 
         Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
-        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo[Discipline]);
+        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo[Discipline.Def]);
 
         for (int i = 0; i < ranking.Count; i++)
         {
@@ -229,8 +236,8 @@ public abstract class Match
 
     private void GetAdjustedNewRatings(Dictionary<Player, int> newRatings, Player winner, Player loser)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline] - winner.Elo[Discipline]) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline] - loser.Elo[Discipline]) / 400f));
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline.Def] - winner.Elo[Discipline.Def]) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline.Def] - loser.Elo[Discipline.Def]) / 400f));
 
         newRatings[winner] += (int)(20 * (1 - expWinner));
         newRatings[loser] += (int)(20 * (0 - expLoser));

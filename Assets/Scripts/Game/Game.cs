@@ -17,7 +17,7 @@ public abstract class Game
     /// </summary>
     public Match Match { get; private set; }
     public abstract bool IsTeamGame { get; }
-    public DisciplineDef Discipline => Match.Discipline;
+    public Discipline Discipline => Match.Discipline;
 
     /// <summary>
     /// The final points that individual players have accumulated throughout the game.
@@ -30,9 +30,14 @@ public abstract class Game
     public int GameIndex { get; private set; }
 
     /// <summary>
-    /// The map this game is played on.
+    /// The complete set of skills that are competed on in this game.
     /// </summary>
-    public MapDef Map { get; private set; }
+    public List<SkillDef> Skills { get; private set; }
+
+    /// <summary>
+    /// The set of game modifiers that are active in this game.
+    /// </summary>
+    public List<GameModifier> GameModifiers { get; private set; }
 
     /// <summary>
     /// The list of each round in this game.
@@ -51,11 +56,17 @@ public abstract class Game
 
     public string Label => $"{Match.Name} - Game {GameIndex + 1}";
 
-    public Game(Match match, int gameIndex)
+    public Game(Match match, int gameIndex, List<GameModifierDef> gameModifierDefs)
     {
         Id = Database.GetNewMatchId();
-        this.Match = match;
+        Match = match;
         GameIndex = gameIndex;
+
+        // Generate set of skills
+        Skills = new List<SkillDef>();
+        Skills.AddRange(Discipline.Skills);
+        GameModifiers = gameModifierDefs.Select(def => new GameModifier(def)).ToList();
+        foreach (GameModifier modifier in GameModifiers) Skills.AddRange(modifier.Skills);
     }
 
     public bool CanStartGame()
@@ -152,6 +163,8 @@ public abstract class Game
         data.Id = Id;
         data.MatchId = Match.Id;
         data.Index = GameIndex;
+        data.Skills = Skills.Select(s => s.DefName).ToList();
+        data.GameModifiers = GameModifiers.Select(m => m.ToData()).ToList();
         data.Rounds = Rounds.Select(x => x.ToData()).ToList();
 
         return data;
@@ -168,6 +181,8 @@ public abstract class Game
         Id = data.Id;
         this.Match = match;
         GameIndex = data.Index;
+        Skills = data.Skills.Select(s => DefDatabase<SkillDef>.GetNamed(s)).ToList();
+        GameModifiers = data.GameModifiers.Select(m => new GameModifier(m)).ToList();
         Rounds = data.Rounds.Select(x => GameRound.LoadGameRound(this, x)).ToList();
 
         // Parent ref

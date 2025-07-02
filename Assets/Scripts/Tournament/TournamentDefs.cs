@@ -21,7 +21,7 @@ public static class TournamentDefs
                     NumParticipants = 64,
                 }
             },
-            MapPool = new List<MapDef>()
+            MapPool = new List<GameModifierDef>()
             {
 
             },
@@ -58,7 +58,7 @@ public static class TournamentDefs
                     NumParticipants = 4,
                 },
             },
-            MapPool = new List<MapDef>()
+            MapPool = new List<GameModifierDef>()
             {
 
             },

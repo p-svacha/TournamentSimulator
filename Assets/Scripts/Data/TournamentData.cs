@@ -9,6 +9,7 @@ public class TournamentData
     public int Id { get; set; }
     public string Name { get; set; }
     public string Discipline { get; set; }
+    public DisciplineData DisciplineInfo { get; set; }
     public int Format { get; set; }
     public int LeagueId { get; set; }
     public int Season { get; set; }

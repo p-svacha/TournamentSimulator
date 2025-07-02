@@ -26,10 +26,10 @@ public class Format_SeasonCup : Tournament
     protected List<int> PointDistribution = new List<int>() { 1, 0 };
 
     public Format_SeasonCup(TournamentData data) : base(data) { }
-    public Format_SeasonCup(int season) : base(TournamentType.SeasonCup, season)
+    public Format_SeasonCup(DisciplineDef disciplineDef, int season) : base(disciplineDef, TournamentType.SeasonCup, season)
     {
         Name = "Season Cup";
-        Players = Database.GetPlayerEloRanking(Discipline).Take(64).ToList();
+        Players = Database.GetPlayerEloRanking(Discipline.Def).Take(64).ToList();
 
         Initialize();
     }

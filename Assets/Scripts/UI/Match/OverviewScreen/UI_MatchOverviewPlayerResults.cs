@@ -29,7 +29,7 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
 
         // Player rows
         HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);
-        foreach (MatchParticipant_Player part in match.PlayerParticipantRanking)
+        foreach (MatchParticipant_Player part in match.GetPlayerRanking())
         {
             UI_MatchOverviewPlayer row = Instantiate(PlayerRowPrefab, Container.transform);
             row.Init(match, part);

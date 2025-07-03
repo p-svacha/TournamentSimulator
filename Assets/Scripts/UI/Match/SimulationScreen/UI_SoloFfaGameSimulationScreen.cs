@@ -41,10 +41,10 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         for (int i = 1; i < PlayerContainer.transform.childCount; i++) GameObject.Destroy(PlayerContainer.transform.GetChild(i).gameObject);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (MatchParticipant_Player p in Match.PlayerParticipantRanking)
+        foreach (MatchParticipant_Player p in Match.GetPlayerRanking())
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(game, p.Player, p.MatchScore);
+            row.Init(game, p.Player, game.GetPlayerPoints(p));
             PlayerRows.Add(p.Player, row);
         }
 
@@ -113,7 +113,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         // Update total scores
         foreach (MatchParticipant_Player participant in Match.PlayerParticipants)
         {
-            PlayerRows[participant.Player].PointsText.text = participant.MatchScore.ToString();
+            PlayerRows[participant.Player].PointsText.text = Game.GetPlayerPoints(participant).ToString();
         }
 
         // Resort rows according to new ranking

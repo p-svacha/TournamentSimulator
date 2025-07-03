@@ -145,10 +145,10 @@ public class Format_WorldCup : Tournament
         get
         {
             Dictionary<int, List<Team>> ranking = new Dictionary<int, List<Team>>();
-            ranking.Add(0, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).TeamRanking[0].Team });
-            ranking.Add(1, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).TeamRanking[1].Team });
-            ranking.Add(2, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).TeamRanking[0].Team });
-            ranking.Add(3, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).TeamRanking[1].Team });
+            ranking.Add(0, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).GetTeamRanking()[0].Team });
+            ranking.Add(1, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 1]).GetTeamRanking()[1].Team });
+            ranking.Add(2, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).GetTeamRanking()[0].Team });
+            ranking.Add(3, new List<Team>() { ((TeamMatch)Matches[Matches.Count - 2]).GetTeamRanking()[1].Team });
             return ranking;
         }
     }

@@ -209,7 +209,7 @@ public class TournamentSimulator : MonoBehaviour
     {
         // Skill and attribute shuffle
         Debug.Log("Shuffling skills and attributes of all players.");
-        AdjustAllSkillsOfAllPlayers();
+        AdjustAllSkillsOfAllPlayers_EndOfSeason();
 
         // Relegations
         Debug.Log("Performing relegations.");
@@ -241,17 +241,9 @@ public class TournamentSimulator : MonoBehaviour
         Save();
     }
 
-    public void AdjustAllSkillsOfAllPlayers()
+    public void AdjustAllSkillsOfAllPlayers_EndOfSeason()
     {
-        foreach(Player p in Database.AllPlayers)
-        {
-            foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
-            {
-                p.Skills[skillDef].AdjustBaseValue(PlayerGenerator.GetRandomEndOfSeasonSkillAdjustment());
-                p.Skills[skillDef].AdjustInconsistency(PlayerGenerator.GetRandomEndOfSeasonInconsistencyAdjustment());
-                p.Skills[skillDef].AdjustMistakeChance(PlayerGenerator.GetRandomEndOfSeasonMistakeChanceAdjustment());
-            }
-        }
+        foreach(Player p in Database.AllPlayers) p.AdjustEndOfSeasonSkills();
     }
 
     public void ReviveRandomPlayer(List<Player> excludedPlayers)

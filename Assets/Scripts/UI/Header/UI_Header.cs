@@ -67,7 +67,7 @@ public class UI_Header : MonoBehaviour
 
     private void ShuffleSkills()
     {
-        BaseUI.Simulator.AdjustAllSkillsOfAllPlayers();
+        BaseUI.Simulator.AdjustAllSkillsOfAllPlayers_EndOfSeason();
         BaseUI.Simulator.Save();
         CloseSubmenu();
     }

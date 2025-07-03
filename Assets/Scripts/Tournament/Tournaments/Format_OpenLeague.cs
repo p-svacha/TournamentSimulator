@@ -267,6 +267,6 @@ public class Format_OpenLeague : Tournament
         return "Step " + stepIndex;
     }
 
-    public override Dictionary<int, List<Player>> PlayerRanking => Matches.Last().PlayerParticipantRanking.ToDictionary(x => Matches.Last().PlayerParticipantRanking.IndexOf(x), x => new List<Player>() { x.Player });
+    public override Dictionary<int, List<Player>> PlayerRanking => Matches.Last().GetPlayerRanking().ToDictionary(x => Matches.Last().GetPlayerRanking().IndexOf(x), x => new List<Player>() { x.Player });
     public override Dictionary<int, List<Team>> TeamRanking => PlayerRanking.ToDictionary(x => x.Key, x => x.Value.Select(x => Database.GetNationalTeam(x.Country)).ToList());
 }

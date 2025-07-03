@@ -73,6 +73,31 @@ public class Player
         Debug.Log("League of " + Name + " has been changed to " + league.ToString());
     }
 
+    /// <summary>
+    /// Adjusts all values in all skills by a tiny value.
+    /// </summary>
+    public void AdjustEndOfGameSkills()
+    {
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+        {
+            Skills[skillDef].AdjustBaseValue(PlayerGenerator.GetRandomEndOfGameSkillAdjustment());
+            Skills[skillDef].AdjustInconsistency(PlayerGenerator.GetRandomEndOfGameInconsistencyAdjustment());
+            Skills[skillDef].AdjustMistakeChance(PlayerGenerator.GetRandomEndOfGameMistakeChanceAdjustment());
+        }
+    }
+
+    /// <summary>
+    /// Adjusts all values in all skills by a significant value.
+    /// </summary>
+    public void AdjustEndOfSeasonSkills()
+    {
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+        {
+            Skills[skillDef].AdjustBaseValue(PlayerGenerator.GetRandomEndOfSeasonSkillAdjustment());
+            Skills[skillDef].AdjustInconsistency(PlayerGenerator.GetRandomEndOfSeasonInconsistencyAdjustment());
+            Skills[skillDef].AdjustMistakeChance(PlayerGenerator.GetRandomEndOfSeasonMistakeChanceAdjustment());
+        }
+    }
 
     public override string ToString() => Name + " (" + Id + ")";
     public string Name => FirstName + " " + LastName;

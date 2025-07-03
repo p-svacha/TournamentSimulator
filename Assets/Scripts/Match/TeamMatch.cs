@@ -113,7 +113,7 @@ public class TeamMatch : Match
         for (int i = 0; i < NumAdvancements; i++)
         {
             int rank = i;
-            Team advancingTeam = TeamRanking[rank].Team;
+            Team advancingTeam = GetTeamRanking()[rank].Team;
             TeamMatch targetMatch = (TeamMatch)Tournament.Matches[TargetMatchIndices[rank]];
             Debug.Log(advancingTeam.Name + " is advancing to " + targetMatch.ToString());
 
@@ -125,7 +125,7 @@ public class TeamMatch : Match
 
     private Dictionary<Team, int> GetNewTeamEloRatings()
     {
-        List<MatchParticipant_Team> teamRanking = TeamRanking;
+        List<MatchParticipant_Team> teamRanking = GetTeamRanking();
 
         Dictionary<Team, int> newRatings = new Dictionary<Team, int>();
         foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo[Discipline.Def]);
@@ -134,7 +134,7 @@ public class TeamMatch : Match
         {
             for (int j = i + 1; j < teamRanking.Count; j++)
             {
-                bool isDraw = (teamRanking[i].MatchScore == teamRanking[j].MatchScore);
+                bool isDraw = (GetTeamMatchScore(teamRanking[i]) == GetTeamMatchScore(teamRanking[j]));
                 AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team, isDraw);
             }
         }
@@ -159,13 +159,39 @@ public class TeamMatch : Match
         }
     }
 
-    public override List<MatchParticipant_Player> PlayerSeeding => PlayerParticipants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ToList();
+    public override List<MatchParticipant_Player> GetPlayerSeeding()
+    {
+        return PlayerParticipants.OrderBy(x => GetParticipant(x.Team).Seed).ThenBy(x => x.Seed).ThenByDescending(x => x.EloBeforeMatch).ToList();
+    }
 
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end score.
     /// </summary>
-    public List<MatchParticipant_Team> TeamRanking => IsDone ? TeamParticipants.OrderByDescending(x => x.MatchScore).ToList() : TeamSeeding;
-    public List<MatchParticipant_Team> TeamSeeding => TeamParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Team.Elo).ToList();
+    public List<MatchParticipant_Team> GetTeamRanking()
+    {
+        if (IsDone || IsRunning)
+        {
+            if (Format == MatchFormatDefOf.SingleGame)
+            {
+                return new List<MatchParticipant_Team>(Games[0].GetTeamRanking());
+            }
+            throw new System.NotImplementedException();
+        }
+        else return GetTeamSeeding();
+    }
+    public int GetTeamMatchScore(MatchParticipant_Team team)
+    {
+        if (Format == MatchFormatDefOf.SingleGame)
+        {
+            return Games[0].GetTeamPoints(team);
+        }
+        throw new System.NotImplementedException();
+    }
+
+    public List<MatchParticipant_Team> GetTeamSeeding()
+    {
+        return TeamParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Team.Elo).ToList();
+    }
 
     /// <summary>
     /// Returns the opponent team in a 1v1 match.

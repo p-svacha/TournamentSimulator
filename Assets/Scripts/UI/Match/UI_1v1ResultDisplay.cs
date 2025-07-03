@@ -17,10 +17,10 @@ public class UI_1v1ResultDisplay : MonoBehaviour
     {
         if (m.TeamParticipants.Count == 0) InitEmpty();
         else if (m.TeamParticipants.Count == 1) DisplayMatch(m.TeamParticipants[0]);
-        else DisplayMatch(m.TeamParticipants[0], m.TeamParticipants[1]);
+        else DisplayMatch(m, m.TeamParticipants[0], m.TeamParticipants[1]);
     }
 
-    public void DisplayMatch(MatchParticipant_Team team1, MatchParticipant_Team team2)
+    public void DisplayMatch(TeamMatch match, MatchParticipant_Team team1, MatchParticipant_Team team2)
     {
         Team1Flag.enabled = true;
         Team1Flag.sprite = team1.Team.FlagBig;
@@ -28,7 +28,7 @@ public class UI_1v1ResultDisplay : MonoBehaviour
         Team2Flag.enabled = true;
         Team2Flag.sprite = team2.Team.FlagBig;
         Team2NameText.text = team2.Team.Name;
-        ScoreText.text = team1.MatchScore + " : " + team2.MatchScore;
+        ScoreText.text = match.GetTeamMatchScore(team1) + " : " + match.GetTeamMatchScore(team2);
     }
 
     private void InitEmpty()

@@ -32,14 +32,14 @@ public class UI_TMatch : MonoBehaviour
             if (match is TeamMatch teamMatch)
             {
                 // add every participant as a row
-                foreach (MatchParticipant_Team t in AlwaysOrderBySeed ? teamMatch.TeamSeeding : teamMatch.TeamRanking)
+                foreach (MatchParticipant_Team t in AlwaysOrderBySeed ? teamMatch.GetTeamSeeding() : teamMatch.GetTeamRanking())
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.Init(teamMatch, t, IsCompact);
                 }
 
                 // add empty rows for slots that are not yet filled
-                for (int i = teamMatch.TeamRanking.Count; i < teamMatch.NumTeams; i++)
+                for (int i = teamMatch.GetTeamRanking().Count; i < teamMatch.NumTeams; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.InitEmpty();
@@ -48,14 +48,14 @@ public class UI_TMatch : MonoBehaviour
             else
             {
                 // add every participant as a row
-                foreach (MatchParticipant_Player p in AlwaysOrderBySeed ? match.PlayerSeeding : match.PlayerParticipantRanking)
+                foreach (MatchParticipant_Player p in AlwaysOrderBySeed ? match.GetPlayerSeeding() : match.GetPlayerRanking())
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.Init(match, p, IsCompact);
                 }
 
                 // add empty rows for slots that are not yet filled
-                for (int i = match.PlayerParticipantRanking.Count; i < match.NumPlayers; i++)
+                for (int i = match.GetPlayerRanking().Count; i < match.NumPlayers; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.InitEmpty();

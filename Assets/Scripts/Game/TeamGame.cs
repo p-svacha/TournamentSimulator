@@ -7,17 +7,10 @@ public class TeamGame : Game
 {
     public new TeamMatch Match => (TeamMatch)base.Match;
     public override bool IsTeamGame => true;
-    private Dictionary<MatchParticipant_Team, int> TeamPoints;
     public new List<TeamGameRound> Rounds => base.Rounds.Select(r => (TeamGameRound)r).ToList();
 
     public TeamGame(Match match, int gameIndex, List<GameModifierDef> gameModifierDefs) : base(match, gameIndex, gameModifierDefs) { }
     public TeamGame(Match match, GameData data) : base(match, data) { }
-
-    protected override void OnStartGame()
-    {
-        TeamPoints = new Dictionary<MatchParticipant_Team, int>();
-        foreach (MatchParticipant_Team participant in Match.TeamParticipants) TeamPoints.Add(participant, 0);
-    }
 
     public TeamGameRound CreateGameRound(SkillDef skill)
     {
@@ -32,36 +25,31 @@ public class TeamGame : Game
     {
         TeamGameRound round = (TeamGameRound)r;
 
-        // Add to team points
-        Dictionary<Team, int> teamScores = round.GetTeamScores();
-        List<Team> teamRanking = teamScores.Keys.Reverse().ToList();
-
-        int lastScore = -1;
-        int lastPoints = -1;
-        for (int rank = 0; rank < teamScores.Count; rank++)
-        {
-            Team team = teamRanking[rank];
-            int score = teamScores[team];
-            int pointsGained = Match.TeamPointDistribution[Match.TeamPointDistribution.Count - rank - 1];
-            if (score == 0) pointsGained = 0;
-            else if (score == lastScore) pointsGained = lastPoints;
-            MatchParticipant_Team participant = Match.GetParticipant(team);
-            TeamPoints[participant] += pointsGained;
-            lastScore = score;
-            lastPoints = pointsGained;
-        }
-
         // Save
         Rounds.Add(round);
     }
 
     /// <summary>
+    /// The primary rating of the game leaderboard are the points. Points are awarded based on the ranking of the score that each team makes for each skill.
+    /// </summary>
+    public int GetTeamPoints(MatchParticipant_Team team) => Rounds.Sum(x => x.GetTeamPoints()[team]);
+
+    /// <summary>
     /// Returns the accumulated amount of SCORE a team has gathered throughout the game. Team score is the combined number of POINTS players have made.
     /// </summary>
-    public int GetTotalTeamScore(Team team) => Rounds.Sum(x => x.GetTeamScores()[team]);
+    public int GetTotalTeamScore(MatchParticipant_Team team) => Rounds.Sum(x => x.GetTeamScores()[team.Team]);
 
     /// <summary>
     /// Returns the team ranking as a dictionary ordered by end points.
     /// </summary>
-    public List<MatchParticipant_Team> TeamRanking => IsDone ? TeamPoints.OrderByDescending(x => x.Value).ThenByDescending(x => GetTotalTeamScore(x.Key.Team)).Select(x => x.Key).ToList() : new();
+    public List<MatchParticipant_Team> GetTeamRanking()
+    {
+        if (IsDone || IsRunning)
+        {
+            return Match.TeamParticipants.OrderByDescending(x => GetTeamPoints(x)).ThenByDescending(x => GetTotalTeamScore(x)).ToList();
+        }
+        else return new List<MatchParticipant_Team>();
+    }
+
+   
 }

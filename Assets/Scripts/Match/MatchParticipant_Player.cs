@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MatchParticipant_Player
@@ -8,7 +9,6 @@ public class MatchParticipant_Player
     public Player Player { get; private set; }
     public int Seed { get; private set; }
     public Team Team { get; private set; }
-    public int MatchScore { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
     public int LeaguePointsBeforeMatch { get; private set; }
@@ -31,7 +31,6 @@ public class MatchParticipant_Player
         EloAfterMatch = eloAfterMatch;
     }
 
-
     #region Save / Load
 
     public MatchParticipantData ToData()
@@ -40,7 +39,6 @@ public class MatchParticipant_Player
         data.PlayerId = Player.Id;
         data.Seed = Seed;
         data.Team = Team == null ? - 1 : Team.Id;
-        data.MatchScore = MatchScore;
         data.EloBeforeMatch = EloBeforeMatch;
         data.EloAfterMatch = EloAfterMatch;
         data.LeaguePointsBeforeMatch = LeaguePointsBeforeMatch;
@@ -53,7 +51,6 @@ public class MatchParticipant_Player
         Player = Database.GetPlayer(data.PlayerId);
         Seed = data.Seed;
         Team = data.Team == -1 ? null : Database.GetTeam(data.Team);
-        MatchScore = data.MatchScore;
         EloBeforeMatch = data.EloBeforeMatch;
         EloAfterMatch = data.EloAfterMatch;
         LeaguePointsBeforeMatch = data.LeaguePointsBeforeMatch;

@@ -20,11 +20,6 @@ public abstract class Game
     public Discipline Discipline => Match.Discipline;
 
     /// <summary>
-    /// The final points that individual players have accumulated throughout the game.
-    /// </summary>
-    protected Dictionary<MatchParticipant_Player, int> PlayerPoints;
-
-    /// <summary>
     /// The index defining the how many'th game this is within a match. (1. match in a bo5 has GameIndex = 0, 5. match is GameIndex = 4)
     /// </summary>
     public int GameIndex { get; private set; }
@@ -83,8 +78,6 @@ public abstract class Game
         if (!CanStartGame()) throw new System.Exception("Can't start game.");
 
         IsRunning = true;
-        PlayerPoints = new Dictionary<MatchParticipant_Player, int>();
-        foreach (MatchParticipant_Player participant in Match.PlayerParticipants) PlayerPoints.Add(participant, 0);
         OnStartGame();
     }
     protected virtual void OnStartGame() { }
@@ -143,7 +136,6 @@ public abstract class Game
         {
             MatchParticipant_Player participant = Match.GetParticipant(playerResult.Player);
             int pointsGained = round.GetPlayerResult(playerResult.Player).PointsGained;
-            PlayerPoints[participant] += pointsGained;
         }
 
         // Save
@@ -153,6 +145,28 @@ public abstract class Game
         OnApplyGameRound(round);
     }
     protected virtual void OnApplyGameRound(GameRound round) { }
+
+    /// <summary>
+    /// The primary rating of the game leaderboard are the points. Points are awarded based on the ranking of the score that each player makes for each skill.
+    /// </summary>
+    public int GetPlayerPoints(MatchParticipant_Player player) => Rounds.Sum(x => x.GetPlayerResult(player.Player).PointsGained);
+
+    /// <summary>
+    /// Returns the accumulated amount of SCORE a player has gathered throughout the game.
+    /// </summary>
+    public int GetTotalPlayerScore(MatchParticipant_Player player) => Rounds.Sum(x => x.GetPlayerResult(player.Player).Score);
+
+    /// <summary>
+    /// Returns the player ranking as a dictionary ordered by total amount of points, and then total amount of score.
+    /// </summary>
+    public List<MatchParticipant_Player> GetPlayerRanking()
+    {
+        if (IsDone || IsRunning)
+        {
+            return Match.PlayerParticipants.OrderByDescending(x => GetPlayerPoints(x)).ThenByDescending(p => GetTotalPlayerScore(p)).ToList();
+        }
+        return new List<MatchParticipant_Player>();
+    }
 
     #region Save / Load
 
@@ -173,8 +187,8 @@ public abstract class Game
     public static Game LoadGame(GameData data)
     {
         Match match = Database.GetMatch(data.MatchId);
-        if (match.IsTeamMatch) return new SoloGame(match, data);
-        else return new TeamGame(match, data);
+        if (match.IsTeamMatch) return new TeamGame(match, data);
+        else return new SoloGame(match, data);
     }
     protected Game(Match match, GameData data)
     {
@@ -184,6 +198,7 @@ public abstract class Game
         Skills = data.Skills.Select(s => DefDatabase<SkillDef>.GetNamed(s)).ToList();
         GameModifiers = data.GameModifiers.Select(m => new GameModifier(m)).ToList();
         Rounds = data.Rounds.Select(x => GameRound.LoadGameRound(this, x)).ToList();
+        IsDone = true;
 
         // Parent ref
         match.Games.Add(this);

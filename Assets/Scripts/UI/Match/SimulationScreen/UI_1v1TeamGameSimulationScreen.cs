@@ -54,7 +54,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         AttributeTitleText.text = "";
 
         // Teams
-        MatchHeader.DisplayMatch(Match.TeamParticipants[0], Match.TeamParticipants[1]);
+        MatchHeader.DisplayMatch(Match, Match.TeamParticipants[0], Match.TeamParticipants[1]);
 
         // Team colors
         Dictionary<Team, Color> teamColors = new Dictionary<Team, Color>();
@@ -69,10 +69,10 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         HelperFunctions.DestroyAllChildredImmediately(PlayerContainer, skipElements: 1);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (MatchParticipant_Player p in Match.PlayerParticipantRanking)
+        foreach (MatchParticipant_Player p in Match.GetPlayerRanking())
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
-            row.Init(Game, p.Player, p.MatchScore);
+            row.Init(Game, p.Player, Game.GetPlayerPoints(p));
             Color teamColor = teamColors[p.Team];
             row.Background.color = new Color(teamColor.r, teamColor.g, teamColor.b, 0.2f);
             PlayerRows.Add(p.Player, row);
@@ -138,11 +138,11 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         // Update total scores
         foreach (MatchParticipant_Player participant in Match.PlayerParticipants)
         {
-            PlayerRows[participant.Player].PlusPointsText.text = participant.MatchScore.ToString();
+            PlayerRows[participant.Player].PlusPointsText.text = Game.GetPlayerPoints(participant).ToString();
         }
 
         // Update team scores
-        MatchHeader.DisplayMatch(Match.TeamParticipants[0], Match.TeamParticipants[1]);
+        MatchHeader.DisplayMatch(Match, Match.TeamParticipants[0], Match.TeamParticipants[1]);
     }
 
     private void GoToNextSkill()

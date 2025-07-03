@@ -8,7 +8,6 @@ public class MatchParticipantData
     public int PlayerId { get; set; }
     public int Seed { get; set; }
     public int Team { get; set; }
-    public int MatchScore { get; set; }
     public int EloBeforeMatch { get; set; }
     public int EloAfterMatch { get; set; }
     public int LeaguePointsBeforeMatch { get; set; }

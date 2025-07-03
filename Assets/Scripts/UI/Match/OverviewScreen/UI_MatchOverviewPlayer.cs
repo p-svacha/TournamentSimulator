@@ -26,7 +26,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
         if (m.IsDone)
         {
-            ScoreText.text = p.MatchScore.ToString();
+            ScoreText.text = m.GetPlayerMatchScore(p).ToString();
 
             if (m.Games.Count == 1)
             {

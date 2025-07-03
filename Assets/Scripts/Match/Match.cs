@@ -158,8 +158,14 @@ public abstract class Match
         if (!game.IsDone) throw new System.Exception("Can't conclude a game that is not done.");
         if (game.IsRunning) throw new System.Exception("Can't conclude a game that is still running.");
 
+        // Adjust skill values of all players
+        foreach(MatchParticipant_Player playerParticipant in PlayerParticipants)
+        {
+            playerParticipant.Player.AdjustEndOfGameSkills();
+        }
+
         // Check if match is over (based on format)
-        if(IsMatchOver())
+        if (IsMatchOver())
         {
             SetDone();
         }
@@ -246,21 +252,31 @@ public abstract class Match
     /// <summary>
     /// Returns an a list of all match participants ordered by match result.
     /// </summary>
-    public List<MatchParticipant_Player> PlayerParticipantRanking 
+    public List<MatchParticipant_Player> GetPlayerRanking() 
     {
-        get
+        if (IsDone || IsRunning)
         {
-            if (IsDone || IsRunning) return PlayerParticipants.OrderByDescending(x => x.MatchScore).ToList();
-            else return PlayerSeeding;
+            if (Format == MatchFormatDefOf.SingleGame)
+            {
+                return new List<MatchParticipant_Player>(Games[0].GetPlayerRanking());
+            }
+            throw new System.NotImplementedException();
         }
+        else return GetPlayerSeeding();
     }
-    public virtual List<MatchParticipant_Player> PlayerSeeding
+    public int GetPlayerMatchScore(MatchParticipant_Player player)
     {
-        get
+        if (Format == MatchFormatDefOf.SingleGame)
         {
-            if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
-            else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ToList();
+            return Games[0].GetPlayerPoints(player);
         }
+        throw new System.NotImplementedException();
+    }
+
+    public virtual List<MatchParticipant_Player> GetPlayerSeeding()
+    {
+        if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
+        else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ToList();
     }
 
     /// <summary>
@@ -268,7 +284,7 @@ public abstract class Match
     /// </summary>
     public abstract int NumParticipants { get; }
 
-    public List<Player> PlayerRanking => PlayerParticipantRanking.Select(x => x.Player).ToList();
+    public List<Player> PlayerRanking => GetPlayerRanking().Select(x => x.Player).ToList();
     
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
 

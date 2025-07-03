@@ -118,15 +118,18 @@ public class TournamentGroup
                 {
                     if (!m.IsDone) continue;
 
-                    MatchParticipant_Team teamPart = m.GetParticipant(team);
-                    MatchParticipant_Team opponentPart = m.GetOpponent(team);
+                    MatchParticipant_Team teamParticipant = m.GetParticipant(team);
+                    MatchParticipant_Team opponentParticipant = m.GetOpponent(team);
+
+                    int teamMatchScore = m.GetTeamMatchScore(teamParticipant);
+                    int oppMatchScore = m.GetTeamMatchScore(opponentParticipant);
 
                     leaderboard[team].NumMatches++;
-                    leaderboard[team].TotalMatchPointsGained += teamPart.MatchScore;
-                    leaderboard[team].TotalMatchPointsLost += opponentPart.MatchScore;
+                    leaderboard[team].TotalMatchPointsGained += teamMatchScore;
+                    leaderboard[team].TotalMatchPointsLost += oppMatchScore;
 
-                    if (teamPart.MatchScore > opponentPart.MatchScore) leaderboard[team].GroupPoints += PointsForWin;
-                    else if(teamPart.MatchScore == opponentPart.MatchScore) leaderboard[team].GroupPoints += PointsForDraw;
+                    if (teamMatchScore > oppMatchScore) leaderboard[team].GroupPoints += PointsForWin;
+                    else if(teamMatchScore == oppMatchScore) leaderboard[team].GroupPoints += PointsForDraw;
                     else leaderboard[team].GroupPoints += PointsForLoss;
                 }
             }

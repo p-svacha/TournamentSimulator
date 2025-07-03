@@ -15,7 +15,7 @@ public abstract class UI_Dashboard : MonoBehaviour
     public abstract void Refresh(DisciplineDef discipline, int season);
 
     /// <summary>
-    /// Display label of the dashboard.
+    /// Display label of the dashboard used in the dashboard dropdown.
     /// </summary>
     public abstract string Label { get; }
 }

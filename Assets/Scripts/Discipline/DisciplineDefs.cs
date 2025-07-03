@@ -31,7 +31,11 @@ public static class DisciplineDefs
         {
             DefName = "AgeOfEmpires",
             Label = "Age of Empires",
-            Description = "Age of Empires II"
+            Description = "Age of Empires II",
+            Skills = new List<SkillDef>()
+            {
+
+            }
         },
     };
 }

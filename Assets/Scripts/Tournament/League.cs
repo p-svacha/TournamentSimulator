@@ -37,8 +37,27 @@ public class League
         Tournaments = new List<Tournament>();
     }
 
-    public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
+    public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).ThenByDescending(x => GetAverageMatchScore(x.Key)).Select(x => x.Key).ToList();
     public int GetRankOf(Player p) => Ranking.IndexOf(p) + 1;
+
+    /// <summary>
+    /// Returns the average match score a player has scored across all matches in all tournaments of this league.
+    /// </summary>
+    public float GetAverageMatchScore(Player player)
+    {
+        int totalMatchScore = 0;
+        int numMatches = 0;
+        foreach (Tournament t in Tournaments)
+        {
+            foreach (Match m in t.Matches.Where(x => x.IsParticipant(player)))
+            {
+                int matchScore = m.GetPlayerMatchScore(m.GetParticipant(player));
+                totalMatchScore += matchScore;
+                numMatches++;
+            }
+        }
+        return (float)totalMatchScore / (float)numMatches;
+    }
 
     #region Save / Load
 

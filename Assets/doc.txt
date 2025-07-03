@@ -1,7 +1,8 @@
--- before season 6
 
 - better league tiebreakers
-- 5% chance for football game modifier that adds an additional skill (maybe rain?)
+	> show tiebreakers for players with same league points
+
+in match overview, show tiebreaker for players with same match score
 
 ------------------------------- Before season 7 ------------------------------------------- the stat update
 show elo change in UI_MatchOverviewPlayer
@@ -21,7 +22,7 @@ team tooltip
 
 new dedicated team page
 	> shows most used players
-	> elo graph
+	> elo graphe
 	> rival stats
 
 -------------------------------------------------------------------------------------------

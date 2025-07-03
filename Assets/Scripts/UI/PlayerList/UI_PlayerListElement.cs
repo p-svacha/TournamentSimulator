@@ -13,6 +13,7 @@ public class UI_PlayerListElement : MonoBehaviour
     public TextMeshProUGUI NameText;
     public Image LeagueIcon;
     public TextMeshProUGUI MainValueText;
+    public TextMeshProUGUI SecondaryValueText;
     public TextMeshProUGUI NumMatchesText;
     public TextMeshProUGUI NumWinsText;
     public TextMeshProUGUI NumLossesText;
@@ -31,6 +32,7 @@ public class UI_PlayerListElement : MonoBehaviour
     private void HideAllFields()
     {
         MainValueText.gameObject.SetActive(false);
+        SecondaryValueText.gameObject.SetActive(false);
 
         LeagueIcon.gameObject.SetActive(false);
 
@@ -48,6 +50,12 @@ public class UI_PlayerListElement : MonoBehaviour
     {
         MainValueText.gameObject.SetActive(true);
         MainValueText.text = value;
+    }
+
+    private void ShowSecondaryValue(string value)
+    {
+        SecondaryValueText.gameObject.SetActive(true);
+        SecondaryValueText.text = value;
     }
 
     private void ShowMedals(Vector3 medalValues)
@@ -85,13 +93,14 @@ public class UI_PlayerListElement : MonoBehaviour
         SetBasicFields(discpline, rank, player);
         ShowMedals(medals);
     }
-    public void InitLeagueList_Player(DisciplineDef discpline, int rank, League league, Player player, Color bgColor)
+    public void InitLeagueList_Player(DisciplineDef discpline, int rank, League league, Player player, Color bgColor, bool showTiebreaker)
     {
         HideAllFields();
 
         SetBasicFields(discpline, rank, player);
         Background.color = bgColor;
         ShowMainValue(league.Standings[player].ToString());
+        if(showTiebreaker) ShowSecondaryValue(league.GetAverageMatchScore(player).ToString("0.0"));
     }
 
     private void SetBasicFields(DisciplineDef discpline, int rank, Player player)

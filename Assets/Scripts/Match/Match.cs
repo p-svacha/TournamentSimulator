@@ -292,7 +292,10 @@ public abstract class Match
 
     #region Getters
 
-    public Team GetTeamOf(Player p) => GetParticipant(p).Team;
+    /// <summary>
+    /// Returns if the given player is a participant of this match.
+    /// </summary>
+    public bool IsParticipant(Player player) => PlayerParticipants.Any(p => p.Player == player);
 
     #endregion
 

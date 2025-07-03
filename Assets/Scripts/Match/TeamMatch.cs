@@ -203,6 +203,11 @@ public class TeamMatch : Match
         return TeamParticipants.First(x => x != GetParticipant(team));
     }
 
+    /// <summary>
+    /// Returns the team of a player in this match.
+    /// </summary>
+    public Team GetTeamOf(Player p) => GetParticipant(p).Team;
+
     #endregion
 
     #region Save / Load

@@ -15,17 +15,21 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
 
     public void DisplayMatch(Match match)
     {
-        if (match.Games.Count != 1) throw new System.Exception("Display only implemented for matches with 1 game atm.");
-        Game game = match.Games[0];
+        if (match.Games.Count > 1) throw new System.Exception("Display only implemented for matches with 1 game atm.");
 
-        // Title Row
-        HelperFunctions.DestroyAllChildredImmediately(TitleRow.SkillContainer);
-        foreach (SkillDef skillDef in game.Skills)
+        if (match.Games.Count > 0)
         {
-            TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
-            skillText.text = skillDef.Triplet;
+            Game game = match.Games[0];
+
+            // Title Row
+            HelperFunctions.DestroyAllChildredImmediately(TitleRow.SkillContainer);
+            foreach (SkillDef skillDef in game.Skills)
+            {
+                TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
+                skillText.text = skillDef.Triplet;
+            }
+            LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
         }
-        LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
 
         // Player rows
         HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);

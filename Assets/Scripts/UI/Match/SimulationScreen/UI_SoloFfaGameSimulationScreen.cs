@@ -41,7 +41,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         for (int i = 1; i < PlayerContainer.transform.childCount; i++) GameObject.Destroy(PlayerContainer.transform.GetChild(i).gameObject);
 
         PlayerRows = new Dictionary<Player, UI_MatchPlayer>();
-        foreach (MatchParticipant_Player p in Match.GetPlayerRanking())
+        foreach (MatchParticipant_Player p in Match.PlayerParticipants)
         {
             UI_MatchPlayer row = Instantiate(MatchPlayerPrefab, PlayerContainer.transform);
             row.Init(game, p.Player, game.GetPlayerPoints(p));
@@ -58,6 +58,8 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         CurrentSkillIndex = -1;
         SimPlayer = Match.NumPlayers + 1;
         TimeElapsed = 0;
+
+        Game.StartGame();
     }
 
     private void EndSimulation()
@@ -117,7 +119,8 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         }
 
         // Resort rows according to new ranking
-        List<Player> playerRanking = Match.PlayerRanking;
+        Debug.Log("SORT");
+        List<Player> playerRanking = Game.GetPlayerRanking().Select(x => x.Player).ToList();
         for (int i = 0; i < playerRanking.Count; i++) PlayerRows[playerRanking[i]].transform.SetSiblingIndex(i + 1);
     }
 
@@ -127,7 +130,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         CurrentSkillIndex++;
         CurrentSkill =  Game.Skills[CurrentSkillIndex];
         ProgressText.text = (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
-        AttributeText.text = CurrentSkill.Label;
+        AttributeText.text = CurrentSkill.LabelCap;
         SimPlayer = 0;
 
         // Execute game round

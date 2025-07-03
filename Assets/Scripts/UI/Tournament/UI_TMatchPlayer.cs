@@ -20,18 +20,16 @@ public class UI_TMatchPlayer : MonoBehaviour
 
     public void Init(Match match, MatchParticipant_Player p, bool isCompact)
     {
-        int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? p.Player.CurrentLeaguePoints : 0;
-
-        if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.GetPlayerRanking().IndexOf(p), match.GetPlayerMatchScore(p));
-        else InitFull(match, p.Player.FlagSmall, p.Player.Name, match.GetPlayerRanking().IndexOf(p), match.GetPlayerMatchScore(p), p.Player.Elo[match.Discipline.Def], currentLeaguePoints, p.EloBeforeMatch, p.EloAfterMatch);
+        if (isCompact) InitCompact(match, p.Player.FlagSmall, p.Player.LastName, match.GetPlayerRanking().IndexOf(p), match.IsDone ? match.GetPlayerMatchScore(p).ToString() : "");
+        else InitFullPlayer(match, p);
 
         GetComponent<PlayerTooltipTarget>().Init(match.Discipline.Def, p.Player);
     }
 
     public void Init(TeamMatch match, MatchParticipant_Team t, bool isCompact)
     {
-        if (isCompact) InitCompact(match, t.Team.FlagSmall, t.Team.Name, match.GetTeamRanking().IndexOf(t), match.GetTeamMatchScore(t));
-        else InitFull(match, t.Team.FlagSmall, t.Team.Name, match.GetTeamRanking().IndexOf(t), match.GetTeamMatchScore(t), t.Team.Elo[match.Discipline.Def], 0, t.EloBeforeMatch, t.EloAfterMatch);
+        if (isCompact) InitCompact(match, t.Team.FlagSmall, t.Team.Name, match.GetTeamRanking().IndexOf(t), match.IsDone ? match.GetTeamMatchScore(t).ToString() : "");
+        else InitFullTeam(match, t);
     }
 
     public void InitEmpty()
@@ -45,24 +43,55 @@ public class UI_TMatchPlayer : MonoBehaviour
         return;
     }
 
-    private void InitCompact(Match match, Sprite sprite, string name, int rank, int points)
+    private void InitCompact(Match match, Sprite sprite, string name, int rank, string pointsText)
     {
         FlagIcon.sprite = sprite;
         NameText.text = name;
         Background.color = GetBackgroundColor(match, rank);
 
-        if (match.IsDone) PointsText.text = points.ToString();
+        if (match.IsDone) PointsText.text = pointsText;
         else PointsText.text = "";
     }
-    private void InitFull(Match match, Sprite sprite, string name, int rank, int points, int currentElo, int currentLP, int eloBeforeMatch, int eloAfterMatch)
+
+    private void InitFullPlayer(Match match, MatchParticipant_Player playerParticipant)
+    {
+        Sprite sprite = playerParticipant.Player.FlagSmall;
+        string nameText = playerParticipant.Player.Name;
+        int rank = match.GetPlayerRanking().IndexOf(playerParticipant);
+        Color backgroundColor = GetBackgroundColor(match, rank);
+
+        string pointsText = match.IsDone ? match.GetPlayerMatchScore(playerParticipant).ToString() : "";
+        int currentElo = playerParticipant.Player.Elo[match.Discipline.Def];
+        int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? playerParticipant.Player.CurrentLeaguePoints : 0;
+        int eloBeforeMatch = playerParticipant.EloBeforeMatch;
+        int eloAfterMatch = playerParticipant.EloAfterMatch;
+
+        InitFull(match, sprite, nameText, pointsText, currentElo, currentLeaguePoints, eloBeforeMatch, eloAfterMatch, backgroundColor);
+    }
+    private void InitFullTeam(TeamMatch match, MatchParticipant_Team teamParticipant)
+    {
+        Sprite sprite = teamParticipant.Team.FlagSmall;
+        string nameText = teamParticipant.Team.Name;
+        int rank = match.GetTeamRanking().IndexOf(teamParticipant);
+        Color backgroundColor = GetBackgroundColor(match, rank);
+
+        string pointsText = match.IsDone ? match.GetTeamMatchScore(teamParticipant).ToString() : "";
+        int currentElo = teamParticipant.Team.Elo[match.Discipline.Def];
+        int currentLeaguePoints = 0;
+        int eloBeforeMatch = teamParticipant.EloBeforeMatch;
+        int eloAfterMatch = teamParticipant.EloAfterMatch;
+
+        InitFull(match, sprite, nameText, pointsText, currentElo, currentLeaguePoints, eloBeforeMatch, eloAfterMatch, backgroundColor);
+    }
+    private void InitFull(Match match, Sprite sprite, string nameText, string pointsText, int currentElo, int currentLP, int eloBeforeMatch, int eloAfterMatch, Color backgroundColor)
     {
         FlagIcon.sprite = sprite;
-        NameText.text = name;
-        Background.color = GetBackgroundColor(match, rank);
+        NameText.text = nameText;
+        Background.color = backgroundColor;
 
         if (match.IsDone)
         {
-            PointsText.text = points.ToString();
+            PointsText.text = pointsText;
 
             EloText.text = eloBeforeMatch.ToString();
             int eloChange = eloAfterMatch - eloBeforeMatch;

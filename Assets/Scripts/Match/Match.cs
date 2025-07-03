@@ -68,8 +68,8 @@ public abstract class Match
     {
         if (IsDone) return false;
         if (!IsRunning && !CanStartMatch()) return false;
-        if (!Games.Last().IsDone) return false;
-        if (Games.Last().IsRunning) return false;
+        if (Games.Count > 0 && !Games.Last().IsDone) return false;
+        if (Games.Count > 0 && Games.Last().IsRunning) return false;
         return true;
     }
 
@@ -283,8 +283,8 @@ public abstract class Match
 
     public virtual List<MatchParticipant_Player> GetPlayerSeeding()
     {
-        if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo).ToList();
-        else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo).ToList();
+        if (Tournament.League != null) return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => Tournament.League.Standings[x.Player]).ThenByDescending(x => x.Player.Elo[Discipline.Def]).ToList();
+        else return PlayerParticipants.OrderBy(x => x.Seed).ThenByDescending(x => x.Player.Elo[Discipline.Def]).ToList();
     }
 
     /// <summary>

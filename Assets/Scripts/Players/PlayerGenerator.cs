@@ -160,16 +160,23 @@ public static class PlayerGenerator
         int tmp = 0;
         foreach (Country c in countries)
         {
-            tmp += (int)(Mathf.Pow(Mathf.Log10(c.Population), 8));
+            tmp += GetScaledPopulation(c.Population);
             if (rng < tmp) return c;
         }
         throw new System.Exception();
     }
 
     // Used so countries with low populations still have some chance to get picked
+    // Some example resulting values:
+    // Country            Population            Scaled Value
+    // --------------------------------------------------------
+    // Iceland            375'000               173
+    // Finland            5'500'000             300
+    // Germany            83'000'000            500
+    // China              1'410'000'000         766
     private static int GetScaledPopulation(int population)
     {
-        return (int)(Mathf.Pow(Mathf.Log10(population), 8));
+        return (int)(Mathf.Pow(Mathf.Log10(population), 3));
     }
 
     public static Skill GenerateNewRandomizedSkill(SkillDef def)

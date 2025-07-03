@@ -49,7 +49,7 @@ public class League
         int numMatches = 0;
         foreach (Tournament t in Tournaments)
         {
-            foreach (Match m in t.Matches.Where(x => x.IsParticipant(player)))
+            foreach (Match m in t.Matches.Where(x => x.IsDone && x.IsParticipant(player)))
             {
                 int matchScore = m.GetPlayerMatchScore(m.GetParticipant(player));
                 totalMatchScore += matchScore;

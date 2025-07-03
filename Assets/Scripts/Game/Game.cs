@@ -53,9 +53,10 @@ public abstract class Game
 
     public Game(Match match, int gameIndex, List<GameModifierDef> gameModifierDefs)
     {
-        Id = Database.GetNewMatchId();
+        Id = Database.GetNewGameId();
         Match = match;
         GameIndex = gameIndex;
+        Rounds = new List<GameRound>();
 
         // Generate set of skills
         Skills = new List<SkillDef>();
@@ -68,7 +69,7 @@ public abstract class Game
     {
         if (Match.IsDone) return false;
         if (!Match.IsRunning) return false;
-        if (!IsDone) return false;
+        if (IsDone) return false;
         if (IsRunning) return false;
         return true;
     }

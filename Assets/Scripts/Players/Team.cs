@@ -56,7 +56,7 @@ public class Team
     public int GetAveragePlayerElo(DisciplineDef discipline, int onlyCountNBestPlayers = 0)
     {
         if(onlyCountNBestPlayers == 0) return (int)Players.Average(x => x.Elo[discipline]);
-        else return (int)Players.OrderByDescending(x => x.Elo).Take(onlyCountNBestPlayers).Average(x => x.Elo[discipline]);
+        else return (int)Players.OrderByDescending(x => x.Elo[discipline]).Take(onlyCountNBestPlayers).Average(x => x.Elo[discipline]);
     }
 
     public void SetElo(DisciplineDef discipline, int value)

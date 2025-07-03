@@ -38,15 +38,14 @@ public class TournamentSimulator : MonoBehaviour
         PlayerGenerator.InitGenerator(Database.AllCountries);
 
         Database.ListCountriesByPlayerAmount();
+
+        AddMissingPlayerSkills();
         AddMissingCountryTeams();
         // FlagImageScraper.DownloadAllFlagImages();
 
         UI = GetComponent<UI_Base>();
         UI.Init(this);
         UpdateUI();
-
-        //StartTestMatch();
-        //StartTestTeamMatch();
 
         int n = 16;
         for(int i = 0; i < n; i++)
@@ -71,6 +70,24 @@ public class TournamentSimulator : MonoBehaviour
             if (Database.AllPlayers.Where(x => x.Country == c).Count() == 0) continue; // No player with that country exists yet
 
             CreateNationalTeam(c);
+        }
+    }
+
+    /// <summary>
+    /// If a new SkillDef was added, randomized values will be added to all players that don't yet have it.
+    /// </summary>
+    private void AddMissingPlayerSkills()
+    {
+        foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
+        {
+            foreach (Player player in Database.AllPlayers)
+            {
+                if (!player.Skills.ContainsKey(skillDef))
+                {
+                    Skill skill = PlayerGenerator.GenerateNewRandomizedSkill(skillDef);
+                    player.Skills.Add(skillDef, skill);
+                }
+            }
         }
     }
 
@@ -145,9 +162,9 @@ public class TournamentSimulator : MonoBehaviour
             else if (p.LeagueType == TournamentType.ChallengeLeague) challengeLeaguePlayers.Add(p);
             else if (p.LeagueType == TournamentType.OpenLeague) openLeaguePlayers.Add(p);
         }
-        AddNewLeague("Grand League", Database.Season, 0, grandLeaguePlayers, numPromotions: 0, numRelegations: NUM_GRAND_CHALLENGE_SWAPS);
-        AddNewLeague("Challenger League", Database.Season, 1, challengeLeaguePlayers, numPromotions: NUM_GRAND_CHALLENGE_SWAPS, numRelegations: NUM_CHALLENGE_OPEN_SWAPS);
-        AddNewLeague("Open League", Database.Season, 2, openLeaguePlayers, numPromotions: NUM_CHALLENGE_OPEN_SWAPS, numRelegations: NUM_OPEN_LEAGUE_RELEGATIONS);
+        AddNewLeague(DisciplineDefOf.Football, "Grand League", Database.Season, 0, grandLeaguePlayers, numPromotions: 0, numRelegations: NUM_GRAND_CHALLENGE_SWAPS);
+        AddNewLeague(DisciplineDefOf.Football, "Challenger League", Database.Season, 1, challengeLeaguePlayers, numPromotions: NUM_GRAND_CHALLENGE_SWAPS, numRelegations: NUM_CHALLENGE_OPEN_SWAPS);
+        AddNewLeague(DisciplineDefOf.Football, "Open League", Database.Season, 2, openLeaguePlayers, numPromotions: NUM_CHALLENGE_OPEN_SWAPS, numRelegations: NUM_OPEN_LEAGUE_RELEGATIONS);
 
         // Create league tournaments
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.GrandLeague, 1, 10);
@@ -175,14 +192,15 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
 
         // Switch season view
-        UI.DashboardScreen.SelectedSeasonIndex = Database.Season;
+        UI.DashboardScreen.RefreshDropdownOptions();
+        UI.DashboardScreen.SelectSeason(Database.Season);
 
         Save();
     }
 
-    private void AddNewLeague(string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
+    private void AddNewLeague(DisciplineDef discipline, string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
     {
-        League newLeague = new League(name, season, formatId, players, numPromotions, numRelegations);
+        League newLeague = new League(discipline, name, season, formatId, players, numPromotions, numRelegations);
         Database.AddLeague(newLeague);
     }
 

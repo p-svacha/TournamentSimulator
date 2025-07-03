@@ -21,9 +21,10 @@ public class League
     public List<Player> Players => Standings.Keys.ToList();
     public bool IsDone => Tournaments.All(x => x.IsDone);
 
-    public League(string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
+    public League(DisciplineDef discpipline, string name, int season, int formatId, List<Player> players, int numPromotions, int numRelegations)
     {
         Id = Database.GetNewLeagueId();
+        Discipline = discpipline;
         Name = name;
         Season = season;
         LeagueType = (TournamentType)formatId;

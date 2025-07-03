@@ -104,10 +104,8 @@ public static class PlayerGenerator
         Dictionary<SkillDef, Skill> skills = new Dictionary<SkillDef, Skill>();
         foreach (SkillDef skillDef in DefDatabase<SkillDef>.AllDefs)
         {
-            float baseValue = GetRandomSkillBaseValue();
-            float inconsistency = GetRandomInconsistency();
-            float mistakeChance = GetRandomMistakeChance();
-            skills.Add(skillDef, new Skill(skillDef, baseValue, inconsistency, mistakeChance));
+            Skill skill = GenerateNewRandomizedSkill(skillDef);
+            skills.Add(skillDef, skill);
         }
         Player player = new Player(firstname, lastname, country, sex, skills);
         return player;
@@ -174,16 +172,23 @@ public static class PlayerGenerator
         return (int)(Mathf.Pow(Mathf.Log10(population), 8));
     }
 
+    public static Skill GenerateNewRandomizedSkill(SkillDef def)
+    {
+        float baseValue = GetRandomSkillBaseValue();
+        float inconsistency = GetRandomInconsistency();
+        float mistakeChance = GetRandomMistakeChance();
+        return new Skill(def, baseValue, inconsistency, mistakeChance);
+    }
+
     private static float GetRandomSkillBaseValue()
     {
         return Random.Range(MIN_INITIAL_SKILL_BASE_VALUE, MAX_INITIAL_SKILL_BASE_VALUE);
     }
-    
-    public static float GetRandomInconsistency()
+    private static float GetRandomInconsistency()
     {
         return Random.Range(MIN_INITIAL_INCONSISTENCY, MAX_INITIAL_INCONSISTENCY);
     }
-    public static float GetRandomMistakeChance()
+    private static float GetRandomMistakeChance()
     {
         return Random.Range(MIN_INITIAL_MISTAKE_CHANCE, MAX_INITIAL_MISTAKE_CHANCE);
     }

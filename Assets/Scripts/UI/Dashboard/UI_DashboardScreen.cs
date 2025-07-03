@@ -22,15 +22,27 @@ public class UI_DashboardScreen : UI_Screen
     {
         base.Init(baseUI);
 
+        // Dropdown listeners
+        DisciplineDropdown.onValueChanged.AddListener(SelectDiscipline);
+        DashboardDropdown.onValueChanged.AddListener(SelectDashboard);
+        SeasonDropdown.onValueChanged.AddListener(SelectSeason);
+
+        // Dropdown options
+        RefreshDropdownOptions();
+
+        // Display current season
+        SelectSeason(Database.Season);
+    }
+
+    public void RefreshDropdownOptions()
+    {
         // Discipline dropdown
         DisciplineDropdown.options = DefDatabase<DisciplineDef>.AllDefs.Select(x => new TMP_Dropdown.OptionData(x.Label)).ToList();
-        DisciplineDropdown.onValueChanged.AddListener(SelectDiscipline);
 
         // Dashboard dropdown
         foreach (UI_Dashboard dashboard in Dashboards) dashboard.Init();
         List<TMP_Dropdown.OptionData> dashboardOptions = Dashboards.Select(d => new TMP_Dropdown.OptionData(d.Label)).ToList();
         DashboardDropdown.options = dashboardOptions;
-        DashboardDropdown.onValueChanged.AddListener(SelectDashboard);
 
         // Season dropdown
         List<TMP_Dropdown.OptionData> seasonOptions = new List<TMP_Dropdown.OptionData>();
@@ -39,21 +51,19 @@ public class UI_DashboardScreen : UI_Screen
             seasonOptions.Add(new TMP_Dropdown.OptionData($"Season {(i + 1)}"));
         }
         SeasonDropdown.options = seasonOptions;
-        SeasonDropdown.onValueChanged.AddListener(SelectSeason);
-        SelectSeason(Database.Season);
     }
 
-    private void SelectDiscipline(int disciplineIndex)
+    public void SelectDiscipline(int disciplineIndex)
     {
         SelectedDisciplineIndex = disciplineIndex;
         Refresh();
     }
-    private void SelectSeason(int seasonIndex)
+    public void SelectSeason(int seasonIndex)
     {
         SelectedSeasonIndex = seasonIndex;
         Refresh();
     }
-    private void SelectDashboard(int dashboardIndex)
+    public void SelectDashboard(int dashboardIndex)
     {
         SelectedDashboardIndex = dashboardIndex;
         Refresh();

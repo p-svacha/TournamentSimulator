@@ -272,6 +272,14 @@ public abstract class Match
         }
         throw new System.NotImplementedException();
     }
+    public int GetPlayerMatchTiebreakerScore(MatchParticipant_Player player)
+    {
+        if (Format == MatchFormatDefOf.SingleGame)
+        {
+            return Games[0].GetTotalPlayerScore(player);
+        }
+        throw new System.NotImplementedException();
+    }
 
     public virtual List<MatchParticipant_Player> GetPlayerSeeding()
     {

@@ -11,6 +11,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
     public Image FlagIcon;
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ScoreText;
+    public TextMeshProUGUI TiebreakerText;
     public GameObject SkillContainer;
 
     [Header("Prefabs")]
@@ -27,6 +28,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
         if (m.IsDone)
         {
             ScoreText.text = m.GetPlayerMatchScore(p).ToString();
+            TiebreakerText.text = m.GetPlayerMatchTiebreakerScore(p).ToString();
 
             if (m.Games.Count == 1)
             {
@@ -34,12 +36,17 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
 
                 foreach (SkillDef skillDef in game.Skills)
                 {
-                    GameRound round = m.Games[0].Rounds.First(x => x.Skill == skillDef);
-                    PlayerGameRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
-
-                    int score = pRound.Score;
-
+                    GameRound round = m.Games[0].Rounds.FirstOrDefault(x => x.Skill == skillDef);
                     TextMeshProUGUI skillText = Instantiate(SkillTextPrefab, SkillContainer.transform);
+
+                    if(round == null)
+                    {
+                        skillText.text = "";
+                        continue;
+                    }
+
+                    PlayerGameRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
+                    int score = pRound.Score;
                     skillText.text = score.ToString();
                     if (pRound.Modifiers != null && pRound.Modifiers.Contains(Player.MISTAKE_MODIFIER)) skillText.color = Color.red;
                 }

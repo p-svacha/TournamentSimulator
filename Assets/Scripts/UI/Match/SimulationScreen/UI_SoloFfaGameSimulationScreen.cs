@@ -119,7 +119,6 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         }
 
         // Resort rows according to new ranking
-        Debug.Log("SORT");
         List<Player> playerRanking = Game.GetPlayerRanking().Select(x => x.Player).ToList();
         for (int i = 0; i < playerRanking.Count; i++) PlayerRows[playerRanking[i]].transform.SetSiblingIndex(i + 1);
     }

@@ -15,21 +15,20 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
 
     public void DisplayMatch(Match match)
     {
-        if (match.Games.Count > 1) throw new System.Exception("Display only implemented for matches with 1 game atm.");
+        // Title Row
+        HelperFunctions.DestroyAllChildredImmediately(TitleRow.SkillContainer);
 
-        if (match.Games.Count > 0)
+        List<SkillDef> skillColumns = new List<SkillDef>();
+        if (match.Games.Count == 0) skillColumns.AddRange(match.Discipline.Skills); // Show discipline skills if match has not yet started
+        else if (match.Games.Count == 1) skillColumns.AddRange(match.Games[0].Skills); // Show skills of only game
+        else throw new System.NotImplementedException("Match display not implemented for matches with more than one game.");
+
+        foreach (SkillDef skillDef in skillColumns)
         {
-            Game game = match.Games[0];
-
-            // Title Row
-            HelperFunctions.DestroyAllChildredImmediately(TitleRow.SkillContainer);
-            foreach (SkillDef skillDef in game.Skills)
-            {
-                TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
-                skillText.text = skillDef.Triplet;
-            }
-            LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
+            TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
+            skillText.text = skillDef.Triplet;
         }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
 
         // Player rows
         HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);

@@ -24,6 +24,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
         FlagIcon.sprite = p.Player.FlagBig;
         NameText.text = p.Player.Name;
         ScoreText.text = "";
+        TiebreakerText.text = "";
 
         if (m.IsDone)
         {

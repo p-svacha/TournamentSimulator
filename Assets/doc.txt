@@ -1,15 +1,14 @@
-
-- better league tiebreakers
-	> show tiebreakers for players with same league points
-
-in match overview, show tiebreaker for players with same match score
-
 ------------------------------- Before season 7 ------------------------------------------- the stat update
+only add participants to season cup and world cup right before the first round starts
+	> in world cup also only decide then to 2v2 or 3v3 (3v3 when 8+ teams)
+
 show elo change in UI_MatchOverviewPlayer
 show rank in UI_MatchOverviewPlayer
 show seed in UI_MatchOverviewPlayer
 
 show current team score during round in team match simulation screen
+
+show medals in player tooltip
 
 new dedicated fullscreen Player page
 	> shows awards
@@ -24,6 +23,8 @@ new dedicated team page
 	> shows most used players
 	> elo graphe
 	> rival stats
+
+instead of 2 random revivals at the end of season, do 1 random revival + the best rated player without a league
 
 -------------------------------------------------------------------------------------------
 

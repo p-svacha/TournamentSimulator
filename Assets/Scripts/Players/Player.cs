@@ -26,7 +26,7 @@ public class Player
     public static string MISTAKE_MODIFIER = "Mistake";
 
     // Stats
-    public List<Match> Matches = new List<Match>();
+    private List<Match> Matches = new List<Match>();
     public int NumCompletedMatches => Matches.Where(m => m.IsDone).Count();
     public int GetWorldRank(DisciplineDef discipline) => Database.AllPlayers.OrderByDescending(x => x.Elo[discipline]).ToList().IndexOf(this) + 1;
 
@@ -49,6 +49,9 @@ public class Player
 
         LeagueType = TournamentType.None;
     }
+
+    public void AddMatch(Match m) => Matches.Add(m);
+    public List<Match> GetMatches() => Matches;
 
     public float GetSkillBaseValue(SkillDef skillDef) => Skills[skillDef].BaseValue;
 

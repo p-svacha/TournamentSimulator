@@ -42,14 +42,14 @@ public class PlayerTooltipTarget : MonoBehaviour, IPointerEnterHandler, IPointer
     private void ShowTooltip()
     {
         if (Player == null) return;
-        UI_PlayerTooltip.Singleton.Init(Discipline, Player);
+        UI_PlayerTooltip.Instance.Init(Discipline, Player);
     }
 
     private void HideTooltip()
     {
         IsFocussed = false;
         CurrentDelay = 0;
-        UI_PlayerTooltip.Singleton.Hide();
+        UI_PlayerTooltip.Instance.Hide();
     }
 }
 

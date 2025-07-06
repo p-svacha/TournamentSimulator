@@ -151,7 +151,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         CurrentSkillIndex++;
         CurrentSkill = Game.Skills[CurrentSkillIndex];
         ProgressTitleText.text = (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
-        AttributeTitleText.text = CurrentSkill.Label;
+        AttributeTitleText.text = CurrentSkill.LabelCap;
         SimPlayer = 0;
 
         // Execute game round

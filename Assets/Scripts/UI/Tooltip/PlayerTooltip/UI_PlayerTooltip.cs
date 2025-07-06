@@ -7,7 +7,7 @@ using System.Linq;
 
 public class UI_PlayerTooltip : UI_Tooltip
 {
-    public static UI_PlayerTooltip Singleton;
+    public static UI_PlayerTooltip Instance;
 
     [Header("Header")]
     public Image FlagIcon;
@@ -37,7 +37,7 @@ public class UI_PlayerTooltip : UI_Tooltip
     private void Awake()
     {
         gameObject.SetActive(false);
-        Singleton = this;
+        Instance = this;
     }
 
     public void Init(DisciplineDef discipline, Player player)
@@ -73,11 +73,11 @@ public class UI_PlayerTooltip : UI_Tooltip
         CountryRankText.text = (countryRanking.Keys.ToList().IndexOf(player) + 1) + " / " + countryRanking.Count;
 
         RegionLabelText.text = player.Country.Region;
-        Dictionary<Player, int> regionRanking = Database.GetRegionRanking(discipline, player.Country.Region);
+        Dictionary<Player, int> regionRanking = Database.GetRegionPlayerRanking(discipline, player.Country.Region);
         RegionRankText.text = (regionRanking.Keys.ToList().IndexOf(player) + 1) + " / " + regionRanking.Count;
 
         ContinentLabelText.text = player.Country.Continent;
-        Dictionary<Player, int> continentRanking = Database.GetContinentRanking(discipline, player.Country.Continent);
+        Dictionary<Player, int> continentRanking = Database.GetContinentPlayerRanking(discipline, player.Country.Continent);
         ContinentRankText.text = (continentRanking.Keys.ToList().IndexOf(player) + 1) + " / " + continentRanking.Count;
 
         // History

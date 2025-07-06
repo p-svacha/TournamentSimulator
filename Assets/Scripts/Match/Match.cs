@@ -62,6 +62,7 @@ public abstract class Match
         if (PlayerParticipants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
 
         PlayerParticipants.Add(new MatchParticipant_Player(this, p, seed, team));
+        p.AddMatch(this);
     }
 
     public bool CanStartNextGame()
@@ -354,7 +355,7 @@ public abstract class Match
 
         // References
         Tournament.Matches.Add(this);
-        foreach (var p in PlayerParticipants) p.Player.Matches.Add(this);
+        foreach (var p in PlayerParticipants) p.Player.AddMatch(this);
         if (Group != null) Group.Matches.Add(this);
     }
 

@@ -133,7 +133,7 @@ public class UI_Leaderboard : MonoBehaviour
             foreach (var medal in medals)
             {
                 UI_PlayerListElement elem = Instantiate(PlayerListElement, MedalLeaderboard.ListContainer.transform);
-                elem.InitMedalList_Team(rank, medal.Key, medal.Value);
+                elem.InitMedalList_Team(Discipline, rank, medal.Key, medal.Value);
                 rank++;
             }
         }

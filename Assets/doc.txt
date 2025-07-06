@@ -2,6 +2,13 @@
 only add participants to season cup and world cup right before the first round starts
 	> in world cup also only decide then to 2v2 or 3v3 (3v3 when 8+ teams)
 
+
+add team tooltip in more places
+	> KO matches
+	> group matches
+	> during simulation
+	> on flags
+
 show elo change in UI_MatchOverviewPlayer
 show rank in UI_MatchOverviewPlayer
 show seed in UI_MatchOverviewPlayer
@@ -10,26 +17,30 @@ show current team score during round in team match simulation screen
 
 show medals in player tooltip
 
-new dedicated fullscreen Player page
-	> shows awards
-	> national team appearances
-	> elo graph
-	> rival stats (most played vs who)
-
-team tooltip
-	> same as player tooltip
-
-new dedicated team page
-	> shows most used players
-	> elo graphe
-	> rival stats
-
 instead of 2 random revivals at the end of season, do 1 random revival + the best rated player without a league
 
--------------------------------------------------------------------------------------------
+allow pause during match simulation
 
-player events
-player traits
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------------------------------------------
 
 New Aoe2 Discipline (v2):
 
@@ -49,7 +60,7 @@ Some skills are used based on match state (3):
 Some skills are used based on map (3-5):
 	- Map knowledge skill [1 per map]
 	- Skill for every tag the map has
-If end result after this is a tie, the tiebreaker skill is used to decide (cannot be even).
+If end result after this is a tie, the default tiebreaker is used to decide (total match score).
 
 Change to Skills:
 	Each player will now have 3 values per skill

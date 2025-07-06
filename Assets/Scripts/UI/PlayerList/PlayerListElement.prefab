@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 45994378724601152}
   - component: {fileID: 1341247041522310806}
   - component: {fileID: 8731496287178149171}
+  - component: {fileID: -7778271030010018113}
   m_Layer: 5
   m_Name: PlayerListElement
   m_TagString: Untagged
@@ -254,6 +255,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25fcf996ebea15a40a7d017346041fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsFocussed: 0
+  CurrentDelay: 0
+--- !u!114 &-7778271030010018113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45994378724601164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1699fc3a8a40e1644bd133a2d3041522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsFocussed: 0

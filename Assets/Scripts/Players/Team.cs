@@ -16,6 +16,7 @@ public class Team
     public bool IsCountryTeam => Country != null;
 
     public Dictionary<DisciplineDef, int> Elo { get; private set; }
+    private List<TeamMatch> Matches = new List<TeamMatch>();
 
     // New country team
     public Team(Country c)
@@ -39,6 +40,9 @@ public class Team
         }
     }
 
+    public void AddMatch(TeamMatch m) => Matches.Add(m);
+    public List<TeamMatch> GetMatches() => Matches;
+
     public void AddPlayer(Player p)
     {
         Players.Add(p);
@@ -50,7 +54,7 @@ public class Team
     public List<Player> GetPlayersForMatch(TeamMatch m)
     {
         // Sort players by their elo and take top x for match
-        return Players.OrderByDescending(x => x.Elo).Take(m.NumPlayersPerTeam).ToList();
+        return Players.OrderByDescending(x => x.Elo[m.Discipline.Def]).Take(m.NumPlayersPerTeam).ToList();
     }
 
     public int GetAveragePlayerElo(DisciplineDef discipline, int onlyCountNBestPlayers = 0)
@@ -63,6 +67,12 @@ public class Team
     {
         Elo[discipline] = value;
     }
+
+    #region Stats
+
+    public int GetWorldRank(DisciplineDef discipline) => Database.AllTeams.Where(x => x.GetMatches().Count > 0).OrderByDescending(x => x.Elo[discipline]).ToList().IndexOf(this) + 1;
+
+    #endregion
 
     #region Save / Load
 

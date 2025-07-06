@@ -132,31 +132,32 @@ public class UI_PlayerListElement : MonoBehaviour
     {
         HideAllFields();
 
-        SetBasicFields(rank, team);
+        SetBasicFields(discpline, rank, team);
         ShowMainValue(team.Elo[discpline].ToString());
     }
     public void InitEloList_Team_Full(DisciplineDef discpline, int rank, Team team)
     {
         HideAllFields();
 
-        SetBasicFields(rank, team);
+        SetBasicFields(discpline, rank, team);
         ShowMainValue(team.Elo[discpline].ToString());
     }
-    public void InitMedalList_Team(int rank, Team team, Vector3 medals)
+    public void InitMedalList_Team(DisciplineDef discpline, int rank, Team team, Vector3 medals)
     {
         HideAllFields();
 
-        SetBasicFields(rank, team);
+        SetBasicFields(discpline, rank, team);
         ShowMedals(medals);
     }
 
 
-    private void SetBasicFields(int rank, Team t)
+    private void SetBasicFields(DisciplineDef discpline, int rank, Team t)
     {
         Background.color = ColorManager.Singleton.DefaultColor;
         RankText.text = rank.ToString();
         FlagIcon.sprite = t.FlagSmall;
         NameText.text = t.Name;
+        GetComponent<TeamTooltipTarget>().Init(discpline, t);
     }
 
     #endregion

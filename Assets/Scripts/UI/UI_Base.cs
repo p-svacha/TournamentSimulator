@@ -99,7 +99,7 @@ public class UI_Base : MonoBehaviour
     private void DisplayScreen(UI_Screen screen)
     {
         // Hide tooltip
-        UI_PlayerTooltip.Singleton.Hide();
+        UI_PlayerTooltip.Instance.Hide();
 
         // Switch screen
         ActiveScreen.gameObject.SetActive(false);

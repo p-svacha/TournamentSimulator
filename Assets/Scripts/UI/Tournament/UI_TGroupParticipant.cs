@@ -26,6 +26,7 @@ public class UI_TGroupParticipant : MonoBehaviour
             NumGamesText.text = p.NumMatches.ToString();
             TotalPointsText.text = p.TotalMatchPointsGained + ":" + p.TotalMatchPointsLost;
             GroupPointsText.text = p.GroupPoints.ToString();
+            GetComponent<TeamTooltipTarget>().Init(p.Group.Tournament.Discipline.Def, p.Team);
         }
     }
 }

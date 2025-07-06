@@ -40,6 +40,7 @@ public class TeamMatch : Match
         if (TeamParticipants.Any(x => x.Team == t)) throw new System.Exception("Can't add the same team to the match twice (" + t.Name + ")");
 
         TeamParticipants.Add(new MatchParticipant_Team(this, t, seed));
+        t.AddMatch(this);
     }
 
     public override bool CanStartMatch()
@@ -134,20 +135,19 @@ public class TeamMatch : Match
         {
             for (int j = i + 1; j < teamRanking.Count; j++)
             {
-                bool isDraw = (GetTeamMatchScore(teamRanking[i]) == GetTeamMatchScore(teamRanking[j]));
-                AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team, isDraw);
+                AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team);
             }
         }
 
         return newRatings;
     }
 
-    private void AdjustTeamRatings(Dictionary<Team, int> newRatings, Team winner, Team loser, bool isDraw)
+    private void AdjustTeamRatings(Dictionary<Team, int> newRatings, Team winner, Team loser)
     {
         float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline.Def] - winner.Elo[Discipline.Def]) / 400f));
         float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline.Def] - loser.Elo[Discipline.Def]) / 400f));
 
-        if (isDraw)
+        if (IsDraw())
         {
             newRatings[winner] += (int)(20 * (0.5f - expWinner));
             newRatings[loser] += (int)(20 * (0.5f - expLoser));
@@ -179,6 +179,8 @@ public class TeamMatch : Match
         }
         else return GetTeamSeeding();
     }
+
+    public int GetTeamMatchScore(Team team) => GetTeamMatchScore(GetParticipant(team));
     public int GetTeamMatchScore(MatchParticipant_Team team)
     {
         if (Format == MatchFormatDefOf.SingleGame)
@@ -208,6 +210,34 @@ public class TeamMatch : Match
     /// </summary>
     public Team GetTeamOf(Player p) => GetParticipant(p).Team;
 
+    public List<Player> GetTeamMembersOf(Team t)
+    {
+        if (!IncludesTeam(t)) throw new System.Exception($"Team {t.Name} is not in this match.");
+
+        return PlayerParticipants.Select(p => p.Player).Where(p => GetTeamOf(p) == t).ToList();
+    }
+
+    public bool IsDraw()
+    {
+        if (!IsDone) throw new System.Exception("Match has to be done to identify if it has been a draw.");
+        if (TeamParticipants.Count != 2) throw new System.Exception("Draws are only possible for 1v1 matches.");
+
+        if (Group == null) return false; // Matches outside of groups can never end in a draw
+        return GetTeamMatchScore(TeamParticipants[0]) == GetTeamMatchScore(TeamParticipants[1]);
+    }
+
+    /// <summary>
+    /// Returns if the given team has won this match. Throws exception for none 1v1 matches.
+    /// </summary>
+    /// <param name="team"></param>
+    /// <returns></returns>
+    public bool IsWinner(Team team)
+    {
+        if (IsDraw()) return false;
+
+        return GetTeamRanking().IndexOf(GetParticipant(team)) == 0;
+    }
+
     #endregion
 
     #region Save / Load
@@ -228,6 +258,8 @@ public class TeamMatch : Match
         NumPlayersPerTeam = data.NumPlayersPerTeam;
         TeamPointDistribution = data.TeamPointDistribution;
         TeamParticipants = data.TeamParticipants.Select(x => new MatchParticipant_Team(this, x)).ToList();
+
+        foreach (MatchParticipant_Team t in TeamParticipants) t.Team.AddMatch(this);
     }
 
     #endregion

@@ -185,7 +185,7 @@ public static class Database
     }
     public static List<Team> GetTeamEloRanking(DisciplineDef discipline)
     {
-        return Teams.Values.OrderByDescending(x => x.Elo[discipline]).ThenByDescending(x => x.GetAveragePlayerElo(discipline)).ToList();
+        return Teams.Values.Where(x => x.GetMatches().Count > 0).OrderByDescending(x => x.Elo[discipline]).ThenByDescending(x => x.GetAveragePlayerElo(discipline)).ToList();
     }
 
     /// <summary>
@@ -198,16 +198,47 @@ public static class Database
     /// <summary>
     /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
     /// </summary>
-    public static Dictionary<Player, int> GetRegionRanking(DisciplineDef discipline, string region)
+    public static Dictionary<Player, int> GetRegionPlayerRanking(DisciplineDef discipline, string region)
     {
         return Database.Players.Values.Where(x => x.Country.Region == region).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
     }
     /// <summary>
     /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating.
     /// </summary>
-    public static Dictionary<Player, int> GetContinentRanking(DisciplineDef discipline, string continent)
+    public static Dictionary<Player, int> GetContinentPlayerRanking(DisciplineDef discipline, string continent)
     {
         return Database.Players.Values.Where(x => x.Country.Continent == continent).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
+    }
+
+    /// <summary>
+    /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating for teams.
+    /// </summary>
+    public static Dictionary<Team, int> GetRegionTeamRanking(DisciplineDef discipline, string region)
+    {
+        return Teams.Values.Where(x => x.GetMatches().Count > 0 && x.Country.Region == region).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
+    }
+    /// <summary>
+    /// Returns an ordered dictionary representing the region leaderboard of a given region based on elo rating for teams.
+    /// </summary>
+    public static Dictionary<Team, int> GetContinentTeamRanking(DisciplineDef discipline, string continent)
+    {
+        return Teams.Values.Where(x => x.GetMatches().Count > 0 && x.Country.Continent == continent).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
+    }
+
+    public static Vector3Int GetTeamMedals(Team team)
+    {
+        Vector3Int medals = Vector3Int.zero;
+
+        foreach(Tournament tournament in AllTournaments.Where(t => t.IsTeamTournament && t.IsDone))
+        {
+            Dictionary<int, List<Team>> teamRanking = tournament.TeamRanking;
+            
+            if(teamRanking[0].Contains(team)) medals += new Vector3Int(1, 0, 0);
+            if(teamRanking[1].Contains(team)) medals += new Vector3Int(0, 1, 0);
+            if(teamRanking[2].Contains(team)) medals += new Vector3Int(0, 0, 1);
+        }
+
+        return medals;
     }
 
     public static void GetAddMedals<T>(Dictionary<int, List<T>> ranking, Dictionary<T, Vector3Int> medals)
@@ -232,6 +263,48 @@ public static class Database
     }
 
     public static Dictionary<Country, List<Player>> GetPlayersByCountry() => Players.Values.GroupBy(x => x.Country).OrderByDescending(x => x.Count()).ToDictionary(x => x.Key, x => x.ToList());
+
+    public static Dictionary<Player, int> GetTeamAppearances(Team team)
+    {
+        Dictionary<Player, int> appearances = new Dictionary<Player, int>();
+
+        foreach(TeamMatch m in team.GetMatches().Where(x => x.IsDone))
+        {
+            List<Player> players = m.GetTeamMembersOf(team);
+            foreach (Player p in players) appearances.Increment(p);
+        }
+
+        return appearances;
+    }
+
+    /// <summary>
+    /// Returns the x most played teams of a specific team, and returns the results as a Vector3 (x = wins, y = draws, z = losses)
+    /// </summary>
+    public static Dictionary<Team, Vector3Int> GetTeamRivals(Team team, int maxAmount = 5)
+    {
+        Dictionary<Team, Vector3Int> rivals = new Dictionary<Team, Vector3Int>();
+
+        // Get all rivals
+        foreach(TeamMatch m in team.GetMatches().Where(x => x.IsDone))
+        {
+            if (m.TeamParticipants.Count != 2) throw new Exception("Statistic currently only works for 1v1 matches.");
+
+            Team opponent = m.TeamParticipants.First(p => p.Team != team).Team;
+            if (!rivals.ContainsKey(opponent)) rivals.Add(opponent, Vector3Int.zero);
+
+            if (m.IsWinner(team)) rivals[opponent] += new Vector3Int(1, 0, 0);
+            else if (m.IsDraw()) rivals[opponent] += new Vector3Int(0, 1, 0);
+            else rivals[opponent] += new Vector3Int(0, 0, 1);
+        }
+
+        // Sort by amount of matches
+        rivals = rivals.OrderByDescending(x => x.Value.x + x.Value.y + x.Value.z).ToDictionary(x => x.Key, x => x.Value);
+
+        // Limit by maxAmount
+        rivals = rivals.Take(maxAmount).ToDictionary(x => x.Key, x => x.Value);
+
+        return rivals;
+    }
 
     #endregion
 

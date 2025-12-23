@@ -100,6 +100,7 @@ public class UI_Base : MonoBehaviour
     {
         // Hide tooltip
         UI_PlayerTooltip.Instance.Hide();
+        UI_TeamTooltip.Instance.Hide();
 
         // Switch screen
         ActiveScreen.gameObject.SetActive(false);

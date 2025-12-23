@@ -39,8 +39,6 @@ public abstract class Tournament
         Teams = new List<Team>();
     }
 
-    public abstract void Initialize();
-
     /// <summary>
     /// Returns the label of the n'th day that the tournament takes place.
     /// </summary>

@@ -191,6 +191,9 @@ public class TournamentSimulator : MonoBehaviour
         // World Cup
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
 
+        // BIG Cup
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup);
+
         // Switch season view
         UI.DashboardScreen.RefreshDropdownOptions();
         UI.DashboardScreen.SelectSeason(Database.Season);
@@ -214,6 +217,7 @@ public class TournamentSimulator : MonoBehaviour
         else if (type == TournamentType.OpenLeague) newTournament = new Format_OpenLeague(disciplineDef, season, quarter, day, Database.CurrentOpenLeague);
         else if (type == TournamentType.SeasonCup) newTournament = new Format_SeasonCup(disciplineDef, season);
         else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(disciplineDef, season, numPlayersPerTeam);
+        else if (type == TournamentType.BIGCup) newTournament = new Format_BigCup(disciplineDef, season, quarter, day);
         else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
 
         Database.AddTournament(newTournament);

@@ -36,7 +36,7 @@ public class Format_OpenLeague : Tournament
         Initialize();
     }
 
-    public override void Initialize()
+    public void Initialize()
     {
         if (Players.Count > 48) throw new System.Exception("Open League does not support more than 48 players");
         if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");

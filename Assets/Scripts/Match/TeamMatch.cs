@@ -111,15 +111,14 @@ public class TeamMatch : Match
 
     private void SetTeamAdvancements()
     {
-        for (int i = 0; i < NumAdvancements; i++)
+        for (int i = 0; i < AdvancementsTargets.Count; i++)
         {
-            int rank = i;
-            Team advancingTeam = GetTeamRanking()[rank].Team;
-            TeamMatch targetMatch = (TeamMatch)Tournament.Matches[TargetMatchIndices[rank]];
+            MatchAdvancementTarget advancement = AdvancementsTargets[i];
+            Team advancingTeam = GetTeamRanking()[advancement.SourceRank].Team;
+            TeamMatch targetMatch = (TeamMatch)advancement.TargetMatch;
             Debug.Log(advancingTeam.Name + " is advancing to " + targetMatch.ToString());
 
-            int targetSeed = rank;
-            if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
+            int targetSeed = advancement.TargetSeed;
             targetMatch.AddTeamToMatch(advancingTeam, targetSeed);
         }
     }

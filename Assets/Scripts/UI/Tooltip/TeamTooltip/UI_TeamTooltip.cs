@@ -83,7 +83,7 @@ public class UI_TeamTooltip : UI_Tooltip
 
         // Rivals
         HelperFunctions.DestroyAllChildredImmediately(RivalsContainer, skipElements: 1);
-        Dictionary<Team, Vector3Int> rivals = Database.GetTeamRivals(team, maxAmount: 5);
+        Dictionary<Team, Vector3Int> rivals = Database.GetTeamRivals(team, maxAmount: 6);
         foreach(var rival in rivals)
         {
             UI_TeamTooltip_RivalRow row = GameObject.Instantiate(RivalRowPrefab, RivalsContainer.transform);

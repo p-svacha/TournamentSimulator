@@ -17,7 +17,8 @@ show current team score during round in team match simulation screen
 
 show medals in player tooltip
 
-instead of 2 random revivals at the end of season, do 1 random revival + the best rated player without a league
+instead of 2 random revivals at the end of season, do just 1: best rated player without a league
+	> then 1 more new generated
 
 allow pause during match simulation
 

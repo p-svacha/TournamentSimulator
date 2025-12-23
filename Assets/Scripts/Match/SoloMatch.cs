@@ -33,16 +33,15 @@ public class SoloMatch : Match
 
     private void SetPlayerAdvancements()
     {
-        for (int i = 0; i < NumAdvancements; i++)
+        for (int i = 0; i < AdvancementsTargets.Count; i++)
         {
-            int rank = i;
-            Player advancingPlayer = PlayerRanking[rank];
-            Match targetMatch = Tournament.Matches[TargetMatchIndices[rank]];
-            Debug.Log(advancingPlayer.ToString() + " is advancing to " + targetMatch.ToString());
-            int targetSeed = rank;
-            if (TargetMatchSeeds.Count > 0) targetSeed = TargetMatchSeeds[rank];
-            Debug.Log($"{advancingPlayer.Name} is advancing to {targetMatch} as seed {targetSeed}.");
-            targetMatch.AddPlayerToMatch(advancingPlayer, targetSeed);
+            MatchAdvancementTarget advancement = AdvancementsTargets[i];
+
+            Player advancingPlayer = PlayerRanking[advancement.SourceRank];
+            Debug.Log(advancingPlayer.ToString() + " is advancing to " + advancement.TargetMatch.ToString());
+            int targetSeed = advancement.TargetSeed;
+            Debug.Log($"{advancingPlayer.Name} is advancing to {advancement.TargetMatch} as seed {targetSeed}.");
+            advancement.TargetMatch.AddPlayerToMatch(advancingPlayer, targetSeed);
         }
     }
 

@@ -30,6 +30,8 @@ public class UI_TMatchPlayer : MonoBehaviour
     {
         if (isCompact) InitCompact(match, t.Team.FlagSmall, t.Team.Name, match.GetTeamRanking().IndexOf(t), match.IsDone ? match.GetTeamMatchScore(t).ToString() : "");
         else InitFullTeam(match, t);
+
+        GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, t.Team);
     }
 
     public void InitEmpty()

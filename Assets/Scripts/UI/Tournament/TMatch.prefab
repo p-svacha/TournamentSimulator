@@ -604,6 +604,8 @@ MonoBehaviour:
   MatchOverviewButton: {fileID: 7543401160135448052}
   PlayerContainer: {fileID: 7713239196091163855}
   IsCompact: 0
+  AlwaysOrderBySeed: 0
+  AlwaysUseGrayBackground: 0
   PlayerPrefab: {fileID: 1532127121303272560, guid: 06347cfaaa6cb0142b61ffed834381a8, type: 3}
 --- !u!114 &7543401160135448052
 MonoBehaviour:

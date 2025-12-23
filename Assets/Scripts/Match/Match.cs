@@ -21,10 +21,13 @@ public abstract class Match
 
 
     // Rules
-    public int NumPlayers { get; private set; } // How many players there are in the match
-    public List<int> TargetMatchIndices { get; private set; } // Indices of matches within tournament that participants in this match are advancing to
-    public int NumAdvancements => TargetMatchIndices == null ? 0 : TargetMatchIndices.Count;
-    public List<int> TargetMatchSeeds { get; private set; } // List containing the seeds that advancing participants will have in their next match. If empty the seed will be the rank in this match.
+    public int NumPlayers { get; private set; } // How many players there are in the match. -1 means the amount is dynamic
+    public bool PlayerNumberIsDynamic => NumPlayers == -1;
+    public int NumAdvancements => AdvancementsTargets == null ? 0 : AdvancementsTargets.Count;
+    /// <summary>
+    /// List containing all information about which ranks in this match advance to what matches with what seeds.
+    /// </summary>
+    public List<MatchAdvancementTarget> AdvancementsTargets { get; private set; } 
     public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks. Usually {1,0} in 2 player matches, or something like {10,6,4,3} else.
 
     // State
@@ -52,7 +55,7 @@ public abstract class Match
 
         PlayerParticipants = new List<MatchParticipant_Player>();
         Games = new List<Game>();
-        TargetMatchSeeds = new List<int>();
+        AdvancementsTargets = new List<MatchAdvancementTarget>();
     }
 
     public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
@@ -106,17 +109,33 @@ public abstract class Match
 
     protected abstract Game CreateGame(int index, List<GameModifierDef> gameModifiers);
 
-    /// <summary>
-    /// Sets the matches the top x players in this match advance to, with x being the length of the list and the integers in the list corresponding to the match index within the tournament.
-    /// </summary>
-    public void SetTargetMatches(List<int> targetMatchIndices)
+    public void SetAdvancements(List<MatchAdvancementTarget> targets)
     {
-        TargetMatchIndices = targetMatchIndices;
+        foreach(MatchAdvancementTarget target in targets)
+        {
+            // Validate
+            if (target.SourceMatch != this) throw new System.Exception("Cannot add an advancement target that is not for this match.");
+            if (AdvancementsTargets.Any(t => t.SourceRank == target.SourceRank)) throw new System.Exception("An advancement target for the same rank has already been set.");
+
+            // Add
+            AdvancementsTargets.Add(target);
+        }
     }
 
-    public void SetTargetMatchSeeds(List<int> targetMatchSeeds)
+    /// <summary>
+    /// Short of way of setting target matches for this match.
+    /// List contains the LOCAL (within torunament) id of the match, the ranks according to the list index advance to.
+    /// Seeds will be equivalent to rank if not set specifically.
+    /// </summary>
+    public void SetTargetMatches(List<int> targetMatchIds, List<int>? targetMatchSeeds = null)
     {
-        TargetMatchSeeds = targetMatchSeeds;
+        for (int i = 0; i < targetMatchIds.Count; i++)
+        {
+            int seed = i;
+            if (targetMatchSeeds != null && i < targetMatchSeeds.Count) seed = targetMatchSeeds[i];
+            MatchAdvancementTarget target = new MatchAdvancementTarget(this, i, Tournament.Matches[targetMatchIds[i]], seed);
+            AdvancementsTargets.Add(target);
+        }
     }
 
     public virtual bool CanStartMatch()
@@ -294,7 +313,16 @@ public abstract class Match
     public abstract int NumParticipants { get; }
 
     public List<Player> PlayerRanking => GetPlayerRanking().Select(x => x.Player).ToList();
-    
+    public Dictionary<int, List<Player>> GetPlayerRankingWithRanks()
+    {
+        Dictionary<int, List<Player>> dict = new Dictionary<int, List<Player>>();
+        for (int i = 0; i < PlayerRanking.Count; i++)
+        {
+            dict.Add(i, new List<Player>() { PlayerRanking[i] });
+        }
+        return dict;
+    }
+
     public override string ToString() => Tournament.ToString() + " " + Name + " (" + Id + ")";
 
     #endregion
@@ -305,6 +333,8 @@ public abstract class Match
     /// Returns if the given player is a participant of this match.
     /// </summary>
     public bool IsParticipant(Player player) => PlayerParticipants.Any(p => p.Player == player);
+
+    public int GetIdWithinTournament() => Tournament.Matches.IndexOf(this);
 
     #endregion
 
@@ -323,8 +353,7 @@ public abstract class Match
         data.Format = Format.DefName;
         data.IsDone = IsDone;
         data.NumPlayers = NumPlayers;
-        data.TargetMatchIndices = TargetMatchIndices;
-        data.TargetMatchSeeds = TargetMatchSeeds;
+        data.AdvancementTargets = AdvancementsTargets.Select(x => x.ToData()).ToList();
         data.PointDistribution = PointDistribution;
         data.Participants = PlayerParticipants.Select(x => x.ToData()).ToList();
         return data;
@@ -346,8 +375,7 @@ public abstract class Match
         Day = data.Day;
         Format = DefDatabase<MatchFormatDef>.GetNamed(data.Format);
         NumPlayers = data.NumPlayers;
-        TargetMatchIndices = data.TargetMatchIndices;
-        TargetMatchSeeds = data.TargetMatchSeeds;
+        AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;
         PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(this, x)).ToList();
@@ -357,6 +385,11 @@ public abstract class Match
         Tournament.Matches.Add(this);
         foreach (var p in PlayerParticipants) p.Player.AddMatch(this);
         if (Group != null) Group.Matches.Add(this);
+    }
+
+    public void OnLoadingDone()
+    {
+        foreach (MatchAdvancementTarget advTarget in AdvancementsTargets) advTarget.ResolveReferences();
     }
 
     #endregion

@@ -29,6 +29,10 @@ public class UI_1v1ResultDisplay : MonoBehaviour
         Team2Flag.sprite = team2.Team.FlagBig;
         Team2NameText.text = team2.Team.Name;
         ScoreText.text = (match.IsDone || match.IsRunning) ? match.GetTeamMatchScore(team1) + " : " + match.GetTeamMatchScore(team2) : " : ";
+        Team1NameText.GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, team1.Team);
+        Team1Flag.GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, team1.Team);
+        Team2NameText.GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, team2.Team);
+        Team2Flag.GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, team2.Team);
     }
 
     private void InitEmpty()

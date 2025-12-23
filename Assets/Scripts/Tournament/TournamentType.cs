@@ -9,5 +9,6 @@ public enum TournamentType
     ChallengeLeague = 1,
     OpenLeague = 2,
     SeasonCup = 3,
-    WorldCup = 4
+    WorldCup = 4,
+    BIGCup = 5,
 }

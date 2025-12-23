@@ -40,7 +40,7 @@ public class Format_WorldCup : Tournament
         Initialize();
     }
 
-    public override void Initialize()
+    public void Initialize()
     {
         // Validate
         if (!ValidTeamAmounts.Contains(Teams.Count)) throw new System.Exception(Teams.Count + " is not a valid amount of teams for a world cup.");
@@ -90,8 +90,7 @@ public class Format_WorldCup : Tournament
         for (int i = 0; i < 4; i++)
         {
             TeamMatch quarterfinal = new TeamMatch("Quarterfinal " + (i + 1), this, quartersQuarter, quartersDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
-            quarterfinal.SetTargetMatches(new List<int>() { 28 + (i / 2) });
-            quarterfinal.SetTargetMatchSeeds(new List<int>() { i % 2 });
+            quarterfinal.SetTargetMatches(new List<int>() { 28 + (i / 2) }, new List<int>() { i % 2 });
             Matches.Add(quarterfinal);
         }
 
@@ -102,8 +101,7 @@ public class Format_WorldCup : Tournament
         for (int i = 0; i < 2; i++)
         {
             TeamMatch semifinal = new TeamMatch("Semifinal " + (i + 1), this, semisQuarter, semisDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
-            semifinal.SetTargetMatches(new List<int>() { 31, 30 });
-            semifinal.SetTargetMatchSeeds(new List<int>() { i % 2, i % 2 });
+            semifinal.SetTargetMatches(new List<int>() { 31, 30 }, new List<int>() { i % 2, i % 2 });
             Matches.Add(semifinal);
         }
 

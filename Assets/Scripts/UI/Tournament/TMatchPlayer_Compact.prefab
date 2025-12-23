@@ -358,6 +358,7 @@ GameObject:
   - component: {fileID: 7715104257967847964}
   - component: {fileID: 1532127121303272560}
   - component: {fileID: -6084635829815656775}
+  - component: {fileID: 7100200331658029045}
   m_Layer: 5
   m_Name: TMatchPlayer_Compact
   m_TagString: Untagged
@@ -480,6 +481,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25fcf996ebea15a40a7d017346041fde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsFocussed: 0
+  CurrentDelay: 0
+--- !u!114 &7100200331658029045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7715104257967847936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1699fc3a8a40e1644bd133a2d3041522, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsFocussed: 0

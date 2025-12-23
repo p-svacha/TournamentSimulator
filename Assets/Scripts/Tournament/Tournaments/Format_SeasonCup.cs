@@ -34,7 +34,7 @@ public class Format_SeasonCup : Tournament
         Initialize();
     }
 
-    public override void Initialize()
+    public void Initialize()
     {
         if (Players.Count != 64) throw new System.Exception("Season cup must have exactly 64 players and not " + Players.Count);
         if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");
@@ -58,8 +58,7 @@ public class Format_SeasonCup : Tournament
             }
 
             // Advancement matches
-            ro64Match.SetTargetMatches(new List<int>() { 32 + (i / 2) });
-            ro64Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
+            ro64Match.SetTargetMatches(new List<int>() { 32 + (i / 2) }, new List<int>() { i % 2 });
 
             Matches.Add(ro64Match);
         }
@@ -70,8 +69,7 @@ public class Format_SeasonCup : Tournament
             Match ro32Match = new SoloMatch("RO32 - Match " + (i + 1), this, RO32_QUARTER, RO32_DAY, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution);
 
             // Advancement matches
-            ro32Match.SetTargetMatches(new List<int>() { 48 + (i / 2) });
-            ro32Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
+            ro32Match.SetTargetMatches(new List<int>() { 48 + (i / 2) }, new List<int>() { i % 2 });
 
             Matches.Add(ro32Match);
         }
@@ -82,8 +80,7 @@ public class Format_SeasonCup : Tournament
             Match ro16Match = new SoloMatch("RO16 - Match " + (i + 1), this, RO16_QUARTER, RO16_DAY, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution);
 
             // Advancement matches
-            ro16Match.SetTargetMatches(new List<int>() { 56 + (i / 2) });
-            ro16Match.SetTargetMatchSeeds(new List<int>() { i % 2 });
+            ro16Match.SetTargetMatches(new List<int>() { 56 + (i / 2) }, new List<int>() { i % 2 });
 
             Matches.Add(ro16Match);
         }
@@ -94,8 +91,7 @@ public class Format_SeasonCup : Tournament
             Match quarterfinal = new SoloMatch("Quarterfinal " + (i + 1), this, QUARTERS_QUARTER, QUARTERS_DAY, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution);
 
             // Advancement matches
-            quarterfinal.SetTargetMatches(new List<int>() { 60 + (i / 2) });
-            quarterfinal.SetTargetMatchSeeds(new List<int>() { i % 2 });
+            quarterfinal.SetTargetMatches(new List<int>() { 60 + (i / 2) }, new List<int>() { i % 2 });
 
             Matches.Add(quarterfinal);
         }
@@ -106,8 +102,7 @@ public class Format_SeasonCup : Tournament
             Match semifinal = new SoloMatch("Semifinal " + (i + 1), this, SEMIS_QUARTER, SEMIS_DAY, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution);
 
             // Advancement matches
-            semifinal.SetTargetMatches(new List<int>() { 63, 62 });
-            semifinal.SetTargetMatchSeeds(new List<int>() { i % 2, i % 2 });
+            semifinal.SetTargetMatches(new List<int>() { 63, 62 }, new List<int>() { i % 2, i % 2 });
 
             Matches.Add(semifinal);
         }

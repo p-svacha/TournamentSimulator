@@ -71,6 +71,9 @@ public static class Database
         NextGameId = Games.Count == 0 ? 1 :             Games.Values.Max(x => x.Id) + 1;
 
         Debug.Log("Loaded simulation state at " + GetQuarterName(Quarter) + " " + Day + ", Season " + Season);
+
+        // Call OnLoadingDone
+        foreach (Match m in Matches.Values) m.OnLoadingDone();
     }
 
     #endregion

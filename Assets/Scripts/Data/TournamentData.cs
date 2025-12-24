@@ -18,4 +18,5 @@ public class TournamentData
     public List<TournamentGroupData> Groups { get; set; }
     public List<int> Teams { get; set; }
     public int NumPlayersPerTeam { get; set; }
+    public List<string> ModifierDefs { get; set; }
 }

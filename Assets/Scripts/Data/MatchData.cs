@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class MatchData
@@ -19,6 +17,10 @@ public class MatchData
     public int MaxPlayers { get; set; }
     public List<MatchAdvancementData> AdvancementTargets { get; set; }
     public List<int> PointDistribution { get; set; }
+    public bool IsKnockout { get; set; }
+    public int KnockoutStartingLives { get; set; }
+    public int KnockoutNumLiveWinners { get; set; }
+    public int KnockoutNumLiveLosers { get; set; }
 
     public List<MatchParticipantData> Participants { get; set; }
 

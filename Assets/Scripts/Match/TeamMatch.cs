@@ -24,9 +24,11 @@ public class TeamMatch : Match
     #region Before match
 
     // Create a new match with all attributes that are known from the start
-    public TeamMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null)
-        : base(name, tournament, quarter, day, format, maxPlayers: numTeams * numPlayersPerTeam, playerPointDistribution, minPlayers: numTeams * numPlayersPerTeam, group)
+    public TeamMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null, bool isKnockout = false, int knockoutStartingLives = 0, int koLiveGainers = 0, int koLiveLosers = 0)
+        : base(name, tournament, quarter, day, format, maxPlayers: numTeams * numPlayersPerTeam, playerPointDistribution, minPlayers: numTeams * numPlayersPerTeam, group, isKnockout, knockoutStartingLives, koLiveGainers, koLiveLosers)
     {
+        if (isKnockout) throw new System.Exception("Knockout mode not handled for team matches.");
+
         IsTeamMatch = true;
         NumTeams = numTeams;
         NumPlayersPerTeam = numPlayersPerTeam;

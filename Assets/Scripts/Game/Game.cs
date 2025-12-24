@@ -18,6 +18,8 @@ public abstract class Game
     public Match Match { get; private set; }
     public abstract bool IsTeamGame { get; }
     public Discipline Discipline => Match.Discipline;
+    public bool IsKnockout => Match.IsKnockout;
+    public int KnockoutStartingLives => Match.KnockoutStartingLives;
 
     /// <summary>
     /// The index defining the how many'th game this is within a match. (1. match in a bo5 has GameIndex = 0, 5. match is GameIndex = 4)
@@ -102,7 +104,10 @@ public abstract class Game
         // Calculate skill score for each participant
         Dictionary<Player, PlayerGameRound> roundResults = new Dictionary<Player, PlayerGameRound>();
 
-        foreach (MatchParticipant_Player p in Match.PlayerParticipants)
+        List<MatchParticipant_Player> roundParticipants = new List<MatchParticipant_Player>(Match.PlayerParticipants);
+        if (IsKnockout) roundParticipants = GetRemainingKnockoutParticipants();
+
+        foreach (MatchParticipant_Player p in roundParticipants)
         {
             PlayerGameRound playerResult = p.Player.GetMatchRoundResult(skill);
             roundResults.Add(p.Player, playerResult);
@@ -112,13 +117,38 @@ public abstract class Game
         List<Player> attributeRanking = roundResults.OrderBy(x => x.Value.Score).Select(x => x.Key).ToList();
         int lastScore = -1;
         int lastPoints = -1;
-        for (int rank = 0; rank < attributeRanking.Count; rank++)
+        for (int reverseRank = 0; reverseRank < attributeRanking.Count; reverseRank++)
         {
-            Player player = attributeRanking[rank];
+            Player player = attributeRanking[reverseRank];
             int score = roundResults[player].Score;
-            int points = Match.PointDistribution[Match.PointDistribution.Count - rank - 1];
-            if (score == 0) points = 0;
-            else if (score == lastScore) points = lastPoints;
+            int rank = roundParticipants.Count - reverseRank - 1;
+
+            int points;
+
+            if (IsKnockout)
+            {
+                int numRemainingPlayers = roundParticipants.Count;
+
+                int numLiveGainers = Match.KnockoutNumLiveWinners;
+                if (numLiveGainers >= numRemainingPlayers - 1) numLiveGainers = numRemainingPlayers - 2;
+
+                int numLiveLosers = Match.KnockoutNumLiveLosers;
+                if (numLiveLosers >= numRemainingPlayers) numLiveLosers = numRemainingPlayers - 1;
+
+                points = 0;
+                if (score == 0) points = -1; // Always lose a live with a score of 0
+                else if (reverseRank < numLiveLosers) points = -1; // Lose a life if in worst x
+                else if (rank < numLiveGainers) points = 1; // Gain a life if in top x
+
+                if (score != 0 && score == lastScore) points = lastPoints; // Same score should always result in same points
+            }
+            else // Classic mode with classic point distribution
+            { 
+                points = Match.PointDistribution[rank];
+                if (score == 0) points = 0;
+                else if (score == lastScore) points = lastPoints;
+            }
+
             roundResults[player].SetPointsGained(points);
             lastScore = score;
             lastPoints = points;
@@ -150,12 +180,27 @@ public abstract class Game
     /// <summary>
     /// The primary rating of the game leaderboard are the points. Points are awarded based on the ranking of the score that each player makes for each skill.
     /// </summary>
-    public int GetPlayerPoints(MatchParticipant_Player player) => Rounds.Sum(x => x.GetPlayerResult(player.Player).PointsGained);
+    public int GetPlayerPoints(MatchParticipant_Player participant)
+    {
+        if (IsKnockout)
+        {
+            return KnockoutStartingLives + Rounds.Sum(x => x.GetPointsGained(participant.Player));
+        }
+        else
+        {
+            return Rounds.Sum(x => x.GetPlayerResult(participant.Player).PointsGained);
+        }
+    }
 
     /// <summary>
-    /// Returns the accumulated amount of SCORE a player has gathered throughout the game.
+    /// Returns the accumulated amount of SCORE a player has gathered throughout the game. Often used as a tiebreaker.
     /// </summary>
-    public int GetTotalPlayerScore(MatchParticipant_Player player) => Rounds.Sum(x => x.GetPlayerResult(player.Player).Score);
+    public int GetTotalPlayerScore(MatchParticipant_Player participant) => Rounds.Sum(x => x.GetScore(participant.Player));
+
+    /// <summary>
+    /// Returns the amount of rounds a player has participated in in this game. Often used as a tiebreaker in knockout.
+    /// </summary>
+    public int GetNumRoundsParticipated(MatchParticipant_Player participant) => Rounds.Where(x => x.HasParticipated(participant.Player)).Count();
 
     /// <summary>
     /// Returns the player ranking as a dictionary ordered by total amount of points, and then total amount of score.
@@ -164,9 +209,31 @@ public abstract class Game
     {
         if (IsDone || IsRunning)
         {
-            return Match.PlayerParticipants.OrderByDescending(x => GetPlayerPoints(x)).ThenByDescending(p => GetTotalPlayerScore(p)).ToList();
+            return Match.PlayerParticipants.OrderByDescending(x => GetPlayerPoints(x)).ThenByDescending(x => GetNumRoundsParticipated(x)).ThenByDescending(p => GetTotalPlayerScore(p)).ToList();
         }
         return new List<MatchParticipant_Player>();
+    }
+
+    /// <summary>
+    /// Gets called during game simulation after each round to see if the game has ended.
+    /// </summary>
+    public bool IsGameOver()
+    {
+        if (IsKnockout) // In knockout, the game is over if 1 participant remains.
+        {
+            if (GetRemainingKnockoutParticipants().Count == 1) return true;
+        }
+        else // In classic, the game is over after all skills have been checked.
+        {
+            if (Rounds.Count == Skills.Count) return true;
+        }
+
+        return false;
+    }
+
+    public List<MatchParticipant_Player> GetRemainingKnockoutParticipants()
+    {
+        return Match.PlayerParticipants.Where(pp => GetPlayerPoints(pp) > 0).ToList();
     }
 
     #region Save / Load

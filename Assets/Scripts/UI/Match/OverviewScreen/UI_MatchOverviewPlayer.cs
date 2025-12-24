@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using System.Linq;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
 
 public class UI_MatchOverviewPlayer : MonoBehaviour
 {
@@ -35,9 +36,8 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
             {
                 Game game = m.Games[0];
 
-                foreach (SkillDef skillDef in game.Skills)
+                foreach (GameRound round in game.Rounds)
                 {
-                    GameRound round = m.Games[0].Rounds.FirstOrDefault(x => x.Skill == skillDef);
                     TextMeshProUGUI skillText = Instantiate(SkillTextPrefab, SkillContainer.transform);
 
                     if(round == null)
@@ -46,10 +46,17 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
                         continue;
                     }
 
-                    PlayerGameRound pRound = round.PlayerResults.First(x => x.Player == p.Player);
-                    int score = pRound.Score;
-                    skillText.text = score.ToString();
-                    if (pRound.Modifiers != null && pRound.Modifiers.Contains(Player.MISTAKE_MODIFIER)) skillText.color = Color.red;
+                    PlayerGameRound pRound = round.PlayerResults.FirstOrDefault(x => x.Player == p.Player);
+                    if (pRound == null)
+                    {
+                        skillText.text = "-";
+                    }
+                    else
+                    {
+                        int score = pRound.Score;
+                        skillText.text = score.ToString();
+                        if (pRound.Modifiers != null && pRound.Modifiers.Contains(Player.MISTAKE_MODIFIER)) skillText.color = Color.red;
+                    }
                 }
                 LayoutRebuilder.ForceRebuildLayoutImmediate(GetComponent<RectTransform>());
             }

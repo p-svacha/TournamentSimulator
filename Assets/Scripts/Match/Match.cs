@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using UnityEditor.Search;
 using UnityEngine;
 
 public abstract class Match
@@ -19,6 +21,16 @@ public abstract class Match
     public bool IsTeamMatch { get; protected set; }
     public Discipline Discipline => Tournament.Discipline;
 
+    // Classic Settings
+    public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks. Usually {1,0} in 2 player matches, or something like {10,6,4,3} else.
+
+
+    // Knockout Settings
+    public bool IsKnockout { get; private set; }
+    public int KnockoutStartingLives { get; private set; }
+    public int KnockoutNumLiveWinners { get; private set; } // First x every round get back a live
+    public int KnockoutNumLiveLosers { get; private set; } // Last x every round lose a live
+
 
     // Rules
     public int MinPlayers { get; private set; } // How many players must be in the match at minimum for it to be able to start.
@@ -28,7 +40,6 @@ public abstract class Match
     /// List containing all information about which ranks in this match advance to what matches with what seeds.
     /// </summary>
     public List<MatchAdvancementTarget> AdvancementsTargets { get; private set; } 
-    public List<int> PointDistribution { get; private set; } // How the round points are distributed among the players based on ranks. Usually {1,0} in 2 player matches, or something like {10,6,4,3} else.
 
     // State
     public List<Game> Games { get; protected set; }
@@ -41,7 +52,7 @@ public abstract class Match
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    protected Match(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution, int minPlayers = -1, TournamentGroup group = null)
+    protected Match(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution, int minPlayers = -1, TournamentGroup group = null, bool isKnockout = false, int knockoutStartingLives = 0, int koLiveGainers = 0, int koLiveLosers = 0)
     {
         Id = Database.GetNewMatchId();
         Name = name;
@@ -51,14 +62,21 @@ public abstract class Match
         Format = format;
         MaxPlayers = maxPlayers;
         MinPlayers = minPlayers == -1 ? maxPlayers : minPlayers; // If min not explicitly set, set it the same as maximum
-        PointDistribution = pointDistribution;
+        PointDistribution = pointDistribution == null ? new List<int>() : pointDistribution;
         Group = group;
-
-        if (MinPlayers > MaxPlayers) throw new System.Exception($"minPlayers cannot be higher than maxPlayers. max: {MaxPlayers}, min: {MinPlayers}");
+        IsKnockout = isKnockout;
+        KnockoutStartingLives = knockoutStartingLives;
+        KnockoutNumLiveWinners = koLiveGainers;
+        KnockoutNumLiveLosers = koLiveLosers;
 
         PlayerParticipants = new List<MatchParticipant_Player>();
         Games = new List<Game>();
         AdvancementsTargets = new List<MatchAdvancementTarget>();
+
+        if (MinPlayers > MaxPlayers) throw new System.Exception($"minPlayers cannot be higher than maxPlayers. max: {MaxPlayers}, min: {MinPlayers}");
+        if (!IsKnockout && PointDistribution.Count == 0) throw new System.Exception("Point distribution must be set in classic mode.");
+        if (IsKnockout && KnockoutStartingLives <= 0) throw new System.Exception("KnockoutStartingLives must be greater than 0 in knockout mode.");
+        if (IsKnockout && (KnockoutNumLiveWinners >= KnockoutNumLiveLosers)) throw new System.Exception("More players have to lose a life than gain a life in knockout.");
     }
 
     public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
@@ -96,7 +114,9 @@ public abstract class Match
 
     private List<GameModifierDef> GenerateGameModifiersFor(int gameIndex)
     {
-        return new List<GameModifierDef>();
+        List<GameModifierDef> mods = new List<GameModifierDef>();
+        mods.AddRange(Tournament.Modifiers);
+        return mods;
     }
 
     /// <summary>
@@ -112,6 +132,9 @@ public abstract class Match
 
     protected abstract Game CreateGame(int index, List<GameModifierDef> gameModifiers);
 
+    /// <summary>
+    /// Adds advancement targets to this match that define which ranks will move on to which other matches with which seeds.
+    /// </summary>
     public void SetAdvancements(List<MatchAdvancementTarget> targets)
     {
         foreach(MatchAdvancementTarget target in targets)
@@ -126,7 +149,7 @@ public abstract class Match
     }
 
     /// <summary>
-    /// Short of way of setting target matches for this match.
+    /// Short of way of setting advancement target matches for this match.
     /// List contains the LOCAL (within torunament) id of the match, the ranks according to the list index advance to.
     /// Seeds will be equivalent to rank if not set specifically.
     /// </summary>
@@ -199,6 +222,9 @@ public abstract class Match
         TournamentSimulator.Instance.Save();
     }
 
+    /// <summary>
+    /// Called after each game in this match finishes and returns if the match as a whole is finished.
+    /// </summary>
     private bool IsMatchOver()
     {
         if (Format == MatchFormatDefOf.SingleGame)
@@ -362,6 +388,10 @@ public abstract class Match
         data.MaxPlayers = MaxPlayers;
         data.AdvancementTargets = AdvancementsTargets.Select(x => x.ToData()).ToList();
         data.PointDistribution = PointDistribution;
+        data.IsKnockout = IsKnockout;
+        data.KnockoutStartingLives = KnockoutStartingLives;
+        data.KnockoutNumLiveWinners = KnockoutNumLiveWinners;
+        data.KnockoutNumLiveLosers = KnockoutNumLiveLosers;
         data.Participants = PlayerParticipants.Select(x => x.ToData()).ToList();
         return data;
     }
@@ -385,6 +415,10 @@ public abstract class Match
         MinPlayers = data.MinPlayers;
         AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
         PointDistribution = data.PointDistribution;
+        IsKnockout = data.IsKnockout;
+        KnockoutStartingLives = data.KnockoutStartingLives;
+        KnockoutNumLiveWinners = data.KnockoutNumLiveWinners;
+        KnockoutNumLiveLosers = data.KnockoutNumLiveLosers;
         IsDone = data.IsDone;
         PlayerParticipants = data.Participants.Select(x => new MatchParticipant_Player(this, x)).ToList();
         Games = new List<Game>();

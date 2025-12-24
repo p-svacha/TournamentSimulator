@@ -47,8 +47,12 @@ public class TournamentSimulator : MonoBehaviour
         UI.Init(this);
         UpdateUI();
 
+        // ### TESTS
+        // StartKnockoutTestMatch();
+
+        /*
         int n = 16;
-        for(int i = 0; i < n; i++)
+        for (int i = 0; i < n; i++)
         {
             Debug.Log($"first match id for seed {i} = {SingleElimination.GetFirstMatchId(i, n)}");
         }
@@ -60,6 +64,7 @@ public class TournamentSimulator : MonoBehaviour
         {
             Debug.Log($"Seed {seed} is assigned to group {SingleElimination.GetGroupForSeed(seed, numPlayers, numQualified)} with group seed {SingleElimination.GetSeedWithinGroup(seed, numPlayers, numQualified)}.");
         }
+        */
     }
 
     private void AddMissingCountryTeams()
@@ -145,6 +150,7 @@ public class TournamentSimulator : MonoBehaviour
     /// </summary>
     private void OnDayStart()
     {
+        foreach (Tournament t in Database.AllTournaments.Where(t => t.StarsToday)) t.OnTournamentStart();
         foreach (Match m in Database.AllMatches.Where(x => x.IsToday)) m.OnDayStart();
     }
 
@@ -307,6 +313,20 @@ public class TournamentSimulator : MonoBehaviour
         testMatch.AddPlayerToMatch(Database.GetPlayer(0), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(1), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(2), 0);
+        testMatch.SimulateNextGame(1.5f);
+    }
+
+    private void StartKnockoutTestMatch()
+    {
+        SoloMatch testMatch = new SoloMatch("Test", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, maxPlayers: 8, isKnockout: true, knockoutStartingLives: 3, koLiveGainers: 1, koLiveLosers: 2);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(0));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(1));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(2));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(3));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(4));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(5));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(6));
+        testMatch.AddPlayerToMatch(Database.GetPlayer(7));
         testMatch.SimulateNextGame(1.5f);
     }
 

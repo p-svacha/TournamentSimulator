@@ -16,7 +16,11 @@ public abstract class GameRound
         PlayerResults = playerResults;
     }
 
+    public int NumParticipants => PlayerResults.Count;
+    public bool HasParticipated(Player p) => PlayerResults.FirstOrDefault(r => r.Player == p) != null;
     public PlayerGameRound GetPlayerResult(Player p) => PlayerResults.FirstOrDefault(r => r.Player == p);
+    public int GetPointsGained(Player p) => HasParticipated(p) ? GetPlayerResult(p).PointsGained : 0;
+    public int GetScore(Player p) => HasParticipated(p) ? GetPlayerResult(p).Score : 0;
     public List<Player> PlayerRanking => PlayerResults.OrderByDescending(x => x.Score).Select(x => x.Player).ToList();
 
     #region Save / Load

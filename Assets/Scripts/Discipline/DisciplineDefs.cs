@@ -24,6 +24,10 @@ public static class DisciplineDefs
                 SkillDefOf.Sprint,
                 SkillDefOf.Stamina,
                 SkillDefOf.Strength,
+            },
+            OptionalSkills = new List<SkillDef>()
+            {
+                SkillDefOf.Obstacle,
             }
         },
 

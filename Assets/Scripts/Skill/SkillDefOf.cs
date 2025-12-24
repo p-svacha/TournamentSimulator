@@ -16,4 +16,6 @@ public static class SkillDefOf
     public static SkillDef Sprint;
     public static SkillDef Stamina;
     public static SkillDef Strength;
+
+    public static SkillDef Obstacle;
 }

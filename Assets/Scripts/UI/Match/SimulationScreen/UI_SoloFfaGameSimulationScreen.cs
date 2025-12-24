@@ -77,14 +77,14 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         {
             TimeElapsed = 0;
 
-            if(SimPlayer == Match.NumPlayerParticipants)
+            if (CurrentGameRound != null && SimPlayer == CurrentGameRound.NumParticipants)
             {
                 EndRound();
                 SimPlayer++;
             }
-            else if(SimPlayer == Match.NumPlayerParticipants + 1)
+            else if (CurrentGameRound == null || SimPlayer == CurrentGameRound.NumParticipants + 1)
             {
-                if (CurrentSkillIndex == Game.Skills.Count - 1) EndSimulation();
+                if (Game.IsGameOver()) EndSimulation();
                 else GoToNextSkill();
             }
             else
@@ -127,8 +127,9 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
     {
         // Change attribute
         CurrentSkillIndex++;
+        if (CurrentSkillIndex >= Game.Skills.Count) CurrentSkillIndex = 0; // Cycle back to start
         CurrentSkill =  Game.Skills[CurrentSkillIndex];
-        ProgressText.text = (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
+        ProgressText.text = Game.IsKnockout ? $"Round {Game.Rounds.Count + 1}" : (CurrentSkillIndex + 1) + "/" + Game.Skills.Count;
         AttributeText.text = CurrentSkill.LabelCap;
         SimPlayer = 0;
 

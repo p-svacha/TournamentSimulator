@@ -55,7 +55,8 @@ public class UI_PlayerTooltip : UI_Tooltip
         // Skills
         HelperFunctions.DestroyAllChildredImmediately(SkillContainer);
         bool darkBackground = true;
-        foreach(SkillDef skillDef in discipline.Skills)
+        List<SkillDef> skillsToDisplay = discipline.Skills.Concat(discipline.OptionalSkills).ToList();
+        foreach(SkillDef skillDef in skillsToDisplay)
         {
             Skill skill = player.Skills[skillDef];
             UI_SkillRow skillRow = Instantiate(SkillRowPrefab, SkillContainer.transform);

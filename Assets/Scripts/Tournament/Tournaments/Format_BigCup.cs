@@ -104,7 +104,12 @@ public class Format_BigCup : Tournament
          7,  6,  5,  4,  3,  2, 1
     };
 
-    protected List<int> GrandFinalPointDistribution = new List<int>() { 0, 0, 0, 0, 0, 0, 0, -1 };
+    protected const int GRAND_FINAL_STARTING_LIVES = 3;
+    protected const int GRAND_FINAL_LIVE_GAINERS = 1;
+    protected const int GRAND_FINAL_LIVE_LOSERS = 2;
+
+
+    public const int MAX_PARTICIPANTS = INITIAL_ROUND_MATCHES * INITIAL_ROUND_MAX_PPM;
 
     // Number of matches
     private const int INITIAL_ROUND_MATCHES = 4;
@@ -143,6 +148,11 @@ public class Format_BigCup : Tournament
     private const int R4_LOWER_ADV = 3;
     private const int SEMI_FINAL_ADV = 4;
 
+    // Losers per stage
+    private const int R1_UPPER_LOSERS = R1_UPPER_PPM - R1_UPPER_ADV;
+    private const int R2_UPPER_LOSERS = R2_UPPER_PPM - R2_UPPER_ADV;
+    private const int R3_UPPER_LOSERS = R3_UPPER_PPM - R3_UPPER_ADV;
+
     // Match lists for individual phases (only used as cache during tournament creation)
     private List<Match> InitialRoundMatches = new List<Match>();
     private List<Match> R1UpperMatches = new List<Match>();
@@ -164,17 +174,17 @@ public class Format_BigCup : Tournament
 
         InitMatches();
         InitAdvancements();
+        InitModifiers();
     }
 
-    /// <summary>
-    /// Should be called the day the tournament starts. Fills all slots in the initial round with players, seeded according to their current global rank.
-    /// </summary>
-    public void SeedTournament()
+    public override void OnTournamentStart()
     {
+        // Seed tournament
         List<Player> orderedParticipants = Database.GetPlayerEloRanking(Discipline.Def);
 
-        // todo: fill matches
-        // todo: call function (move to base and make abstract?)
+        if (orderedParticipants.Count > MAX_PARTICIPANTS) orderedParticipants = orderedParticipants.Take(MAX_PARTICIPANTS).ToList();
+
+        Seeder.SnakeSeedSoloTournament(orderedParticipants, InitialRoundMatches);
     }
 
     /// <summary>
@@ -264,7 +274,7 @@ public class Format_BigCup : Tournament
         }
 
         // FINAL
-        GrandFinalMatch = new SoloMatch("Grand Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: GRAND_FINAL_PPM, GrandFinalPointDistribution);
+        GrandFinalMatch = new SoloMatch("Grand Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: GRAND_FINAL_PPM, isKnockout: true, knockoutStartingLives: GRAND_FINAL_STARTING_LIVES, koLiveGainers: GRAND_FINAL_LIVE_GAINERS, koLiveLosers: GRAND_FINAL_LIVE_LOSERS);
         Matches.Add(GrandFinalMatch);
     }
 
@@ -275,14 +285,45 @@ public class Format_BigCup : Tournament
     {
         // Initial -> R1 Upper
         Seeder.CreateSnakeSeededAdvancements(InitialRoundMatches, R1UpperMatches, INITIAL_ROUND_ADV);
-
         // Initial -> R1 Lower
-        Seeder.CreateSnakeSeededAdvancements(InitialRoundMatches, R2LowerMatches, numAdvancements: -1, advancementOffset: INITIAL_ROUND_ADV);
+        Seeder.CreateSnakeSeededAdvancements(InitialRoundMatches, R1LowerMatches, numAdvancements: -1, advancementOffset: INITIAL_ROUND_ADV);
 
         // R1 Upper -> R2 Upper
         Seeder.CreateSnakeSeededAdvancements(R1UpperMatches, R2UpperMatches, numAdvancements: R1_UPPER_ADV);
+        // R1 Upper -> R2 Lower
+        Seeder.CreateSnakeSeededAdvancements(R1UpperMatches, R2LowerMatches, numAdvancements: -1, advancementOffset: R1_UPPER_ADV);
+        // R1 Lower -> R2 Lower
+        int r12targetSeedOffset = (R1_UPPER_LOSERS * R1_UPPER_MATCHES) / R2_LOWER_MATCHES;
+        Seeder.CreateSnakeSeededAdvancements(R1LowerMatches, R2LowerMatches, numAdvancements: R1_LOWER_ADV, targetSeedOffset: r12targetSeedOffset);
+
+        // R2 Upper -> R3 Upper
+        Seeder.CreateSnakeSeededAdvancements(R2UpperMatches, R3UpperMatches, numAdvancements: R2_UPPER_ADV);
+        // R2 Upper -> R3 Lower
+        Seeder.CreateSnakeSeededAdvancements(R2UpperMatches, R3LowerMatches, numAdvancements: -1, advancementOffset: R2_UPPER_ADV);
+        // R2 Lower -> R3 Lower
+        int r23targetSeedOffset = (R2_UPPER_LOSERS * R2_UPPER_MATCHES) / R3_LOWER_MATCHES;
+        Seeder.CreateSnakeSeededAdvancements(R2LowerMatches, R3LowerMatches, numAdvancements: R2_LOWER_ADV, targetSeedOffset: r23targetSeedOffset);
+
+        // R3 Upper -> SemiFinals
+        Seeder.CreateSnakeSeededAdvancements(R3UpperMatches, SemiFinalMatches, numAdvancements: R3_UPPER_ADV);
+        // R3 Upper -> R4 Lower
+        Seeder.CreateSnakeSeededAdvancements(R3UpperMatches, R4LowerMatches, numAdvancements: -1, advancementOffset: R3_UPPER_ADV);
+        // R3 Lower -> R4 Lower
+        int r34targetSeedOffset = (R3_UPPER_LOSERS * R3_UPPER_MATCHES) / R4_LOWER_MATCHES;
+        Seeder.CreateSnakeSeededAdvancements(R3LowerMatches, R4LowerMatches, numAdvancements: R3_LOWER_ADV, targetSeedOffset: r34targetSeedOffset);
+
+        // R4 Lower -> SemiFinals
+        int semiTargetSeedOffset = (R3_UPPER_ADV * R3_UPPER_MATCHES) / SEMI_FINAL_MATCHES;
+        Seeder.CreateSnakeSeededAdvancements(R4LowerMatches, SemiFinalMatches, numAdvancements: R4_LOWER_ADV, targetSeedOffset: semiTargetSeedOffset);
+
+        // SemiFinals -> GrandFinal
+        Seeder.CreateSnakeSeededAdvancements(SemiFinalMatches, new List<Match>() { GrandFinalMatch }, numAdvancements: SEMI_FINAL_ADV);
     }
 
+    private void InitModifiers()
+    {
+        Modifiers = new List<GameModifierDef>() { GameModifierDefOf.BIGCup };
+    }
     public override void DisplayTournament(UI_Base baseUI, GameObject Container)
     {
         // todo, display as layers from left to right, with winner bracket in upper half and loser bracket in lower. first stage, semis and grand final in center.

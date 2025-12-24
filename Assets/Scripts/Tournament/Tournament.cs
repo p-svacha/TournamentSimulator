@@ -22,6 +22,9 @@ public abstract class Tournament
     public List<Team> Teams { get; protected set; }
     public bool IsTeamTournament => NumPlayersPerTeam > 0;
 
+    // Tournament-wide modifiers that apply to each game
+    public List<GameModifierDef> Modifiers;
+
     // New tournament
     public Tournament(DisciplineDef disciplineDef, TournamentType format, int season, League league = null)
     {
@@ -49,6 +52,11 @@ public abstract class Tournament
         IsDone = true;
         OnTournamentDone();
     }
+
+    /// <summary>
+    /// Called once at the start of the day the tournament starts.
+    /// </summary>
+    public virtual void OnTournamentStart() { }
 
     protected virtual void OnTournamentDone() { }
 
@@ -100,6 +108,12 @@ public abstract class Tournament
         }
         return players;
     }
+
+    #region Getters
+
+    public bool StarsToday => Season == Database.Season && Matches.Min(m => m.Quarter) == Database.Quarter && Matches.Min(m => m.Day) == Database.Day;
+
+    #endregion
 
     #region Display
 
@@ -394,6 +408,7 @@ public abstract class Tournament
         data.IsDone = IsDone;
         data.Players = Players.Select(x => x.Id).ToList();
         data.Groups = Groups.Select(x => x.ToData()).ToList();
+        data.ModifierDefs = Modifiers.Select(x => x.DefName).ToList();
         data.Teams = Teams.Select(x => x.Id).ToList();
         data.NumPlayersPerTeam = NumPlayersPerTeam;
         return data;
@@ -420,6 +435,7 @@ public abstract class Tournament
         IsDone = data.IsDone;
         Players = data.Players.Select(id => Database.GetPlayer(id)).ToList();
         Groups = data.Groups.Select(x => new TournamentGroup(this, x)).ToList();
+        Modifiers = data.ModifierDefs.Select(m => DefDatabase<GameModifierDef>.GetNamed(m)).ToList();
 
         Teams = data.Teams.Select(id => Database.GetTeam(id)).ToList();
         NumPlayersPerTeam = data.NumPlayersPerTeam;

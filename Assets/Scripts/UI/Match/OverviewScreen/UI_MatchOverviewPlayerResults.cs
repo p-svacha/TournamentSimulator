@@ -23,10 +23,10 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
         else if (match.Games.Count == 1) skillColumns.AddRange(match.Games[0].Skills); // Show skills of only game
         else throw new System.NotImplementedException("Match display not implemented for matches with more than one game.");
 
-        foreach (SkillDef skillDef in skillColumns)
+        foreach (GameRound round in match.Games[0].Rounds)
         {
             TextMeshProUGUI skillText = Instantiate(TitleRow.SkillTextPrefab, TitleRow.SkillContainer.transform);
-            skillText.text = skillDef.Triplet;
+            skillText.text = round.Skill.Triplet;
         }
         LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
 

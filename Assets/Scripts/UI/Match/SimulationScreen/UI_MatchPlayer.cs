@@ -50,7 +50,8 @@ public class UI_MatchPlayer : MonoBehaviour
         ScoreText.text = round.Score.ToString();
         ScoreText.color = round.Modifiers.Contains(Player.MISTAKE_MODIFIER) ? Color.red : Color.white;
 
-        if (Game.IsTeamGame) PointsText.text = "+" + round.PointsGained.ToString();
-        else PlusPointsText.text = "+" + round.PointsGained.ToString();
+        string sign = round.PointsGained >= 0 ? "+" : "";
+        if (Game.IsTeamGame) PointsText.text = sign + round.PointsGained.ToString();
+        else PlusPointsText.text = sign + round.PointsGained.ToString();
     }
 }

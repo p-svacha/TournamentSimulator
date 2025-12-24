@@ -92,6 +92,13 @@ public static class SkillDefs
             DefName = "Gaming",
             Label = "Gaming",
             Triplet = "GAM"
+        },
+
+        new SkillDef()
+        {
+            DefName = "Obstacle",
+            Label = "Obstacle",
+            Triplet = "OBS"
         }
     };
 }

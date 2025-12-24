@@ -11,8 +11,9 @@ public static class Seeder
     /// </summary>
     /// <param name="sourceMatches">Matches that the players advance from.</param>
     /// <param name="targetMatches">Matches that the players advance to.</param>
-    /// <param name="numAdvancements">How many players in each source match advances to the phase with the target matches.</param>
-    public static void CreateSnakeSeededAdvancements(List<Match> sourceMatches, List<Match> targetMatches, int numAdvancements)
+    /// <param name="numAdvancements">How many players in each source match advances to the phase with the target matches. If -1, advancements for all remaining players are generated.</param>
+    /// <param name="advancementOffset">At what rank the advancements start. Useful for advancements into loser brackets.</param>
+    public static void CreateSnakeSeededAdvancements(List<Match> sourceMatches, List<Match> targetMatches, int numAdvancements, int advancementOffset = 0)
     {
         for (int i = 0; i < sourceMatches.Count; i++)
         {
@@ -23,7 +24,10 @@ public static class Seeder
             int currentTargetSeed = 0;
             bool snakeForward = true;
 
-            for (int rank = 0; rank < numAdvancements; rank++)
+            int limit = advancementOffset + numAdvancements;
+            if (numAdvancements == -1) limit = sourceMatch.MaxPlayers;
+
+            for (int rank = 0; rank < limit; rank++)
             {
                 int sourceRank = rank;
                 Match targetMatch = targetMatches[currentTargetMatchId];

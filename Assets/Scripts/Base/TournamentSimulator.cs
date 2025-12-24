@@ -303,7 +303,7 @@ public class TournamentSimulator : MonoBehaviour
 
     private void StartTestMatch()
     {
-        SoloMatch testMatch = new SoloMatch("Test", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, numPlayers: 3, new List<int>() { 5, 3, 1 });
+        SoloMatch testMatch = new SoloMatch("Test", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, maxPlayers: 3, new List<int>() { 5, 3, 1 });
         testMatch.AddPlayerToMatch(Database.GetPlayer(0), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(1), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(2), 0);

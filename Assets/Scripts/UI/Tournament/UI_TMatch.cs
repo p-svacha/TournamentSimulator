@@ -55,7 +55,7 @@ public class UI_TMatch : MonoBehaviour
                 }
 
                 // add empty rows for slots that are not yet filled
-                for (int i = match.GetPlayerRanking().Count; i < match.NumPlayers; i++)
+                for (int i = match.GetPlayerRanking().Count; i < match.MinPlayers; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
                     groupPlayer.InitEmpty();

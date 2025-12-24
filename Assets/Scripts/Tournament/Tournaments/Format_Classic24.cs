@@ -37,7 +37,7 @@ public class Format_Classic24 : Tournament
         unassignedPlayers.AddRange(Players);
         for (int i = 0; i < 4; i++)
         {
-            Match groupMatch = new SoloMatch("Group " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 6, PointDistribution_Group);
+            Match groupMatch = new SoloMatch("Group " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 6, PointDistribution_Group);
 
             // Add initial players
             for (int j = 0; j < 6; j++)
@@ -52,15 +52,15 @@ public class Format_Classic24 : Tournament
         // Quarters
         for (int i = 0; i < 4; i++)
         {
-            Matches.Add(new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
         }
         // Semis
         for (int i = 0; i < 2; i++)
         {
-            Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
         }
         // Final
-        Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+        Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
 
         // Link matches
         Matches[0].SetTargetMatches(new List<int>() { 4, 5, 6, 7 });

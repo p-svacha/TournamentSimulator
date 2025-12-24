@@ -119,9 +119,11 @@ public class Format_BigCup : Tournament
     private const int GRAND_FINAL_MATCHES = 1;
 
     // Players per Match (PPM)
-    private const int INITIAL_ROUND_PPM = -1; // 4 matches. per match: 20 to R1 upper, rest to R2 lower 
+    private const int INITIAL_ROUND_MIN_PPM = 22;
+    private const int INITIAL_ROUND_MAX_PPM = 64;
     private const int R1_UPPER_PPM = 20; // 4 matches. per match: 8 to R2 upper, 12 to R2 lower 
-    private const int R1_LOWER_PPM = -1; // 4 matches. per match: 12 to R2 lower, rest out
+    private const int R1_LOWER_MIN_PPM = 2; // 4 matches. per match: 12 to R2 lower, rest out
+    private const int R1_LOWER_MAX_PPM = 44; // 4 matches. per match: 12 to R2 lower, rest out
     private const int R2_UPPER_PPM = 16; // 2 matches. per match: 6 to R3 upper, 10 to R3 lower 
     private const int R2_LOWER_PPM = 24; // 4 matches. per match: 11 to R4 lower, 13 out
     private const int R3_UPPER_PPM = 12; // 1 match. 4 to SemiFinal, 8 to R4 lower
@@ -143,6 +145,15 @@ public class Format_BigCup : Tournament
 
     // Match lists for individual phases (only used as cache during tournament creation)
     private List<Match> InitialRoundMatches = new List<Match>();
+    private List<Match> R1UpperMatches = new List<Match>();
+    private List<Match> R1LowerMatches = new List<Match>();
+    private List<Match> R2UpperMatches = new List<Match>();
+    private List<Match> R2LowerMatches = new List<Match>();
+    private List<Match> R3UpperMatches = new List<Match>();
+    private List<Match> R3LowerMatches = new List<Match>();
+    private List<Match> R4LowerMatches = new List<Match>();
+    private List<Match> SemiFinalMatches = new List<Match>();
+    private Match GrandFinalMatch;
 
     public Format_BigCup(TournamentData data) : base(data) { }
     public Format_BigCup(DisciplineDef disciplineDef, int season, int quarter, int day) : base(disciplineDef, TournamentType.SeasonCup, season)
@@ -163,6 +174,7 @@ public class Format_BigCup : Tournament
         List<Player> orderedParticipants = Database.GetPlayerEloRanking(Discipline.Def);
 
         // todo: fill matches
+        // todo: call function (move to base and make abstract?)
     }
 
     /// <summary>
@@ -173,38 +185,87 @@ public class Format_BigCup : Tournament
         // Initial Round
         for (int i = 0; i < INITIAL_ROUND_MATCHES; i++)
         {
-            Match initialMatch = new SoloMatch("Starting Phase - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: INITIAL_ROUND_PPM, FirstStagePointDistribution);
+            Match initialMatch = new SoloMatch("Starting Phase - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: INITIAL_ROUND_MAX_PPM, FirstStagePointDistribution, minPlayers: INITIAL_ROUND_MIN_PPM);
 
             InitialRoundMatches.Add(initialMatch);
             Matches.Add(initialMatch);
         }
 
         // R1 UPPER
-        // todo
+        for (int i = 0; i < R1_UPPER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Winner Bracket - Round 1 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R1_UPPER_PPM, M20PointDistribution);
+
+            R1UpperMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R1 LOWER
-        // todo
+        for (int i = 0; i < R1_LOWER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Lower Bracket - Round 1 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R1_LOWER_MAX_PPM, FirstStagePointDistribution, minPlayers: R1_LOWER_MIN_PPM);
+
+            R1LowerMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R2 UPPER
-        // todo
+        for (int i = 0; i < R2_UPPER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Winner Bracket - Round 2 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R2_UPPER_PPM, M16PointDistribution);
+
+            R2UpperMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R2 LOWER
-        // todo
+        for (int i = 0; i < R2_LOWER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Lower Bracket - Round 2 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R2_LOWER_PPM, M24PointDistribution);
+
+            R2LowerMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R3 UPPER
-        // todo
+        for (int i = 0; i < R3_UPPER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Winner Bracket - Round 3 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R3_UPPER_PPM, M12PointDistribution);
+
+            R3UpperMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R3 LOWER
-        // todo
+        for (int i = 0; i < R3_LOWER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Lower Bracket - Round 3 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R3_LOWER_PPM, M32PointDistribution);
+
+            R3LowerMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // R4 LOWER
-        // todo
+        for (int i = 0; i < R4_LOWER_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Lower Bracket Finals - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R4_LOWER_PPM, M8PointDistribution);
+
+            R4LowerMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // SEMI
-        // todo
+        for (int i = 0; i < SEMI_FINAL_MATCHES; i++)
+        {
+            Match match = new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: SEMI_FINAL_PPM, M8PointDistribution);
+
+            SemiFinalMatches.Add(match);
+            Matches.Add(match);
+        }
 
         // FINAL
-        // todo
+        GrandFinalMatch = new SoloMatch("Grand Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: GRAND_FINAL_PPM, GrandFinalPointDistribution);
+        Matches.Add(GrandFinalMatch);
     }
 
     /// <summary>
@@ -212,7 +273,14 @@ public class Format_BigCup : Tournament
     /// </summary>
     private void InitAdvancements()
     {
+        // Initial -> R1 Upper
+        Seeder.CreateSnakeSeededAdvancements(InitialRoundMatches, R1UpperMatches, INITIAL_ROUND_ADV);
 
+        // Initial -> R1 Lower
+        Seeder.CreateSnakeSeededAdvancements(InitialRoundMatches, R2LowerMatches, numAdvancements: -1, advancementOffset: INITIAL_ROUND_ADV);
+
+        // R1 Upper -> R2 Upper
+        Seeder.CreateSnakeSeededAdvancements(R1UpperMatches, R2UpperMatches, numAdvancements: R1_UPPER_ADV);
     }
 
     public override void DisplayTournament(UI_Base baseUI, GameObject Container)

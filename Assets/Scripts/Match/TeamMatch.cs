@@ -14,17 +14,18 @@ public class TeamMatch : Match
     public int NumPlayersPerTeam { get; private set; }
     public List<int> TeamPointDistribution { get; private set; } // How the round points are distributed among the teams based on team rank
     public List<MatchParticipant_Team> TeamParticipants { get; private set; }
+    public int NumTeamParticipants => TeamParticipants.Count;
 
 
     public MatchParticipant_Team GetParticipant(Team t) => TeamParticipants.First(x => x.Team == t);
     public bool IncludesTeam(Team t) => TeamParticipants.Any(x => x.Team == t);
-    public override int NumParticipants => NumTeams;
+    public override int NumParticipants => TeamParticipants.Count;
 
     #region Before match
 
     // Create a new match with all attributes that are known from the start
     public TeamMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numTeams, int numPlayersPerTeam, List<int> teamPointDistribution, List<int> playerPointDistribution, TournamentGroup group = null)
-        : base(name, tournament, quarter, day, format, numTeams * numPlayersPerTeam, playerPointDistribution, group)
+        : base(name, tournament, quarter, day, format, maxPlayers: numTeams * numPlayersPerTeam, playerPointDistribution, minPlayers: numTeams * numPlayersPerTeam, group)
     {
         IsTeamMatch = true;
         NumTeams = numTeams;
@@ -45,10 +46,9 @@ public class TeamMatch : Match
 
     public override bool CanStartMatch()
     {
-        if (IsDone) return false; // match already done
-        if (IsRunning) return false; // match already running
+        if (!base.CanStartMatch()) return false;
+
         if (TeamParticipants.Count != NumTeams) return false; // wrong amount of teams
-        if (!IsToday) return false; // match not today
         return true;
     }
 

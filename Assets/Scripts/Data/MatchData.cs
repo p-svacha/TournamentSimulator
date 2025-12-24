@@ -15,7 +15,8 @@ public class MatchData
     public int Day { get; set; }
     public string Format { get; set; }
     public bool IsDone { get; set; }
-    public int NumPlayers { get; set; }
+    public int MinPlayers { get; set; }
+    public int MaxPlayers { get; set; }
     public List<MatchAdvancementData> AdvancementTargets { get; set; }
     public List<int> PointDistribution { get; set; }
 

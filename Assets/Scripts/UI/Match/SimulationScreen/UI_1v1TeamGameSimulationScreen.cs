@@ -44,7 +44,7 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         StepTime = stepTime;
         IsSimulating = true;
         CurrentSkillIndex = -1;
-        SimPlayer = Match.NumPlayers + 1;
+        SimPlayer = Match.NumPlayerParticipants + 1;
         TimeElapsed = 0;
 
         Game.StartGame();
@@ -97,12 +97,12 @@ public class UI_1v1TeamGameSimulationScreen : UI_Screen
         {
             TimeElapsed = 0;
 
-            if (SimPlayer == Match.NumPlayers)
+            if (SimPlayer == Match.NumPlayerParticipants)
             {
                 EndRound();
                 SimPlayer++;
             }
-            else if (SimPlayer == Match.NumPlayers + 1)
+            else if (SimPlayer == Match.NumPlayerParticipants + 1)
             {
                 if (CurrentSkillIndex == Game.Skills.Count - 1) EndSimulation();
                 else GoToNextSkill();

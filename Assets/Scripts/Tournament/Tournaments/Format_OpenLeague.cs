@@ -50,7 +50,7 @@ public class Format_OpenLeague : Tournament
         if (Players.Count == 0) IsDone = true;
         else if(Players.Count < 6) // Only 1 match for 1-5 players
         {
-            Match onlyMatch = new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: Players.Count, PointDistributions[Players.Count]);
+            Match onlyMatch = new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: Players.Count, PointDistributions[Players.Count]);
             foreach (Player p in unassignedPlayers) onlyMatch.AddPlayerToMatch(p, seed: 0);
             Matches.Add(onlyMatch);
         }
@@ -72,12 +72,12 @@ public class Format_OpenLeague : Tournament
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Match semi = new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match semi = new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) semi.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(semi);
             }
             // Final
-            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 2, 2 });
@@ -102,17 +102,17 @@ public class Format_OpenLeague : Tournament
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Match quarter = new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match quarter = new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) quarter.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(quarter);
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5 });
@@ -142,22 +142,22 @@ public class Format_OpenLeague : Tournament
             // Group stage
             for (int i = 0; i < 4; i++)
             {
-                Match groupMatch = new SoloMatch("Group " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
+                Match groupMatch = new SoloMatch("Group " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: groups[i].Count, PointDistributions[groups[i].Count]);
                 foreach (Player p in groups[i]) groupMatch.AddPlayerToMatch(p, seed: 0);
                 Matches.Add(groupMatch);
             }
             // Quarters
             for (int i = 0; i < 4; i++)
             {
-                Matches.Add(new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new SoloMatch("Quarterfinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
             }
             // Semis
             for (int i = 0; i < 2; i++)
             {
-                Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+                Matches.Add(new SoloMatch("Semifinal " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
             }
             // Final
-            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, numPlayers: 4, PointDistribution_KO));
+            Matches.Add(new SoloMatch("Final", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: 4, PointDistribution_KO));
 
             // Link matches
             Matches[0].SetTargetMatches(new List<int>() { 4, 5, 6, 7 });

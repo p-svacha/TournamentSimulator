@@ -10,13 +10,13 @@ public class SoloMatch : Match
 {
     public new List<SoloGame> Games => base.Games.Select(g => (SoloGame)g).ToList();
 
-    public SoloMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
-        : base(name, tournament, quarter, day, format, numPlayers, pointDistribution, group)
+    public SoloMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution, int minPlayers = 0, TournamentGroup group = null)
+        : base(name, tournament, quarter, day, format, maxPlayers, pointDistribution, minPlayers, group)
     {
         IsTeamMatch = false;
     }
 
-    public override int NumParticipants => NumPlayers;
+    public override int NumParticipants => PlayerParticipants.Count;
 
     protected override Game CreateGame(int index, List<GameModifierDef> gameModifiers)
     {

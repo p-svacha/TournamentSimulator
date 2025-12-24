@@ -21,8 +21,8 @@ public abstract class Match
 
 
     // Rules
-    public int NumPlayers { get; private set; } // How many players there are in the match. -1 means the amount is dynamic
-    public bool PlayerNumberIsDynamic => NumPlayers == -1;
+    public int MinPlayers { get; private set; } // How many players must be in the match at minimum for it to be able to start.
+    public int MaxPlayers { get; private set; } // How many players can be in the match at maxiumum for it to be able to start.
     public int NumAdvancements => AdvancementsTargets == null ? 0 : AdvancementsTargets.Count;
     /// <summary>
     /// List containing all information about which ranks in this match advance to what matches with what seeds.
@@ -41,7 +41,7 @@ public abstract class Match
     #region Init / Before start
 
     // Create a new match with all attributes that are known from the start
-    protected Match(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int numPlayers, List<int> pointDistribution, TournamentGroup group = null)
+    protected Match(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution, int minPlayers = -1, TournamentGroup group = null)
     {
         Id = Database.GetNewMatchId();
         Name = name;
@@ -49,9 +49,12 @@ public abstract class Match
         Quarter = quarter;
         Day = day;
         Format = format;
-        NumPlayers = numPlayers;
+        MaxPlayers = maxPlayers;
+        MinPlayers = minPlayers == -1 ? maxPlayers : minPlayers; // If min not explicitly set, set it the same as maximum
         PointDistribution = pointDistribution;
         Group = group;
+
+        if (MinPlayers > MaxPlayers) throw new System.Exception($"minPlayers cannot be higher than maxPlayers. max: {MaxPlayers}, min: {MinPlayers}");
 
         PlayerParticipants = new List<MatchParticipant_Player>();
         Games = new List<Game>();
@@ -61,7 +64,7 @@ public abstract class Match
     public void AddPlayerToMatch(Player p, int seed = 0, Team team = null)
     {
         if (IsDone) throw new System.Exception("Cannot add a player to match that is already done.");
-        if (PlayerParticipants.Count >= NumPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + PlayerParticipants.Count + "/" + NumPlayers + " players)");
+        if (PlayerParticipants.Count >= MaxPlayers) throw new System.Exception("Can't add a player to a match that is already full. (match has " + PlayerParticipants.Count + "/" + MaxPlayers + " players)");
         if (PlayerParticipants.Any(x => x.Player == p)) throw new System.Exception("Can't add the same player to the match twice (" + p.Name + ")");
 
         PlayerParticipants.Add(new MatchParticipant_Player(this, p, seed, team));
@@ -142,7 +145,8 @@ public abstract class Match
     {
         if (IsDone) return false; // match already done
         if (IsRunning) return false; // match already running
-        if (NumPlayers != PlayerParticipants.Count) return false; // match not full
+        if (PlayerParticipants.Count < MinPlayers) return false; // not enough players
+        if (PlayerParticipants.Count > MaxPlayers) return false; // too many players
         if (!IsToday) return false; // match not today
         return true;
     }
@@ -312,6 +316,8 @@ public abstract class Match
     /// </summary>
     public abstract int NumParticipants { get; }
 
+    public int NumPlayerParticipants => PlayerParticipants.Count;
+
     public List<Player> PlayerRanking => GetPlayerRanking().Select(x => x.Player).ToList();
     public Dictionary<int, List<Player>> GetPlayerRankingWithRanks()
     {
@@ -352,7 +358,8 @@ public abstract class Match
         data.Day = Day;
         data.Format = Format.DefName;
         data.IsDone = IsDone;
-        data.NumPlayers = NumPlayers;
+        data.MinPlayers = MinPlayers;
+        data.MaxPlayers = MaxPlayers;
         data.AdvancementTargets = AdvancementsTargets.Select(x => x.ToData()).ToList();
         data.PointDistribution = PointDistribution;
         data.Participants = PlayerParticipants.Select(x => x.ToData()).ToList();
@@ -374,7 +381,8 @@ public abstract class Match
         Quarter = data.Quarter;
         Day = data.Day;
         Format = DefDatabase<MatchFormatDef>.GetNamed(data.Format);
-        NumPlayers = data.NumPlayers;
+        MaxPlayers = data.MaxPlayers;
+        MinPlayers = data.MinPlayers;
         AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
         PointDistribution = data.PointDistribution;
         IsDone = data.IsDone;

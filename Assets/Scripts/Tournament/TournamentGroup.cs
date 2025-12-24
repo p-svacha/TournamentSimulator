@@ -98,7 +98,7 @@ public class TournamentGroup
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
 
-        Match match = new SoloMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, numPlayers: 2, PointDistribution, group: this);
+        Match match = new SoloMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, maxPlayers: 2, PointDistribution, group: this);
         match.AddPlayerToMatch(p1);
         match.AddPlayerToMatch(p2);
 

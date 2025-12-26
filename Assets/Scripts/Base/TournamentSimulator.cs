@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using UnityEngine;
 
 public class TournamentSimulator : MonoBehaviour
@@ -12,7 +13,7 @@ public class TournamentSimulator : MonoBehaviour
 
     private const int NUM_GRAND_CHALLENGE_SWAPS = 5;
     private const int NUM_CHALLENGE_OPEN_SWAPS = 5;
-    private const int NUM_OPEN_LEAGUE_RELEGATIONS = 9;
+    private const int NUM_OPEN_LEAGUE_RELEGATIONS = 10;
 
     private const int NUM_RANDOM_REVIVES = 2;
     private const int NUM_NEW_GENERATIONS = 7;
@@ -152,7 +153,7 @@ public class TournamentSimulator : MonoBehaviour
     /// </summary>
     private void OnDayStart()
     {
-        foreach (Tournament t in Database.AllTournaments.Where(t => t.StarsToday)) t.OnTournamentStart();
+        foreach (Tournament t in Database.AllTournaments.Where(t => t.StartsToday())) t.OnTournamentStart();
         foreach (Match m in Database.AllMatches.Where(x => x.IsToday)) m.OnDayStart();
     }
 
@@ -237,6 +238,9 @@ public class TournamentSimulator : MonoBehaviour
 
     public void EndSeason()
     {
+        // Increment age of all players
+        foreach (Player p in Database.AllPlayers) p.Age++;
+
         // Skill and attribute shuffle
         Debug.Log("Shuffling skills and attributes of all players.");
         AdjustAllSkillsOfAllPlayers_EndOfSeason();
@@ -259,13 +263,24 @@ public class TournamentSimulator : MonoBehaviour
             openLeague.Ranking[i].SetLeague(TournamentType.None);
         }
 
-        // Revive 2 inactive players and put them into open league (only ones that haven't just been eliminated)
-        Debug.Log("Reviving random inactive players.");
-        for (int i = 0; i < 2; i++) ReviveRandomPlayer(eliminatedPlayers);
+        // Revive the inactive player with the most elo
+        Player toRevive = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.None && !eliminatedPlayers.Contains(x)).OrderByDescending(x => x.Elo[openLeague.Discipline]).First();
+        Debug.Log($"Reviving best inactive player: {toRevive.FirstName} {toRevive.LastName}");
+        toRevive.SetLeague(TournamentType.OpenLeague);
 
-        // Add 7 completely new players to the open league
-        Debug.Log("Generating new players.");
-        for (int i = 0; i < 7; i++) AddRandomPlayer();
+        // Revive 1 inactive players and put them into open league (only ones that haven't just been eliminated)
+        Debug.Log("Reviving random inactive players.");
+        for (int i = 0; i < 1; i++) ReviveRandomPlayer(eliminatedPlayers);
+
+        // Add 8 completely new players to the open league
+        Debug.Log("Generating new players for open league.");
+        for (int i = 0; i < 8; i++) AddRandomPlayer(league: TournamentType.OpenLeague);
+
+        /*
+        // Just once: Add 4 additional players so player count is always divisible by 4
+        Debug.Log("Generating new players for divisibility.");
+        for (int i = 0; i < 4; i++) AddRandomPlayer(league: TournamentType.None);
+        */
 
         // Save
         Save();
@@ -287,13 +302,17 @@ public class TournamentSimulator : MonoBehaviour
     /// <summary>
     /// Generates a new random player with default rating and adds them to the lowest league with space.
     /// </summary>
-    public void AddRandomPlayer(string region = "", string continent = "")
+    public void AddRandomPlayer(string region = "", string continent = "", TournamentType league = TournamentType.OpenLeague)
     {
         Player newPlayer = PlayerGenerator.GenerateRandomPlayer(region, continent);
 
+        /* Old logic when there were few players
         int league = (Database.AllPlayers.Count / 24);
         if (league > 2) league = 2;
         newPlayer.SetLeague((TournamentType)league);
+        */
+
+        newPlayer.SetLeague(league);
 
         Database.AddPlayer(newPlayer);
 
@@ -302,7 +321,7 @@ public class TournamentSimulator : MonoBehaviour
         if (nationalTeam == null) CreateNationalTeam(newPlayer.Country);
         else nationalTeam.AddPlayer(newPlayer);
 
-        Debug.Log(newPlayer.ToString() + " has been generated.");
+        Debug.Log($"{newPlayer} from {newPlayer.Country.Name} has been generated.");
     }
 
     #endregion

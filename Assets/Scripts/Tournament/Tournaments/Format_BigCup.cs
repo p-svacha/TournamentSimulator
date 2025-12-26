@@ -378,7 +378,7 @@ public class Format_BigCup : Tournament
         round.Add(matches);
     }
 
-    public override string GetMatchDayTitle(int index) => Name;
+    public override string GetMatchDayTitle(int index) => ""; // No match day titles needed since it is a one-day tournament
 
     public override Dictionary<int, List<Player>> PlayerRanking => Matches.Last().GetPlayerRankingWithRanks();
 

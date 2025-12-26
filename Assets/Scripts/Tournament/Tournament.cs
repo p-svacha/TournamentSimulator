@@ -40,6 +40,7 @@ public abstract class Tournament
 
         Players = new List<Player>();
         Teams = new List<Team>();
+        Modifiers = new List<GameModifierDef>();
     }
 
     /// <summary>
@@ -111,7 +112,15 @@ public abstract class Tournament
 
     #region Getters
 
-    public bool StarsToday => Season == Database.Season && Matches.Min(m => m.Quarter) == Database.Quarter && Matches.Min(m => m.Day) == Database.Day;
+    public bool StartsToday()
+    {
+        if (Season != Database.Season) return false;
+
+        int firstMatchQuarter = Matches.Min(m => m.Quarter);
+        int firstMatchDay = Matches.Where(m => m.Quarter == firstMatchQuarter).Min(m => m.Day);
+
+        return (Database.Quarter == firstMatchQuarter && Database.Day == firstMatchDay);
+    }
 
     #endregion
 

@@ -12,7 +12,6 @@ public class Format_WorldCup : Tournament
     private static int START_QUARTER = 4;
     private static int START_DAY = 6;
 
-    private List<int> ValidTeamAmounts = new List<int>() { 16 };
     private List<int> TeamPointDistribution = new List<int>() { 1, 0 };
 
     private const int NUM_GROUPS = 4;
@@ -55,16 +54,11 @@ public class Format_WorldCup : Tournament
 
     public void InitBracket()
     {
-        // Validate
-        if (!ValidTeamAmounts.Contains(Teams.Count)) throw new System.Exception(Teams.Count + " is not a valid amount of teams for a world cup.");
-        if (Players.Count != 0) throw new System.Exception("Team tournaments cannot have player participants, only teams");
-
         // Create groups and matches based on team amount
         Groups = new List<TournamentGroup>();
         Matches = new List<Match>();
 
-        if (Teams.Count == 16) CreateWorldCup16();
-        else throw new System.Exception(Teams.Count + " not handled in match creation");
+        CreateWorldCup16();
     }
 
     private void CreateWorldCup16()
@@ -89,7 +83,6 @@ public class Format_WorldCup : Tournament
         for (int i = 0; i < 4; i++)
         {
             TeamMatch quarterfinal = new TeamMatch("Quarterfinal " + (i + 1), this, quartersQuarter, quartersDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
-            quarterfinal.SetTargetMatches(new List<int>() { 28 + (i / 2) }, new List<int>() { i % 2 });
             Matches.Add(quarterfinal);
         }
 
@@ -100,7 +93,6 @@ public class Format_WorldCup : Tournament
         for (int i = 0; i < 2; i++)
         {
             TeamMatch semifinal = new TeamMatch("Semifinal " + (i + 1), this, semisQuarter, semisDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2));
-            semifinal.SetTargetMatches(new List<int>() { 31, 30 }, new List<int>() { i % 2, i % 2 });
             Matches.Add(semifinal);
         }
 
@@ -114,6 +106,19 @@ public class Format_WorldCup : Tournament
 
         // Final
         Matches.Add(new TeamMatch("Final", this, finalsQuarter, finalsDay, MatchFormatDefOf.SingleGame, numTeams: 2, NumPlayersPerTeam, TeamPointDistribution, GetBasicPointDistribution(NumPlayersPerTeam * 2)));
+
+        InitMatchAdvancements();
+    }
+
+    private void InitMatchAdvancements()
+    {
+        int globalIndex = 24; // 0-23 are group matches
+
+        // Quarters (match index 24-27)
+        for (int i = 0; i < 4; i++) Matches[globalIndex++].SetTargetMatches(new List<int>() { 28 + (i / 2) }, new List<int>() { i % 2 });
+
+        // Semis (match index 28-29)
+        for (int i = 0; i < 2; i++) Matches[globalIndex++].SetTargetMatches(new List<int>() { 31, 30 }, new List<int>() { i % 2, i % 2 });
     }
 
     public override void DisplayTournament(UI_Base baseUI, GameObject Container)

@@ -21,7 +21,7 @@ public class Player
     public Color LeagueColor => League == null ? ColorManager.Singleton.NoLeagueColor : League.Color;
     public Sprite FlagBig => Country.FlagBig;
     public Sprite FlagSmall => Country.FlagSmall;
-    public int Age => 20 + (Database.Season - Database.AllLeagues.Where(x => x.Players.Contains(this)).Min(x => x.Season));
+    public int Age { get; set; }
 
     public static string MISTAKE_MODIFIER = "Mistake";
 
@@ -39,6 +39,7 @@ public class Player
         LastName = lastName;
         Sex = sex;
         Country = country;
+        // Age = 20;
         Skills = new Dictionary<SkillDef, Skill>(skills);
 
         Elo = new Dictionary<DisciplineDef, int>();
@@ -115,6 +116,7 @@ public class Player
         data.LastName = LastName;
         data.CountryId = Country.Id;
         data.Sex = Sex;
+        data.Age = Age;
         data.Elos = Elo.Select(x => new EloData(x.Key.DefName, x.Value)).ToList();
         data.LeagueType = (int)LeagueType;
         data.Skills = Skills.Select(x => x.Value.ToData()).ToList();
@@ -128,6 +130,7 @@ public class Player
         LastName = data.LastName;
         Country = Database.GetCountry(data.CountryId);
         Sex = data.Sex;
+        Age = data.Age;
         LeagueType = (TournamentType)data.LeagueType;
         Skills = data.Skills.ToDictionary(x => DefDatabase<SkillDef>.GetNamed(x.Skill), x => new Skill(x));
 

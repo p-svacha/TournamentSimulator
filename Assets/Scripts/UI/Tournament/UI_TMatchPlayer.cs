@@ -43,7 +43,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         if (EloChangeIcon != null) EloChangeIcon.enabled = false;
         if (EloChangeText != null) EloChangeText.text = "";
         if (PointsText != null) PointsText.text = "";
-        PlaceholderText.text = text;
+        if (PlaceholderText != null) PlaceholderText.text = text;
         return;
     }
 

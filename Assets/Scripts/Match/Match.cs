@@ -166,7 +166,7 @@ public abstract class Match
     /// List contains the LOCAL (within torunament) id of the match, the ranks according to the list index advance to.
     /// Seeds will be equivalent to rank if not set specifically.
     /// </summary>
-    public void SetTargetMatches(List<int> targetMatchIds, List<int>? targetMatchSeeds = null)
+    public void SetTargetMatches(List<int> targetMatchIds, List<int> targetMatchSeeds = null)
     {
         for (int i = 0; i < targetMatchIds.Count; i++)
         {

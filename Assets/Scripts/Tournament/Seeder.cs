@@ -91,17 +91,15 @@ public static class Seeder
 
 
     /// <summary>
-    /// Generates and sets the advancement information in all source matches, given how many in each of those matches advance to the group of target matches. Applies even and fair seeding.
+    /// Generates advancements using a "Deck of Cards" approach.
+    /// <br/>1. Collects all players into a list (Deck), rotating sources based on rank to ensure mixing.
+    /// <br/>2. Deals them into target matches using Snake distribution.
     /// </summary>
-    /// <param name="sourceMatches">Matches that the players advance from.</param>
-    /// <param name="targetMatches">Matches that the players advance to.</param>
-    /// <param name="numAdvancements">How many players in each source match advances to the phase with the target matches. If -1, advancements for all remaining players are generated.</param>
-    /// <param name="advancementOffset">At what rank the advancements start. Useful for advancements into loser brackets.</param>
-    /// <param name="targetSeedOffset">At what seed in the target matches it starts.</param>
     public static void CreateSnakeSeededAdvancements(List<Match> sourceMatches, List<Match> targetMatches, int numAdvancements, int advancementOffset = 0, int targetSeedOffset = 0)
     {
-        // --- VALIDATION START ---
-        // Calculate the total number of players advancing in this specific batch
+        // ---------------------------------------------------------
+        // 1. VALIDATION
+        // ---------------------------------------------------------
         int totalAdvancingPlayers = 0;
         foreach (var m in sourceMatches)
         {
@@ -110,71 +108,120 @@ public static class Seeder
             totalAdvancingPlayers += count;
         }
 
-        // The Critical Check: 
-        // We must ensure the players distribute evenly across targets (Rectangular Fill).
-        // If they don't (e.g., 21 players into 2 matches), one match will have more seeds filled than the other.
-        // This makes 'targetSeedOffset' dangerous for subsequent batches merging into the same matches.
-        if (totalAdvancingPlayers % targetMatches.Count != 0)
+        if (totalAdvancingPlayers % targetMatches.Count != 0 && targetMatches.Count > 1)
         {
-            // Exception: If this is the Grand Final (1 target match), uneven numbers are always fine.
-            if (targetMatches.Count > 1)
-            {
-                Debug.LogError($"[Seeder] CRITICAL SETUP ERROR: Uneven distribution detected!");
-                Debug.LogError($"Trying to move {totalAdvancingPlayers} players into {targetMatches.Count} matches.");
-                Debug.LogError($"This leaves a remainder of {totalAdvancingPlayers % targetMatches.Count}.");
-                Debug.LogError($"Source: {sourceMatches[0].Name} | Target: {targetMatches[0].Name}");
-                throw new System.Exception("Advancement setup resulted in uneven bracket fill. This breaks 'targetSeedOffset' logic.");
-            }
+            Debug.LogError($"[Seeder] Uneven bracket fill detected: {totalAdvancingPlayers} players -> {targetMatches.Count} matches.");
+            throw new System.Exception("Advancement setup resulted in uneven bracket fill.");
         }
-        // --- VALIDATION END ---
 
+        // ---------------------------------------------------------
+        // 2. SETUP TRACKING
+        // ---------------------------------------------------------
 
-        // Group all advancing slots by Source Match to assign them later
+        // Track how many times a Target Match has received a player from a specific Source Match.
+        // targetId -> sourceId -> count
+        Dictionary<int, Dictionary<int, int>> mixingHistory = new Dictionary<int, Dictionary<int, int>>();
+        foreach (var t in targetMatches)
+        {
+            mixingHistory[t.Id] = new Dictionary<int, int>();
+            foreach (var s in sourceMatches) mixingHistory[t.Id][s.Id] = 0;
+        }
+
+        // Track seed indices for targets (to ensure we fill seeds 0, 1, 2... sequentially)
+        Dictionary<Match, int> seedsAssignedToTarget = new Dictionary<Match, int>();
+        foreach (Match m in targetMatches) seedsAssignedToTarget.Add(m, 0);
+
+        // Prepare the final list
         Dictionary<Match, List<MatchAdvancementTarget>> distribution = new Dictionary<Match, List<MatchAdvancementTarget>>();
         foreach (Match m in sourceMatches) distribution.Add(m, new List<MatchAdvancementTarget>());
 
-        // Iterate "Global Ranks" (Rank 0 of Match 0, Rank 0 of Match 1, etc.)
-        // This ensures purely even distribution across all targets.
 
-        // Find maximum players to iterate safely if matches have uneven counts
+        // ---------------------------------------------------------
+        // 3. GENERATE & ASSIGN
+        // ---------------------------------------------------------
+
+        // Determine the highest rank we need to calculate
         int maxPlayersInSource = 0;
         foreach (var m in sourceMatches) maxPlayersInSource = Mathf.Max(maxPlayersInSource, m.MaxPlayers);
-
         int rankLimit = numAdvancements == -1 ? maxPlayersInSource : advancementOffset + numAdvancements;
 
+        // GLOBAL SNAKE INDEX: Tracks total players assigned across all ranks
+        int globalSequence = 0;
+
+        // Process Rank by Rank (Fairness Priority 1)
         for (int rank = advancementOffset; rank < rankLimit; rank++)
         {
-            for (int sourceIdx = 0; sourceIdx < sourceMatches.Count; sourceIdx++)
+            // A. Collect all CANDIDATES (Players) available for this rank
+            List<Match> availableSources = new List<Match>();
+            foreach (var source in sourceMatches)
             {
-                Match sourceMatch = sourceMatches[sourceIdx];
+                int limit = numAdvancements == -1 ? source.MaxPlayers : advancementOffset + numAdvancements;
+                if (rank < limit) availableSources.Add(source);
+            }
 
-                // Skip if this specific match doesn't have enough players for this rank
-                int matchLimit = numAdvancements == -1 ? sourceMatch.MaxPlayers : advancementOffset + numAdvancements;
-                if (rank >= matchLimit) continue;
-
-                // Calculate a unique sequential ID for this player across the whole round
-                // relativeRank 0 = First players from all matches
-                int relativeRank = rank - advancementOffset;
-                int globalSequence = (relativeRank * sourceMatches.Count) + sourceIdx;
-
-                // Map Sequence -> Target Match (Snaking the Match Index)
+            // B. Collect all SLOTS (Targets) needed for this rank
+            // We determine this by running the Snake Logic for N steps, where N is the number of candidates.
+            List<Match> openSlots = new List<Match>();
+            for (int i = 0; i < availableSources.Count; i++)
+            {
                 int numTargets = targetMatches.Count;
-                int cyclePos = globalSequence % (numTargets * 2); // A full snake cycle is 2*N (There and back)
+                int snakeCycle = numTargets * 2;
+                int cyclePos = globalSequence % snakeCycle;
 
-                int targetMatchIdx;
-                if (cyclePos < numTargets) targetMatchIdx = cyclePos; // Forward (0 -> 1 -> 2)
-                else targetMatchIdx = (2 * numTargets - 1) - cyclePos; // Backward (2 -> 1 -> 0)
+                int targetMatchIdx = (cyclePos < numTargets) ? cyclePos : (snakeCycle - 1) - cyclePos;
+                openSlots.Add(targetMatches[targetMatchIdx]);
 
-                // Map Sequence -> Target Seed
-                int targetSeed = (globalSequence / numTargets) + targetSeedOffset;
+                globalSequence++;
+            }
 
-                // Add to distribution
-                Match targetMatch = targetMatches[targetMatchIdx];
-                distribution[sourceMatch].Add(new MatchAdvancementTarget(sourceMatch, rank, targetMatch, targetSeed));
+            // C. MATCHING: Greedy Least-Used Assignment
+            // For each candidate source, find the best fit among open slots.
+
+            // Optimization: Shuffle sources slightly or offset them to prevent bias in tie-breaking? 
+            // Actually, simply shifting the starting index of the loop per rank helps.
+            int shift = rank - advancementOffset;
+
+            for (int i = 0; i < availableSources.Count; i++)
+            {
+                // Get Source (Rotated iteration to avoid Order Bias)
+                Match source = availableSources[(i + shift) % availableSources.Count];
+
+                // Find the best slot for this source
+                // Criteria: The target that has seen this source the LEAST.
+                Match bestSlot = null;
+                int lowestCount = int.MaxValue;
+                int bestSlotIndex = -1;
+
+                for (int s = 0; s < openSlots.Count; s++)
+                {
+                    Match slot = openSlots[s];
+                    int count = mixingHistory[slot.Id][source.Id];
+
+                    if (count < lowestCount)
+                    {
+                        lowestCount = count;
+                        bestSlot = slot;
+                        bestSlotIndex = s;
+                    }
+                }
+
+                // Assign
+                openSlots.RemoveAt(bestSlotIndex); // Remove slot so it's not used twice
+
+                // Record History
+                mixingHistory[bestSlot.Id][source.Id]++;
+
+                // Assign Seed
+                int targetSeed = targetSeedOffset + seedsAssignedToTarget[bestSlot];
+                seedsAssignedToTarget[bestSlot]++;
+
+                distribution[source].Add(new MatchAdvancementTarget(source, rank, bestSlot, targetSeed));
             }
         }
 
-        // Apply to matches
+        // ---------------------------------------------------------
+        // 4. APPLY
+        // ---------------------------------------------------------
         foreach (var kvp in distribution)
         {
             kvp.Key.SetAdvancements(kvp.Value);

@@ -35,7 +35,7 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(TitleRow.GetComponent<RectTransform>());
 
         // Player rows
-        HelperFunctions.DestroyAllChildredImmediately(Container, skipElements: 1);
+        HelperFunctions.DestroyAllChildredImmediately(Container);
         foreach (MatchParticipant_Player part in match.GetPlayerRanking())
         {
             UI_MatchOverviewPlayer row = Instantiate(PlayerRowPrefab, Container.transform);

@@ -228,43 +228,7 @@ public static class Database
         return Teams.Values.Where(x => x.GetMatches().Count > 0 && x.Country.Continent == continent).OrderByDescending(x => x.Elo[discipline]).ToDictionary(x => x, x => x.Elo[discipline]);
     }
 
-    public static Vector3Int GetTeamMedals(Team team)
-    {
-        Vector3Int medals = Vector3Int.zero;
-
-        foreach(Tournament tournament in AllTournaments.Where(t => t.IsTeamTournament && t.IsDone))
-        {
-            Dictionary<int, List<Team>> teamRanking = tournament.TeamRanking;
-            
-            if(teamRanking[0].Contains(team)) medals += new Vector3Int(1, 0, 0);
-            if(teamRanking[1].Contains(team)) medals += new Vector3Int(0, 1, 0);
-            if(teamRanking[2].Contains(team)) medals += new Vector3Int(0, 0, 1);
-        }
-
-        return medals;
-    }
-
-    public static void GetAddMedals<T>(Dictionary<int, List<T>> ranking, Dictionary<T, Vector3Int> medals)
-    {
-        foreach (T goldWinner in ranking[0])
-        {
-            if (!medals.ContainsKey(goldWinner)) medals.Add(goldWinner, new Vector3Int(1, 0, 0));
-            else medals[goldWinner] += new Vector3Int(1, 0, 0);
-        }
-
-        foreach (T silverWinner in ranking[1])
-        {
-            if (!medals.ContainsKey(silverWinner)) medals.Add(silverWinner, new Vector3Int(0, 1, 0));
-            else medals[silverWinner] += new Vector3Int(0, 1, 0);
-        }
-
-        foreach (T bronzeWinner in ranking[2])
-        {
-            if (!medals.ContainsKey(bronzeWinner)) medals.Add(bronzeWinner, new Vector3Int(0, 0, 1));
-            else medals[bronzeWinner] += new Vector3Int(0, 0, 1);
-        }
-    }
-
+    
     public static Dictionary<Country, List<Player>> GetPlayersByCountry() => Players.Values.GroupBy(x => x.Country).OrderByDescending(x => x.Count()).ToDictionary(x => x.Key, x => x.ToList());
 
     public static Dictionary<Player, int> GetTeamAppearances(Team team)
@@ -307,6 +271,122 @@ public static class Database
         rivals = rivals.Take(maxAmount).ToDictionary(x => x.Key, x => x.Value);
 
         return rivals;
+    }
+
+    #endregion
+
+    #region Medals
+
+    private static List<MedalInfo> Medals;
+
+    public static Dictionary<Team, Vector3Int> GetTeamMedalLeaderboard(TournamentType filter)
+    {
+        Dictionary<Team, Vector3Int> medals = new Dictionary<Team, Vector3Int>();
+
+        // Aggregate
+        foreach (MedalInfo info in Medals.Where(m => m.Team != null))
+        {
+            if (filter != TournamentType.None && info.TournamentType != filter) continue;
+
+            if (!medals.ContainsKey(info.Team)) medals.Add(info.Team, Vector3Int.zero);
+            if (info.Medal == Medal.Gold) medals[info.Team] += new Vector3Int(1, 0, 0);
+            if (info.Medal == Medal.Silver) medals[info.Team] += new Vector3Int(0, 1, 0);
+            if (info.Medal == Medal.Bronze) medals[info.Team] += new Vector3Int(0, 0, 1);
+        }
+
+        // Order
+        medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);
+
+        return medals;
+    }
+
+    public static Dictionary<Player, Vector3Int> GetPlayerMedalLeaderboard(TournamentType filter)
+    {
+        Dictionary<Player, Vector3Int> medals = new Dictionary<Player, Vector3Int>();
+
+        // Aggregate
+        foreach (MedalInfo info in Medals.Where(m => m.Player != null))
+        {
+            if (filter != TournamentType.None && info.TournamentType != filter) continue;
+
+            if (!medals.ContainsKey(info.Player)) medals.Add(info.Player, Vector3Int.zero);
+            if (info.Medal == Medal.Gold) medals[info.Player] += new Vector3Int(1, 0, 0);
+            if (info.Medal == Medal.Silver) medals[info.Player] += new Vector3Int(0, 1, 0);
+            if (info.Medal == Medal.Bronze) medals[info.Player] += new Vector3Int(0, 0, 1);
+        }
+
+        // Order
+        medals = medals.OrderByDescending(x => 3 * x.Value.x + 2 * x.Value.y + x.Value.z).ThenByDescending(x => x.Value.x).ThenByDescending(x => x.Value.y).ThenByDescending(x => x.Value.z).ToDictionary(x => x.Key, x => x.Value);
+
+        return medals;
+    }
+
+    public static List<MedalInfo> GetPlayerMedals(Player player) => Medals.Where(m => m.Player == player).ToList();
+
+    public static void RefreshMedals()
+    {
+        Medals = new List<MedalInfo>();
+
+        // Grand League
+        foreach (League league in AllLeagues.Where(l => l.LeagueType == TournamentType.GrandLeague && l.IsDone))
+        {
+            GeneratePlayerMedalInfos(TournamentType.GrandLeague, "GL\nS" + league.Season, league.PlayerRanking);
+            GenerateTeamMedalInfos(TournamentType.GrandLeague, "GL\nS" + league.Season, league.TeamRanking);
+        }
+
+        // Season Cup
+        foreach (Tournament tournament in AllTournaments.Where(t => t.Format == TournamentType.SeasonCup && t.IsDone))
+        {
+            GeneratePlayerMedalInfos(TournamentType.SeasonCup, "SC\nS" + tournament.Season, tournament.PlayerRanking);
+            GenerateTeamMedalInfos(TournamentType.SeasonCup, "SC\nS" + tournament.Season, tournament.TeamRanking);
+        }
+
+        // World Cup
+        foreach (Tournament tournament in AllTournaments.Where(t => t.Format == TournamentType.WorldCup && t.IsDone))
+        {
+            GeneratePlayerMedalInfos(TournamentType.WorldCup, "WC\nS" + tournament.Season, tournament.PlayerRanking);
+            GenerateTeamMedalInfos(TournamentType.WorldCup, "WC\nS" + tournament.Season, tournament.TeamRanking);
+        }
+
+        // Big Cup
+        foreach (Tournament tournament in AllTournaments.Where(t => t.Format == TournamentType.BIGCup && t.IsDone))
+        {
+            GeneratePlayerMedalInfos(TournamentType.BIGCup, "BIG\nS" + tournament.Season, tournament.PlayerRanking);
+            GenerateTeamMedalInfos(TournamentType.BIGCup, "BIG\nS" + tournament.Season, tournament.TeamRanking);
+        }
+    }
+
+    private static void GeneratePlayerMedalInfos(TournamentType type, string text, Dictionary<int, List<Player>> ranking)
+    {
+        foreach (Player p in ranking[0]) Medals.Add(new MedalInfo(p, Medal.Gold, type, text));
+        foreach (Player p in ranking[1]) Medals.Add(new MedalInfo(p, Medal.Silver, type, text));
+        foreach (Player p in ranking[2]) Medals.Add(new MedalInfo(p, Medal.Bronze, type, text));
+    }
+
+    private static void GenerateTeamMedalInfos(TournamentType type, string text, Dictionary<int, List<Team>> ranking)
+    {
+        foreach (Team t in ranking[0]) Medals.Add(new MedalInfo(t, Medal.Gold, type, text));
+        foreach (Team t in ranking[1]) Medals.Add(new MedalInfo(t, Medal.Silver, type, text));
+        foreach (Team t in ranking[2]) Medals.Add(new MedalInfo(t, Medal.Bronze, type, text));
+    }
+
+    /// <summary>
+    /// Returns the amount of gold/silver/bronze medals a team has won in team tournaments only.
+    /// </summary>
+    public static Vector3Int GetTeamMedals(Team team)
+    {
+        Vector3Int medals = Vector3Int.zero;
+
+        foreach (Tournament tournament in AllTournaments.Where(t => t.IsTeamTournament && t.IsDone))
+        {
+            Dictionary<int, List<Team>> teamRanking = tournament.TeamRanking;
+
+            if (teamRanking[0].Contains(team)) medals += new Vector3Int(1, 0, 0);
+            if (teamRanking[1].Contains(team)) medals += new Vector3Int(0, 1, 0);
+            if (teamRanking[2].Contains(team)) medals += new Vector3Int(0, 0, 1);
+        }
+
+        return medals;
     }
 
     #endregion

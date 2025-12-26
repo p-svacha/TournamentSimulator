@@ -39,7 +39,7 @@ public class Player
         LastName = lastName;
         Sex = sex;
         Country = country;
-        // Age = 20;
+        Age = 20;
         Skills = new Dictionary<SkillDef, Skill>(skills);
 
         Elo = new Dictionary<DisciplineDef, int>();

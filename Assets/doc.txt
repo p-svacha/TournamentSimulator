@@ -1,11 +1,3 @@
-------------------------------- Before season 7 -------------------------------------------
-
-instead of 2 random revivals at the end of season, do just 1: best rated player without a league
-	> then 1 more new generated
-add 12 players at end of season (some silent maybe?)
-and from then on always add 8 players (so total number always divisible by 8)
-
-
 ------------------------------- Before season 8 -------------------------------------------
 
 show medals in player tooltip

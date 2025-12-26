@@ -163,7 +163,7 @@ public abstract class Tournament
 
             for (int m = 0; m < numMatches; m++)
             {
-                UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchPrefab;
+                UI_TMatch matchPrefab = ResourceManager.Instance.TournamentMatchPrefab;
                 UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
                 RectTransform rect = match.GetComponent<RectTransform>();
                 rect.anchoredPosition = new Vector2(groupMargin + (m * (matchWidth + groupMargin)), yPos);
@@ -317,7 +317,7 @@ public abstract class Tournament
                     matchPos.y = marginBot + ((container.GetComponent<RectTransform>().rect.height - marginBot) / 2f) - (matchHeight * finalScale / 2f);
                 }
 
-                UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchCompactPrefab;
+                UI_TMatch matchPrefab = ResourceManager.Instance.TournamentMatchCompactPrefab;
                 UI_TMatch match = GameObject.Instantiate(matchPrefab, container.transform);
                 RectTransform rect = match.GetComponent<RectTransform>();
                 rect.anchoredPosition = matchPos;
@@ -390,7 +390,7 @@ public abstract class Tournament
         {
             float xPos = ((i + 1) * groupSpacingX) + (i * groupWidth);
             float yPos = groupStartY;
-            UI_TGroup group = GameObject.Instantiate(ResourceManager.Singleton.TournamentGroupPrefab, container.transform);
+            UI_TGroup group = GameObject.Instantiate(ResourceManager.Instance.TournamentGroupPrefab, container.transform);
             group.GetComponent<RectTransform>().anchoredPosition = new Vector2(xPos, yPos);
             group.Init(baseUI, Groups[i]);
             groupHeight = group.GetComponent<RectTransform>().rect.height;
@@ -425,7 +425,7 @@ public abstract class Tournament
         float roundSpacing = 80f; // x spacing between rounds.
         float bracketGroupSpacing = 80f; // y spacing between bracket groups.
 
-        UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchPrefab_AnchoredTopLeft;
+        UI_TMatch matchPrefab = ResourceManager.Instance.TournamentMatchPrefab_AnchoredTopLeft;
 
         // Init all match displays layered on X axis
         for (int roundIndex = 0; roundIndex < numRounds; roundIndex++)

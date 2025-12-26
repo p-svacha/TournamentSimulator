@@ -104,6 +104,7 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         CurrentSkillIndex = -1;
         SimPlayer = Match.NumPlayerParticipants + 1;
         TimeElapsed = 0;
+        CurrentGameRound = null;
 
         Game.StartGame();
     }

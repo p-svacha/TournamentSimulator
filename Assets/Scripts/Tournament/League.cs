@@ -38,6 +38,8 @@ public class League
     }
 
     public List<Player> Ranking => Standings.OrderByDescending(x => x.Value).ThenByDescending(x => GetAverageMatchScore(x.Key)).Select(x => x.Key).ToList();
+    public Dictionary<int, List<Player>> PlayerRanking => Ranking.ToDictionary(p => Ranking.IndexOf(p), p => new List<Player>() { p });
+    public Dictionary<int, List<Team>> TeamRanking => Ranking.ToDictionary(p => Ranking.IndexOf(p), p => new List<Team>() { Database.GetNationalTeam(p.Country) });
     public int GetRankOf(Player p) => Ranking.IndexOf(p) + 1;
 
     /// <summary>

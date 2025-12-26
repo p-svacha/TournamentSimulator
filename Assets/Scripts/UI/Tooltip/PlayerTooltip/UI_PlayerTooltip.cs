@@ -16,6 +16,7 @@ public class UI_PlayerTooltip : UI_Tooltip
     public Image LeagueIcon;
 
     public GameObject SkillContainer;
+    public GameObject MedalContainer;
 
     [Header("Stats")]
     public TextMeshProUGUI AgeText;
@@ -33,6 +34,7 @@ public class UI_PlayerTooltip : UI_Tooltip
     [Header("Prefabs")]
     public UI_SkillRow SkillRowPrefab;
     public UI_HistoryRow HistoryRowPrefab;
+    public UI_PlayerMedal PlayerMedalPrefab;
 
     private void Awake()
     {
@@ -88,5 +90,17 @@ public class UI_PlayerTooltip : UI_Tooltip
             UI_HistoryRow historyRow = Instantiate(HistoryRowPrefab, HistoryContainer.transform);
             historyRow.Init(player, league);
         }
+
+        // Medals
+        HelperFunctions.DestroyAllChildredImmediately(MedalContainer);
+        List<MedalInfo> medals = Database.GetPlayerMedals(player);
+        foreach (MedalInfo medal in medals)
+        {
+            UI_PlayerMedal elem = Instantiate(PlayerMedalPrefab, MedalContainer.transform);
+            elem.Init(medal);
+        }
+
+        if (medals.Count == 0) GetComponent<RectTransform>().sizeDelta = new Vector2(400, 210);
+        else GetComponent<RectTransform>().sizeDelta = new Vector2(400, 260);
     }
 }

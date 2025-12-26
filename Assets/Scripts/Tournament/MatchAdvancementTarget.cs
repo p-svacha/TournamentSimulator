@@ -19,14 +19,8 @@ public class MatchAdvancementTarget
         TargetMatch = targetMatch;
         TargetMatchId = targetMatch.Id;
         TargetSeed = targetSeed;
-    }
 
-    public MatchAdvancementTarget(Match sourceMatch, int sourceRank, int targetLocalId, int targetSeed)
-    {
-        SourceMatch = sourceMatch;
-        SourceRank = sourceRank;
-        TargetMatchId = targetLocalId;
-        TargetSeed = targetSeed;
+        TargetMatch.IncomingAdvancements.Add(this);
     }
 
     public MatchAdvancementTarget(Match match, MatchAdvancementData data)

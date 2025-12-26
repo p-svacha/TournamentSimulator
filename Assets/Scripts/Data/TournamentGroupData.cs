@@ -7,6 +7,7 @@ using UnityEngine;
 public class TournamentGroupData
 {
     public string Name { get; set; }
+    public int Size { get; set; }
     public int PointsForWin { get; set; }
     public int PointsForDraw { get; set; }
     public int PointsForLoss { get; set; }

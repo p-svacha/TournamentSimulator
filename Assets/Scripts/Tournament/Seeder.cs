@@ -42,6 +42,53 @@ public static class Seeder
         }
     }
 
+    /// <summary>
+    /// Fills a globally seeded list of teams in a set of groups by applying a fair snake seed. (1 -> 2 -> 3 -> 4 -> 4 -> 3 -> 2 -> 1 -> 1 -> 2 -> 3 ... etc.)
+    /// </summary>
+    public static void SnakeSeedTeamsIntoGroups(List<Team> tournamentParticipants, List<TournamentGroup> groups)
+    {
+        List<List<Team>> seededGroups = GetSnakeSeededGroups(tournamentParticipants, groups.Count);
+        for (int i = 0; i < groups.Count; i++) groups[i].SetParticipants(seededGroups[i]);
+    }
+
+    /// <summary>
+    /// Fills a globally seeded list of players in a set of groups by applying a fair snake seed. (1 -> 2 -> 3 -> 4 -> 4 -> 3 -> 2 -> 1 -> 1 -> 2 -> 3 ... etc.)
+    /// </summary>
+    public static void SnakeSeedPlayersIntoGroups(List<Player> tournamentParticipants, List<TournamentGroup> groups)
+    {
+        List<List<Player>> seededGroups = GetSnakeSeededGroups(tournamentParticipants, groups.Count);
+        for (int i = 0; i < groups.Count; i++) groups[i].SetParticipants(seededGroups[i]);
+    }
+
+    private static List<List<T>> GetSnakeSeededGroups<T>(List<T> participants, int numGroups)
+    {
+        List<List<T>> seededGroups = new List<List<T>>();
+        for (int i = 0; i < numGroups; i++) seededGroups.Add(new List<T>());
+
+        int currentGroupId = 0;
+        bool snakeForward = true;
+
+        for (int i = 0; i < participants.Count; i++)
+        {
+            int globalSeed = i;
+            seededGroups[currentGroupId].Add(participants[i]);
+
+            // Advance snake seeding
+            if (snakeForward)
+            {
+                if (currentGroupId < numGroups - 1) currentGroupId++;
+                else snakeForward = false;
+            }
+            else
+            {
+                if (currentGroupId > 0) currentGroupId--;
+                else snakeForward = true;
+            }
+        }
+
+        return seededGroups;
+    }
+
 
     /// <summary>
     /// Generates and sets the advancement information in all source matches, given how many in each of those matches advance to the group of target matches. Applies even and fair seeding.

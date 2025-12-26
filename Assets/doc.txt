@@ -1,11 +1,5 @@
 ------------------------------- Before season 7 -------------------------------------------
 
-only add participants to season cup and world cup right before the first round starts
-seed them into matches / groups
-for world cup seeding, use team elo
-
----
-
 instead of 2 random revivals at the end of season, do just 1: best rated player without a league
 	> then 1 more new generated
 add 12 players at end of season (some silent maybe?)
@@ -13,16 +7,11 @@ and from then on always add 8 players (so total number always divisible by 8)
 
 ---
 
-
 make match result screen scrollable
 
 ---
 
 fix advancement from lower final to semi
-
----
-
-advancements in tournament overview no longer shown after it starts
 
 ------------------------------- Before season 8 -------------------------------------------
 

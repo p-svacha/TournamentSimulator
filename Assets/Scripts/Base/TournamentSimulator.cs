@@ -197,7 +197,7 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.SeasonCup);
 
         // World Cup
-        ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup);
 
         // BIG Cup
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup, quarter: 3, day: 1);
@@ -215,7 +215,7 @@ public class TournamentSimulator : MonoBehaviour
         Database.AddLeague(newLeague);
     }
 
-    public void ScheduleTournament(DisciplineDef disciplineDef, TournamentType type, int quarter = 0, int day = 0, int numPlayersPerTeam = 0)
+    public void ScheduleTournament(DisciplineDef disciplineDef, TournamentType type, int quarter = 0, int day = 0)
     {
         int season = Database.Season;
 
@@ -224,7 +224,7 @@ public class TournamentSimulator : MonoBehaviour
         else if (type == TournamentType.ChallengeLeague) newTournament = new Format_ChallengeLeague(disciplineDef, season, quarter, day, Database.CurrentChallengeLeague);
         else if (type == TournamentType.OpenLeague) newTournament = new Format_OpenLeague(disciplineDef, season, quarter, day, Database.CurrentOpenLeague);
         else if (type == TournamentType.SeasonCup) newTournament = new Format_SeasonCup(disciplineDef, season);
-        else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(disciplineDef, season, numPlayersPerTeam);
+        else if (type == TournamentType.WorldCup) newTournament = new Format_WorldCup(disciplineDef, season);
         else if (type == TournamentType.BIGCup) newTournament = new Format_BigCup(disciplineDef, season, quarter, day);
         else throw new System.Exception("TournamentType " + type.ToString() + " not handled.");
 

@@ -12,6 +12,7 @@ public class TournamentGroup
 {
     public Tournament Tournament { get; private set; }
     public string Name { get; private set; }
+    public int GroupSize { get; private set; }
     public List<int> Participants { get; private set; } // Id's of participants, which can either be players or teams
     public List<Team> ParticipantTeams => Participants.Select(id => Database.GetTeam(id)).ToList();
     public List<Player> ParticipantPlayers => Participants.Select(id => Database.GetPlayer(id)).ToList();
@@ -31,13 +32,14 @@ public class TournamentGroup
     private List<int> PointDistribution = new List<int>() { 1, 0 };
 
     // Create a new tournament group
-    public TournamentGroup(Tournament t, string name, List<int> participants, int pointsForWin, int pointsForDraw, int pointsForLoss, int startDayAbsolute, List<int> targetMatchIndices)
+    public TournamentGroup(Tournament t, string name, int groupSize, int pointsForWin, int pointsForDraw, int pointsForLoss, int startDayAbsolute, List<int> targetMatchIndices)
     {
-        if (participants.Count != 4) throw new System.Exception("Only group size of 4 is supported atm.");
+        if (groupSize != 4) throw new System.Exception("Only group size of 4 is supported atm.");
 
         Tournament = t;
         Name = name;
-        Participants = participants;
+        GroupSize = groupSize;
+        Participants = new List<int>();
         PointsForWin = pointsForWin;
         PointsForDraw = pointsForDraw;
         PointsForLoss = pointsForLoss;
@@ -51,56 +53,104 @@ public class TournamentGroup
             Team[] teams = Participants.Select(id => Database.GetTeam(id)).ToArray();
 
             // Day 1
-            CreateGroupTeamMatch(round: 1, matchIndex: 1, startDayAbsolute, teams[0], teams[1]);
-            CreateGroupTeamMatch(round: 1, matchIndex: 2, startDayAbsolute, teams[2], teams[3]);
+            CreateGroupTeamMatch(round: 1, matchIndex: 1, startDayAbsolute);
+            CreateGroupTeamMatch(round: 1, matchIndex: 2, startDayAbsolute);
 
             // Day 2
-            CreateGroupTeamMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, teams[2], teams[0]);
-            CreateGroupTeamMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, teams[3], teams[1]);
+            CreateGroupTeamMatch(round: 2, matchIndex: 1, startDayAbsolute + 1);
+            CreateGroupTeamMatch(round: 2, matchIndex: 2, startDayAbsolute + 1);
 
             // Day 3
-            CreateGroupTeamMatch(round: 3, matchIndex: 1, startDayAbsolute + 2, teams[0], teams[3]);
-            CreateGroupTeamMatch(round: 3, matchIndex: 2, startDayAbsolute + 2, teams[1], teams[2]);
+            CreateGroupTeamMatch(round: 3, matchIndex: 1, startDayAbsolute + 2);
+            CreateGroupTeamMatch(round: 3, matchIndex: 2, startDayAbsolute + 2);
         }
         else
         {
             Player[] players = Participants.Select(id => Database.GetPlayer(id)).ToArray();
 
             // Day 1
-            CreateGroupMatch(round: 1, matchIndex: 1, startDayAbsolute, players[0], players[1]);
-            CreateGroupMatch(round: 1, matchIndex: 2, startDayAbsolute, players[2], players[3]);
+            CreateGroupMatch(round: 1, matchIndex: 1, startDayAbsolute);
+            CreateGroupMatch(round: 1, matchIndex: 2, startDayAbsolute);
 
             // Day 2
-            CreateGroupMatch(round: 2, matchIndex: 1, startDayAbsolute + 1, players[2], players[0]);
-            CreateGroupMatch(round: 2, matchIndex: 2, startDayAbsolute + 1, players[3], players[1]);
+            CreateGroupMatch(round: 2, matchIndex: 1, startDayAbsolute + 1);
+            CreateGroupMatch(round: 2, matchIndex: 2, startDayAbsolute + 1);
 
             // Day 3
-            CreateGroupMatch(round: 3, matchIndex: 1, startDayAbsolute + 2, players[0], players[3]);
-            CreateGroupMatch(round: 3, matchIndex: 2, startDayAbsolute + 2, players[1], players[2]);
+            CreateGroupMatch(round: 3, matchIndex: 1, startDayAbsolute + 2);
+            CreateGroupMatch(round: 3, matchIndex: 2, startDayAbsolute + 2);
         }
     }
 
-    private void CreateGroupTeamMatch(int round, int matchIndex, int dayAbsolute, Team team1, Team team2)
+    /// <summary>
+    /// Sets the teams in this group according to the seeding in the given list and adds them to the according matches.
+    /// </summary>
+    public void SetParticipants(List<Team> teams)
+    {
+        if (!Tournament.IsTeamTournament) throw new System.Exception("Can't add teams to a group of a solo tournament.");
+        if (teams.Count != GroupSize) throw new System.Exception($"Number of teams must match group size. (expected: {GroupSize}, received {teams.Count})");
+
+        Participants = teams.Select(t => t.Id).ToList();
+
+        ((TeamMatch)Matches[0]).AddTeamToMatch(teams[0]);
+        ((TeamMatch)Matches[0]).AddTeamToMatch(teams[3]);
+        ((TeamMatch)Matches[1]).AddTeamToMatch(teams[1]);
+        ((TeamMatch)Matches[1]).AddTeamToMatch(teams[2]);
+
+        ((TeamMatch)Matches[2]).AddTeamToMatch(teams[2]);
+        ((TeamMatch)Matches[2]).AddTeamToMatch(teams[0]);
+        ((TeamMatch)Matches[3]).AddTeamToMatch(teams[3]);
+        ((TeamMatch)Matches[3]).AddTeamToMatch(teams[1]);
+
+        ((TeamMatch)Matches[4]).AddTeamToMatch(teams[0]);
+        ((TeamMatch)Matches[4]).AddTeamToMatch(teams[1]);
+        ((TeamMatch)Matches[5]).AddTeamToMatch(teams[2]);
+        ((TeamMatch)Matches[5]).AddTeamToMatch(teams[3]);
+    }
+
+    /// <summary>
+    /// Sets the players in this group according to the seeding in the given list and adds them to the according matches.
+    /// </summary>
+    public void SetParticipants(List<Player> players)
+    {
+        if (Tournament.IsTeamTournament) throw new System.Exception("Can't add players to a group of a team tournament.");
+        if (players.Count != GroupSize) throw new System.Exception($"Number of players must match group size. (expected: {GroupSize}, received {players.Count})");
+
+        Participants = players.Select(t => t.Id).ToList();
+
+        Matches[0].AddPlayerToMatch(players[0]);
+        Matches[0].AddPlayerToMatch(players[3]);
+        Matches[1].AddPlayerToMatch(players[1]);
+        Matches[1].AddPlayerToMatch(players[2]);
+
+        Matches[2].AddPlayerToMatch(players[2]);
+        Matches[2].AddPlayerToMatch(players[0]);
+        Matches[3].AddPlayerToMatch(players[3]);
+        Matches[3].AddPlayerToMatch(players[1]);
+
+        Matches[4].AddPlayerToMatch(players[0]);
+        Matches[4].AddPlayerToMatch(players[1]);
+        Matches[5].AddPlayerToMatch(players[2]);
+        Matches[5].AddPlayerToMatch(players[3]);
+    }
+
+    private void CreateGroupTeamMatch(int round, int matchIndex, int dayAbsolute)
     {
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
         
         TeamMatch match = new TeamMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, numTeams: 2, Tournament.NumPlayersPerTeam, PointDistribution, Tournament.GetBasicPointDistribution(Tournament.NumPlayersPerTeam * 2), group: this);
-        match.AddTeamToMatch(team1);
-        match.AddTeamToMatch(team2);
 
         Matches.Add(match);
         Tournament.Matches.Add(match);
     }
 
-    private void CreateGroupMatch(int round, int matchIndex, int dayAbsolute, Player p1, Player p2)
+    private void CreateGroupMatch(int round, int matchIndex, int dayAbsolute)
     {
         int quarter = Database.ToRelativeQuarter(dayAbsolute);
         int day = Database.ToRelativeDay(dayAbsolute);
 
         Match match = new SoloMatch("Round " + round + " - Match " + matchIndex, Tournament, quarter, day, MatchFormatDefOf.SingleGame, maxPlayers: 2, PointDistribution, group: this);
-        match.AddPlayerToMatch(p1);
-        match.AddPlayerToMatch(p2);
 
         Matches.Add(match);
         Tournament.Matches.Add(match);
@@ -174,6 +224,7 @@ public class TournamentGroup
     {
         TournamentGroupData data = new TournamentGroupData();
         data.Name = Name;
+        data.Size = GroupSize;
         data.Participants = Participants;
         data.TargetMatchIndices = TargetMatchIndices;
         data.PointsForWin = PointsForWin;
@@ -186,6 +237,7 @@ public class TournamentGroup
     {
         Tournament = t;
         Name = data.Name;
+        GroupSize = data.Size;
         Participants = data.Participants;
         TargetMatchIndices = data.TargetMatchIndices;
         PointsForWin = data.PointsForWin;

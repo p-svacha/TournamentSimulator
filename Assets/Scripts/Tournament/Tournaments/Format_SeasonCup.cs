@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Format_SeasonCup : Tournament
 {
+    public static int NUM_PARTICIPANTS = 64;
+
     private static int RO64_QUARTER = 1;
     private static int RO64_DAY = 15;
 
@@ -29,33 +31,30 @@ public class Format_SeasonCup : Tournament
     public Format_SeasonCup(DisciplineDef disciplineDef, int season) : base(disciplineDef, TournamentType.SeasonCup, season)
     {
         Name = "Season Cup";
-        Players = Database.GetPlayerEloRanking(Discipline.Def).Take(64).ToList();
 
-        Initialize();
+        InitMatchesAndAdvancements();
     }
 
-    public void Initialize()
+    public override void OnTournamentStart()
     {
-        if (Players.Count != 64) throw new System.Exception("Season cup must have exactly 64 players and not " + Players.Count);
+        // Seed tournament
+        Players = Database.GetPlayerEloRanking(Discipline.Def).Take(NUM_PARTICIPANTS).ToList();
+
+        List<Match> initalRoundMatches = Matches.Take(NUM_PARTICIPANTS / 2).ToList();
+        Seeder.SnakeSeedSoloTournament(Players, initalRoundMatches);
+    }
+
+    public void InitMatchesAndAdvancements()
+    {
         if (Teams.Count != 0) throw new System.Exception("Player tournaments cannot have team participants, only players.");
 
         Groups = new List<TournamentGroup>();
         Matches = new List<Match>();
 
-        // RO64 (random seeding to fill initial slots)
-        List<Player> unassignedPlayers = new List<Player>();
-        unassignedPlayers.AddRange(Players);
+        // RO64
         for (int i = 0; i < 32; i++)
         {
             Match ro64Match = new SoloMatch("RO64 - Match " + (i + 1), this, RO64_QUARTER, RO64_DAY, MatchFormatDefOf.SingleGame, maxPlayers: 2, PointDistribution);
-
-            // Add initial players
-            for (int j = 0; j < 2; j++)
-            {
-                Player p = unassignedPlayers[Random.Range(0, unassignedPlayers.Count)];
-                unassignedPlayers.Remove(p);
-                ro64Match.AddPlayerToMatch(p, seed: j);
-            }
 
             // Advancement matches
             ro64Match.SetTargetMatches(new List<int>() { 32 + (i / 2) }, new List<int>() { i % 2 });

@@ -187,6 +187,8 @@ public class Format_BigCup : Tournament
 
         List<Match> initalRoundMatches = Matches.Take(INITIAL_ROUND_MATCHES).ToList();
         Seeder.SnakeSeedSoloTournament(orderedParticipants, initalRoundMatches);
+
+        Players = new List<Player>(orderedParticipants);
     }
 
     /// <summary>

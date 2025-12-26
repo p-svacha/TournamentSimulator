@@ -127,36 +127,57 @@ public class TeamMatch : Match
 
     private Dictionary<Team, int> GetNewTeamEloRatings()
     {
-        List<MatchParticipant_Team> teamRanking = GetTeamRanking();
+        List<MatchParticipant_Team> ranking = GetTeamRanking();
 
-        Dictionary<Team, int> newRatings = new Dictionary<Team, int>();
-        foreach (Team team in teamRanking.Select(x => x.Team)) newRatings.Add(team, team.Elo[Discipline.Def]);
+        Dictionary<Team, float> eloDeltas = ranking.Select(x => x.Team).ToDictionary(t => t, t => 0f);
 
-        for (int i = 0; i < teamRanking.Count; i++)
+        if (ranking.Count < 2) return ranking.ToDictionary(x => x.Team, x => x.Team.Elo[Discipline.Def]); // No elo change if only 1 team
+
+        float kBase = 20f;
+        float kFactor = kBase / (ranking.Count - 1);  // Impact of each player-to-player comparison in a match is normalized by player count so match size doesn't have an impact on overall elo changes.
+
+        // Calculate deltas
+        for (int i = 0; i < ranking.Count; i++)
         {
-            for (int j = i + 1; j < teamRanking.Count; j++)
+            for (int j = i + 1; j < ranking.Count; j++)
             {
-                AdjustTeamRatings(newRatings, teamRanking[i].Team, teamRanking[j].Team);
+                // ranking[i] is the winner (higher rank), ranking[j] is the loser
+                CalculatePairwiseTeamEloDelta(eloDeltas, ranking[i].Team, ranking[j].Team, kFactor);
             }
         }
 
-        return newRatings;
+        // Apply deltas to original ratings
+        Dictionary<Team, int> finalRatings = new Dictionary<Team, int>();
+        foreach (Team team in eloDeltas.Keys)
+        {
+            int originalElo = team.Elo[Discipline.Def];
+            int change = Mathf.RoundToInt(eloDeltas[team]);
+            finalRatings.Add(team, originalElo + change);
+        }
+
+        return finalRatings;
     }
 
-    private void AdjustTeamRatings(Dictionary<Team, int> newRatings, Team winner, Team loser)
+    private void CalculatePairwiseTeamEloDelta(Dictionary<Team, float> deltas, Team winner, Team loser, float kFactor)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline.Def] - winner.Elo[Discipline.Def]) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline.Def] - loser.Elo[Discipline.Def]) / 400f));
+        int eloWinner = winner.Elo[Discipline.Def];
+        int eloLoser = loser.Elo[Discipline.Def];
 
-        if (IsDraw())
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (eloLoser - eloWinner) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (eloWinner - eloLoser) / 400f));
+
+        bool isDraw = false;
+        if (NumTeams == 2) isDraw = IsDraw();
+
+        if (isDraw)
         {
-            newRatings[winner] += (int)(20 * (0.5f - expWinner));
-            newRatings[loser] += (int)(20 * (0.5f - expLoser));
+            deltas[winner] += kFactor * (0.5f - expWinner);
+            deltas[loser] += kFactor * (0.5f - expLoser);
         }
         else
         {
-            newRatings[winner] += (int)(20 * (1 - expWinner));
-            newRatings[loser] += (int)(20 * (0 - expLoser));
+            deltas[winner] += kFactor * (1f - expWinner);
+            deltas[loser] += kFactor * (0f - expLoser);
         }
     }
 

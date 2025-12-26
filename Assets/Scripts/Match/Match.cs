@@ -289,27 +289,46 @@ public abstract class Match
     {
         List<Player> ranking = PlayerRanking;
 
-        Dictionary<Player, int> newEloRatings = new Dictionary<Player, int>();
-        foreach (Player p in ranking) newEloRatings.Add(p, p.Elo[Discipline.Def]);
+        if (ranking.Count < 2) return ranking.ToDictionary(p => p, p => p.Elo[Discipline.Def]); // No elo change if only 1 player
 
+        Dictionary<Player, float> eloDeltas = ranking.ToDictionary(p => p, p => 0f);
+
+        float kBase = 20f;
+        float kFactor = kBase / (ranking.Count - 1); // Impact of each player-to-player comparison in a match is normalized by player count so match size doesn't have an impact on overall elo changes.
+
+        // Calculate deltas
         for (int i = 0; i < ranking.Count; i++)
         {
             for (int j = i + 1; j < ranking.Count; j++)
             {
-                GetAdjustedNewRatings(newEloRatings, ranking[i], ranking[j]);
+                // i is higher rank (winner), j is lower rank (loser)
+                CalculatePairwiseEloDelta(eloDeltas, ranking[i], ranking[j], kFactor);
             }
         }
 
-        return newEloRatings;
+        // Apply deltas to original ratings
+        Dictionary<Player, int> finalRatings = new Dictionary<Player, int>();
+        foreach (var p in ranking)
+        {
+            int originalElo = p.Elo[Discipline.Def];
+            int change = Mathf.RoundToInt(eloDeltas[p]);
+            finalRatings.Add(p, originalElo + change);
+        }
+
+        return finalRatings;
     }
 
-    private void GetAdjustedNewRatings(Dictionary<Player, int> newRatings, Player winner, Player loser)
+    private void CalculatePairwiseEloDelta(Dictionary<Player, float> deltas, Player winner, Player loser, float kFactor)
     {
-        float expWinner = 1f / (1f + Mathf.Pow(10f, (loser.Elo[Discipline.Def] - winner.Elo[Discipline.Def]) / 400f));
-        float expLoser = 1f / (1f + Mathf.Pow(10f, (winner.Elo[Discipline.Def] - loser.Elo[Discipline.Def]) / 400f));
+        // Get snapshot of current elo
+        int eloWinner = winner.Elo[Discipline.Def];
+        int eloLoser = loser.Elo[Discipline.Def];
 
-        newRatings[winner] += (int)(20 * (1 - expWinner));
-        newRatings[loser] += (int)(20 * (0 - expLoser));
+        float expWinner = 1f / (1f + Mathf.Pow(10f, (eloLoser - eloWinner) / 400f));
+        float expLoser = 1f / (1f + Mathf.Pow(10f, (eloWinner - eloLoser) / 400f));
+
+        deltas[winner] += kFactor * (1 - expWinner);
+        deltas[loser] += kFactor * (0 - expLoser);
     }
 
     /// <summary>

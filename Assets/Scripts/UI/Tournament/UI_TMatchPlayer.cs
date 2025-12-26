@@ -17,6 +17,7 @@ public class UI_TMatchPlayer : MonoBehaviour
     public Image EloChangeIcon;
     public TextMeshProUGUI EloChangeText;
     public TextMeshProUGUI PointsText;
+    public TextMeshProUGUI PlaceholderText;
 
     public void Init(Match match, MatchParticipant_Player p, bool isCompact)
     {
@@ -34,7 +35,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         GetComponent<TeamTooltipTarget>().Init(match.Discipline.Def, t.Team);
     }
 
-    public void InitEmpty()
+    public void InitEmpty(string text = "")
     {
         FlagIcon.enabled = false;
         NameText.text = "";
@@ -42,6 +43,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         if (EloChangeIcon != null) EloChangeIcon.enabled = false;
         if (EloChangeText != null) EloChangeText.text = "";
         if (PointsText != null) PointsText.text = "";
+        PlaceholderText.text = text;
         return;
     }
 
@@ -90,6 +92,7 @@ public class UI_TMatchPlayer : MonoBehaviour
         FlagIcon.sprite = sprite;
         NameText.text = nameText;
         Background.color = backgroundColor;
+        PlaceholderText.text = "";
 
         if (match.IsDone)
         {

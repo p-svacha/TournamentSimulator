@@ -39,6 +39,7 @@ public class MatchAdvancementTarget
     public void ResolveReferences()
     {
         TargetMatch = Database.GetMatch(TargetMatchId);
+        TargetMatch.IncomingAdvancements.Add(this);
     }
 
     public MatchAdvancementData ToData()

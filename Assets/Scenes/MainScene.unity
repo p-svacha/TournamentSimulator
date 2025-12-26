@@ -3593,7 +3593,7 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!1 &482028193
 GameObject:
   m_ObjectHideFlags: 0
@@ -15415,6 +15415,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TournamentMatchPrefab: {fileID: 708975215320023807, guid: 2e33a36eb73969648a69772412b669cd, type: 3}
+  TournamentMatchPrefab_AnchoredTopLeft: {fileID: 5372548236881811221, guid: 3d59f310c4a3b35468828963cc245571, type: 3}
   TournamentMatchCompactPrefab: {fileID: 8505575428646484094, guid: bdcb80e158ec5574e8510eee85389a8b, type: 3}
   TournamentGroupPrefab: {fileID: 1760772913777474912, guid: efc822955fc8bc04f83200c009c66610, type: 3}
 --- !u!4 &1289415291

@@ -198,7 +198,7 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
 
         // BIG Cup
-        ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup, quarter: 4, day: 1);
 
         // Switch season view
         UI.DashboardScreen.RefreshDropdownOptions();

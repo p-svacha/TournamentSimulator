@@ -392,6 +392,88 @@ public abstract class Tournament
         DisplayAsFixedTableau(baseUI, container, Matches.Skip(24).ToList(), numPlayersPerMatch: 2, tableauStartY);
     }
 
+    /// <summary>
+    /// Displays a double elimination in 2 vertical halfs (upper and lower bracket), layered from left to right.
+    /// Scrollable on all sides.
+    /// Example: https://trackmania-tournaments.com/bigtrackmaniacup
+    /// <param name="groupedMatches">sorted list of all matches. Outermost list are the rounds (1 player plays once per round). Second list are bracket groups (usually upper and lower, or just one for i.e. final). Innermost list are matches within the bracket group.</param>
+    /// </summary>
+    protected void DisplayLayeredDoubleElimBracket(UI_Base baseUI, GameObject container, List<List<List<Match>>> groupedMatches)
+    {
+        int numRounds = groupedMatches.Count;
+
+        int maxBracketGroups = groupedMatches.Max(bg => bg.Count);
+        float[] bracketGroupHeights = new float[maxBracketGroups];
+        Dictionary<int, List<UI_TMatch>> matchDisplaysByBracketGroup = new Dictionary<int, List<UI_TMatch>>();
+        for (int i = 0; i < maxBracketGroups; i++) matchDisplaysByBracketGroup.Add(i, new List<UI_TMatch>());
+
+        float roundXStart = 0f;
+        float totalWidth = 0f;
+        float totalHeight = 0f;
+
+        float matchWidth = 300; // width of TMatch
+        float matchSpacing = 20f; // x spacing between matches in the same round.
+        float roundSpacing = 80f; // x spacing between rounds.
+        float bracketGroupSpacing = 80f; // y spacing between bracket groups.
+
+        UI_TMatch matchPrefab = ResourceManager.Singleton.TournamentMatchPrefab_AnchoredTopLeft;
+
+        // Init all match displays layered on X axis
+        for (int roundIndex = 0; roundIndex < numRounds; roundIndex++)
+        {
+            List<List<Match>> bracketGroups = groupedMatches[roundIndex];
+            int numBracketGroups = bracketGroups.Count;
+            float roundXEnd = 0f;
+
+            for (int bracketGroupIndex = 0; bracketGroupIndex < numBracketGroups; bracketGroupIndex++)
+            {
+                List<Match> matches = bracketGroups[bracketGroupIndex];
+                int numMatches = matches.Count;
+
+                float matchXStart = roundXStart;
+
+                for (int  matchIndex = 0; matchIndex < numMatches; matchIndex++)
+                {
+                    Match match = matches[matchIndex];
+
+                    UI_TMatch matchDisplay = GameObject.Instantiate(matchPrefab, container.transform);
+                    RectTransform rect = matchDisplay.GetComponent<RectTransform>();
+                    rect.anchoredPosition = new Vector2(matchXStart, 0f);
+                    matchDisplay.Init(baseUI, match);
+
+                    matchDisplaysByBracketGroup[bracketGroupIndex].Add(matchDisplay);
+
+                    float xEnd = matchXStart + matchDisplay.Width;
+                    if (xEnd > roundXEnd) roundXEnd = xEnd;
+
+                    if (matchDisplay.Height > bracketGroupHeights[bracketGroupIndex]) bracketGroupHeights[bracketGroupIndex] = matchDisplay.Height;
+
+                    matchXStart += matchWidth + matchSpacing;
+                }
+            }
+
+            roundXStart = roundXEnd + roundSpacing;
+            totalWidth = roundXEnd;
+        }
+
+        // Move bracket groups on Y axis
+        float groupY = 0f;
+        for(int i = 0; i < maxBracketGroups; i++)
+        {
+            foreach (UI_TMatch matchDisplay in  matchDisplaysByBracketGroup[i])
+            {
+                RectTransform rect = matchDisplay.GetComponent<RectTransform>();
+                rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, -groupY);
+            }
+            groupY += bracketGroupHeights[i] + bracketGroupSpacing;
+        }
+        totalHeight = bracketGroupHeights.Sum() + ((maxBracketGroups - 1) * bracketGroupSpacing);
+
+        // Set container size for scrolling
+        container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, totalWidth);
+        container.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, totalHeight);
+    }
+
     #endregion
 
     #region Save / Load
@@ -422,6 +504,7 @@ public abstract class Tournament
         if (format == TournamentType.OpenLeague) return new Format_OpenLeague(data);
         if (format == TournamentType.SeasonCup) return new Format_SeasonCup(data);
         if (format == TournamentType.WorldCup) return new Format_WorldCup(data);
+        if (format == TournamentType.BIGCup) return new Format_BigCup(data);
         throw new System.Exception("Format not handled");
     }
     protected Tournament(TournamentData data)

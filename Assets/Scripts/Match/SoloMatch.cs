@@ -10,7 +10,7 @@ public class SoloMatch : Match
 {
     public new List<SoloGame> Games => base.Games.Select(g => (SoloGame)g).ToList();
 
-    public SoloMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution = null, int minPlayers = 0, TournamentGroup group = null, bool isKnockout = false, int knockoutStartingLives = 0, int koLiveGainers = 0, int koLiveLosers = 0)
+    public SoloMatch(string name, Tournament tournament, int quarter, int day, MatchFormatDef format, int maxPlayers, List<int> pointDistribution = null, int minPlayers = -1, TournamentGroup group = null, bool isKnockout = false, int knockoutStartingLives = 0, int koLiveGainers = 0, int koLiveLosers = 0)
         : base(name, tournament, quarter, day, format, maxPlayers, pointDistribution, minPlayers, group, isKnockout, knockoutStartingLives, koLiveGainers, koLiveLosers)
     {
         IsTeamMatch = false;

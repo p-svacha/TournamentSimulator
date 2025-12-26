@@ -1,35 +1,31 @@
-------------------------------- Before season 7 ------------------------------------------- the stat update
-only add participants to season cup and world cup right before the first round starts
-	> in world cup also only decide then to 2v2 or 3v3 (3v3 when 8+ teams)
+------------------------------- Before season 7 -------------------------------------------
 
+only add participants to season cup and world cup right before the first round starts
+seed them into matches / groups
+for world cup seeding, use team elo
+
+instead of 2 random revivals at the end of season, do just 1: best rated player without a league
+	> then 1 more new generated
+
+move big cup to autumn 1
+
+------------------------------- Before season 8 -------------------------------------------
+
+show medals in player tooltip
+
+allow pause during match simulation
+
+show current team score during round in team match simulation screen
+
+show elo change in UI_MatchOverviewPlayer
+show rank in UI_MatchOverviewPlayer
+show seed in UI_MatchOverviewPlayer
 
 add team tooltip in more places
 	> KO matches
 	> group matches
 	> during simulation
 	> on flags
-
-show elo change in UI_MatchOverviewPlayer
-show rank in UI_MatchOverviewPlayer
-show seed in UI_MatchOverviewPlayer
-
-show current team score during round in team match simulation screen
-
-show medals in player tooltip
-
-instead of 2 random revivals at the end of season, do just 1: best rated player without a league
-	> then 1 more new generated
-
-allow pause during match simulation
-
-
-
-
-
-
-
-
-
 
 
 

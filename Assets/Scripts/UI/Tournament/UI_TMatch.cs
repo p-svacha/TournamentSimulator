@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEditor.Overlays;
 
 /// <summary>
 /// Match display in tournament view
@@ -20,6 +21,10 @@ public class UI_TMatch : MonoBehaviour
 
     [Header("Prefabs")]
     public UI_TMatchPlayer PlayerPrefab;
+
+    [Header("Dimensions")]
+    public float Height;
+    public float Width;
 
     public void Init(UI_Base baseUI, Match match)
     {
@@ -58,9 +63,23 @@ public class UI_TMatch : MonoBehaviour
                 for (int i = match.GetPlayerRanking().Count; i < match.MinPlayers; i++)
                 {
                     UI_TMatchPlayer groupPlayer = Instantiate(PlayerPrefab, PlayerContainer.transform);
-                    groupPlayer.InitEmpty();
+
+                    // If there is a clear advancement leading to this slot, show where it comes from
+                    string slotText = "";
+                    MatchAdvancementTarget incomingAdvancement = match.IncomingAdvancements.FirstOrDefault(target => target.TargetSeed == i);
+                    if (incomingAdvancement != null) slotText = $"Rank {incomingAdvancement.SourceRank + 1} from {incomingAdvancement.SourceMatch.Name}";
+
+                    groupPlayer.InitEmpty(slotText);
                 }
             }
         }
+
+        // Set dimensions
+        RectTransform rect = GetComponent<RectTransform>();
+        if (PlayerContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(PlayerContainer.GetComponent<RectTransform>());
+        if (PlayerContainer != null) LayoutRebuilder.ForceRebuildLayoutImmediate(PlayerContainer.transform.parent.GetComponent<RectTransform>());
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+        Height = rect.sizeDelta.y;
+        Width = rect.sizeDelta.x;
     }
 }

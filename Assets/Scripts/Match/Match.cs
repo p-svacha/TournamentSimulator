@@ -40,6 +40,7 @@ public abstract class Match
     /// List containing all information about which ranks in this match advance to what matches with what seeds.
     /// </summary>
     public List<MatchAdvancementTarget> AdvancementsTargets { get; private set; } 
+    public List<MatchAdvancementTarget> IncomingAdvancements { get; set; }
 
     // State
     public List<Game> Games { get; protected set; }
@@ -72,8 +73,10 @@ public abstract class Match
         PlayerParticipants = new List<MatchParticipant_Player>();
         Games = new List<Game>();
         AdvancementsTargets = new List<MatchAdvancementTarget>();
+        IncomingAdvancements = new List<MatchAdvancementTarget>();
 
         if (MinPlayers > MaxPlayers) throw new System.Exception($"minPlayers cannot be higher than maxPlayers. max: {MaxPlayers}, min: {MinPlayers}");
+        if (MinPlayers == 0 || MinPlayers == 1) throw new System.Exception($"minPlayers cannot be 0 or 1. It is {MinPlayers}.");
         if (!IsKnockout && PointDistribution.Count == 0) throw new System.Exception("Point distribution must be set in classic mode.");
         if (IsKnockout && KnockoutStartingLives <= 0) throw new System.Exception("KnockoutStartingLives must be greater than 0 in knockout mode.");
         if (IsKnockout && (KnockoutNumLiveWinners >= KnockoutNumLiveLosers)) throw new System.Exception("More players have to lose a life than gain a life in knockout.");
@@ -414,6 +417,7 @@ public abstract class Match
         MaxPlayers = data.MaxPlayers;
         MinPlayers = data.MinPlayers;
         AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
+        IncomingAdvancements = new List<MatchAdvancementTarget>();
         PointDistribution = data.PointDistribution;
         IsKnockout = data.IsKnockout;
         KnockoutStartingLives = data.KnockoutStartingLives;

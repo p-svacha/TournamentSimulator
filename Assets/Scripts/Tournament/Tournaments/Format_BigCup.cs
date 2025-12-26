@@ -130,7 +130,8 @@ public class Format_BigCup : Tournament
     private const int R1_LOWER_MIN_PPM = 2; // 4 matches. per match: 12 to R2 lower, rest out
     private const int R1_LOWER_MAX_PPM = 44; // 4 matches. per match: 12 to R2 lower, rest out
     private const int R2_UPPER_PPM = 16; // 2 matches. per match: 6 to R3 upper, 10 to R3 lower 
-    private const int R2_LOWER_PPM = 24; // 4 matches. per match: 11 to R4 lower, 13 out
+    private const int R2_LOWER_MIN_PPM = 12; // 4 matches. per match: 11 to R4 lower, 13 out
+    private const int R2_LOWER_MAX_PPM = 24; // 4 matches. per match: 11 to R4 lower, 13 out
     private const int R3_UPPER_PPM = 12; // 1 match. 4 to SemiFinal, 8 to R4 lower
     private const int R3_LOWER_PPM = 32; // 2 matches. per match: 12 to R4 lower, 24 out
     private const int R4_LOWER_PPM = 8; // 4 matches. per match: 3 to SemiFinal, 5 out
@@ -166,7 +167,7 @@ public class Format_BigCup : Tournament
     private Match GrandFinalMatch;
 
     public Format_BigCup(TournamentData data) : base(data) { }
-    public Format_BigCup(DisciplineDef disciplineDef, int season, int quarter, int day) : base(disciplineDef, TournamentType.SeasonCup, season)
+    public Format_BigCup(DisciplineDef disciplineDef, int season, int quarter, int day) : base(disciplineDef, TournamentType.BIGCup, season)
     {
         Name = "BIG Cup";
         Quarter = quarter;
@@ -192,6 +193,9 @@ public class Format_BigCup : Tournament
     /// </summary>
     private void InitMatches()
     {
+        Matches = new List<Match>();
+        Groups = new List<TournamentGroup>();
+
         // Initial Round
         for (int i = 0; i < INITIAL_ROUND_MATCHES; i++)
         {
@@ -231,7 +235,7 @@ public class Format_BigCup : Tournament
         // R2 LOWER
         for (int i = 0; i < R2_LOWER_MATCHES; i++)
         {
-            Match match = new SoloMatch("Lower Bracket - Round 2 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R2_LOWER_PPM, M24PointDistribution);
+            Match match = new SoloMatch("Lower Bracket - Round 2 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R2_LOWER_MAX_PPM, M24PointDistribution, minPlayers: R2_LOWER_MIN_PPM);
 
             R2LowerMatches.Add(match);
             Matches.Add(match);
@@ -240,7 +244,7 @@ public class Format_BigCup : Tournament
         // R3 UPPER
         for (int i = 0; i < R3_UPPER_MATCHES; i++)
         {
-            Match match = new SoloMatch("Winner Bracket - Round 3 - Match " + (i + 1), this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R3_UPPER_PPM, M12PointDistribution);
+            Match match = new SoloMatch("Winner Bracket Finals", this, Quarter, Day, MatchFormatDefOf.SingleGame, maxPlayers: R3_UPPER_PPM, M12PointDistribution);
 
             R3UpperMatches.Add(match);
             Matches.Add(match);
@@ -324,15 +328,51 @@ public class Format_BigCup : Tournament
     {
         Modifiers = new List<GameModifierDef>() { GameModifierDefOf.BIGCup };
     }
-    public override void DisplayTournament(UI_Base baseUI, GameObject Container)
+    public override void DisplayTournament(UI_Base baseUI, GameObject container)
     {
-        // todo, display as layers from left to right, with winner bracket in upper half and loser bracket in lower. first stage, semis and grand final in center.
+        List<List<List<Match>>> orderedMatches = new List<List<List<Match>>>();
+        int globalIndex = 0;
+        
+        List<List<Match>> round1 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round1, INITIAL_ROUND_MATCHES, ref globalIndex);
+        orderedMatches.Add(round1);
 
-        /* this will get replaced
-        int[] playersPerPhase = new int[] { 2, 2, 2, 2, 2, 2 };
-        int[] matchesPerPhase = new int[] { 32, 16, 8, 4, 2, 2 };
-        DisplayAsDynamicTableau(baseUI, Container, playersPerPhase, matchesPerPhase);
-        */
+        List<List<Match>> round2 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round2, R1_UPPER_MATCHES, ref globalIndex);
+        AddBracketGroupMatchesToRound(round2, R1_LOWER_MATCHES, ref globalIndex);
+        orderedMatches.Add(round2);
+
+        List<List<Match>> round3 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round3, R2_UPPER_MATCHES, ref globalIndex);
+        AddBracketGroupMatchesToRound(round3, R2_LOWER_MATCHES, ref globalIndex);
+        orderedMatches.Add(round3);
+
+        List<List<Match>> round4 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round4, R3_UPPER_MATCHES, ref globalIndex);
+        AddBracketGroupMatchesToRound(round4, R3_LOWER_MATCHES, ref globalIndex);
+        orderedMatches.Add(round4);
+
+        List<List<Match>> round5 = new List<List<Match>>();
+        round5.Add(new List<Match>()); // Dummy list so the other list is recognized as lower
+        AddBracketGroupMatchesToRound(round5, R4_LOWER_MATCHES, ref globalIndex);
+        orderedMatches.Add(round5);
+
+        List<List<Match>> round6 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round6, SEMI_FINAL_MATCHES, ref globalIndex);
+        orderedMatches.Add(round6);
+
+        List<List<Match>> round7 = new List<List<Match>>();
+        AddBracketGroupMatchesToRound(round7, 1, ref globalIndex);
+        orderedMatches.Add(round7);
+
+        DisplayLayeredDoubleElimBracket(baseUI, container, orderedMatches);
+    }
+
+    private void AddBracketGroupMatchesToRound(List<List<Match>> round, int numMatches, ref int globalIndex)
+    {
+        List<Match> matches = new List<Match>();
+        for (int i = 0; i < numMatches; i++) matches.Add(Matches[globalIndex++]);
+        round.Add(matches);
     }
 
     public override string GetMatchDayTitle(int index) => Name;

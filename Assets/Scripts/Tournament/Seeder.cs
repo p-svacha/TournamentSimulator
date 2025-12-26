@@ -7,6 +7,80 @@ using UnityEngine;
 public static class Seeder
 {
     /// <summary>
+    /// Seeds players into the first round of matches in a 1v1 single elimination tournament bracket.
+    /// <br/>Matches pairs like 1 vs 64, 2 vs 63, etc., recursively ordering matches so the highest seeds meet as late as possible.
+    /// </summary>
+    public static void SeedSingleElimTournament(List<Player> players, List<Match> initialMatches)
+    {
+        if (players.Count == 0) return;
+
+        // 1. Determine Bracket Size (Power of 2)
+        // e.g., if 50 players, we need a bracket of size 64.
+        int bracketSize = 2;
+        while (bracketSize < players.Count) bracketSize *= 2;
+
+        int numMatches = bracketSize / 2;
+        if (initialMatches.Count < numMatches)
+        {
+            Debug.LogError($"[Seeder] Not enough matches provided. Need {numMatches} but got {initialMatches.Count}.");
+            return;
+        }
+
+        // 2. Generate Seeding Order
+        // The "order" list represents the seed numbers (0-based) in the order they appear in the bracket from top to bottom.
+        // Round 1 (2 players): [0, 1]
+        // Round 2 (4 players): [0, 3, 1, 2]  <- 1 plays 4 (idx 3), 2 plays 3 (idx 2)
+        // Round 3 (8 players): [0, 7, 3, 4, 1, 6, 2, 5] ...
+        List<int> seedOrder = new List<int>() { 0, 1 };
+
+        while (seedOrder.Count < bracketSize)
+        {
+            List<int> nextOrder = new List<int>();
+            int currentSize = seedOrder.Count * 2; // Target size for this step (e.g. 4, then 8, then 16)
+
+            // For every existing seed S, the new match is S vs (Size - 1 - S)
+            // e.g. converting size 2 [0, 1] to size 4:
+            // Match A: 0 (from prev) vs 3 (new)
+            // Match B: 1 (from prev) vs 2 (new)
+            // But we append them sequentially: Seed 0, New Opponent, Seed 1, New Opponent
+
+            foreach (int seed in seedOrder)
+            {
+                nextOrder.Add(seed);
+                nextOrder.Add((currentSize - 1) - seed);
+            }
+            seedOrder = nextOrder;
+        }
+
+        // 3. Assign Players to Matches
+        // The seedOrder list now tells us exactly which global seed sits in which slot.
+        // e.g. for 8 players: Match 1 has seeds (0, 7), Match 2 has seeds (3, 4), etc.
+        // Note: 'seedOrder' is length 64. 'initialMatches' is length 32. 
+        // We iterate matches 0 to 31.
+        // Match 0 takes seedOrder[0] and seedOrder[1].
+        // Match 1 takes seedOrder[2] and seedOrder[3].
+
+        for (int i = 0; i < numMatches; i++)
+        {
+            Match m = initialMatches[i];
+
+            // Slot 1 (Home)
+            int seedIndex1 = seedOrder[i * 2];
+            if (seedIndex1 < players.Count)
+            {
+                m.AddPlayerToMatch(players[seedIndex1], seedIndex1);
+            }
+
+            // Slot 2 (Away)
+            int seedIndex2 = seedOrder[(i * 2) + 1];
+            if (seedIndex2 < players.Count)
+            {
+                m.AddPlayerToMatch(players[seedIndex2], seedIndex2);
+            }
+        }
+    }
+
+    /// <summary>
     /// Fills a globally seeded list of players in a set of initial matches by applying a fair snake seed. (1 -> 2 -> 3 -> 4 -> 4 -> 3 -> 2 -> 1 -> 1 -> 2 -> 3 ... etc.)
     /// </summary>
     public static void SnakeSeedSoloTournament(List<Player> tournamentParticipants, List<Match> initialMatches)

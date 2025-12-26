@@ -11,6 +11,7 @@ public class MatchParticipant_Player
     public Team Team { get; private set; }
     public int EloBeforeMatch { get; private set; }
     public int EloAfterMatch { get; private set; }
+    public int EloChange => EloAfterMatch - EloBeforeMatch;
     public int LeaguePointsBeforeMatch { get; private set; }
 
     public MatchParticipant_Player(Match match, Player player, int seed, Team team)

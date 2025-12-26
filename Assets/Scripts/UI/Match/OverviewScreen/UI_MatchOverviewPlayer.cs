@@ -13,6 +13,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ScoreText;
     public TextMeshProUGUI TiebreakerText;
+    public TextMeshProUGUI EloChangeText;
     public GameObject SkillContainer;
 
     [Header("Prefabs")]
@@ -26,11 +27,15 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
         NameText.text = p.Player.Name;
         ScoreText.text = "";
         TiebreakerText.text = "";
+        EloChangeText.text = "";
 
         if (m.IsDone)
         {
             ScoreText.text = m.GetPlayerMatchScore(p).ToString();
             TiebreakerText.text = m.GetPlayerMatchTiebreakerScore(p).ToString();
+            EloChangeText.text = (p.EloChange >= 0 ? "+" : "") + p.EloChange;
+            if (p.EloChange < 0) EloChangeText.color = ColorManager.Singleton.RedTextColor;
+            else if (p.EloChange > 0) EloChangeText.color = ColorManager.Singleton.GreenTextColor;
 
             if (m.Games.Count == 1)
             {
@@ -40,7 +45,7 @@ public class UI_MatchOverviewPlayer : MonoBehaviour
                 {
                     TextMeshProUGUI skillText = Instantiate(SkillTextPrefab, SkillContainer.transform);
 
-                    if(round == null)
+                    if (round == null)
                     {
                         skillText.text = "";
                         continue;

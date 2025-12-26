@@ -42,7 +42,7 @@ public class Format_SeasonCup : Tournament
         Players = Database.GetPlayerEloRanking(Discipline.Def).Take(NUM_PARTICIPANTS).ToList();
 
         List<Match> initalRoundMatches = Matches.Take(NUM_PARTICIPANTS / 2).ToList();
-        Seeder.SnakeSeedSoloTournament(Players, initalRoundMatches);
+        Seeder.SeedSingleElimTournament(Players, initalRoundMatches);
     }
 
     public void InitMatches()

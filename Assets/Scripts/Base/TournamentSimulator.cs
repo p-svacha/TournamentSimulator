@@ -48,6 +48,8 @@ public class TournamentSimulator : MonoBehaviour
         UpdateUI();
 
         // ### TESTS
+        // StartTestMatch();
+        // StartBigTestMatch();
         // StartKnockoutTestMatch();
 
         /*
@@ -198,7 +200,7 @@ public class TournamentSimulator : MonoBehaviour
         ScheduleTournament(DisciplineDefOf.Football, TournamentType.WorldCup, numPlayersPerTeam: 2);
 
         // BIG Cup
-        ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup, quarter: 4, day: 1);
+        ScheduleTournament(DisciplineDefOf.Football, TournamentType.BIGCup, quarter: 3, day: 1);
 
         // Switch season view
         UI.DashboardScreen.RefreshDropdownOptions();
@@ -313,6 +315,32 @@ public class TournamentSimulator : MonoBehaviour
         testMatch.AddPlayerToMatch(Database.GetPlayer(0), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(1), 0);
         testMatch.AddPlayerToMatch(Database.GetPlayer(2), 0);
+        testMatch.SimulateNextGame(1.5f);
+    }
+
+    private void StartBigTestMatch()
+    {
+        SoloMatch testMatch = new SoloMatch("Test", Database.AllTournaments.Last(), Database.Quarter, Database.Day, MatchFormatDefOf.SingleGame, maxPlayers: 20, new List<int>() { 20,19,18,17,16,15,14,13,12,11,10,9,8,7,6,5,4,3,2,1 });
+        testMatch.AddPlayerToMatch(Database.GetPlayer(0), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(1), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(2), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(3), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(4), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(5), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(6), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(7), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(8), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(9), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(10), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(11), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(12), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(13), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(14), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(15), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(16), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(17), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(18), 0);
+        testMatch.AddPlayerToMatch(Database.GetPlayer(19), 0);
         testMatch.SimulateNextGame(1.5f);
     }
 

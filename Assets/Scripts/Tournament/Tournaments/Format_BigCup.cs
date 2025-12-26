@@ -185,7 +185,8 @@ public class Format_BigCup : Tournament
 
         if (orderedParticipants.Count > MAX_PARTICIPANTS) orderedParticipants = orderedParticipants.Take(MAX_PARTICIPANTS).ToList();
 
-        Seeder.SnakeSeedSoloTournament(orderedParticipants, InitialRoundMatches);
+        List<Match> initalRoundMatches = Matches.Take(INITIAL_ROUND_MATCHES).ToList();
+        Seeder.SnakeSeedSoloTournament(orderedParticipants, initalRoundMatches);
     }
 
     /// <summary>

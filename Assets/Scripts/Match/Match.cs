@@ -34,12 +34,16 @@ public abstract class Match
 
     // Rules
     public int MinPlayers { get; private set; } // How many players must be in the match at minimum for it to be able to start.
-    public int MaxPlayers { get; private set; } // How many players can be in the match at maxiumum for it to be able to start.
+    public int MaxPlayers { get; private set; } // How many players can be in the match at maximum for it to be able to start.
     public int NumAdvancements => AdvancementsTargets == null ? 0 : AdvancementsTargets.Count;
     /// <summary>
     /// List containing all information about which ranks in this match advance to what matches with what seeds.
     /// </summary>
-    public List<MatchAdvancementTarget> AdvancementsTargets { get; private set; } 
+    public List<MatchAdvancementTarget> AdvancementsTargets { get; private set; }
+    /// <summary>
+    /// Contains all ranks where the advancement to the next round changes. For example if top 8 advance to the upper bracket and up to top 20 to lower, this would return { 7, 19 }.
+    /// </summary>
+    public List<int> AdvancementLimits { get; private set; }
     public List<MatchAdvancementTarget> IncomingAdvancements { get; set; }
 
     // State
@@ -74,6 +78,7 @@ public abstract class Match
         Games = new List<Game>();
         AdvancementsTargets = new List<MatchAdvancementTarget>();
         IncomingAdvancements = new List<MatchAdvancementTarget>();
+        AdvancementLimits = new List<int>();
 
         if (MinPlayers > MaxPlayers) throw new System.Exception($"minPlayers cannot be higher than maxPlayers. max: {MaxPlayers}, min: {MinPlayers}");
         if (MinPlayers == 0 || MinPlayers == 1) throw new System.Exception($"minPlayers cannot be 0 or 1. It is {MinPlayers}.");
@@ -137,6 +142,7 @@ public abstract class Match
 
     /// <summary>
     /// Adds advancement targets to this match that define which ranks will move on to which other matches with which seeds.
+    /// <br/>All advancement targets added in one call are recoginzed as a "group", leading to the same category of matches.
     /// </summary>
     public void SetAdvancements(List<MatchAdvancementTarget> targets)
     {
@@ -148,6 +154,10 @@ public abstract class Match
 
             // Add
             AdvancementsTargets.Add(target);
+
+            // Add limit
+            int maxRankToAdvance = targets.Max(t => t.SourceRank);
+            if (maxRankToAdvance < MinPlayers - 1) AdvancementLimits.Add(maxRankToAdvance);
         }
     }
 
@@ -390,6 +400,7 @@ public abstract class Match
         data.MinPlayers = MinPlayers;
         data.MaxPlayers = MaxPlayers;
         data.AdvancementTargets = AdvancementsTargets.Select(x => x.ToData()).ToList();
+        data.AdvancementLimits = AdvancementLimits;
         data.PointDistribution = PointDistribution;
         data.IsKnockout = IsKnockout;
         data.KnockoutStartingLives = KnockoutStartingLives;
@@ -417,6 +428,7 @@ public abstract class Match
         MaxPlayers = data.MaxPlayers;
         MinPlayers = data.MinPlayers;
         AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
+        AdvancementLimits = data.AdvancementLimits == null ? new List<int>() : data.AdvancementLimits;
         IncomingAdvancements = new List<MatchAdvancementTarget>();
         PointDistribution = data.PointDistribution;
         IsKnockout = data.IsKnockout;

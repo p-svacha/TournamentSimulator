@@ -16,6 +16,7 @@ public class MatchData
     public int MinPlayers { get; set; }
     public int MaxPlayers { get; set; }
     public List<MatchAdvancementData> AdvancementTargets { get; set; }
+    public List<int> AdvancementLimits { get; set; }
     public List<int> PointDistribution { get; set; }
     public bool IsKnockout { get; set; }
     public int KnockoutStartingLives { get; set; }

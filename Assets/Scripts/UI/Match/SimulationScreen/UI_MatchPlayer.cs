@@ -10,6 +10,7 @@ public class UI_MatchPlayer : MonoBehaviour
 
     public Image Background;
     public Image FlagIcon;
+    public TextMeshProUGUI RankText;
     public TextMeshProUGUI NameText;
     public TextMeshProUGUI ScoreText;
     public TextMeshProUGUI PlusPointsText;
@@ -20,6 +21,7 @@ public class UI_MatchPlayer : MonoBehaviour
         Game = game;
 
         FlagIcon.sprite = p.FlagBig;
+        if (RankText != null) RankText.text = "";
         NameText.text = p.Name;
         ScoreText.text = "";
         PlusPointsText.text = "";
@@ -31,6 +33,7 @@ public class UI_MatchPlayer : MonoBehaviour
     public void InitEmpty()
     {
         FlagIcon.enabled = false;
+        if (RankText != null) RankText.text = "";
         NameText.text = "";
         ScoreText.text = "";
         PlusPointsText.text = "";

@@ -1,0 +1,13 @@
+replace numbers with # then replace back
+remove ., keep it after #
+replace - with space
+replace upper with lower, then back each word
+ignore empty line
+AFTER GEN capitalize words with <= 3 characters
+replace é with e etc
+make sure to detect unsupported characters like ~a or ò
+
+currently in dataset:
++ all teams of top 60 earning sport leagues according to https://en.wikipedia.org/wiki/List_of_professional_sports_leagues_by_revenue
++ top 500 earning esports teams
++ motorsport teams from championship and fia level

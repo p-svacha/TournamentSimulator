@@ -42,14 +42,11 @@ public class Format_WorldCup : Tournament
         // Get list of national teams that have enough players
         List<Team> eligibleTeams = Database.GetNationalTeams(minPlayers: NumPlayersPerTeam);
 
-        // Select participants by average player elo
-        Teams = eligibleTeams.OrderByDescending(x => x.GetAveragePlayerElo(Discipline.Def, NumPlayersPerTeam)).Take(NUM_PARTICIPATING_TEAMS).ToList();
-
-        // Order particiting teams by team elo for seeding
-        Teams = Teams.OrderByDescending(t => t.Elo[Discipline.Def]).ToList();
+        // Select participants by team elo (avg player elo as tiebreaker)
+        Teams = eligibleTeams.OrderByDescending(t => t.Elo[Discipline.Def]).ThenByDescending(t => t.GetAveragePlayerElo(Discipline.Def, NumPlayersPerTeam)).Take(NUM_PARTICIPATING_TEAMS).ToList();
 
         // Seed into groups
-        Seeder.SnakeSeedTeamsIntoGroups(Teams, Groups);
+        Seeder.PotSeedTeamsIntoGroups(Teams, Groups);
     }
 
     public void InitBracket()

@@ -36,6 +36,7 @@ public class SoloMatch : Match
         for (int i = 0; i < AdvancementsTargets.Count; i++)
         {
             MatchAdvancementTarget advancement = AdvancementsTargets[i];
+            if (advancement.SourceRank >= PlayerRanking.Count) continue;
 
             Player advancingPlayer = PlayerRanking[advancement.SourceRank];
             Debug.Log(advancingPlayer.ToString() + " is advancing to " + advancement.TargetMatch.ToString());

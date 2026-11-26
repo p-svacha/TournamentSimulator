@@ -185,9 +185,9 @@ public class UI_SoloFfaGameSimulationScreen : UI_Screen
         }
 
         // Readjust advancement separators
-        for(int i = 0; i < AdvancementLimits.Count; i++)
+        for(int i = 0; i < AdvancementSeparators.Count; i++)
         {
-            AdvancementSeparators[i].transform.SetSiblingIndex(AdvancementLimits[i] % NUM_ROWS_IN_HIGH_CONT);
+            AdvancementSeparators[i].transform.SetSiblingIndex((AdvancementLimits[i] % NUM_ROWS_IN_HIGH_CONT) + 1);
         }
     }
 

@@ -12,6 +12,7 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
 
     [Header("Prefabs")]
     public UI_MatchOverviewPlayer PlayerRowPrefab;
+    public GameObject AdvancementSeparatorPrefab;
 
     public void DisplayMatch(Match match)
     {
@@ -36,10 +37,15 @@ public class UI_MatchOverviewPlayerResults : MonoBehaviour
 
         // Player rows
         HelperFunctions.DestroyAllChildredImmediately(Container);
+        int rank = 0;
         foreach (MatchParticipant_Player part in match.GetPlayerRanking())
         {
             UI_MatchOverviewPlayer row = Instantiate(PlayerRowPrefab, Container.transform);
             row.Init(match, part);
+
+            if (match.AdvancementLimits.Contains(rank)) GameObject.Instantiate(AdvancementSeparatorPrefab, Container.transform);
+
+            rank++;
         }
     }
 }

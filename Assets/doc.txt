@@ -1,6 +1,21 @@
 ------------------------------- Before season 8 -------------------------------------------
 
-allow pause during match simulation
+add age column to players in general dashboard
+add schedule to general dashboard
+
+add elo and world rank in preview of player when opening a match that has not started
+
+add player generation country biases by region (this value modifies the country population for the calculation).
+- europe: 1.5
+- south america: 1.3
+- middle east: 1.0
+- north america: 1.0
+- asia: 1.0
+- oceania: 1.0
+- africa: 0.8
+
+in player tooltip, remove labels for Country, area, contineut and just show the label of it.
+in player tooltip, remove elo line and add a line for world rank in the same style as regional rank (94 / 104)
 
 show current team score during round in team match simulation screen
 
@@ -12,14 +27,33 @@ add team tooltip in more places
 	> during simulation
 	> on flags
 
+new club framework. Clubs are teams that are not nation-based. Each club has 5 players.
+Add simple contract system for player-club connection. Players join a club for X seasons in the contract (weighted-randomized 1-10 with higher chances for low amount).
+Transfer window is always at end of season.
+Teams acquire new players in similar elo range as current team elo AND avg current players elo.
+ - this is done bidirectionally. So teams lacking players look for players in the pool AND players in the pool look for teams lacking players.
+For team names, make a Markov Chain data file with tons of names from football, esports, formula 1, etc. teams and generate team names like this. Make sure dataset only contains lowercase letters and spaces. recapitalization can be done after generation. Teams have full name, acronym and logo.
+Acronym can be then created manually according to team name.
+Logos can then be created manually according to team name, or AI Gen.
+Initial team creation (names and logos) is done manually. Initial team assignment is random. Top 20 players need to have a team guaranteed.
+
+process at end of season:
+- 1. Players with expiring contracts are released to the pool
+- 2. 50/50: players join team (priority for higher ranked players) / teams acquire players. Repeat until all teams have 5 players. Players may be teamless for a season.
+
+Add champions league (same format as world cup with 16 teams, but 5v5)
 
 
+add age modifier in player stat changes (both after game, and after season):
+ - 20-27: positive bias in stat changes (mean = 1)
+ - 28-31: no bias in stat changes (mean = 0)
+ - 32+: negative bias in stat changes (mean = -((age - 31)*0.5))
+ages at which the changes happen and the different biases are all slightly randomized per player (so not all players have the same age bias)
+random retirement age
 
+mean is always meant as full-season mean (so impact at full-season change, single game changes are obv lower)
 
-
-
-
-
+Base distribution at player generation stays the same
 
 
 -------------------------------------------------------------------------------------------

@@ -174,6 +174,7 @@ MonoBehaviour:
   TitleRow: {fileID: 3574114240834222971}
   Container: {fileID: 7267548057689641048}
   PlayerRowPrefab: {fileID: 397942388071848409, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
+  AdvancementSeparatorPrefab: {fileID: 1707091949935432356, guid: 2e1079ea29d39f24fb4fd2285a25b356, type: 3}
 --- !u!1 &7267548057689641048
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 263.12
+      value: 269.86667
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -651,7 +652,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 263.12
+      value: 269.86667
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -949,7 +950,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 263.12
+      value: 269.86667
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1282,7 +1283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 263.12
+      value: 269.86667
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1564,7 +1565,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 263.12
+      value: 269.86667
       objectReference: {fileID: 0}
     - target: {fileID: 3522030826986347514, guid: 9e650c44b5e78264cbe36a48dc2cad85, type: 3}
       propertyPath: m_AnchoredPosition.y

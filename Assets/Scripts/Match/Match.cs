@@ -154,11 +154,11 @@ public abstract class Match
 
             // Add
             AdvancementsTargets.Add(target);
-
-            // Add limit
-            int maxRankToAdvance = targets.Max(t => t.SourceRank);
-            if (maxRankToAdvance < MinPlayers - 1) AdvancementLimits.Add(maxRankToAdvance);
         }
+
+        // Add limit
+        int maxRankToAdvance = targets.Max(t => t.SourceRank);
+        if (maxRankToAdvance < MinPlayers - 1) AdvancementLimits.Add(maxRankToAdvance);
     }
 
     /// <summary>
@@ -447,7 +447,7 @@ public abstract class Match
         MaxPlayers = data.MaxPlayers;
         MinPlayers = data.MinPlayers;
         AdvancementsTargets = data.AdvancementTargets.Select(x => new MatchAdvancementTarget(this, x)).ToList();
-        AdvancementLimits = data.AdvancementLimits == null ? new List<int>() : data.AdvancementLimits;
+        AdvancementLimits = data.AdvancementLimits;
         IncomingAdvancements = new List<MatchAdvancementTarget>();
         PointDistribution = data.PointDistribution;
         IsKnockout = data.IsKnockout;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 /// <summary>
 /// Display of a player in a match in tournament view
@@ -64,7 +65,13 @@ public class UI_TMatchPlayer : MonoBehaviour
         int rank = match.GetPlayerRanking().IndexOf(playerParticipant);
         Color backgroundColor = GetBackgroundColor(match, rank);
 
-        string pointsText = match.IsDone ? match.GetPlayerMatchScore(playerParticipant).ToString() : "";
+        string pointsText = "";
+        if (match.IsDone)
+        {
+            int playerPoints = match.GetPlayerMatchScore(playerParticipant);
+            pointsText = playerPoints.ToString();
+            if (match.IsDone && playerPoints >= 1000) PointsText.fontSize = 12; // Make smaller if 4 digits
+        }
         int currentElo = playerParticipant.Player.Elo[match.Discipline.Def];
         int currentLeaguePoints = (!match.IsDone && match.Tournament.League != null) ? playerParticipant.Player.CurrentLeaguePoints : 0;
         int eloBeforeMatch = playerParticipant.EloBeforeMatch;
@@ -139,10 +146,19 @@ public class UI_TMatchPlayer : MonoBehaviour
                 else return ColorManager.Singleton.KoColor;
             }
 
-            else if (match.NumAdvancements == 0) return ColorManager.Singleton.DefaultColor; // Gray if there are no advancements in this match
-            else if (rank < match.NumAdvancements) return ColorManager.Singleton.AdvanceColor; // Green if within advancements
-            else return ColorManager.Singleton.KoColor; // Red if not within advancements
+            if (match.AdvancementLimits.Count > 0) // Use advancement limits if they exist
+            {
+                if (rank <= match.AdvancementLimits[0]) return ColorManager.Singleton.AdvanceColor;
+                else if (match.AdvancementsTargets.Any(t => t.SourceRank == rank)) return ColorManager.Singleton.LowerAdvanceColor;
+                else return ColorManager.Singleton.KoColor;
+            }
+
+            if (match.NumAdvancements == 0) return ColorManager.Singleton.DefaultColor; // Gray if there are no advancements in this match
+            if (rank < match.NumAdvancements) return ColorManager.Singleton.AdvanceColor; // Green if within advancements
+            return ColorManager.Singleton.KoColor; // Red if not within advancements
         }
-        else return ColorManager.Singleton.DefaultColor; // Gray if match is not done
+
+        // Gray if match is not done
+        return ColorManager.Singleton.DefaultColor;
     }
 }

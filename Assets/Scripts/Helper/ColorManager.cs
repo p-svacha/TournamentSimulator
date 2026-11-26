@@ -6,6 +6,7 @@ public class ColorManager : MonoBehaviour
 {
     public Color DefaultColor;
     public Color AdvanceColor;
+    public Color LowerAdvanceColor;
     public Color OngoingColor;
     public Color KoColor;
 

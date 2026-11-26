@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -161,6 +162,43 @@ public static class Seeder
         }
 
         return seededGroups;
+    }
+
+    /// <summary>
+    /// Seeds a set of ordered teams into groups by creating a pot for each group slot and then assigning them randomly within the pot.
+    /// So each group will have 1 team from pot 1, 1 team from pot 2, 1 team from pot 3, etc.
+    /// </summary>
+    public static void PotSeedTeamsIntoGroups(List<Team> teams, List<TournamentGroup> groups)
+    {
+        // Validate
+        if (groups.Count == 0) throw new ArgumentException("Groups must not be empty.");
+
+        if (teams.Count % groups.Count != 0) throw new ArgumentException("Team count must be divisible by group count.");
+
+        // Create pots
+        int potSize = groups.Count;
+        int numPots = teams.Count / potSize;
+
+        List<List<Team>> pots = new List<List<Team>>();
+        for (int i = 0; i < numPots; i++) pots.Add(new List<Team>());
+
+        for (int i = 0; i < teams.Count; i++)
+        {
+            int potIndex = i / potSize;
+            pots[potIndex].Add(teams[i]);
+        }
+
+        // Assign teams to groups
+        foreach (TournamentGroup group in groups)
+        {
+            List<Team> groupTeams = new List<Team>();
+            for (int i = 0; i < numPots; i++)
+            {
+                Team drawnTeam = pots[i].RandomElement(removeElement: true);
+                groupTeams.Add(drawnTeam);
+            }
+            group.SetParticipants(groupTeams);
+        }
     }
 
 

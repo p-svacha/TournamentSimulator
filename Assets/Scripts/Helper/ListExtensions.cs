@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public static class ListExtensions
@@ -79,5 +80,34 @@ public static class ListExtensions
         }
 
         return shuffledList;
+    }
+
+
+    /// <summary>
+    /// Builds and returns a string representation of the list's contents.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the list.</typeparam>
+    /// <param name="list">The list whose contents will be represented.</param>
+    /// <param name="prefix">An optional prefix to prepend to each entry.</param>
+    /// <param name="includeIndex">If true, includes the element's index in the output.</param>
+    /// <returns>
+    /// A single string with each element on its own line, prefixed and/or indexed as specified.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">Thrown if the list is null.</exception>
+    public static string DebugList<T>(this List<T> list, string prefix = "", bool includeIndex = false)
+    {
+        if (list == null)
+            throw new System.ArgumentNullException(nameof(list), "The list cannot be null.");
+
+        var sb = new StringBuilder();
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (includeIndex)
+                sb.AppendLine($"{prefix}[{i}]: {list[i]}");
+            else
+                sb.AppendLine($"{prefix}{list[i]}");
+        }
+
+        return sb.ToString();
     }
 }

@@ -26,6 +26,7 @@ public class TournamentSimulator : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        Application.targetFrameRate = 60;
     }
 
     // Start is called before the first frame update
@@ -263,24 +264,28 @@ public class TournamentSimulator : MonoBehaviour
             openLeague.Ranking[i].SetLeague(TournamentType.None);
         }
 
-        // Revive the inactive player with the most elo
-        Player toRevive = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.None && !eliminatedPlayers.Contains(x)).OrderByDescending(x => x.Elo[openLeague.Discipline]).First();
-        Debug.Log($"Reviving best inactive player: {toRevive.FirstName} {toRevive.LastName}");
-        toRevive.SetLeague(TournamentType.OpenLeague);
+        // Revive the top 2 inactive player with the most elo
+        for (int i = 0; i < 2; i++) ReviveTopNoLeaguePlayer(eliminatedPlayers, openLeague.Discipline);
 
-        // Revive 1 inactive players and put them into open league (only ones that haven't just been eliminated)
+        // Revive 0 inactive players and put them into open league (only ones that haven't just been eliminated)
         Debug.Log("Reviving random inactive players.");
-        for (int i = 0; i < 1; i++) ReviveRandomPlayer(eliminatedPlayers);
+        for (int i = 0; i < 0; i++) ReviveRandomPlayer(excludedPlayers: eliminatedPlayers);
 
         // Add 8 completely new players to the open league
         Debug.Log("Generating new players for open league.");
         for (int i = 0; i < 8; i++) AddRandomPlayer(league: TournamentType.OpenLeague);
 
-        /*
-        // Just once: Add 4 additional players so player count is always divisible by 4
+        /* FOR SEASON 8
+        // Just once: Add 14 additional players so we get to exactly 128 players
         Debug.Log("Generating new players for divisibility.");
-        for (int i = 0; i < 4; i++) AddRandomPlayer(league: TournamentType.None);
+        for (int i = 0; i < 14; i++) AddRandomPlayer(league: TournamentType.None);
+
+        // OR, force retire 2 worst players so we get to exactly 114 players. like this we could also test retirement system.
+
+        // In the future (season 9+), always add exactly 16 new players per season
         */
+
+
 
         // Save
         Save();
@@ -289,6 +294,13 @@ public class TournamentSimulator : MonoBehaviour
     public void AdjustAllSkillsOfAllPlayers_EndOfSeason()
     {
         foreach(Player p in Database.AllPlayers) p.AdjustEndOfSeasonSkills();
+    }
+
+    public void ReviveTopNoLeaguePlayer(List<Player> excludedPlayers, DisciplineDef discipline)
+    {
+        Player playerToRevive = Database.AllPlayers.Where(x => x.LeagueType == TournamentType.None && !excludedPlayers.Contains(x)).OrderByDescending(x => x.Elo[discipline]).First();
+        playerToRevive.SetLeague(TournamentType.OpenLeague);
+        Debug.Log($"Reviving best inactive player: {playerToRevive.FirstName} {playerToRevive.LastName}");
     }
 
     public void ReviveRandomPlayer(List<Player> excludedPlayers)
